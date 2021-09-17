@@ -6,16 +6,18 @@
 
     internal class TaskInfo
     {
-        private RunTask run;
-        private DisposeTask dispose;
+        private TaskOperation run;
+        private TaskOperation dispose;
 
-        private TaskInfo (RunTask run, DisposeTask dispose, int id, string name, int dataSize)
+        private TaskInfo (TaskOperation run, TaskOperation dispose, int id, string name, int size)
         {
             this.run = run;
             this.dispose = dispose;
             ID = id;
             Name = name;
-            DataSize = dataSize;
+
+            // Round size up to the highest multiple of IntPtr.Size
+            DataSize = ((size + IntPtr.Size - 1) / IntPtr.Size) * IntPtr.Size;
         }
 
         public int ID { get; }
@@ -26,42 +28,32 @@
 
         public static unsafe TaskInfo Create<T> (int id) where T : struct, ITask
         {
-            RunTask run = (ref byte data) => Unsafe.As<byte, T> (ref data).Run ();
+            TaskOperation run = (ref byte data) => Unsafe.As<byte, T> (ref data).Run ();
 
-            DisposeTask dispose;
+            TaskOperation dispose = null;
 
             if (default (T) is IDisposable) // If T implements IDisposable
             {
-                dispose = ((IDisposable)default (T)).Dispose;
-            } else
-            {
-                dispose = null;
+                IDisposable disposableBox = (IDisposable)default (T);
+
+                dispose = (ref byte data) =>
+                {
+                    Unsafe.Unbox<T> (disposableBox) = Unsafe.As<byte, T> (ref data); // Write task data to disposableBox object
+                    disposableBox.Dispose (); // Invoke Dispose method on task data
+                };
             }
 
             Type type = typeof (T);
 
-            return new TaskInfo (run, dispose, id, type.FullName, Unsafe.SizeOf<T> (), IsUnmanaged (type));
+            return new TaskInfo (run, dispose, id, type.FullName, Unsafe.SizeOf<T> ());
         }
 
         [MethodImpl (MethodImplOptions.AggressiveInlining)]
         public void Run (ref byte data) => run (ref data);
 
         [MethodImpl (MethodImplOptions.AggressiveInlining)]
-        public void Dispose (ref byte data)
-        {
-            Unsafe.Unbox<T> (dispose.Target) = Unsafe.As<byte, T> (ref data); // Write task data to asDisposable object
-            asDisposable.Dispose (); // Call Dispose with task data
-        }
+        public void Dispose (ref byte data) => dispose (ref data);
 
-        private class DisposableBox<T> : IDisposable where T : struct, IDisposable
-        {
-            private T data;
-
-            private 
-        }
+        private delegate void TaskOperation (ref byte data);
     }
-
-    internal unsafe delegate void RunTask (ref byte data);
-
-    internal delegate void DisposeTask ();
 }

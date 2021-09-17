@@ -50,13 +50,13 @@
             {
                 TaskInfo taskInfo = taskCache.GetTask<T> ();
 
-                int totalDataSize = taskInfo.DataSize + sizeof (ushort);
+                tasks.Enqueue (taskInfo.ID); // Add task ID to the queue
 
-                if (lastTaskEnd + totalDataSize > taskData.Length * IntPtr.Size)
+                if (lastTaskEnd + taskInfo.DataSize > taskData.Length * IntPtr.Size)
                 {
                     int taskDataLength = lastTaskEnd - firstTask;
 
-                    if (taskDataLength + totalDataSize > taskData.Length * IntPtr.Size)
+                    if (taskDataLength + taskInfo.DataSize > taskData.Length * IntPtr.Size)
                     {
                         Array.Resize (ref taskData, taskData.Length * 2);
                     }
@@ -72,16 +72,6 @@
 
                 ref byte rawTasks = ref Unsafe.As<object, byte> (ref taskData[0]);
                 ref byte newTask = ref Unsafe.Add (ref rawTasks, lastTaskEnd);
-
-                if (!taskInfo.Unmanaged)
-                {
-                    long newTaskAddress = (long)Unsafe.AsPointer (ref newTask);
-
-                    if (newTaskAddress % IntPtr.Size != 0) // If address is not aligned correctly
-                    {
-
-                    }
-                }
 
                 Unsafe.WriteUnaligned (ref Unsafe.Add (ref newTask, sizeof (ushort)), task); // Write Task Data
 
