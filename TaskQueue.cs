@@ -1,6 +1,7 @@
 ﻿namespace Moth.Tasks
 {
     using System;
+    using System.Collections.Generic;
     using System.Runtime.CompilerServices;
     using System.Runtime.InteropServices;
 
@@ -8,7 +9,8 @@
     {
         private readonly object taskLock = new object ();
         private readonly TaskCache taskCache = new TaskCache ();
-        private object[] tasks;
+        private readonly Queue<int> tasks = new Queue<int> ();
+        private object[] taskData;
         private int firstTask;
         private int lastTaskEnd;
         private bool hasDisposableTasks;
@@ -20,47 +22,55 @@
                 throw new ArgumentOutOfRangeException (nameof (startCapacity), $"{nameof (startCapacity)} must be larger than or equal to zero.");
             }
 
-            tasks = new object[startCapacity];
+            taskData = new object[startCapacity];
         }
 
         public void Clear ()
         {
             lock (taskLock)
             {
+                tasks.Clear ();
+
                 firstTask = 0;
                 lastTaskEnd = 0;
             }
         }
 
-        public void Enqueue (ITask task) => Enqueue (new ManagedTask (task));
+        public void Enqueue (Action action) => Enqueue (new DelegateTask (action));
+
+        public void Enqueue<T> (Action<T> action, T arg) => Enqueue (new DelegateTask<T> (action, arg));
+
+        public void Enqueue<T1, T2> (Action<T1, T2> action, T1 arg1, T2 arg2) => Enqueue (new DelegateTask<T1, T2> (action, arg1, arg2));
+
+        public void Enqueue<T1, T2, T3> (Action<T1, T2, T3> action, T1 arg1, T2 arg2, T3 arg3) => Enqueue (new DelegateTask<T1, T2, T3> (action, arg1, arg2, arg3));
 
         public void Enqueue<T> (T task) where T : struct, ITask
         {
             lock (taskLock)
             {
-                Task taskInfo = taskCache.GetTask<T> ();
+                TaskInfo taskInfo = taskCache.GetTask<T> ();
 
                 int totalDataSize = taskInfo.DataSize + sizeof (ushort);
 
-                if (lastTaskEnd + totalDataSize > tasks.Length * IntPtr.Size)
+                if (lastTaskEnd + totalDataSize > taskData.Length * IntPtr.Size)
                 {
                     int taskDataLength = lastTaskEnd - firstTask;
 
-                    if (taskDataLength + totalDataSize > tasks.Length * IntPtr.Size)
+                    if (taskDataLength + totalDataSize > taskData.Length * IntPtr.Size)
                     {
-                        Array.Resize (ref tasks, tasks.Length * 2);
+                        Array.Resize (ref taskData, taskData.Length * 2);
                     }
 
                     if (firstTask != 0)
                     {
-                        Buffer.BlockCopy (tasks, firstTask, tasks, 0, taskDataLength); // Move tasks to front
+                        Buffer.BlockCopy (taskData, firstTask, taskData, 0, taskDataLength); // Move tasks to front
 
                         lastTaskEnd -= firstTask;
                         firstTask = 0;
                     }
                 }
 
-                ref byte rawTasks = ref Unsafe.As<object, byte> (ref tasks[0]);
+                ref byte rawTasks = ref Unsafe.As<object, byte> (ref taskData[0]);
                 ref byte newTask = ref Unsafe.Add (ref rawTasks, lastTaskEnd);
 
                 if (!taskInfo.Unmanaged)
@@ -93,7 +103,7 @@
         public bool TryRunNextTask (IProfiler profiler)
         {
             byte* taskData;
-            Task task;
+            TaskInfo task;
 
             lock (taskLock)
             {
@@ -102,19 +112,19 @@
                     return false;
                 }
 
-                ref byte taskRef = ref Unsafe.As<object, byte> (ref tasks[0]);
+                ref byte taskRef = ref Unsafe.As<object, byte> (ref this.taskData[0]);
                 taskRef = ref Unsafe.Add (ref taskRef, firstTask);
 
                 ref byte idRef = ref Unsafe.Add (taskRef, )
 
-                int id = Unsafe.ReadUnaligned<ushort> (ref tasks[firstTask]);
+                int id = Unsafe.ReadUnaligned<ushort> (ref this.taskData[firstTask]);
 
                 task = taskCache.GetTask (id);
 
                 byte* data = stackalloc byte[task.DataSize];
                 taskData = data;
 
-                tasks.AsSpan (firstTask + sizeof (ushort), task.DataSize).CopyTo (new Span<byte> (data, task.DataSize)); // Copy Task data to stack
+                this.taskData.AsSpan (firstTask + sizeof (ushort), task.DataSize).CopyTo (new Span<byte> (data, task.DataSize)); // Copy Task data to stack
 
                 firstTask += task.DataSize + sizeof (ushort);
 
@@ -142,10 +152,7 @@
 
         private void Dispose (bool fromDispose)
         {
-            Unmanaged.Free (ref tasks);
-
-            if (!fromDispose)
-                Debug.LogWarning ("TaskQueue disposed from Finalizer!");
+            
         }
 
         private void Reset ()

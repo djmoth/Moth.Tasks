@@ -6,14 +6,14 @@
     internal unsafe class TaskCache
     {
         private readonly Dictionary<Type, int> idCache = new Dictionary<Type, int> (16);
-        private Task[] taskCache = new Task[16];
+        private TaskInfo[] taskCache = new TaskInfo[16];
         private int nextID;
 
-        public Task GetTask<T> () where T : struct, ITask
+        public TaskInfo GetTask<T> () where T : struct, ITask
         {
             if (!idCache.TryGetValue (typeof (T), out int id))
             {
-                Task task = AddTask<T> ();
+                TaskInfo task = AddTask<T> ();
 
                 idCache.Add (typeof (T), task.ID);
 
@@ -23,19 +23,19 @@
             return taskCache[id];
         }
 
-        public Task GetTask (int id)
+        public TaskInfo GetTask (int id)
         {
             return taskCache[id];
         }
 
-        private Task AddTask<T> () where T : struct, ITask
+        private TaskInfo AddTask<T> () where T : struct, ITask
         {
             int id = nextID;
             nextID++;
 
             idCache.Add (typeof (T), id);
 
-            Task task = Task.Create<T> (id);
+            TaskInfo task = TaskInfo.Create<T> (id);
 
             if (id >= taskCache.Length)
             {
