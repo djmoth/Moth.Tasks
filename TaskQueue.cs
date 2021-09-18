@@ -7,34 +7,25 @@
 
     public sealed unsafe class TaskQueue : IDisposable
     {
+        private const int StartCapacity = 256;
+
         private readonly object taskLock = new object ();
         private readonly TaskCache taskCache = new TaskCache ();
-        private readonly Queue<int> tasks = new Queue<int> ();
-        private object[] taskData;
+        private readonly Queue<int> tasks = new Queue<int> (16);
+        private readonly ExceptionHandler exceptionHandler;
+        private object[] taskData = new object[StartCapacity];
         private int firstTask;
         private int lastTaskEnd;
-        private bool hasDisposableTasks;
+        private bool disposed;
 
-        public TaskQueue (int startCapacity)
+        public TaskQueue (ExceptionHandler exceptionHandler)
         {
-            if (startCapacity < 0)
-            {
-                throw new ArgumentOutOfRangeException (nameof (startCapacity), $"{nameof (startCapacity)} must be larger than or equal to zero.");
-            }
-
-            taskData = new object[startCapacity];
+            this.exceptionHandler = exceptionHandler;
         }
 
-        public void Clear ()
-        {
-            lock (taskLock)
-            {
-                tasks.Clear ();
+        ~TaskQueue () => Clear ();
 
-                firstTask = 0;
-                lastTaskEnd = 0;
-            }
-        }
+        public delegate void ExceptionHandler (Type taskType, Exception exception);
 
         public void Enqueue (Action action) => Enqueue (new DelegateTask (action));
 
@@ -48,6 +39,11 @@
         {
             lock (taskLock)
             {
+                if (disposed)
+                {
+                    throw new ObjectDisposedException (nameof (TaskQueue), "New tasks may not be enqueued after TaskQueue has been disposed.");
+                }
+
                 TaskInfo taskInfo = taskCache.GetTask<T> ();
 
                 tasks.Enqueue (taskInfo.ID); // Add task ID to the queue.
@@ -74,21 +70,11 @@
                     }
                 }
 
-                ref byte rawTasks = ref Unsafe.As<object, byte> (ref taskData[0]);
-                ref byte newTask = ref Unsafe.Add (ref rawTasks, lastTaskEnd);
+                ref byte newTask = ref Unsafe.As<object, byte> (ref taskData[lastTaskEnd]);
 
-                Unsafe.WriteUnaligned (ref Unsafe.Add (ref newTask, sizeof (ushort)), task); // Write Task Data
+                Unsafe.WriteUnaligned (ref newTask, task); // Write task data.
 
-                Unsafe.WriteUnaligned (ref newTask, (ushort)taskID); // Write Task ID
-
-
-
-                lastTaskEnd += totalDataSize;
-
-                if (task is IDisposable)
-                {
-                    hasDisposableTasks = true;
-                }
+                lastTaskEnd += taskInfo.DataIndices;
             }
         }
 
@@ -106,18 +92,21 @@
                     return false;
                 }
 
-                int id = Unsafe.ReadUnaligned<ushort> (ref this.taskData[firstTask]);
+                int id = tasks.Dequeue ();
 
                 task = taskCache.GetTask (id);
 
-                byte* dataAlloc = stackalloc byte[task.DataIndices];
+                byte* dataAlloc = stackalloc byte[task.DataSize];
                 data = dataAlloc;
 
-                this.taskData.AsSpan (firstTask + sizeof (ushort), task.DataIndices).CopyTo (new Span<byte> (data, task.DataIndices)); // Copy Task data to stack
+                ref byte taskDataRef = ref Unsafe.As<object, byte> (ref taskData[firstTask]);
 
-                firstTask += task.DataIndices + sizeof (ushort);
+                // Copy from taskData to local data on stack.
+                Unsafe.CopyBlock (ref *data, ref taskDataRef, (uint)task.DataSize);
 
-                if (firstTask == lastTaskEnd)
+                firstTask += task.DataIndices; // Increment firstTask by size of task.
+
+                if (firstTask == lastTaskEnd) // If firstTask is equal to lastTaskEnd, it means that this was the last task in the queue.
                 {
                     firstTask = 0;
                     lastTaskEnd = 0;
@@ -126,29 +115,77 @@
 
             profiler?.BeginTask (task.Name);
 
-            task.Run (ref *data);
+            try
+            {
+                task.Run (ref *data); // Run the task with it's data
+            } catch (Exception ex)
+            {
+                exceptionHandler (task.Type, ex); // Notify handler in case of an exception
+            } finally
+            {
+                if (task.Disposable)
+                {
+                    task.Dispose (ref *data); // Dispose the task it is required.
+                }
+            }
 
             profiler?.EndTask ();
 
             return true;
         }
 
+        public void Clear ()
+        {
+            lock (taskLock)
+            {
+                int taskDataIndex = firstTask;
+
+                foreach (int id in tasks)
+                {
+                    TaskInfo task = taskCache.GetTask (id);
+
+                    if (task.Disposable)
+                    {
+                        TryDispose (task, taskDataIndex);
+                    }
+
+                    taskDataIndex += task.DataIndices;
+                }
+
+                tasks.Clear ();
+
+                firstTask = 0;
+                lastTaskEnd = 0;
+            }
+
+            void TryDispose (TaskInfo task, int taskDataIndex)
+            {
+                byte* data = stackalloc byte[task.DataSize];
+
+                ref byte taskDataRef = ref Unsafe.As<object, byte> (ref taskData[firstTask]);
+
+                // Copy from taskData to local data on stack.
+                Unsafe.CopyBlock (ref *data, ref taskDataRef, (uint)task.DataSize);
+
+                try
+                {
+                    task.Dispose (ref *data);
+                } catch (Exception ex)
+                {
+                    exceptionHandler (task.Type, ex);
+                }
+            }
+        }
+
         public void Dispose ()
         {
-            Dispose (true);
-            GC.SuppressFinalize (this);
-        }
+            lock (taskLock)
+            {
+                Clear ();
+                GC.SuppressFinalize (this);
 
-        private void Dispose (bool fromDispose)
-        {
-            
-        }
-
-        private void Reset ()
-        {
-            firstTask = 0;
-            lastTaskEnd = 0;
-            hasDisposableTasks = false;
+                disposed = true;
+            }
         }
     }
 }
