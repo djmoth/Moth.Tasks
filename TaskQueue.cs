@@ -50,22 +50,26 @@
             {
                 TaskInfo taskInfo = taskCache.GetTask<T> ();
 
-                tasks.Enqueue (taskInfo.ID); // Add task ID to the queue
+                tasks.Enqueue (taskInfo.ID); // Add task ID to the queue.
 
-                if (lastTaskEnd + taskInfo.DataSize > taskData.Length * IntPtr.Size)
+                // If new task data will overflow the taskData array.
+                if (lastTaskEnd + taskInfo.DataIndices > taskData.Length)
                 {
-                    int taskDataLength = lastTaskEnd - firstTask;
+                    int totalTaskDataLength = lastTaskEnd - firstTask;
 
-                    if (taskDataLength + taskInfo.DataSize > taskData.Length * IntPtr.Size)
+                    // If there is not enough total space in taskData array to hold new task, then resize taskData
+                    if (totalTaskDataLength + taskInfo.DataIndices > taskData.Length)
                     {
+                        // If taskInfo.DataIndices is abnormally large, doubling the size might not always be enough.
+                        int newSize = Math.Max (taskData.Length * 2, totalTaskDataLength + taskInfo.DataIndices);
                         Array.Resize (ref taskData, taskData.Length * 2);
                     }
 
                     if (firstTask != 0)
                     {
-                        Buffer.BlockCopy (taskData, firstTask, taskData, 0, taskDataLength); // Move tasks to front
+                        Buffer.BlockCopy (taskData, firstTask, taskData, 0, totalTaskDataLength); // Move tasks to the beginning of taskData, to eliminate wasted space.
 
-                        lastTaskEnd -= firstTask;
+                        lastTaskEnd = totalTaskDataLength;
                         firstTask = 0;
                     }
                 }
@@ -92,7 +96,7 @@
 
         public bool TryRunNextTask (IProfiler profiler)
         {
-            byte* taskData;
+            byte* data;
             TaskInfo task;
 
             lock (taskLock)
@@ -102,21 +106,16 @@
                     return false;
                 }
 
-                ref byte taskRef = ref Unsafe.As<object, byte> (ref this.taskData[0]);
-                taskRef = ref Unsafe.Add (ref taskRef, firstTask);
-
-                ref byte idRef = ref Unsafe.Add (taskRef, )
-
                 int id = Unsafe.ReadUnaligned<ushort> (ref this.taskData[firstTask]);
 
                 task = taskCache.GetTask (id);
 
-                byte* data = stackalloc byte[task.DataSize];
-                taskData = data;
+                byte* dataAlloc = stackalloc byte[task.DataIndices];
+                data = dataAlloc;
 
-                this.taskData.AsSpan (firstTask + sizeof (ushort), task.DataSize).CopyTo (new Span<byte> (data, task.DataSize)); // Copy Task data to stack
+                this.taskData.AsSpan (firstTask + sizeof (ushort), task.DataIndices).CopyTo (new Span<byte> (data, task.DataIndices)); // Copy Task data to stack
 
-                firstTask += task.DataSize + sizeof (ushort);
+                firstTask += task.DataIndices + sizeof (ushort);
 
                 if (firstTask == lastTaskEnd)
                 {
@@ -127,7 +126,7 @@
 
             profiler?.BeginTask (task.Name);
 
-            task.Run (taskData);
+            task.Run (ref *data);
 
             profiler?.EndTask ();
 
