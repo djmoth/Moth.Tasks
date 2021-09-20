@@ -25,7 +25,7 @@
             Disposable = dispose != null;
         }
 
-        private delegate void TaskOperation (ref byte data);
+        private delegate void TaskOperation (TaskQueue.TaskDataAccess data, TaskInfo task);
 
         public int ID { get; }
 
@@ -41,15 +41,15 @@
 
         public static unsafe TaskInfo Create<T> (int id) where T : struct, ITask
         {
-            TaskOperation run = (ref byte data) => Unsafe.As<byte, T> (ref data).Run ();
+            TaskOperation run = (data, task) => data.GetNextTask<T> (task).Run ();
 
             TaskOperation dispose = null;
 
             if (default (T) is IDisposable disposableBox) // If T implements IDisposable
             {
-                dispose = (ref byte data) =>
+                dispose = (data, task) =>
                 {
-                    Unsafe.Unbox<T> (disposableBox) = Unsafe.As<byte, T> (ref data); // Write task data to disposableBox object
+                    Unsafe.Unbox<T> (disposableBox) = data.GetNextTask<T> (task); // Write task data to disposableBox object
                     disposableBox.Dispose (); // Invoke Dispose method on task data
                 };
             }
@@ -60,9 +60,9 @@
         }
 
         [MethodImpl (MethodImplOptions.AggressiveInlining)]
-        public void Run (ref byte data) => run (ref data);
+        public void Run (TaskQueue.TaskDataAccess data) => run (data, this);
 
         [MethodImpl (MethodImplOptions.AggressiveInlining)]
-        public void Dispose (ref byte data) => dispose (ref data);
+        public void Dispose (TaskQueue.TaskDataAccess data) => dispose (data, this);
     }
 }
