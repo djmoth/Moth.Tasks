@@ -41,7 +41,17 @@
 
         public static unsafe TaskInfo Create<T> (int id) where T : struct, ITask
         {
-            TaskOperation run = (data, task) => data.GetNextTask<T> (task).Run ();
+            TaskOperation run = (access, task) =>
+            {
+                T data;
+
+                using (access)
+                {
+                    data = access.GetTaskData<T> (task);
+                }
+
+                data.Run ();
+            };
 
             TaskOperation dispose = null;
 
@@ -49,7 +59,7 @@
             {
                 dispose = (data, task) =>
                 {
-                    Unsafe.Unbox<T> (disposableBox) = data.GetNextTask<T> (task); // Write task data to disposableBox object
+                    Unsafe.Unbox<T> (disposableBox) = data.GetTaskData<T> (task); // Write task data to disposableBox object
                     disposableBox.Dispose (); // Invoke Dispose method on task data
                 };
             }

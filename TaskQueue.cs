@@ -110,9 +110,43 @@
 
         public bool TryRunNextTask (IProfiler profiler)
         {
+            TaskInfo task;
+
+            try
+            {
+                Monitor.Enter (taskLock); // Lock taskLock, if no exception is thrown in this block, task.Run will call Monitor.Exit through TaskDataAccess
+
+                int id = tasks.Dequeue ();
+
+                task = taskCache.GetTask (id);
+            } catch
+            {
+                Monitor.Exit (taskLock); // Unlock taskLock if an exception is thrown.
+
+                throw; // Rethrow without notifying exceptionHandler.
+            }
+
+            profiler?.BeginTask (task.Name);
+
+            try
+            {
+                task.Run (new TaskDataAccess (this)); // Run the task with it's data.
+            } catch (Exception ex)
+            {
+                exceptionHandler (task.Type, ex); // Notify handler in case of an exception.
+            } finally
+            {
+                if (task.Disposable)
+                {
+                    task.Dispose (new TaskDataAccess (this)); // Dispose the task it is required.
+                }
+            }
+
+            profiler?.EndTask ();
+
             ReadOnlySpan<object> gcRefs;
             byte* data;
-            TaskInfo task;
+            
 
             lock (taskLock)
             {
@@ -150,10 +184,10 @@
 
             try
             {
-                task.Run (ref *data); // Run the task with it's data
+                task.Run (ref *data); // Run the task with it's data.
             } catch (Exception ex)
             {
-                exceptionHandler (task.Type, ex); // Notify handler in case of an exception
+                exceptionHandler (task.Type, ex); // Notify handler in case of an exception.
             } finally
             {
                 if (task.Disposable)
@@ -256,34 +290,39 @@
             }
 
             ref T newTask = ref Unsafe.As<object, T> (ref taskData[lastTaskEnd]);
-            newTask = task; // Write task data
+            newTask = task; // Write task data.
 
             lastTaskEnd += taskInfo.DataIndices;
         }
 
-        private T GetNextTask<T> (TaskInfo task) where T : struct, ITask
+        private ref T GetNextTask<T> (TaskInfo task) where T : struct, ITask
         {
-            lock (taskLock)
+            ref T data = ref Unsafe.As<object, T> (ref taskData[firstTask]);
+
+            firstTask += task.DataIndices;
+
+            if (firstTask == lastTaskEnd) // If firstTask is equal to lastTaskEnd, it means that this was the last task in the queue.
             {
-                ref T data = ref Unsafe.As<object, T> (ref taskData[firstTask]);
-
-                firstTask += task.DataIndices;
-
-                if (firstTask == lastTaskEnd) // If firstTask is equal to lastTaskEnd, it means that this was the last task in the queue.
-                {
-                    firstTask = 0;
-                    lastTaskEnd = 0;
-                }
-
-                return data;
+                firstTask = 0;
+                lastTaskEnd = 0;
             }
+
+            return ref data;
         }
 
-        internal readonly struct TaskDataAccess
+        internal readonly struct TaskDataAccess : IDisposable
         {
             private readonly TaskQueue queue;
 
-            public T GetNextTask<T> (TaskInfo task) where T : struct, ITask => queue.GetNextTask<T> (task);
+            public TaskDataAccess (TaskQueue queue)
+            {
+                this.queue = queue;
+            }
+
+            [MethodImpl (MethodImplOptions.AggressiveInlining)]
+            public T GetTaskData<T> (TaskInfo task) where T : struct, ITask => queue.GetNextTask<T> (task);
+
+            public void Dispose () => Monitor.Exit (queue.taskLock);
         }
     }
 }
