@@ -112,16 +112,16 @@
         {
             TaskInfo task;
 
+            TaskDataAccess access = new TaskDataAccess (this);
+
             try
             {
-                Monitor.Enter (taskLock); // Lock taskLock, if no exception is thrown in this block, task.Run will call Monitor.Exit through TaskDataAccess
-
                 int id = tasks.Dequeue ();
 
                 task = taskCache.GetTask (id);
             } catch
             {
-                Monitor.Exit (taskLock); // Unlock taskLock if an exception is thrown.
+                access.Dispose ();
 
                 throw; // Rethrow without notifying exceptionHandler.
             }
@@ -130,73 +130,16 @@
 
             try
             {
-                task.Run (new TaskDataAccess (this)); // Run the task with it's data.
+                task.Run (ref access); // Run the task with it's data.
             } catch (Exception ex)
             {
+                if (!access.Disposed)
+                {
+                    access.Dispose ();
+                }
+
                 exceptionHandler (task.Type, ex); // Notify handler in case of an exception.
-            } finally
-            {
-                if (task.Disposable)
-                {
-                    task.Dispose (new TaskDataAccess (this)); // Dispose the task it is required.
-                }
             }
-
-            profiler?.EndTask ();
-
-            ReadOnlySpan<object> gcRefs;
-            byte* data;
-            
-
-            lock (taskLock)
-            {
-                if (firstTask == lastTaskEnd)
-                {
-                    return false;
-                }
-
-                int id = tasks.Dequeue ();
-
-                task = taskCache.GetTask (id);
-
-
-
-                byte dataAlloc = stackalloc object[task.DataSize];
-                data = dataAlloc;
-
-                gcRefs = new ReadOnlySpan<object> (dataAlloc, task.DataIndices);
-
-                ref byte taskDataRef = ref Unsafe.As<object, byte> (ref taskData[firstTask]);
-
-                // Copy from taskData to local data on stack.
-                Unsafe.CopyBlock (ref *dataAlloc, ref taskDataRef, (uint)task.DataSize);
-
-                firstTask += task.DataIndices; // Increment firstTask by size of task.
-
-                if (firstTask == lastTaskEnd) // If firstTask is equal to lastTaskEnd, it means that this was the last task in the queue.
-                {
-                    firstTask = 0;
-                    lastTaskEnd = 0;
-                }
-            }
-
-            profiler?.BeginTask (task.Name);
-
-            try
-            {
-                task.Run (ref *data); // Run the task with it's data.
-            } catch (Exception ex)
-            {
-                exceptionHandler (task.Type, ex); // Notify handler in case of an exception.
-            } finally
-            {
-                if (task.Disposable)
-                {
-                    task.Dispose (ref *data); // Dispose the task it is required.
-                }
-            }
-
-            profiler?.EndTask ();
 
             return true;
         }
@@ -310,19 +253,33 @@
             return ref data;
         }
 
-        internal readonly struct TaskDataAccess : IDisposable
+        internal ref struct TaskDataAccess
         {
-            private readonly TaskQueue queue;
+            private TaskQueue queue;
+
+            public bool Disposed => queue == null;
 
             public TaskDataAccess (TaskQueue queue)
             {
                 this.queue = queue;
+                Monitor.Enter (queue.taskLock);
             }
 
             [MethodImpl (MethodImplOptions.AggressiveInlining)]
-            public T GetTaskData<T> (TaskInfo task) where T : struct, ITask => queue.GetNextTask<T> (task);
+            public T GetTaskData<T> (TaskInfo task) where T : struct, ITask
+            {
+                T data = queue.GetNextTask<T> (task);
 
-            public void Dispose () => Monitor.Exit (queue.taskLock);
+                Dispose ();
+
+                return data;
+            }
+
+            public void Dispose ()
+            {
+                Monitor.Exit (queue.taskLock);
+                queue = null;
+            }
         }
     }
 }

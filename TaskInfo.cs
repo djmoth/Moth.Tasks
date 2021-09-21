@@ -25,7 +25,7 @@
             Disposable = dispose != null;
         }
 
-        private delegate void TaskOperation (TaskQueue.TaskDataAccess data, TaskInfo task);
+        private delegate void TaskOperation (ref TaskQueue.TaskDataAccess data, TaskInfo task);
 
         public int ID { get; }
 
@@ -41,38 +41,46 @@
 
         public static unsafe TaskInfo Create<T> (int id) where T : struct, ITask
         {
-            TaskOperation run = (access, task) =>
-            {
-                T data;
-
-                using (access)
-                {
-                    data = access.GetTaskData<T> (task);
-                }
-
-                data.Run ();
-            };
-
-            TaskOperation dispose = null;
-
-            if (default (T) is IDisposable disposableBox) // If T implements IDisposable
-            {
-                dispose = (data, task) =>
-                {
-                    Unsafe.Unbox<T> (disposableBox) = data.GetTaskData<T> (task); // Write task data to disposableBox object
-                    disposableBox.Dispose (); // Invoke Dispose method on task data
-                };
-            }
-
             Type type = typeof (T);
 
-            return new TaskInfo (run, dispose, id, type, Unsafe.SizeOf<T> ());
+            TaskOperation run = null, dispose = null;
+
+            if (default (T) is IDisposable) // If T implements IDisposable
+            {
+                BindingFlags methodBindingFlags = BindingFlags.Static | BindingFlags.NonPublic;
+
+                run = (TaskOperation)typeof (TaskInfo).GetMethod (nameof (RunAndDispose), methodBindingFlags).MakeGenericMethod (type).CreateDelegate (typeof (TaskOperation));
+
+                dispose = (TaskOperation)typeof (TaskInfo).GetMethod (nameof (DisposeImpl), methodBindingFlags).MakeGenericMethod (type).CreateDelegate (typeof (TaskOperation));
+            } else
+            {
+                run = Run;
+            }
+
+            return new TaskInfo (Run, dispose, id, type, Unsafe.SizeOf<T> ());
+
+            void Run (ref TaskQueue.TaskDataAccess access, TaskInfo task) => access.GetTaskData<T> (task).Run ();
         }
 
         [MethodImpl (MethodImplOptions.AggressiveInlining)]
-        public void Run (TaskQueue.TaskDataAccess data) => run (data, this);
+        public void Run (ref TaskQueue.TaskDataAccess access) => run (ref access, this);
 
         [MethodImpl (MethodImplOptions.AggressiveInlining)]
-        public void Dispose (TaskQueue.TaskDataAccess data) => dispose (data, this);
+        public void Dispose (TaskQueue.TaskDataAccess access) => dispose (ref access, this);
+
+        private static void RunAndDispose<T> (ref TaskQueue.TaskDataAccess access, TaskInfo task) where T : struct, ITask, IDisposable
+        {
+            T data = access.GetTaskData<T> (task);
+
+            try
+            {
+                data.Run ();
+            } finally
+            {
+                data.Dispose ();
+            }
+        }
+
+        private static void DisposeImpl<T> (ref TaskQueue.TaskDataAccess access, TaskInfo task) where T : struct, ITask, IDisposable => access.GetTaskData<T> (task).Dispose ();
     }
 }
