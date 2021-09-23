@@ -28,7 +28,7 @@
 
         ~TaskQueue () => Clear ();
 
-        public delegate void ExceptionHandler (Type taskType, Exception exception);
+        public delegate void ExceptionHandler (Exception exception);
 
         public void Enqueue (Action action) => Enqueue (new DelegateTask (action));
 
@@ -126,10 +126,16 @@
                 throw; // Rethrow without notifying exceptionHandler.
             }
 
-            profiler?.BeginTask (task.Name);
+            bool hasProfiler = false;
 
             try
             {
+                if (profiler != null)
+                {
+                    profiler.BeginTask (task.Name);
+                    hasProfiler = true; // If profiler was started without throwing and exception
+                }
+
                 task.Run (ref access); // Run the task with it's data.
             } catch (Exception ex)
             {
@@ -138,7 +144,12 @@
                     access.Dispose ();
                 }
 
-                exceptionHandler (task.Type, ex); // Notify handler in case of an exception.
+                exceptionHandler (ex); // Notify handler in case of an exception.
+            }
+
+            if (hasProfiler)
+            {
+                profiler.EndTask ();
             }
 
             return true;
@@ -146,46 +157,32 @@
 
         public void Clear ()
         {
-            lock (taskLock)
+            using TaskDataAccess access = new TaskDataAccess (this);
+
+            foreach (int id in tasks)
             {
-                int taskDataIndex = firstTask;
+                TaskInfo task = taskCache.GetTask (id);
 
-                foreach (int id in tasks)
+                if (task.Disposable)
                 {
-                    TaskInfo task = taskCache.GetTask (id);
-
-                    if (task.Disposable)
+                    try
                     {
-                        TryDispose (task, taskDataIndex);
+                        task.Dispose (access);
+                    } catch (Exception ex)
+                    {
+                        exceptionHandler (ex);
                     }
-
-                    taskDataIndex += task.DataIndices;
-                }
-
-                tasks.Clear ();
-                taskHandles.Clear ();
-
-                firstTask = 0;
-                lastTaskEnd = 0;
-            }
-
-            void TryDispose (TaskInfo task, int taskDataIndex)
-            {
-                byte* data = stackalloc byte[task.DataSize];
-
-                ref byte taskDataRef = ref Unsafe.As<object, byte> (ref taskData[firstTask]);
-
-                // Copy from taskData to local data on stack.
-                Unsafe.CopyBlock (ref *data, ref taskDataRef, (uint)task.DataSize);
-
-                try
+                } else
                 {
-                    task.Dispose (ref *data);
-                } catch (Exception ex)
-                {
-                    exceptionHandler (task.Type, ex);
+                    firstTask += task.DataIndices; // Skip task data
                 }
             }
+
+            tasks.Clear ();
+            taskHandles.Clear ();
+
+            firstTask = 0;
+            lastTaskEnd = 0;
         }
 
         public void Dispose ()
@@ -266,11 +263,9 @@
             }
 
             [MethodImpl (MethodImplOptions.AggressiveInlining)]
-            public T GetTaskData<T> (TaskInfo task) where T : struct, ITask
+            public readonly T GetTaskData<T> (TaskInfo task) where T : struct, ITask
             {
                 T data = queue.GetNextTask<T> (task);
-
-                Dispose ();
 
                 return data;
             }
