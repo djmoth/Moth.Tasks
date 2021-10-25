@@ -50,7 +50,9 @@
 
                 taskHandles.Add (handleID, default);
 
+                handle = new TaskHandle (this, handleID);
 
+                EnqueueImpl (task);
             }
         }
 
@@ -126,17 +128,23 @@
                 throw; // Rethrow without notifying exceptionHandler.
             }
 
-            bool hasProfiler = false;
+            bool isProfiling = false;
 
             try
             {
                 if (profiler != null)
                 {
                     profiler.BeginTask (task.Name);
-                    hasProfiler = true; // If profiler was started without throwing and exception
+                    isProfiling = true; // If profiler was started without throwing and exception
                 }
 
                 task.Run (ref access); // Run the task with it's data.
+
+                if (isProfiling)
+                {
+                    isProfiling = false;
+                    profiler.EndTask ();
+                }
             } catch (Exception ex)
             {
                 if (!access.Disposed)
@@ -144,12 +152,18 @@
                     access.Dispose ();
                 }
 
-                exceptionHandler (ex); // Notify handler in case of an exception.
-            }
+                if (isProfiling)
+                {
+                    try
+                    {
+                        profiler.EndTask ();
+                    } catch (Exception profilerEx)
+                    {
+                        exceptionHandler (profilerEx);
+                    }
+                }
 
-            if (hasProfiler)
-            {
-                profiler.EndTask ();
+                exceptionHandler (ex); // Notify handler in case of an exception.
             }
 
             return true;

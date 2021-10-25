@@ -5,6 +5,12 @@
         private TaskQueue queue;
         private int handleID;
 
+        internal TaskHandle (TaskQueue queue, int handleID)
+        {
+            this.queue = queue;
+            this.handleID = handleID;
+        }
+
         public void WaitForCompletion () => WaitForCompletion (-1);
 
         public bool WaitForCompletion (int timeout)
