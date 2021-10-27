@@ -116,6 +116,12 @@
 
             TaskDataAccess access = new TaskDataAccess (this);
 
+            if (tasks.Count == 0)
+            {
+                access.Dispose ();
+                return false;
+            }
+
             try
             {
                 int id = tasks.Dequeue ();
@@ -277,12 +283,7 @@
             }
 
             [MethodImpl (MethodImplOptions.AggressiveInlining)]
-            public readonly T GetTaskData<T> (TaskInfo task) where T : struct, ITask
-            {
-                T data = queue.GetNextTask<T> (task);
-
-                return data;
-            }
+            public readonly T GetTaskData<T> (TaskInfo task) where T : struct, ITask => queue.GetNextTask<T> (task);
 
             public void Dispose ()
             {
