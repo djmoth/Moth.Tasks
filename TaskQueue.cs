@@ -6,6 +6,9 @@
     using System.Runtime.InteropServices;
     using System.Threading;
 
+    /// <summary>
+    /// 
+    /// </summary>
     public sealed unsafe class TaskQueue : IDisposable
     {
         private const int StartCapacity = 256;
@@ -30,10 +33,25 @@
 
         public delegate void ExceptionHandler (Exception exception);
 
+        /// <summary>
+        /// Enqeue an action to be run later.
+        /// </summary>
+        /// <param name="action">Action to enqueue.</param>
         public void Enqueue (Action action) => Enqueue (new DelegateTask (action));
 
+        /// <summary>
+        /// Enqueue an action to be run later with an argument.
+        /// </summary>
+        /// <typeparam name="T">The type of the parameter that <paramref name="action"/> encapsulates.</typeparam>
+        /// <param name="action">Action to enqueue.</param>
+        /// <param name="arg">Argument to run <paramref name="action"/> with.</param>
         public void Enqueue<T> (Action<T> action, T arg) => Enqueue (new DelegateTask<T> (action, arg));
 
+        /// <summary>
+        /// Enqueue an <see cref="ITask"/> to be run later.
+        /// </summary>
+        /// <typeparam name="T">Type of task to run.</typeparam>
+        /// <param name="task">Task data.</param>
         public void Enqueue<T> (in T task) where T : struct, ITask
         {
             lock (taskLock)
@@ -42,6 +60,12 @@
             }
         }
 
+        /// <summary>
+        /// Enqueue an <see cref="ITask"/> to be run later, giving back a <see cref="TaskHandle"/> for checking task status.
+        /// </summary>
+        /// <typeparam name="T">Type of task to run.</typeparam>
+        /// <param name="task">Task data.</param>
+        /// <param name="handle">Handle for checking task status.</param>
         public void Enqueue<T> (in T task, out TaskHandle handle) where T : struct, ITask
         {
             lock (taskLock)
@@ -56,6 +80,12 @@
             }
         }
 
+        /// <summary>
+        /// Used by <see cref="TaskHandle.WaitForCompletion"/> to wait until task is complete.
+        /// </summary>
+        /// <param name="handleID">ID of handle.</param>
+        /// <param name="timeout">Maximum time in milliseconds to wait. A value of -1 waits infinitely.</param>
+        /// <returns><see langword="true"/> if task was completed, <see langword="false"/> if timeout was reached.</returns>
         internal bool WaitForCompletion (int handleID, int timeout)
         {
             TaskHandleEvent waitEvent;
@@ -87,6 +117,10 @@
             return complete;
         }
 
+        /// <summary>
+        /// Used by <see cref="TaskWithHandle{T}"/>
+        /// </summary>
+        /// <param name="handleID"></param>
         internal void NotifyTaskComplete (int handleID)
         {
             lock (taskLock)
