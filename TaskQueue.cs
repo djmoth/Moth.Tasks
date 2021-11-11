@@ -16,22 +16,14 @@
         private readonly object taskLock = new object ();
         private readonly TaskCache taskCache = new TaskCache ();
         private readonly Queue<int> tasks = new Queue<int> (16);
-        private readonly Dictionary<int, TaskHandleEvent> taskHandles = new Dictionary<int, TaskHandleEvent> ();
-        private readonly ExceptionHandler exceptionHandler;
+        private readonly Dictionary<int, ManualResetEventSlim> taskHandles = new Dictionary<int, ManualResetEventSlim> ();
         private object[] taskData = new object[StartCapacity];
         private int firstTask;
         private int lastTaskEnd;
         private bool disposed;
         private int nextTaskHandle = 1;
 
-        public TaskQueue (ExceptionHandler exceptionHandler)
-        {
-            this.exceptionHandler = exceptionHandler;
-        }
-
         ~TaskQueue () => Clear ();
-
-        public delegate void ExceptionHandler (Exception exception);
 
         /// <summary>
         /// Enqeue an action to be run later.
@@ -81,72 +73,46 @@
         }
 
         /// <summary>
-        /// Used by <see cref="TaskHandle.WaitForCompletion"/> to wait until task is complete.
+        /// Try to run the next task in the queue, if present.
         /// </summary>
-        /// <param name="handleID">ID of handle.</param>
-        /// <param name="timeout">Maximum time in milliseconds to wait. A value of -1 waits infinitely.</param>
-        /// <returns><see langword="true"/> if task was completed, <see langword="false"/> if timeout was reached.</returns>
-        internal bool WaitForCompletion (int handleID, int timeout)
-        {
-            TaskHandleEvent waitEvent;
-            bool complete;
-
-            lock (taskLock)
-            {
-                complete = !taskHandles.TryGetValue (handleID, out waitEvent);
-
-                if (!complete)
-                {
-                    waitEvent.AddWaiter ();
-                }
-            }
-
-            if (!complete)
-            {
-                complete = waitEvent.Wait (timeout);
-
-                lock (taskLock)
-                {
-                    if (waitEvent.RemoveWaiter (complete))
-                    {
-                        taskHandles.Remove (handleID);
-                    }
-                }
-            }
-
-            return complete;
-        }
+        /// <returns><see langword="true"/> if a task was run, <see langword="false"/> if the <see cref="TaskQueue>"/> is empty.</returns>
+        /// <remarks>
+        /// Please note that the return value does not indicate whether the task was completed successfully or not, only whether the queue was empty or not.
+        /// </remarks>
+        public bool TryRunNextTask () => TryRunNextTask (null, out _);
 
         /// <summary>
-        /// Used by <see cref="TaskWithHandle{T}"/>
+        /// Try to run the next task in the queue, if present. Also performs profiling on the task through an <see cref="IProfiler"/>.
         /// </summary>
-        /// <param name="handleID"></param>
-        internal void NotifyTaskComplete (int handleID)
+        /// <param name="profiler"><see cref="IProfiler"/> to profile the run-time of the task.</param>
+        /// <returns><see langword="true"/> if a task was run, <see langword="false"/> if the <see cref="TaskQueue>"/> is empty.</returns>
+        /// <remarks>
+        /// Please note that the return value does not indicate whether the task was completed successfully or not, only whether the queue was empty or not.
+        /// </remarks>
+        public bool TryRunNextTask (IProfiler profiler) => TryRunNextTask (profiler, out _);
+
+        /// <summary>
+        /// Try to run the next task in the queue, if present. Also provides an <see cref="Exception"/> thrown by the task in case it fails.
+        /// </summary>
+        /// <param name="exception"><see cref="Exception"/> thrown if task failed. Is <see langword="null"/> if task was run successfully.</param>
+        /// <returns><see langword="true"/> if a task was run, <see langword="false"/> if the <see cref="TaskQueue>"/> is empty.</returns>
+        /// <remarks>
+        /// Please note that the return value does not indicate whether the task was completed successfully or not, only whether the queue was empty or not.
+        /// </remarks>
+        public bool TryRunNextTask (out Exception exception) => TryRunNextTask (null, out exception);
+
+        /// <summary>
+        /// Try to run the next task in the queue, if present.
+        /// </summary>
+        /// <param name="profiler"><see cref="IProfiler"/> to profile the run-time of the task.</param>
+        /// <param name="exception"><see cref="Exception"/> thrown if task failed. Is <see langword="null"/> if task was run successfully.</param>
+        /// <returns><see langword="true"/> if a task was run, <see langword="false"/> if the <see cref="TaskQueue>"/> is empty.</returns>
+        /// <remarks>
+        /// Please note that the return value does not indicate whether the task was completed successfully or not, only whether the queue was empty or not.
+        /// </remarks>
+        public bool TryRunNextTask (IProfiler profiler, out Exception exception)
         {
-            lock (taskLock)
-            {
-                TaskHandleEvent waitEvent = taskHandles[handleID];
-
-                if (waitEvent.SignalComplete ())
-                {
-                    taskHandles.Remove (handleID);
-                }
-            }
-        }
-
-        internal bool IsTaskComplete (int handleID)
-        {
-            lock (taskLock)
-            {
-                return taskHandles.ContainsKey (handleID);
-            }
-        }
-
-        public bool TryRunNextTask () => TryRunNextTask (null);
-
-        public bool TryRunNextTask (IProfiler profiler)
-        {
-            TaskInfo task;
+            exception = null;
 
             TaskDataAccess access = new TaskDataAccess (this);
 
@@ -155,6 +121,8 @@
                 access.Dispose ();
                 return false;
             }
+
+            TaskInfo task;
 
             try
             {
@@ -187,6 +155,8 @@
                 }
             } catch (Exception ex)
             {
+                exception = ex;
+
                 if (!access.Disposed)
                 {
                     access.Dispose ();
@@ -194,22 +164,14 @@
 
                 if (isProfiling)
                 {
-                    try
-                    {
-                        profiler.EndTask ();
-                    } catch (Exception profilerEx)
-                    {
-                        exceptionHandler (profilerEx);
-                    }
+                    profiler.EndTask ();
                 }
-
-                exceptionHandler (ex); // Notify handler in case of an exception.
             }
 
             return true;
         }
 
-        public void Clear ()
+        public void Clear (Action<Exception> exceptionHandler = null)
         {
             using TaskDataAccess access = new TaskDataAccess (this);
 
@@ -224,7 +186,7 @@
                         task.Dispose (access);
                     } catch (Exception ex)
                     {
-                        exceptionHandler (ex);
+                        exceptionHandler?.Invoke (ex);
                     }
                 } else
                 {
@@ -247,6 +209,63 @@
                 GC.SuppressFinalize (this);
 
                 disposed = true;
+            }
+        }
+
+        /// <summary>
+        /// Used by <see cref="TaskHandle.WaitForCompletion"/> to wait until task is complete.
+        /// </summary>
+        /// <param name="handleID">ID of handle.</param>
+        /// <param name="timeout">Maximum time in milliseconds to wait. A value of -1 waits infinitely.</param>
+        /// <returns><see langword="true"/> if task was completed, <see langword="false"/> if timeout was reached.</returns>
+        internal bool WaitForCompletion (int handleID, int timeout)
+        {
+            ManualResetEventSlim waitEvent;
+            bool complete;
+
+            lock (taskLock)
+            {
+                complete = !taskHandles.TryGetValue (handleID, out waitEvent);
+
+                if (!complete && waitEvent == null)
+                {
+                    waitEvent = new ManualResetEventSlim ();
+                    taskHandles[handleID] = waitEvent;
+                }
+            }
+
+            if (!complete)
+            {
+                complete = waitEvent.Wait (timeout);
+            }
+
+            return complete;
+        }
+
+        /// <summary>
+        /// Used by <see cref="TaskWithHandle{T}"/> to notify callers of <see cref="WaitForCompletion(int, int)"/> that the task is done.
+        /// </summary>
+        /// <param name="handleID">ID of handle.</param>
+        internal void NotifyTaskComplete (int handleID)
+        {
+            lock (taskLock)
+            {
+                ManualResetEventSlim waitEvent = taskHandles[handleID];
+                waitEvent?.Set ();
+                taskHandles.Remove (handleID);
+            }
+        }
+
+        /// <summary>
+        /// Check if a task has completed.
+        /// </summary>
+        /// <param name="handleID">ID of handle.</param>
+        /// <returns><see langword="true"/> if task has completed, otherwise <see langword="false"/>.</returns>
+        internal bool IsTaskComplete (int handleID)
+        {
+            lock (taskLock)
+            {
+                return taskHandles.ContainsKey (handleID);
             }
         }
 

@@ -1,9 +1,9 @@
 ﻿namespace Moth.Tasks
 {
-    public struct TaskHandle
+    public readonly struct TaskHandle
     {
-        private TaskQueue queue;
-        private int handleID;
+        private readonly TaskQueue queue;
+        private readonly int handleID;
 
         internal TaskHandle (TaskQueue queue, int handleID)
         {
@@ -11,16 +11,10 @@
             this.handleID = handleID;
         }
 
+        public bool IsComplete => queue.IsTaskComplete (handleID);
+
         public void WaitForCompletion () => WaitForCompletion (-1);
 
-        public bool WaitForCompletion (int timeout)
-        {
-            return queue.WaitForCompletion (handleID, timeout);
-        }
-
-        public void Cancel ()
-        {
-
-        }
+        public bool WaitForCompletion (int timeout) => queue.WaitForCompletion (handleID, timeout);
     }
 }
