@@ -2,12 +2,13 @@
 {
     using System;
     using System.Collections.Generic;
+    using System.Diagnostics;
     using System.Runtime.CompilerServices;
     using System.Runtime.InteropServices;
     using System.Threading;
 
     /// <summary>
-    /// 
+    /// A queue of tasks, which can be run in FIFO order.
     /// </summary>
     public sealed unsafe class TaskQueue : IDisposable
     {
@@ -23,6 +24,9 @@
         private bool disposed;
         private int nextTaskHandle = 1;
 
+        /// <summary>
+        /// Finalizes an instance of the <see cref="TaskQueue"/> class. Also disposes of tasks implementing <see cref="IDisposable.Dispose"/>.
+        /// </summary>
         ~TaskQueue () => Clear ();
 
         /// <summary>
@@ -208,6 +212,12 @@
             lastTaskEnd = 0;
         }
 
+        /// <summary>
+        /// Disposes all tasks which implements <see cref="IDisposable"/>.
+        /// </summary>
+        /// <remarks>
+        /// As the method iterates through all tasks in the queue and calls <see cref="IDisposable.Dispose"/> on tasks, it can hang for an unknown amount of time. If an exception is thrown in an <see cref="IDisposable.Dispose"/> call, the method continues on with disposing the remaining tasks.
+        /// </remarks>
         public void Dispose ()
         {
             lock (taskLock)
@@ -330,21 +340,37 @@
             return ref data;
         }
 
+        /// <summary>
+        /// Provides a way for a task to access its data.
+        /// </summary>
         internal ref struct TaskDataAccess
         {
             private TaskQueue queue;
 
             public bool Disposed => queue == null;
 
+            /// <summary>
+            /// Initializes a new instance of the <see cref="TaskDataAccess"/> struct.
+            /// </summary>
+            /// <param name="queue">Reference to the queue.</param>
             public TaskDataAccess (TaskQueue queue)
             {
                 this.queue = queue;
                 Monitor.Enter (queue.taskLock);
             }
 
+            /// <summary>
+            /// Fetches next data of a task.
+            /// </summary>
+            /// <typeparam name="T">Type of task.</typeparam>
+            /// <param name="task">TaskInfo of task.</param>
+            /// <returns>Task data.</returns>
             [MethodImpl (MethodImplOptions.AggressiveInlining)]
             public readonly T GetTaskData<T> (TaskInfo task) where T : struct, ITask => queue.GetNextTask<T> (task);
 
+            /// <summary>
+            /// Returns the lock.
+            /// </summary>
             public void Dispose ()
             {
                 Monitor.Exit (queue.taskLock);
