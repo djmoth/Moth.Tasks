@@ -77,7 +77,7 @@
         /// </summary>
         /// <returns><see langword="true"/> if a task was run, <see langword="false"/> if the <see cref="TaskQueue>"/> is empty.</returns>
         /// <remarks>
-        /// Please note that the return value does not indicate whether the task was completed successfully or not, only whether the queue was empty or not.
+        /// Please note that the return value does not indicate if a task was successful. The method will return <see langword="true"/> if a task was ready in the queue, regardless if an exception occured.
         /// </remarks>
         public bool TryRunNextTask () => TryRunNextTask (null, out _);
 
@@ -87,7 +87,7 @@
         /// <param name="profiler"><see cref="IProfiler"/> to profile the run-time of the task.</param>
         /// <returns><see langword="true"/> if a task was run, <see langword="false"/> if the <see cref="TaskQueue>"/> is empty.</returns>
         /// <remarks>
-        /// Please note that the return value does not indicate whether the task was completed successfully or not, only whether the queue was empty or not.
+        /// Please note that the return value does not indicate if a task was successful. The method will return <see langword="true"/> if a task was ready in the queue, regardless if an exception occured.
         /// </remarks>
         public bool TryRunNextTask (IProfiler profiler) => TryRunNextTask (profiler, out _);
 
@@ -97,18 +97,18 @@
         /// <param name="exception"><see cref="Exception"/> thrown if task failed. Is <see langword="null"/> if task was run successfully.</param>
         /// <returns><see langword="true"/> if a task was run, <see langword="false"/> if the <see cref="TaskQueue>"/> is empty.</returns>
         /// <remarks>
-        /// Please note that the return value does not indicate whether the task was completed successfully or not, only whether the queue was empty or not.
+        /// Please note that the return value does not indicate if a task was successful. The method will return <see langword="true"/> if a task was ready in the queue, regardless if an exception occured.
         /// </remarks>
         public bool TryRunNextTask (out Exception exception) => TryRunNextTask (null, out exception);
 
         /// <summary>
-        /// Try to run the next task in the queue, if present.
+        /// Try to run the next task in the queue, if present. Also performs profiling on the task through an <see cref="IProfiler"/>, and provides an <see cref="Exception"/> thrown by the task in case it fails.
         /// </summary>
         /// <param name="profiler"><see cref="IProfiler"/> to profile the run-time of the task.</param>
         /// <param name="exception"><see cref="Exception"/> thrown if task failed. Is <see langword="null"/> if task was run successfully.</param>
         /// <returns><see langword="true"/> if a task was run, <see langword="false"/> if the <see cref="TaskQueue>"/> is empty.</returns>
         /// <remarks>
-        /// Please note that the return value does not indicate whether the task was completed successfully or not, only whether the queue was empty or not.
+        /// Please note that the return value does not indicate if a task was successful. The method will return <see langword="true"/> if a task was ready in the queue, regardless if an exception occured.
         /// </remarks>
         public bool TryRunNextTask (IProfiler profiler, out Exception exception)
         {
@@ -133,7 +133,7 @@
             {
                 access.Dispose ();
 
-                throw; // Rethrow without notifying exceptionHandler.
+                throw; // Rethrow without setting exception, this is an internal error.
             }
 
             bool isProfiling = false;
@@ -143,10 +143,10 @@
                 if (profiler != null)
                 {
                     profiler.BeginTask (task.Name);
-                    isProfiling = true; // If profiler was started without throwing and exception
+                    isProfiling = true; // If profiler was started without throwing an exception.
                 }
 
-                task.Run (ref access); // Run the task with it's data.
+                task.Run (ref access); // Run the task.
 
                 if (isProfiling)
                 {
@@ -171,6 +171,13 @@
             return true;
         }
 
+        /// <summary>
+        /// Removes all pending tasks from the queue. Also calls <see cref="IDisposable.Dispose"/> on tasks which implement the method.
+        /// </summary>
+        /// <param name="exceptionHandler">Method for handling an exception thrown by a task's <see cref="IDisposable.Dispose"/>.</param>
+        /// <remarks>
+        /// As the method iterates through all tasks in the queue and calls <see cref="IDisposable.Dispose"/> on tasks, it can hang for an unknown amount of time. If an exception is thrown in an <see cref="IDisposable.Dispose"/> call, the method continues on with disposing the remaining tasks.
+        /// </remarks>
         public void Clear (Action<Exception> exceptionHandler = null)
         {
             using TaskDataAccess access = new TaskDataAccess (this);
