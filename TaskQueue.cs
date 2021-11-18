@@ -57,7 +57,7 @@
         }
 
         /// <summary>
-        /// Enqueue an <see cref="ITask"/> to be run later, giving back a <see cref="TaskHandle"/> for checking task status.
+        /// Enqueue an <see cref="ITask"/> to be run later, giving out a <see cref="TaskHandle"/> for checking task status.
         /// </summary>
         /// <typeparam name="T">Type of task to run.</typeparam>
         /// <param name="task">Task data.</param>
@@ -72,14 +72,20 @@
 
                 handle = new TaskHandle (this, handleID);
 
-                EnqueueImpl (task);
+                if (task is IDisposable)
+                {
+                    EnqueueImpl (new TaskWithHandle<T> (this, task, handleID));
+                } else
+                {
+                    EnqueueImpl (new DisposableTaskWithHandle<T> (this, task, handleID));
+                }
             }
         }
 
         /// <summary>
         /// Try to run the next task in the queue, if present.
         /// </summary>
-        /// <returns><see langword="true"/> if a task was run, <see langword="false"/> if the <see cref="TaskQueue>"/> is empty.</returns>
+        /// <returns><see langword="true"/> if a task was run, <see langword="false"/> if the <see cref="TaskQueue"/> is empty.</returns>
         /// <remarks>
         /// Please note that the return value does not indicate if a task was successful. The method will return <see langword="true"/> if a task was ready in the queue, regardless if an exception occured.
         /// </remarks>
@@ -89,7 +95,7 @@
         /// Try to run the next task in the queue, if present. Also performs profiling on the task through an <see cref="IProfiler"/>.
         /// </summary>
         /// <param name="profiler"><see cref="IProfiler"/> to profile the run-time of the task.</param>
-        /// <returns><see langword="true"/> if a task was run, <see langword="false"/> if the <see cref="TaskQueue>"/> is empty.</returns>
+        /// <returns><see langword="true"/> if a task was run, <see langword="false"/> if the <see cref="TaskQueue"/> is empty.</returns>
         /// <remarks>
         /// Please note that the return value does not indicate if a task was successful. The method will return <see langword="true"/> if a task was ready in the queue, regardless if an exception occured.
         /// </remarks>
@@ -99,7 +105,7 @@
         /// Try to run the next task in the queue, if present. Also provides an <see cref="Exception"/> thrown by the task in case it fails.
         /// </summary>
         /// <param name="exception"><see cref="Exception"/> thrown if task failed. Is <see langword="null"/> if task was run successfully.</param>
-        /// <returns><see langword="true"/> if a task was run, <see langword="false"/> if the <see cref="TaskQueue>"/> is empty.</returns>
+        /// <returns><see langword="true"/> if a task was run, <see langword="false"/> if the <see cref="TaskQueue"/> is empty.</returns>
         /// <remarks>
         /// Please note that the return value does not indicate if a task was successful. The method will return <see langword="true"/> if a task was ready in the queue, regardless if an exception occured.
         /// </remarks>
@@ -110,7 +116,7 @@
         /// </summary>
         /// <param name="profiler"><see cref="IProfiler"/> to profile the run-time of the task.</param>
         /// <param name="exception"><see cref="Exception"/> thrown if task failed. Is <see langword="null"/> if task was run successfully.</param>
-        /// <returns><see langword="true"/> if a task was run, <see langword="false"/> if the <see cref="TaskQueue>"/> is empty.</returns>
+        /// <returns><see langword="true"/> if a task was run, <see langword="false"/> if the <see cref="TaskQueue"/> is empty.</returns>
         /// <remarks>
         /// Please note that the return value does not indicate if a task was successful. The method will return <see langword="true"/> if a task was ready in the queue, regardless if an exception occured.
         /// </remarks>
@@ -137,7 +143,7 @@
             {
                 access.Dispose ();
 
-                throw; // Rethrow without setting exception, this is an internal error.
+                throw; // Rethrow without setting exception, this is an internal error
             }
 
             bool isProfiling = false;
@@ -146,11 +152,11 @@
             {
                 if (profiler != null)
                 {
-                    profiler.BeginTask (task.Name);
-                    isProfiling = true; // If profiler was started without throwing an exception.
+                    profiler.BeginTask (task.Type.FullName);
+                    isProfiling = true; // If profiler was started without throwing an exception
                 }
 
-                task.Run (ref access); // Run the task.
+                task.Run (ref access); // Run the task
 
                 if (isProfiling)
                 {
@@ -230,12 +236,12 @@
         }
 
         /// <summary>
-        /// Used by <see cref="TaskHandle.WaitForCompletion"/> to wait until task is complete.
+        /// Used by <see cref="TaskHandle.WaitForCompletion ()"/> to wait until task is complete.
         /// </summary>
         /// <param name="handleID">ID of handle.</param>
-        /// <param name="timeout">Maximum time in milliseconds to wait. A value of -1 waits infinitely.</param>
+        /// <param name="millisecondsTimeout">The number of milliseconds to wait, or <see cref="System.Threading.Timeout.Infinite"/> (-1) to wait indefinitely.</param>
         /// <returns><see langword="true"/> if task was completed, <see langword="false"/> if timeout was reached.</returns>
-        internal bool WaitForCompletion (int handleID, int timeout)
+        internal bool WaitForCompletion (int handleID, int millisecondsTimeout)
         {
             ManualResetEventSlim waitEvent;
             bool complete;
@@ -253,7 +259,7 @@
 
             if (!complete)
             {
-                complete = waitEvent.Wait (timeout);
+                complete = waitEvent.Wait (millisecondsTimeout);
             }
 
             return complete;
@@ -295,9 +301,9 @@
 
             TaskInfo taskInfo = taskCache.GetTask<T> ();
 
-            tasks.Enqueue (taskInfo.ID); // Add task ID to the queue.
+            tasks.Enqueue (taskInfo.ID); // Add task ID to the queue
 
-            // If new task data will overflow the taskData array.
+            // If new task data will overflow the taskData array
             if (lastTaskEnd + taskInfo.DataIndices > taskData.Length)
             {
                 int totalTaskDataLength = lastTaskEnd - firstTask;
@@ -305,14 +311,14 @@
                 // If there is not enough total space in taskData array to hold new task, then resize taskData
                 if (totalTaskDataLength + taskInfo.DataIndices > taskData.Length)
                 {
-                    // If taskInfo.DataIndices is abnormally large, doubling the size might not always be enough.
+                    // If taskInfo.DataIndices is abnormally large, doubling the size might not always be enough
                     int newSize = Math.Max (taskData.Length * 2, totalTaskDataLength + taskInfo.DataIndices);
                     Array.Resize (ref taskData, taskData.Length * 2);
                 }
 
                 if (firstTask != 0)
                 {
-                    Buffer.BlockCopy (taskData, firstTask, taskData, 0, totalTaskDataLength); // Move tasks to the beginning of taskData, to eliminate wasted space.
+                    Buffer.BlockCopy (taskData, firstTask, taskData, 0, totalTaskDataLength); // Move tasks to the beginning of taskData, to eliminate wasted space
 
                     lastTaskEnd = totalTaskDataLength;
                     firstTask = 0;
@@ -320,7 +326,7 @@
             }
 
             ref T newTask = ref Unsafe.As<object, T> (ref taskData[lastTaskEnd]);
-            newTask = task; // Write task data.
+            newTask = task; // Write task data
 
             lastTaskEnd += taskInfo.DataIndices;
         }
@@ -331,7 +337,7 @@
 
             firstTask += task.DataIndices;
 
-            if (firstTask == lastTaskEnd) // If firstTask is equal to lastTaskEnd, it means that this was the last task in the queue.
+            if (firstTask == lastTaskEnd) // If firstTask is equal to lastTaskEnd, it means that this was the last task in the queue
             {
                 firstTask = 0;
                 lastTaskEnd = 0;
@@ -341,16 +347,14 @@
         }
 
         /// <summary>
-        /// Provides a way for a task to access its data.
+        /// Provides a way for a task to access its data while locking the <see cref="TaskQueue"/>.
         /// </summary>
         internal ref struct TaskDataAccess
         {
             private TaskQueue queue;
 
-            public bool Disposed => queue == null;
-
             /// <summary>
-            /// Initializes a new instance of the <see cref="TaskDataAccess"/> struct.
+            /// Initializes a new instance of the <see cref="TaskDataAccess"/> struct. Locks the <see cref="TaskQueue"/>.
             /// </summary>
             /// <param name="queue">Reference to the queue.</param>
             public TaskDataAccess (TaskQueue queue)
@@ -358,6 +362,11 @@
                 this.queue = queue;
                 Monitor.Enter (queue.taskLock);
             }
+
+            /// <summary>
+            /// Gets a value indicating whether the lock is still held.
+            /// </summary>
+            public bool Disposed => queue == null;
 
             /// <summary>
             /// Fetches next data of a task.
@@ -369,7 +378,7 @@
             public readonly T GetTaskData<T> (TaskInfo task) where T : struct, ITask => queue.GetNextTask<T> (task);
 
             /// <summary>
-            /// Returns the lock.
+            /// Exits the lock.
             /// </summary>
             public void Dispose ()
             {

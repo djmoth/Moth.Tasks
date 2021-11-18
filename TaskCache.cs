@@ -3,12 +3,20 @@
     using System;
     using System.Collections.Generic;
 
-    internal unsafe class TaskCache
+    /// <summary>
+    /// Cache of <see cref="TaskInfo"/>.
+    /// </summary>
+    internal class TaskCache
     {
         private readonly Dictionary<Type, int> idCache = new Dictionary<Type, int> (16);
         private TaskInfo[] taskCache = new TaskInfo[16];
         private int nextID;
 
+        /// <summary>
+        /// Get a task by type.
+        /// </summary>
+        /// <typeparam name="T">Type of task.</typeparam>
+        /// <returns><see cref="TaskInfo"/> for <typeparamref name="T"/>.</returns>
         public TaskInfo GetTask<T> () where T : struct, ITask
         {
             if (!idCache.TryGetValue (typeof (T), out int id))
@@ -23,6 +31,11 @@
             return taskCache[id];
         }
 
+        /// <summary>
+        /// Get task by id.
+        /// </summary>
+        /// <param name="id">Assigned id of task.</param>
+        /// <returns><see cref="TaskInfo"/> for <paramref name="id"/>.</returns>
         public TaskInfo GetTask (int id)
         {
             return taskCache[id];

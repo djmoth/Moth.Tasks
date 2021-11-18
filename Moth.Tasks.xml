@@ -1,0 +1,359 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>Moth.Tasks</name>
+    </assembly>
+    <members>
+        <member name="T:Moth.Tasks.DelegateTask">
+            <summary>
+            Task encapsulating an <see cref="T:System.Action"/> with no parameters.
+            </summary>
+        </member>
+        <member name="M:Moth.Tasks.DelegateTask.#ctor(System.Action)">
+            <summary>
+            Initializes a new instance of the <see cref="T:Moth.Tasks.DelegateTask"/> struct.
+            </summary>
+            <param name="action"><see cref="T:System.Action"/> to invoke on <see cref="M:Moth.Tasks.DelegateTask.Run"/>.</param>
+        </member>
+        <member name="M:Moth.Tasks.DelegateTask.Run">
+            <summary>
+            Invokes the encapsulated <see cref="T:System.Action"/>.
+            </summary>
+        </member>
+        <member name="T:Moth.Tasks.DelegateTask`1">
+            <summary>
+            Task encapsulating an <see cref="T:System.Action"/> with one parameter.
+            </summary>
+            <typeparam name="T">Type of task.</typeparam>
+        </member>
+        <member name="M:Moth.Tasks.DelegateTask`1.#ctor(System.Action{`0},`0)">
+            <summary>
+            Initializes a new instance of the <see cref="T:Moth.Tasks.DelegateTask`1"/> struct.
+            </summary>
+            <param name="action"><see cref="T:System.Action"/> to invoke on <see cref="M:Moth.Tasks.DelegateTask`1.Run"/>.</param>
+            <param name="arg">Argument to invoke <paramref name="action"/> with.</param>
+        </member>
+        <member name="M:Moth.Tasks.DelegateTask`1.Run">
+            <summary>
+            Invokes the encapsulated <see cref="T:System.Action"/> with the provided argument.
+            </summary>
+        </member>
+        <member name="T:Moth.Tasks.IProfiler">
+            <summary>
+            Describes a profiler which can measure the run time of a task.
+            </summary>
+        </member>
+        <member name="M:Moth.Tasks.IProfiler.BeginTask(System.String)">
+            <summary>
+            Signals the beginning of a new task.
+            </summary>
+            <param name="task">Name of task type.</param>
+        </member>
+        <member name="M:Moth.Tasks.IProfiler.EndTask">
+            <summary>
+            Signals the completion of a task.
+            </summary>
+        </member>
+        <member name="T:Moth.Tasks.ITask">
+            <summary>
+            Interface providing a <see cref="M:Moth.Tasks.ITask.Run"/> method for executing task code.
+            </summary>
+        </member>
+        <member name="M:Moth.Tasks.ITask.Run">
+            <summary>
+            Task code to run.
+            </summary>
+        </member>
+        <member name="T:Moth.Tasks.TaskCache">
+            <summary>
+            Cache of <see cref="T:Moth.Tasks.TaskInfo"/>.
+            </summary>
+        </member>
+        <member name="M:Moth.Tasks.TaskCache.GetTask``1">
+            <summary>
+            Get a task by type.
+            </summary>
+            <typeparam name="T">Type of task.</typeparam>
+            <returns><see cref="T:Moth.Tasks.TaskInfo"/> for <typeparamref name="T"/>.</returns>
+        </member>
+        <member name="M:Moth.Tasks.TaskCache.GetTask(System.Int32)">
+            <summary>
+            Get task by id.
+            </summary>
+            <param name="id">Assigned id of task.</param>
+            <returns><see cref="T:Moth.Tasks.TaskInfo"/> for <paramref name="id"/>.</returns>
+        </member>
+        <member name="T:Moth.Tasks.TaskHandle">
+            <summary>
+            Handle for checking task status.
+            </summary>
+        </member>
+        <member name="M:Moth.Tasks.TaskHandle.#ctor(Moth.Tasks.TaskQueue,System.Int32)">
+            <summary>
+            Initializes a new instance of the <see cref="T:Moth.Tasks.TaskHandle"/> struct.
+            </summary>
+            <param name="queue">Reference to queue that the task belongs to.</param>
+            <param name="handleID">ID of handle.</param>
+        </member>
+        <member name="P:Moth.Tasks.TaskHandle.IsComplete">
+            <summary>
+            Checks if the task has been completed.
+            </summary>
+            <remarks>
+            Please note that this property does not indicate whether the task executed successfully or not.
+            </remarks>
+        </member>
+        <member name="M:Moth.Tasks.TaskHandle.WaitForCompletion">
+            <summary>
+            Waits indefinitely until the task has been completed.
+            </summary>
+        </member>
+        <member name="M:Moth.Tasks.TaskHandle.WaitForCompletion(System.Int32)">
+            <summary>
+            Waits for a maximum time in milliseconds for the task to complete.
+            </summary>
+            <param name="millisceondsTimeout">The number of milliseconds to wait, or <see cref="F:System.Threading.Timeout.Infinite"/> (-1) to wait indefinitely.</param>
+            <returns><see langword="true"/> if the task was completed before timeout; otherwise, <see langword="false"/>.</returns>
+        </member>
+        <member name="T:Moth.Tasks.TaskInfo">
+            <summary>
+            Representation of a task in a <see cref="T:Moth.Tasks.TaskCache"/>.
+            </summary>
+        </member>
+        <member name="P:Moth.Tasks.TaskInfo.ID">
+            <summary>
+            ID of task.
+            </summary>
+        </member>
+        <member name="P:Moth.Tasks.TaskInfo.Type">
+            <summary>
+            Type of task.
+            </summary>
+        </member>
+        <member name="P:Moth.Tasks.TaskInfo.DataSize">
+            <summary>
+            Size of task data in bytes.
+            </summary>
+        </member>
+        <member name="P:Moth.Tasks.TaskInfo.DataIndices">
+            <summary>
+            Size of task in indices of <see cref="F:Moth.Tasks.TaskQueue.taskData"/>.
+            </summary>
+        </member>
+        <member name="P:Moth.Tasks.TaskInfo.Disposable">
+            <summary>
+            Gets a value indicating whether the task type implements <see cref="T:System.IDisposable"/>.
+            </summary>
+        </member>
+        <member name="M:Moth.Tasks.TaskInfo.Create``1(System.Int32)">
+            <summary>
+            Creates a new TaskInfo from a type and ID.
+            </summary>
+            <typeparam name="T">Type of task.</typeparam>
+            <param name="id">ID of task.</param>
+            <returns>A new TaskInfo representing the task <typeparamref name="T"/>.</returns>
+        </member>
+        <member name="M:Moth.Tasks.TaskInfo.Run(Moth.Tasks.TaskQueue.TaskDataAccess@)">
+            <summary>
+            Call the <see cref="M:Moth.Tasks.ITask.Run"/> method of the task, with <see cref="T:Moth.Tasks.TaskQueue.TaskDataAccess"/> for getting task data.
+            </summary>
+            <param name="access">Access to data from <see cref="T:Moth.Tasks.TaskQueue"/>.</param>
+        </member>
+        <member name="M:Moth.Tasks.TaskInfo.Dispose(Moth.Tasks.TaskQueue.TaskDataAccess@)">
+            <summary>
+            Call the <see cref="M:System.IDisposable.Dispose"/> method of the task, with <see cref="T:Moth.Tasks.TaskQueue.TaskDataAccess"/> for getting task data.
+            </summary>
+            <param name="access">Access to data from <see cref="T:Moth.Tasks.TaskQueue"/>.</param>
+        </member>
+        <member name="T:Moth.Tasks.TaskQueue">
+            <summary>
+            A queue of tasks, which can be run in FIFO order.
+            </summary>
+        </member>
+        <member name="M:Moth.Tasks.TaskQueue.Finalize">
+            <summary>
+            Finalizes an instance of the <see cref="T:Moth.Tasks.TaskQueue"/> class. Also disposes of tasks implementing <see cref="M:System.IDisposable.Dispose"/>.
+            </summary>
+        </member>
+        <member name="M:Moth.Tasks.TaskQueue.Enqueue(System.Action)">
+            <summary>
+            Enqeue an action to be run later.
+            </summary>
+            <param name="action">Action to enqueue.</param>
+        </member>
+        <member name="M:Moth.Tasks.TaskQueue.Enqueue``1(System.Action{``0},``0)">
+            <summary>
+            Enqueue an action to be run later with an argument.
+            </summary>
+            <typeparam name="T">The type of the parameter that <paramref name="action"/> encapsulates.</typeparam>
+            <param name="action">Action to enqueue.</param>
+            <param name="arg">Argument to run <paramref name="action"/> with.</param>
+        </member>
+        <member name="M:Moth.Tasks.TaskQueue.Enqueue``1(``0@)">
+            <summary>
+            Enqueue an <see cref="T:Moth.Tasks.ITask"/> to be run later.
+            </summary>
+            <typeparam name="T">Type of task to run.</typeparam>
+            <param name="task">Task data.</param>
+        </member>
+        <member name="M:Moth.Tasks.TaskQueue.Enqueue``1(``0@,Moth.Tasks.TaskHandle@)">
+            <summary>
+            Enqueue an <see cref="T:Moth.Tasks.ITask"/> to be run later, giving out a <see cref="T:Moth.Tasks.TaskHandle"/> for checking task status.
+            </summary>
+            <typeparam name="T">Type of task to run.</typeparam>
+            <param name="task">Task data.</param>
+            <param name="handle">Handle for checking task status.</param>
+        </member>
+        <member name="M:Moth.Tasks.TaskQueue.TryRunNextTask">
+            <summary>
+            Try to run the next task in the queue, if present.
+            </summary>
+            <returns><see langword="true"/> if a task was run, <see langword="false"/> if the <see cref="T:Moth.Tasks.TaskQueue"/> is empty.</returns>
+            <remarks>
+            Please note that the return value does not indicate if a task was successful. The method will return <see langword="true"/> if a task was ready in the queue, regardless if an exception occured.
+            </remarks>
+        </member>
+        <member name="M:Moth.Tasks.TaskQueue.TryRunNextTask(Moth.Tasks.IProfiler)">
+            <summary>
+            Try to run the next task in the queue, if present. Also performs profiling on the task through an <see cref="T:Moth.Tasks.IProfiler"/>.
+            </summary>
+            <param name="profiler"><see cref="T:Moth.Tasks.IProfiler"/> to profile the run-time of the task.</param>
+            <returns><see langword="true"/> if a task was run, <see langword="false"/> if the <see cref="T:Moth.Tasks.TaskQueue"/> is empty.</returns>
+            <remarks>
+            Please note that the return value does not indicate if a task was successful. The method will return <see langword="true"/> if a task was ready in the queue, regardless if an exception occured.
+            </remarks>
+        </member>
+        <member name="M:Moth.Tasks.TaskQueue.TryRunNextTask(System.Exception@)">
+            <summary>
+            Try to run the next task in the queue, if present. Also provides an <see cref="T:System.Exception"/> thrown by the task in case it fails.
+            </summary>
+            <param name="exception"><see cref="T:System.Exception"/> thrown if task failed. Is <see langword="null"/> if task was run successfully.</param>
+            <returns><see langword="true"/> if a task was run, <see langword="false"/> if the <see cref="T:Moth.Tasks.TaskQueue"/> is empty.</returns>
+            <remarks>
+            Please note that the return value does not indicate if a task was successful. The method will return <see langword="true"/> if a task was ready in the queue, regardless if an exception occured.
+            </remarks>
+        </member>
+        <member name="M:Moth.Tasks.TaskQueue.TryRunNextTask(Moth.Tasks.IProfiler,System.Exception@)">
+            <summary>
+            Try to run the next task in the queue, if present. Also performs profiling on the task through an <see cref="T:Moth.Tasks.IProfiler"/>, and provides an <see cref="T:System.Exception"/> thrown by the task in case it fails.
+            </summary>
+            <param name="profiler"><see cref="T:Moth.Tasks.IProfiler"/> to profile the run-time of the task.</param>
+            <param name="exception"><see cref="T:System.Exception"/> thrown if task failed. Is <see langword="null"/> if task was run successfully.</param>
+            <returns><see langword="true"/> if a task was run, <see langword="false"/> if the <see cref="T:Moth.Tasks.TaskQueue"/> is empty.</returns>
+            <remarks>
+            Please note that the return value does not indicate if a task was successful. The method will return <see langword="true"/> if a task was ready in the queue, regardless if an exception occured.
+            </remarks>
+        </member>
+        <member name="M:Moth.Tasks.TaskQueue.Clear(System.Action{System.Exception})">
+            <summary>
+            Removes all pending tasks from the queue. Also calls <see cref="M:System.IDisposable.Dispose"/> on tasks which implement the method.
+            </summary>
+            <param name="exceptionHandler">Method for handling an exception thrown by a task's <see cref="M:System.IDisposable.Dispose"/>.</param>
+            <remarks>
+            As the method iterates through all tasks in the queue and calls <see cref="M:System.IDisposable.Dispose"/> on tasks, it can hang for an unknown amount of time. If an exception is thrown in an <see cref="M:System.IDisposable.Dispose"/> call, the method continues on with disposing the remaining tasks.
+            </remarks>
+        </member>
+        <member name="M:Moth.Tasks.TaskQueue.Dispose">
+            <summary>
+            Disposes all tasks which implements <see cref="T:System.IDisposable"/>.
+            </summary>
+            <remarks>
+            As the method iterates through all tasks in the queue and calls <see cref="M:System.IDisposable.Dispose"/> on tasks, it can hang for an unknown amount of time. If an exception is thrown in an <see cref="M:System.IDisposable.Dispose"/> call, the method continues on with disposing the remaining tasks.
+            </remarks>
+        </member>
+        <member name="M:Moth.Tasks.TaskQueue.WaitForCompletion(System.Int32,System.Int32)">
+            <summary>
+            Used by <see cref="M:Moth.Tasks.TaskHandle.WaitForCompletion"/> to wait until task is complete.
+            </summary>
+            <param name="handleID">ID of handle.</param>
+            <param name="millisecondsTimeout">The number of milliseconds to wait, or <see cref="F:System.Threading.Timeout.Infinite"/> (-1) to wait indefinitely.</param>
+            <returns><see langword="true"/> if task was completed, <see langword="false"/> if timeout was reached.</returns>
+        </member>
+        <member name="M:Moth.Tasks.TaskQueue.NotifyTaskComplete(System.Int32)">
+            <summary>
+            Used by <see cref="T:Moth.Tasks.TaskWithHandle`1"/> to notify callers of <see cref="M:Moth.Tasks.TaskQueue.WaitForCompletion(System.Int32,System.Int32)"/> that the task is done.
+            </summary>
+            <param name="handleID">ID of handle.</param>
+        </member>
+        <member name="M:Moth.Tasks.TaskQueue.IsTaskComplete(System.Int32)">
+            <summary>
+            Check if a task has completed.
+            </summary>
+            <param name="handleID">ID of handle.</param>
+            <returns><see langword="true"/> if task has completed, otherwise <see langword="false"/>.</returns>
+        </member>
+        <member name="T:Moth.Tasks.TaskQueue.TaskDataAccess">
+            <summary>
+            Provides a way for a task to access its data while locking the <see cref="T:Moth.Tasks.TaskQueue"/>.
+            </summary>
+        </member>
+        <member name="M:Moth.Tasks.TaskQueue.TaskDataAccess.#ctor(Moth.Tasks.TaskQueue)">
+            <summary>
+            Initializes a new instance of the <see cref="T:Moth.Tasks.TaskQueue.TaskDataAccess"/> struct. Locks the <see cref="T:Moth.Tasks.TaskQueue"/>.
+            </summary>
+            <param name="queue">Reference to the queue.</param>
+        </member>
+        <member name="P:Moth.Tasks.TaskQueue.TaskDataAccess.Disposed">
+            <summary>
+            Gets a value indicating whether the lock is still held.
+            </summary>
+        </member>
+        <member name="M:Moth.Tasks.TaskQueue.TaskDataAccess.GetTaskData``1(Moth.Tasks.TaskInfo)">
+            <summary>
+            Fetches next data of a task.
+            </summary>
+            <typeparam name="T">Type of task.</typeparam>
+            <param name="task">TaskInfo of task.</param>
+            <returns>Task data.</returns>
+        </member>
+        <member name="M:Moth.Tasks.TaskQueue.TaskDataAccess.Dispose">
+            <summary>
+            Exits the lock.
+            </summary>
+        </member>
+        <member name="T:Moth.Tasks.TaskWithHandle`1">
+            <summary>
+            Encapsulates a task enqueued with a <see cref="T:Moth.Tasks.TaskHandle"/>.
+            </summary>
+            <typeparam name="T">Type of task.</typeparam>
+        </member>
+        <member name="M:Moth.Tasks.TaskWithHandle`1.#ctor(Moth.Tasks.TaskQueue,`0@,System.Int32)">
+            <summary>
+            Initializes a new instance of the <see cref="T:Moth.Tasks.TaskWithHandle`1"/> struct.
+            </summary>
+            <param name="queue">Reference to the <see cref="T:Moth.Tasks.TaskQueue"/> in which the task is enqueued.</param>
+            <param name="task">Task data.</param>
+            <param name="handleID">ID of handle.</param>
+        </member>
+        <member name="M:Moth.Tasks.TaskWithHandle`1.Run">
+            <inheritdoc/>
+        </member>
+        <member name="M:Moth.Tasks.TaskWithHandle`1.Dispose">
+            <summary>
+            Notify handle that task was completed.
+            </summary>
+        </member>
+        <member name="T:Moth.Tasks.DisposableTaskWithHandle`1">
+            <summary>
+            Encapsulates a task which implements <see cref="T:System.IDisposable"/>, enqueued with a <see cref="T:Moth.Tasks.TaskHandle"/>.
+            </summary>
+            <typeparam name="T">Type of task.</typeparam>
+        </member>
+        <member name="M:Moth.Tasks.DisposableTaskWithHandle`1.#ctor(Moth.Tasks.TaskQueue,`0@,System.Int32)">
+            <summary>
+            Initializes a new instance of the <see cref="T:Moth.Tasks.DisposableTaskWithHandle`1"/> struct.
+            </summary>
+            <param name="queue">Reference to the <see cref="T:Moth.Tasks.TaskQueue"/> in which the task is enqueued.</param>
+            <param name="task">Task data.</param>
+            <param name="handleID">ID of handle.</param>
+        </member>
+        <member name="M:Moth.Tasks.DisposableTaskWithHandle`1.Run">
+            <inheritdoc/>
+        </member>
+        <member name="M:Moth.Tasks.DisposableTaskWithHandle`1.Dispose">
+            <summary>
+            Dispose of encapsulated task, and notify handle that task was completed.
+            </summary>
+        </member>
+    </members>
+</doc>
