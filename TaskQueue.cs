@@ -30,7 +30,7 @@
         ~TaskQueue () => Clear ();
 
         /// <summary>
-        /// Enqeue an action to be run later.
+        /// Enqueue an action to be run later.
         /// </summary>
         /// <param name="action">Action to enqueue.</param>
         public void Enqueue (Action action) => Enqueue (new DelegateTask (action));

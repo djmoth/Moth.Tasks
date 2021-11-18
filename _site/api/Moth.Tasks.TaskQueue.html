@@ -1,0 +1,636 @@
+﻿<!DOCTYPE html>
+<!--[if IE]><![endif]-->
+<html>
+  
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <title>Class TaskQueue
+   </title>
+    <meta name="viewport" content="width=device-width">
+    <meta name="title" content="Class TaskQueue
+   ">
+    <meta name="generator" content="docfx 2.58.9.0">
+    
+    <link rel="shortcut icon" href="../favicon.ico">
+    <link rel="stylesheet" href="../styles/docfx.vendor.css">
+    <link rel="stylesheet" href="../styles/docfx.css">
+    <link rel="stylesheet" href="../styles/main.css">
+    <meta property="docfx:navrel" content="../toc.html">
+    <meta property="docfx:tocrel" content="toc.html">
+    
+    
+    
+  </head>
+  <body data-spy="scroll" data-target="#affix" data-offset="120">
+    <div id="wrapper">
+      <header>
+        
+        <nav id="autocollapse" class="navbar navbar-inverse ng-scope" role="navigation">
+          <div class="container">
+            <div class="navbar-header">
+              <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+              </button>
+              
+              <a class="navbar-brand" href="../index.html">
+                <img id="logo" class="svg" src="../logo.svg" alt="">
+              </a>
+            </div>
+            <div class="collapse navbar-collapse" id="navbar">
+              <form class="navbar-form navbar-right" role="search" id="search">
+                <div class="form-group">
+                  <input type="text" class="form-control" id="search-query" placeholder="Search" autocomplete="off">
+                </div>
+              </form>
+            </div>
+          </div>
+        </nav>
+        
+        <div class="subnav navbar navbar-default">
+          <div class="container hide-when-search" id="breadcrumb">
+            <ul class="breadcrumb">
+              <li></li>
+            </ul>
+          </div>
+        </div>
+      </header>
+      <div role="main" class="container body-content hide-when-search">
+        
+        <div class="sidenav hide-when-search">
+          <a class="btn toc-toggle collapse" data-toggle="collapse" href="#sidetoggle" aria-expanded="false" aria-controls="sidetoggle">Show / Hide Table of Contents</a>
+          <div class="sidetoggle collapse" id="sidetoggle">
+            <div id="sidetoc"></div>
+          </div>
+        </div>
+        <div class="article row grid-right">
+          <div class="col-md-10">
+            <article class="content wrap" id="_content" data-uid="Moth.Tasks.TaskQueue">
+  
+  
+  <h1 id="Moth_Tasks_TaskQueue" data-uid="Moth.Tasks.TaskQueue" class="text-break">Class TaskQueue
+  </h1>
+  <div class="markdown level0 summary"><p>A queue of tasks, which can be run in FIFO order.</p>
+</div>
+  <div class="markdown level0 conceptual"></div>
+  <div class="inheritance">
+    <h5>Inheritance</h5>
+    <div class="level0"><span class="xref">System.Object</span></div>
+    <div class="level1"><span class="xref">TaskQueue</span></div>
+  </div>
+  <div classs="implements">
+    <h5>Implements</h5>
+    <div><span class="xref">System.IDisposable</span></div>
+  </div>
+  <div class="inheritedMembers">
+    <h5>Inherited Members</h5>
+    <div>
+      <span class="xref">System.Object.Equals(System.Object)</span>
+    </div>
+    <div>
+      <span class="xref">System.Object.Equals(System.Object, System.Object)</span>
+    </div>
+    <div>
+      <span class="xref">System.Object.GetHashCode()</span>
+    </div>
+    <div>
+      <span class="xref">System.Object.GetType()</span>
+    </div>
+    <div>
+      <span class="xref">System.Object.MemberwiseClone()</span>
+    </div>
+    <div>
+      <span class="xref">System.Object.ReferenceEquals(System.Object, System.Object)</span>
+    </div>
+    <div>
+      <span class="xref">System.Object.ToString()</span>
+    </div>
+  </div>
+  <h6><strong>Namespace</strong>: <a class="xref" href="Moth.Tasks.html">Moth.Tasks</a></h6>
+  <h6><strong>Assembly</strong>: Moth.Tasks.dll</h6>
+  <h5 id="Moth_Tasks_TaskQueue_syntax">Syntax</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public sealed class TaskQueue : IDisposable</code></pre>
+  </div>
+  <h3 id="methods">Methods
+  </h3>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/djmoth/Moth.Tasks/new/main/apiSpec/new?filename=Moth_Tasks_TaskQueue_Clear_System_Action_System_Exception__.md&amp;value=---%0Auid%3A%20Moth.Tasks.TaskQueue.Clear(System.Action%7BSystem.Exception%7D)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/djmoth/Moth.Tasks/blob/main/TaskQueue.cs/#L191">View Source</a>
+  </span>
+  <a id="Moth_Tasks_TaskQueue_Clear_" data-uid="Moth.Tasks.TaskQueue.Clear*"></a>
+  <h4 id="Moth_Tasks_TaskQueue_Clear_System_Action_System_Exception__" data-uid="Moth.Tasks.TaskQueue.Clear(System.Action{System.Exception})">Clear(Action&lt;Exception&gt;)</h4>
+  <div class="markdown level1 summary"><p>Removes all pending tasks from the queue. Also calls <span class="xref">System.IDisposable.Dispose()</span> on tasks which implement the method.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public void Clear(Action&lt;Exception&gt; exceptionHandler = null)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Action</span>&lt;<span class="xref">System.Exception</span>&gt;</td>
+        <td><span class="parametername">exceptionHandler</span></td>
+        <td><p>Method for handling an exception thrown by a task's <span class="xref">System.IDisposable.Dispose()</span>.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 id="Moth_Tasks_TaskQueue_Clear_System_Action_System_Exception___remarks">Remarks</h5>
+  <div class="markdown level1 remarks"><p>As the method iterates through all tasks in the queue and calls <span class="xref">System.IDisposable.Dispose()</span> on tasks, it can hang for an unknown amount of time. If an exception is thrown in an <span class="xref">System.IDisposable.Dispose()</span> call, the method continues on with disposing the remaining tasks.</p>
+</div>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/djmoth/Moth.Tasks/new/main/apiSpec/new?filename=Moth_Tasks_TaskQueue_Dispose.md&amp;value=---%0Auid%3A%20Moth.Tasks.TaskQueue.Dispose%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/djmoth/Moth.Tasks/blob/main/TaskQueue.cs/#L227">View Source</a>
+  </span>
+  <a id="Moth_Tasks_TaskQueue_Dispose_" data-uid="Moth.Tasks.TaskQueue.Dispose*"></a>
+  <h4 id="Moth_Tasks_TaskQueue_Dispose" data-uid="Moth.Tasks.TaskQueue.Dispose">Dispose()</h4>
+  <div class="markdown level1 summary"><p>Disposes all tasks which implements <span class="xref">System.IDisposable</span>.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public void Dispose()</code></pre>
+  </div>
+  <h5 id="Moth_Tasks_TaskQueue_Dispose_remarks">Remarks</h5>
+  <div class="markdown level1 remarks"><p>As the method iterates through all tasks in the queue and calls <span class="xref">System.IDisposable.Dispose()</span> on tasks, it can hang for an unknown amount of time. If an exception is thrown in an <span class="xref">System.IDisposable.Dispose()</span> call, the method continues on with disposing the remaining tasks.</p>
+</div>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/djmoth/Moth.Tasks/new/main/apiSpec/new?filename=Moth_Tasks_TaskQueue_Enqueue_System_Action_.md&amp;value=---%0Auid%3A%20Moth.Tasks.TaskQueue.Enqueue(System.Action)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/djmoth/Moth.Tasks/blob/main/TaskQueue.cs/#L36">View Source</a>
+  </span>
+  <a id="Moth_Tasks_TaskQueue_Enqueue_" data-uid="Moth.Tasks.TaskQueue.Enqueue*"></a>
+  <h4 id="Moth_Tasks_TaskQueue_Enqueue_System_Action_" data-uid="Moth.Tasks.TaskQueue.Enqueue(System.Action)">Enqueue(Action)</h4>
+  <div class="markdown level1 summary"><p>Enqueue an action to be run later.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public void Enqueue(Action action)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Action</span></td>
+        <td><span class="parametername">action</span></td>
+        <td><p>Action to enqueue.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/djmoth/Moth.Tasks/new/main/apiSpec/new?filename=Moth_Tasks_TaskQueue_Enqueue__1___0__.md&amp;value=---%0Auid%3A%20Moth.Tasks.TaskQueue.Enqueue%60%601(%60%600%40)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/djmoth/Moth.Tasks/blob/main/TaskQueue.cs/#L51">View Source</a>
+  </span>
+  <a id="Moth_Tasks_TaskQueue_Enqueue_" data-uid="Moth.Tasks.TaskQueue.Enqueue*"></a>
+  <h4 id="Moth_Tasks_TaskQueue_Enqueue__1___0__" data-uid="Moth.Tasks.TaskQueue.Enqueue``1(``0@)">Enqueue&lt;T&gt;(in T)</h4>
+  <div class="markdown level1 summary"><p>Enqueue an <a class="xref" href="Moth.Tasks.ITask.html">ITask</a> to be run later.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public void Enqueue&lt;T&gt;(in T task)
+    where T : struct, ITask</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">T</span></td>
+        <td><span class="parametername">task</span></td>
+        <td><p>Task data.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="typeParameters">Type Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="parametername">T</span></td>
+        <td><p>Type of task to run.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/djmoth/Moth.Tasks/new/main/apiSpec/new?filename=Moth_Tasks_TaskQueue_Enqueue__1___0__Moth_Tasks_TaskHandle__.md&amp;value=---%0Auid%3A%20Moth.Tasks.TaskQueue.Enqueue%60%601(%60%600%40%2CMoth.Tasks.TaskHandle%40)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/djmoth/Moth.Tasks/blob/main/TaskQueue.cs/#L65">View Source</a>
+  </span>
+  <a id="Moth_Tasks_TaskQueue_Enqueue_" data-uid="Moth.Tasks.TaskQueue.Enqueue*"></a>
+  <h4 id="Moth_Tasks_TaskQueue_Enqueue__1___0__Moth_Tasks_TaskHandle__" data-uid="Moth.Tasks.TaskQueue.Enqueue``1(``0@,Moth.Tasks.TaskHandle@)">Enqueue&lt;T&gt;(in T, out TaskHandle)</h4>
+  <div class="markdown level1 summary"><p>Enqueue an <a class="xref" href="Moth.Tasks.ITask.html">ITask</a> to be run later, giving out a <a class="xref" href="Moth.Tasks.TaskHandle.html">TaskHandle</a> for checking task status.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public void Enqueue&lt;T&gt;(in T task, out TaskHandle handle)
+    where T : struct, ITask</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">T</span></td>
+        <td><span class="parametername">task</span></td>
+        <td><p>Task data.</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="Moth.Tasks.TaskHandle.html">TaskHandle</a></td>
+        <td><span class="parametername">handle</span></td>
+        <td><p>Handle for checking task status.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="typeParameters">Type Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="parametername">T</span></td>
+        <td><p>Type of task to run.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/djmoth/Moth.Tasks/new/main/apiSpec/new?filename=Moth_Tasks_TaskQueue_Enqueue__1_System_Action___0____0_.md&amp;value=---%0Auid%3A%20Moth.Tasks.TaskQueue.Enqueue%60%601(System.Action%7B%60%600%7D%2C%60%600)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/djmoth/Moth.Tasks/blob/main/TaskQueue.cs/#L44">View Source</a>
+  </span>
+  <a id="Moth_Tasks_TaskQueue_Enqueue_" data-uid="Moth.Tasks.TaskQueue.Enqueue*"></a>
+  <h4 id="Moth_Tasks_TaskQueue_Enqueue__1_System_Action___0____0_" data-uid="Moth.Tasks.TaskQueue.Enqueue``1(System.Action{``0},``0)">Enqueue&lt;T&gt;(Action&lt;T&gt;, T)</h4>
+  <div class="markdown level1 summary"><p>Enqueue an action to be run later with an argument.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public void Enqueue&lt;T&gt;(Action&lt;T&gt; action, T arg)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Action</span>&lt;T&gt;</td>
+        <td><span class="parametername">action</span></td>
+        <td><p>Action to enqueue.</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">T</span></td>
+        <td><span class="parametername">arg</span></td>
+        <td><p>Argument to run <code data-dev-comment-type="paramref" class="paramref">action</code> with.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="typeParameters">Type Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="parametername">T</span></td>
+        <td><p>The type of the parameter that <code data-dev-comment-type="paramref" class="paramref">action</code> encapsulates.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/djmoth/Moth.Tasks/new/main/apiSpec/new?filename=Moth_Tasks_TaskQueue_Finalize.md&amp;value=---%0Auid%3A%20Moth.Tasks.TaskQueue.Finalize%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/djmoth/Moth.Tasks/blob/main/TaskQueue.cs/#L30">View Source</a>
+  </span>
+  <a id="Moth_Tasks_TaskQueue_Finalize_" data-uid="Moth.Tasks.TaskQueue.Finalize*"></a>
+  <h4 id="Moth_Tasks_TaskQueue_Finalize" data-uid="Moth.Tasks.TaskQueue.Finalize">Finalize()</h4>
+  <div class="markdown level1 summary"><p>Finalizes an instance of the <a class="xref" href="Moth.Tasks.TaskQueue.html">TaskQueue</a> class. Also disposes of tasks implementing <span class="xref">System.IDisposable.Dispose()</span>.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected void Finalize()</code></pre>
+  </div>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/djmoth/Moth.Tasks/new/main/apiSpec/new?filename=Moth_Tasks_TaskQueue_TryRunNextTask.md&amp;value=---%0Auid%3A%20Moth.Tasks.TaskQueue.TryRunNextTask%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/djmoth/Moth.Tasks/blob/main/TaskQueue.cs/#L92">View Source</a>
+  </span>
+  <a id="Moth_Tasks_TaskQueue_TryRunNextTask_" data-uid="Moth.Tasks.TaskQueue.TryRunNextTask*"></a>
+  <h4 id="Moth_Tasks_TaskQueue_TryRunNextTask" data-uid="Moth.Tasks.TaskQueue.TryRunNextTask">TryRunNextTask()</h4>
+  <div class="markdown level1 summary"><p>Try to run the next task in the queue, if present.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public bool TryRunNextTask()</code></pre>
+  </div>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Boolean</span></td>
+        <td><p><span class="xref">true</span> if a task was run, <span class="xref">false</span> if the <a class="xref" href="Moth.Tasks.TaskQueue.html">TaskQueue</a> is empty.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 id="Moth_Tasks_TaskQueue_TryRunNextTask_remarks">Remarks</h5>
+  <div class="markdown level1 remarks"><p>Please note that the return value does not indicate if a task was successful. The method will return <span class="xref">true</span> if a task was ready in the queue, regardless if an exception occured.</p>
+</div>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/djmoth/Moth.Tasks/new/main/apiSpec/new?filename=Moth_Tasks_TaskQueue_TryRunNextTask_Moth_Tasks_IProfiler_.md&amp;value=---%0Auid%3A%20Moth.Tasks.TaskQueue.TryRunNextTask(Moth.Tasks.IProfiler)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/djmoth/Moth.Tasks/blob/main/TaskQueue.cs/#L102">View Source</a>
+  </span>
+  <a id="Moth_Tasks_TaskQueue_TryRunNextTask_" data-uid="Moth.Tasks.TaskQueue.TryRunNextTask*"></a>
+  <h4 id="Moth_Tasks_TaskQueue_TryRunNextTask_Moth_Tasks_IProfiler_" data-uid="Moth.Tasks.TaskQueue.TryRunNextTask(Moth.Tasks.IProfiler)">TryRunNextTask(IProfiler)</h4>
+  <div class="markdown level1 summary"><p>Try to run the next task in the queue, if present. Also performs profiling on the task through an <a class="xref" href="Moth.Tasks.IProfiler.html">IProfiler</a>.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public bool TryRunNextTask(IProfiler profiler)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Moth.Tasks.IProfiler.html">IProfiler</a></td>
+        <td><span class="parametername">profiler</span></td>
+        <td><p><a class="xref" href="Moth.Tasks.IProfiler.html">IProfiler</a> to profile the run-time of the task.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Boolean</span></td>
+        <td><p><span class="xref">true</span> if a task was run, <span class="xref">false</span> if the <a class="xref" href="Moth.Tasks.TaskQueue.html">TaskQueue</a> is empty.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 id="Moth_Tasks_TaskQueue_TryRunNextTask_Moth_Tasks_IProfiler__remarks">Remarks</h5>
+  <div class="markdown level1 remarks"><p>Please note that the return value does not indicate if a task was successful. The method will return <span class="xref">true</span> if a task was ready in the queue, regardless if an exception occured.</p>
+</div>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/djmoth/Moth.Tasks/new/main/apiSpec/new?filename=Moth_Tasks_TaskQueue_TryRunNextTask_Moth_Tasks_IProfiler_System_Exception__.md&amp;value=---%0Auid%3A%20Moth.Tasks.TaskQueue.TryRunNextTask(Moth.Tasks.IProfiler%2CSystem.Exception%40)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/djmoth/Moth.Tasks/blob/main/TaskQueue.cs/#L123">View Source</a>
+  </span>
+  <a id="Moth_Tasks_TaskQueue_TryRunNextTask_" data-uid="Moth.Tasks.TaskQueue.TryRunNextTask*"></a>
+  <h4 id="Moth_Tasks_TaskQueue_TryRunNextTask_Moth_Tasks_IProfiler_System_Exception__" data-uid="Moth.Tasks.TaskQueue.TryRunNextTask(Moth.Tasks.IProfiler,System.Exception@)">TryRunNextTask(IProfiler, out Exception)</h4>
+  <div class="markdown level1 summary"><p>Try to run the next task in the queue, if present. Also performs profiling on the task through an <a class="xref" href="Moth.Tasks.IProfiler.html">IProfiler</a>, and provides an <span class="xref">System.Exception</span> thrown by the task in case it fails.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public bool TryRunNextTask(IProfiler profiler, out Exception exception)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Moth.Tasks.IProfiler.html">IProfiler</a></td>
+        <td><span class="parametername">profiler</span></td>
+        <td><p><a class="xref" href="Moth.Tasks.IProfiler.html">IProfiler</a> to profile the run-time of the task.</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">System.Exception</span></td>
+        <td><span class="parametername">exception</span></td>
+        <td><p><span class="xref">System.Exception</span> thrown if task failed. Is <span class="xref">null</span> if task was run successfully.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Boolean</span></td>
+        <td><p><span class="xref">true</span> if a task was run, <span class="xref">false</span> if the <a class="xref" href="Moth.Tasks.TaskQueue.html">TaskQueue</a> is empty.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 id="Moth_Tasks_TaskQueue_TryRunNextTask_Moth_Tasks_IProfiler_System_Exception___remarks">Remarks</h5>
+  <div class="markdown level1 remarks"><p>Please note that the return value does not indicate if a task was successful. The method will return <span class="xref">true</span> if a task was ready in the queue, regardless if an exception occured.</p>
+</div>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/djmoth/Moth.Tasks/new/main/apiSpec/new?filename=Moth_Tasks_TaskQueue_TryRunNextTask_System_Exception__.md&amp;value=---%0Auid%3A%20Moth.Tasks.TaskQueue.TryRunNextTask(System.Exception%40)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/djmoth/Moth.Tasks/blob/main/TaskQueue.cs/#L112">View Source</a>
+  </span>
+  <a id="Moth_Tasks_TaskQueue_TryRunNextTask_" data-uid="Moth.Tasks.TaskQueue.TryRunNextTask*"></a>
+  <h4 id="Moth_Tasks_TaskQueue_TryRunNextTask_System_Exception__" data-uid="Moth.Tasks.TaskQueue.TryRunNextTask(System.Exception@)">TryRunNextTask(out Exception)</h4>
+  <div class="markdown level1 summary"><p>Try to run the next task in the queue, if present. Also provides an <span class="xref">System.Exception</span> thrown by the task in case it fails.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public bool TryRunNextTask(out Exception exception)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Exception</span></td>
+        <td><span class="parametername">exception</span></td>
+        <td><p><span class="xref">System.Exception</span> thrown if task failed. Is <span class="xref">null</span> if task was run successfully.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Boolean</span></td>
+        <td><p><span class="xref">true</span> if a task was run, <span class="xref">false</span> if the <a class="xref" href="Moth.Tasks.TaskQueue.html">TaskQueue</a> is empty.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 id="Moth_Tasks_TaskQueue_TryRunNextTask_System_Exception___remarks">Remarks</h5>
+  <div class="markdown level1 remarks"><p>Please note that the return value does not indicate if a task was successful. The method will return <span class="xref">true</span> if a task was ready in the queue, regardless if an exception occured.</p>
+</div>
+  <h3 id="implements">Implements</h3>
+  <div>
+      <span class="xref">System.IDisposable</span>
+  </div>
+</article>
+          </div>
+          
+          <div class="hidden-sm col-md-2" role="complementary">
+            <div class="sideaffix">
+              <div class="contribution">
+                <ul class="nav">
+                  <li>
+                    <a href="https://github.com/djmoth/Moth.Tasks/new/main/apiSpec/new?filename=Moth_Tasks_TaskQueue.md&amp;value=---%0Auid%3A%20Moth.Tasks.TaskQueue%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A" class="contribution-link">Improve this Doc</a>
+                  </li>
+                  <li>
+                    <a href="https://github.com/djmoth/Moth.Tasks/blob/main/TaskQueue.cs/#L13" class="contribution-link">View Source</a>
+                  </li>
+                </ul>
+              </div>
+              <nav class="bs-docs-sidebar hidden-print hidden-xs hidden-sm affix" id="affix">
+                <h5>In This Article</h5>
+                <div></div>
+              </nav>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <footer>
+        <div class="grad-bottom"></div>
+        <div class="footer">
+          <div class="container">
+            <span class="pull-right">
+              <a href="#top">Back to top</a>
+            </span>
+            
+            <span>Generated by <strong>DocFX</strong></span>
+          </div>
+        </div>
+      </footer>
+    </div>
+    
+    <script type="text/javascript" src="../styles/docfx.vendor.js"></script>
+    <script type="text/javascript" src="../styles/docfx.js"></script>
+    <script type="text/javascript" src="../styles/main.js"></script>
+  </body>
+</html>
