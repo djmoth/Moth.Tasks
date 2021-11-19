@@ -1,0 +1,127 @@
+### YamlMime:ManagedReference
+items:
+- uid: Moth.Tasks.IProfiler
+  commentId: T:Moth.Tasks.IProfiler
+  id: IProfiler
+  parent: Moth.Tasks
+  children:
+  - Moth.Tasks.IProfiler.BeginTask(System.String)
+  - Moth.Tasks.IProfiler.EndTask
+  langs:
+  - csharp
+  - vb
+  name: IProfiler
+  nameWithType: IProfiler
+  fullName: Moth.Tasks.IProfiler
+  type: Interface
+  source:
+    remote:
+      path: Moth.Tasks/IProfiler.cs
+      branch: main
+      repo: https://github.com/djmoth/Moth.Tasks
+    id: IProfiler
+    path: IProfiler.cs
+    startLine: 5
+  assemblies:
+  - Moth.Tasks
+  namespace: Moth.Tasks
+  summary: "\nDescribes a profiler which can measure the run time of a task.\n"
+  example: []
+  syntax:
+    content: public interface IProfiler
+    content.vb: Public Interface IProfiler
+  modifiers.csharp:
+  - public
+  - interface
+  modifiers.vb:
+  - Public
+  - Interface
+- uid: Moth.Tasks.IProfiler.BeginTask(System.String)
+  commentId: M:Moth.Tasks.IProfiler.BeginTask(System.String)
+  id: BeginTask(System.String)
+  parent: Moth.Tasks.IProfiler
+  langs:
+  - csharp
+  - vb
+  name: BeginTask(String)
+  nameWithType: IProfiler.BeginTask(String)
+  fullName: Moth.Tasks.IProfiler.BeginTask(System.String)
+  type: Method
+  source:
+    remote:
+      path: Moth.Tasks/IProfiler.cs
+      branch: main
+      repo: https://github.com/djmoth/Moth.Tasks
+    id: BeginTask
+    path: IProfiler.cs
+    startLine: 11
+  assemblies:
+  - Moth.Tasks
+  namespace: Moth.Tasks
+  summary: "\nSignals the beginning of a new task.\n"
+  example: []
+  syntax:
+    content: void BeginTask(string task)
+    parameters:
+    - id: task
+      type: System.String
+      description: Name of task type.
+    content.vb: Sub BeginTask(task As String)
+  overload: Moth.Tasks.IProfiler.BeginTask*
+- uid: Moth.Tasks.IProfiler.EndTask
+  commentId: M:Moth.Tasks.IProfiler.EndTask
+  id: EndTask
+  parent: Moth.Tasks.IProfiler
+  langs:
+  - csharp
+  - vb
+  name: EndTask()
+  nameWithType: IProfiler.EndTask()
+  fullName: Moth.Tasks.IProfiler.EndTask()
+  type: Method
+  source:
+    remote:
+      path: Moth.Tasks/IProfiler.cs
+      branch: main
+      repo: https://github.com/djmoth/Moth.Tasks
+    id: EndTask
+    path: IProfiler.cs
+    startLine: 16
+  assemblies:
+  - Moth.Tasks
+  namespace: Moth.Tasks
+  summary: "\nSignals the completion of a task.\n"
+  example: []
+  syntax:
+    content: void EndTask()
+    content.vb: Sub
+  overload: Moth.Tasks.IProfiler.EndTask*
+references:
+- uid: Moth.Tasks
+  commentId: N:Moth.Tasks
+  name: Moth.Tasks
+  nameWithType: Moth.Tasks
+  fullName: Moth.Tasks
+- uid: Moth.Tasks.IProfiler.BeginTask*
+  commentId: Overload:Moth.Tasks.IProfiler.BeginTask
+  name: BeginTask
+  nameWithType: IProfiler.BeginTask
+  fullName: Moth.Tasks.IProfiler.BeginTask
+- uid: System.String
+  commentId: T:System.String
+  parent: System
+  isExternal: true
+  name: String
+  nameWithType: String
+  fullName: System.String
+- uid: System
+  commentId: N:System
+  isExternal: true
+  name: System
+  nameWithType: System
+  fullName: System
+- uid: Moth.Tasks.IProfiler.EndTask*
+  commentId: Overload:Moth.Tasks.IProfiler.EndTask
+  name: EndTask
+  nameWithType: IProfiler.EndTask
+  fullName: Moth.Tasks.IProfiler.EndTask

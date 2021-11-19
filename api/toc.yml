@@ -1,0 +1,12 @@
+### YamlMime:TableOfContent
+- uid: Moth.Tasks
+  name: Moth.Tasks
+  items:
+  - uid: Moth.Tasks.IProfiler
+    name: IProfiler
+  - uid: Moth.Tasks.ITask
+    name: ITask
+  - uid: Moth.Tasks.TaskHandle
+    name: TaskHandle
+  - uid: Moth.Tasks.TaskQueue
+    name: TaskQueue

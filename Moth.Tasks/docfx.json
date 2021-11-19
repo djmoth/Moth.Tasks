@@ -6,10 +6,10 @@
           "files": [
             "**.csproj"
           ],
-          "src": "C:\\Software Development\\Moth.Tasks"
+          "src": "../"
         }
       ],
-      "dest": "api",
+      "dest": "../api",
       "disableGitFeatures": false,
       "disableDefaultFilter": false
     }
@@ -34,7 +34,7 @@
     "resource": [
       {
         "files": [
-          "images/**"
+          ".images/**"
         ]
       }
     ],
@@ -49,7 +49,7 @@
         ]
       }
     ],
-    "dest": "_site",
+    "dest": "../_site",
     "globalMetadataFiles": [],
     "fileMetadataFiles": [],
     "template": [

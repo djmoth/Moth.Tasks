@@ -1,0 +1,47 @@
+### YamlMime:ManagedReference
+items:
+- uid: Moth.Tasks
+  commentId: N:Moth.Tasks
+  id: Moth.Tasks
+  children:
+  - Moth.Tasks.IProfiler
+  - Moth.Tasks.ITask
+  - Moth.Tasks.TaskHandle
+  - Moth.Tasks.TaskQueue
+  langs:
+  - csharp
+  - vb
+  name: Moth.Tasks
+  nameWithType: Moth.Tasks
+  fullName: Moth.Tasks
+  type: Namespace
+  assemblies:
+  - Moth.Tasks
+references:
+- uid: Moth.Tasks.IProfiler
+  commentId: T:Moth.Tasks.IProfiler
+  parent: Moth.Tasks
+  name: IProfiler
+  nameWithType: IProfiler
+  fullName: Moth.Tasks.IProfiler
+- uid: Moth.Tasks.ITask
+  commentId: T:Moth.Tasks.ITask
+  name: ITask
+  nameWithType: ITask
+  fullName: Moth.Tasks.ITask
+- uid: Moth.Tasks.TaskHandle
+  commentId: T:Moth.Tasks.TaskHandle
+  parent: Moth.Tasks
+  name: TaskHandle
+  nameWithType: TaskHandle
+  fullName: Moth.Tasks.TaskHandle
+- uid: Moth.Tasks.TaskQueue
+  commentId: T:Moth.Tasks.TaskQueue
+  name: TaskQueue
+  nameWithType: TaskQueue
+  fullName: Moth.Tasks.TaskQueue
+- uid: Moth.Tasks
+  commentId: N:Moth.Tasks
+  name: Moth.Tasks
+  nameWithType: Moth.Tasks
+  fullName: Moth.Tasks

@@ -1,0 +1,79 @@
+### YamlMime:ManagedReference
+items:
+- uid: Moth.Tasks.ITask
+  commentId: T:Moth.Tasks.ITask
+  id: ITask
+  parent: Moth.Tasks
+  children:
+  - Moth.Tasks.ITask.Run
+  langs:
+  - csharp
+  - vb
+  name: ITask
+  nameWithType: ITask
+  fullName: Moth.Tasks.ITask
+  type: Interface
+  source:
+    remote:
+      path: Moth.Tasks/ITask.cs
+      branch: main
+      repo: https://github.com/djmoth/Moth.Tasks
+    id: ITask
+    path: ITask.cs
+    startLine: 5
+  assemblies:
+  - Moth.Tasks
+  namespace: Moth.Tasks
+  summary: "\nInterface providing a <xref href=\"Moth.Tasks.ITask.Run\" data-throw-if-not-resolved=\"false\"></xref> method for executing task code.\n"
+  example: []
+  syntax:
+    content: public interface ITask
+    content.vb: Public Interface ITask
+  modifiers.csharp:
+  - public
+  - interface
+  modifiers.vb:
+  - Public
+  - Interface
+- uid: Moth.Tasks.ITask.Run
+  commentId: M:Moth.Tasks.ITask.Run
+  id: Run
+  parent: Moth.Tasks.ITask
+  langs:
+  - csharp
+  - vb
+  name: Run()
+  nameWithType: ITask.Run()
+  fullName: Moth.Tasks.ITask.Run()
+  type: Method
+  source:
+    remote:
+      path: Moth.Tasks/ITask.cs
+      branch: main
+      repo: https://github.com/djmoth/Moth.Tasks
+    id: Run
+    path: ITask.cs
+    startLine: 10
+  assemblies:
+  - Moth.Tasks
+  namespace: Moth.Tasks
+  summary: "\nTask code to run.\n"
+  example: []
+  syntax:
+    content: void Run()
+    content.vb: Sub Run
+  overload: Moth.Tasks.ITask.Run*
+references:
+- uid: Moth.Tasks.ITask.Run
+  commentId: M:Moth.Tasks.ITask.Run
+  isExternal: true
+- uid: Moth.Tasks
+  commentId: N:Moth.Tasks
+  name: Moth.Tasks
+  nameWithType: Moth.Tasks
+  fullName: Moth.Tasks
+- uid: Moth.Tasks.ITask.Run*
+  commentId: Overload:Moth.Tasks.ITask.Run
+  name: Run
+  nameWithType: ITask.Run
+  fullName: Moth.Tasks.ITask.Run

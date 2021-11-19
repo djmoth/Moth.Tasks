@@ -6,12 +6,18 @@
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
-    <DocumentationFile>C:\Software Development\Moth.Tasks\Moth.Tasks.xml</DocumentationFile>
+    <DocumentationFile>Moth.Tasks.xml</DocumentationFile>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
   </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Remove="Moth.Tasks\**" />
+    <EmbeddedResource Remove="Moth.Tasks\**" />
+    <None Remove="Moth.Tasks\**" />
+  </ItemGroup>
 
   <ItemGroup>
     <PackageReference Include="docfx.console" Version="2.58.9">

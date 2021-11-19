@@ -1,147 +1,15 @@
 {
   "homepages": [],
-  "source_base_path": "C:/Software Development/Moth.Tasks",
+  "source_base_path": "C:/Software Development/Moth.Tasks/Moth.Tasks",
   "xrefmap": "xrefmap.yml",
   "files": [
-    {
-      "type": "Conceptual",
-      "source_relative_path": "README.md",
-      "output": {
-        ".html": {
-          "relative_path": "README.html",
-          "hash": "2wKfStjlOOUjyMfqIwO3c0ftpkBOSwmotKrtcfvsKEk="
-        }
-      },
-      "is_incremental": true,
-      "version": ""
-    },
-    {
-      "type": "ManagedReference",
-      "source_relative_path": "api/Moth.Tasks.IProfiler.yml",
-      "output": {
-        ".html": {
-          "relative_path": "api/Moth.Tasks.IProfiler.html",
-          "hash": "BD336qXzqMfgg5LT18V5ua4fOlXsx1EWueGfzDSPexo="
-        }
-      },
-      "is_incremental": true,
-      "version": ""
-    },
-    {
-      "type": "ManagedReference",
-      "source_relative_path": "api/Moth.Tasks.ITask.yml",
-      "output": {
-        ".html": {
-          "relative_path": "api/Moth.Tasks.ITask.html",
-          "hash": "Arr7CIzF7tZrzsjsoHyj+nDAZP48WsHk0GyZ7KgeoHw="
-        }
-      },
-      "is_incremental": true,
-      "version": ""
-    },
-    {
-      "type": "ManagedReference",
-      "source_relative_path": "api/Moth.Tasks.TaskHandle.yml",
-      "output": {
-        ".html": {
-          "relative_path": "api/Moth.Tasks.TaskHandle.html",
-          "hash": "OMCxoVVcSYSq2q276qI4Vmp6kBA62Gr/6MjcHzoBR/Q="
-        }
-      },
-      "is_incremental": true,
-      "version": ""
-    },
-    {
-      "type": "ManagedReference",
-      "source_relative_path": "api/Moth.Tasks.TaskQueue.yml",
-      "output": {
-        ".html": {
-          "relative_path": "api/Moth.Tasks.TaskQueue.html",
-          "hash": "PpQyigqxF5hvYrlIJcvDf8LgjApvtVhyL6komPw5HRg="
-        }
-      },
-      "is_incremental": false,
-      "version": ""
-    },
-    {
-      "type": "ManagedReference",
-      "source_relative_path": "api/Moth.Tasks.yml",
-      "output": {
-        ".html": {
-          "relative_path": "api/Moth.Tasks.html",
-          "hash": "DSHhYg0kjUXfk+9ULnMMs4bquQrI9Y8Cy612WobrPn0="
-        }
-      },
-      "is_incremental": false,
-      "version": ""
-    },
-    {
-      "type": "Conceptual",
-      "source_relative_path": "api/index.md",
-      "output": {
-        ".html": {
-          "relative_path": "api/index.html",
-          "hash": "LgnN1b3L9JqoefAY14BJsOjd6+uZUiGWaiAr4BhiSbg="
-        }
-      },
-      "is_incremental": true,
-      "version": ""
-    },
-    {
-      "type": "Toc",
-      "source_relative_path": "api/toc.yml",
-      "output": {
-        ".html": {
-          "relative_path": "api/toc.html",
-          "hash": "XR5VccC6qbs9KPYAKzsvcDIiYbJA52vJahKRMAvp9vY="
-        }
-      },
-      "is_incremental": false,
-      "version": ""
-    },
-    {
-      "type": "Conceptual",
-      "source_relative_path": "articles/intro.md",
-      "output": {
-        ".html": {
-          "relative_path": "articles/intro.html",
-          "hash": "e6Hy0vBDgGFfSSrR5K2C3MFSuHazuzRXTzd+oppdlrs="
-        }
-      },
-      "is_incremental": true,
-      "version": ""
-    },
-    {
-      "type": "Toc",
-      "source_relative_path": "articles/toc.yml",
-      "output": {
-        ".html": {
-          "relative_path": "articles/toc.html",
-          "hash": "BlPxk5mtl2kgfcZUgkEguqiSAR/EUyUTT4EdebwkQvs="
-        }
-      },
-      "is_incremental": false,
-      "version": ""
-    },
     {
       "type": "Conceptual",
       "source_relative_path": "index.md",
       "output": {
         ".html": {
           "relative_path": "index.html",
-          "hash": "qP+p1S5JtL7nssMnZy17D0KQ7qHcVFGdjZnQ21vZy0o="
-        }
-      },
-      "is_incremental": true,
-      "version": ""
-    },
-    {
-      "type": "Toc",
-      "source_relative_path": "toc.yml",
-      "output": {
-        ".html": {
-          "relative_path": "toc.html",
-          "hash": "WSuRrYiGwKKMbtdG9z8W9fXmLoCyTnGg9AxbPKLXm2Y="
+          "hash": "r78aclFhN2qJUKAVLmQORJD2YOv5B8cPZv4dGnrnmCM="
         }
       },
       "is_incremental": false,
@@ -151,37 +19,26 @@
   "incremental_info": [
     {
       "status": {
-        "can_incremental": true,
+        "can_incremental": false,
+        "details": "Disable incremental build by force rebuild option.",
         "incrementalPhase": "build",
         "total_file_count": 0,
-        "skipped_file_count": 0
+        "skipped_file_count": 0,
+        "full_build_reason_code": "ForceRebuild"
       },
       "processors": {
         "ConceptualDocumentProcessor": {
-          "can_incremental": true,
-          "incrementalPhase": "build",
-          "total_file_count": 4,
-          "skipped_file_count": 4
-        },
-        "ManagedReferenceDocumentProcessor": {
-          "can_incremental": true,
-          "incrementalPhase": "build",
-          "total_file_count": 5,
-          "skipped_file_count": 4
-        },
-        "TocDocumentProcessor": {
           "can_incremental": false,
-          "details": "Processor TocDocumentProcessor cannot support incremental build because the processor doesn't implement ISupportIncrementalDocumentProcessor interface.",
           "incrementalPhase": "build",
-          "total_file_count": 0,
+          "total_file_count": 1,
           "skipped_file_count": 0
         }
       }
     },
     {
       "status": {
-        "can_incremental": true,
-        "details": "Can support incremental post processing.",
+        "can_incremental": false,
+        "details": "Cannot support incremental post processing, the reason is: it's disabled.",
         "incrementalPhase": "postProcessing",
         "total_file_count": 0,
         "skipped_file_count": 0

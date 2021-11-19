@@ -1,0 +1,460 @@
+### YamlMime:ManagedReference
+items:
+- uid: Moth.Tasks.TaskHandle
+  commentId: T:Moth.Tasks.TaskHandle
+  id: TaskHandle
+  parent: Moth.Tasks
+  children:
+  - Moth.Tasks.TaskHandle.IsComplete
+  - Moth.Tasks.TaskHandle.WaitForCompletion
+  - Moth.Tasks.TaskHandle.WaitForCompletion(System.Int32)
+  langs:
+  - csharp
+  - vb
+  name: TaskHandle
+  nameWithType: TaskHandle
+  fullName: Moth.Tasks.TaskHandle
+  type: Struct
+  source:
+    remote:
+      path: Moth.Tasks/TaskHandle.cs
+      branch: main
+      repo: https://github.com/djmoth/Moth.Tasks
+    id: TaskHandle
+    path: TaskHandle.cs
+    startLine: 5
+  assemblies:
+  - Moth.Tasks
+  namespace: Moth.Tasks
+  summary: "\nHandle for checking task status.\n"
+  example: []
+  syntax:
+    content: public readonly struct TaskHandle
+    content.vb: Public Structure TaskHandle
+  inheritedMembers:
+  - System.ValueType.Equals(System.Object)
+  - System.ValueType.GetHashCode
+  - System.ValueType.ToString
+  - System.Object.Equals(System.Object,System.Object)
+  - System.Object.GetType
+  - System.Object.ReferenceEquals(System.Object,System.Object)
+  modifiers.csharp:
+  - public
+  - readonly
+  - struct
+  modifiers.vb:
+  - Public
+  - Structure
+- uid: Moth.Tasks.TaskHandle.IsComplete
+  commentId: P:Moth.Tasks.TaskHandle.IsComplete
+  id: IsComplete
+  parent: Moth.Tasks.TaskHandle
+  langs:
+  - csharp
+  - vb
+  name: IsComplete
+  nameWithType: TaskHandle.IsComplete
+  fullName: Moth.Tasks.TaskHandle.IsComplete
+  type: Property
+  source:
+    remote:
+      path: Moth.Tasks/TaskHandle.cs
+      branch: main
+      repo: https://github.com/djmoth/Moth.Tasks
+    id: IsComplete
+    path: TaskHandle.cs
+    startLine: 27
+  assemblies:
+  - Moth.Tasks
+  namespace: Moth.Tasks
+  summary: "\nChecks if the task has been completed.\n"
+  remarks: "\nPlease note that this property does not indicate whether the task executed successfully or not.\n"
+  example: []
+  syntax:
+    content: public readonly bool IsComplete { get; }
+    parameters: []
+    return:
+      type: System.Boolean
+    content.vb: Public ReadOnly Property IsComplete As Boolean
+  overload: Moth.Tasks.TaskHandle.IsComplete*
+  modifiers.csharp:
+  - public
+  - readonly
+  - get
+  modifiers.vb:
+  - Public
+  - ReadOnly
+- uid: Moth.Tasks.TaskHandle.WaitForCompletion
+  commentId: M:Moth.Tasks.TaskHandle.WaitForCompletion
+  id: WaitForCompletion
+  parent: Moth.Tasks.TaskHandle
+  langs:
+  - csharp
+  - vb
+  name: WaitForCompletion()
+  nameWithType: TaskHandle.WaitForCompletion()
+  fullName: Moth.Tasks.TaskHandle.WaitForCompletion()
+  type: Method
+  source:
+    remote:
+      path: Moth.Tasks/TaskHandle.cs
+      branch: main
+      repo: https://github.com/djmoth/Moth.Tasks
+    id: WaitForCompletion
+    path: TaskHandle.cs
+    startLine: 32
+  assemblies:
+  - Moth.Tasks
+  namespace: Moth.Tasks
+  summary: "\nWaits indefinitely until the task has been completed.\n"
+  example: []
+  syntax:
+    content: public readonly void WaitForCompletion()
+    content.vb: Public Sub WaitForCompletion
+  overload: Moth.Tasks.TaskHandle.WaitForCompletion*
+  modifiers.csharp:
+  - public
+  - readonly
+  modifiers.vb:
+  - Public
+- uid: Moth.Tasks.TaskHandle.WaitForCompletion(System.Int32)
+  commentId: M:Moth.Tasks.TaskHandle.WaitForCompletion(System.Int32)
+  id: WaitForCompletion(System.Int32)
+  parent: Moth.Tasks.TaskHandle
+  langs:
+  - csharp
+  - vb
+  name: WaitForCompletion(Int32)
+  nameWithType: TaskHandle.WaitForCompletion(Int32)
+  fullName: Moth.Tasks.TaskHandle.WaitForCompletion(System.Int32)
+  type: Method
+  source:
+    remote:
+      path: Moth.Tasks/TaskHandle.cs
+      branch: main
+      repo: https://github.com/djmoth/Moth.Tasks
+    id: WaitForCompletion
+    path: TaskHandle.cs
+    startLine: 39
+  assemblies:
+  - Moth.Tasks
+  namespace: Moth.Tasks
+  summary: "\nWaits for a maximum time in milliseconds for the task to complete.\n"
+  example: []
+  syntax:
+    content: public readonly bool WaitForCompletion(int millisceondsTimeout)
+    parameters:
+    - id: millisceondsTimeout
+      type: System.Int32
+      description: The number of milliseconds to wait, or <xref href="System.Threading.Timeout.Infinite" data-throw-if-not-resolved="false"></xref> (-1) to wait indefinitely.
+    return:
+      type: System.Boolean
+      description: <xref uid="langword_csharp_true" name="true" href=""></xref> if the task was completed before timeout; otherwise, <xref uid="langword_csharp_false" name="false" href=""></xref>.
+    content.vb: Public Function WaitForCompletion(millisceondsTimeout As Integer) As Boolean
+  overload: Moth.Tasks.TaskHandle.WaitForCompletion*
+  modifiers.csharp:
+  - public
+  - readonly
+  modifiers.vb:
+  - Public
+references:
+- uid: Moth.Tasks
+  commentId: N:Moth.Tasks
+  name: Moth.Tasks
+  nameWithType: Moth.Tasks
+  fullName: Moth.Tasks
+- uid: System.ValueType.Equals(System.Object)
+  commentId: M:System.ValueType.Equals(System.Object)
+  parent: System.ValueType
+  isExternal: true
+  name: Equals(Object)
+  nameWithType: ValueType.Equals(Object)
+  fullName: System.ValueType.Equals(System.Object)
+  spec.csharp:
+  - uid: System.ValueType.Equals(System.Object)
+    name: Equals
+    nameWithType: ValueType.Equals
+    fullName: System.ValueType.Equals
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: System.ValueType.Equals(System.Object)
+    name: Equals
+    nameWithType: ValueType.Equals
+    fullName: System.ValueType.Equals
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System.ValueType.GetHashCode
+  commentId: M:System.ValueType.GetHashCode
+  parent: System.ValueType
+  isExternal: true
+  name: GetHashCode()
+  nameWithType: ValueType.GetHashCode()
+  fullName: System.ValueType.GetHashCode()
+  spec.csharp:
+  - uid: System.ValueType.GetHashCode
+    name: GetHashCode
+    nameWithType: ValueType.GetHashCode
+    fullName: System.ValueType.GetHashCode
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: System.ValueType.GetHashCode
+    name: GetHashCode
+    nameWithType: ValueType.GetHashCode
+    fullName: System.ValueType.GetHashCode
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System.ValueType.ToString
+  commentId: M:System.ValueType.ToString
+  parent: System.ValueType
+  isExternal: true
+  name: ToString()
+  nameWithType: ValueType.ToString()
+  fullName: System.ValueType.ToString()
+  spec.csharp:
+  - uid: System.ValueType.ToString
+    name: ToString
+    nameWithType: ValueType.ToString
+    fullName: System.ValueType.ToString
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: System.ValueType.ToString
+    name: ToString
+    nameWithType: ValueType.ToString
+    fullName: System.ValueType.ToString
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System.Object.Equals(System.Object,System.Object)
+  commentId: M:System.Object.Equals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  name: Equals(Object, Object)
+  nameWithType: Object.Equals(Object, Object)
+  fullName: System.Object.Equals(System.Object, System.Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    nameWithType: Object.Equals
+    fullName: System.Object.Equals
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    nameWithType: Object.Equals
+    fullName: System.Object.Equals
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System.Object.GetType
+  commentId: M:System.Object.GetType
+  parent: System.Object
+  isExternal: true
+  name: GetType()
+  nameWithType: Object.GetType()
+  fullName: System.Object.GetType()
+  spec.csharp:
+  - uid: System.Object.GetType
+    name: GetType
+    nameWithType: Object.GetType
+    fullName: System.Object.GetType
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: System.Object.GetType
+    name: GetType
+    nameWithType: Object.GetType
+    fullName: System.Object.GetType
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System.Object.ReferenceEquals(System.Object,System.Object)
+  commentId: M:System.Object.ReferenceEquals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  name: ReferenceEquals(Object, Object)
+  nameWithType: Object.ReferenceEquals(Object, Object)
+  fullName: System.Object.ReferenceEquals(System.Object, System.Object)
+  spec.csharp:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    nameWithType: Object.ReferenceEquals
+    fullName: System.Object.ReferenceEquals
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    nameWithType: Object.ReferenceEquals
+    fullName: System.Object.ReferenceEquals
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System.ValueType
+  commentId: T:System.ValueType
+  parent: System
+  isExternal: true
+  name: ValueType
+  nameWithType: ValueType
+  fullName: System.ValueType
+- uid: System.Object
+  commentId: T:System.Object
+  parent: System
+  isExternal: true
+  name: Object
+  nameWithType: Object
+  fullName: System.Object
+- uid: System
+  commentId: N:System
+  isExternal: true
+  name: System
+  nameWithType: System
+  fullName: System
+- uid: Moth.Tasks.TaskHandle.IsComplete*
+  commentId: Overload:Moth.Tasks.TaskHandle.IsComplete
+  name: IsComplete
+  nameWithType: TaskHandle.IsComplete
+  fullName: Moth.Tasks.TaskHandle.IsComplete
+- uid: System.Boolean
+  commentId: T:System.Boolean
+  parent: System
+  isExternal: true
+  name: Boolean
+  nameWithType: Boolean
+  fullName: System.Boolean
+- uid: Moth.Tasks.TaskHandle.WaitForCompletion*
+  commentId: Overload:Moth.Tasks.TaskHandle.WaitForCompletion
+  name: WaitForCompletion
+  nameWithType: TaskHandle.WaitForCompletion
+  fullName: Moth.Tasks.TaskHandle.WaitForCompletion
+- uid: System.Threading.Timeout.Infinite
+  commentId: F:System.Threading.Timeout.Infinite
+  isExternal: true
+- uid: System.Int32
+  commentId: T:System.Int32
+  parent: System
+  isExternal: true
+  name: Int32
+  nameWithType: Int32
+  fullName: System.Int32
