@@ -1,0 +1,22 @@
+### YamlMime:ManagedReference
+items:
+- uid: Moth.Tasks.Tests
+  commentId: N:Moth.Tasks.Tests
+  id: Moth.Tasks.Tests
+  children:
+  - Moth.Tasks.Tests.Tests
+  langs:
+  - csharp
+  - vb
+  name: Moth.Tasks.Tests
+  nameWithType: Moth.Tasks.Tests
+  fullName: Moth.Tasks.Tests
+  type: Namespace
+  assemblies:
+  - Moth.Tasks.Tests
+references:
+- uid: Moth.Tasks.Tests.Tests
+  commentId: T:Moth.Tasks.Tests.Tests
+  name: Tests
+  nameWithType: Tests
+  fullName: Moth.Tasks.Tests.Tests

@@ -22,9 +22,6 @@
             if (!idCache.TryGetValue (typeof (T), out int id))
             {
                 TaskInfo task = AddTask<T> ();
-
-                idCache.Add (typeof (T), task.ID);
-
                 return task;
             }
 

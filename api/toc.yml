@@ -10,3 +10,8 @@
     name: TaskHandle
   - uid: Moth.Tasks.TaskQueue
     name: TaskQueue
+- uid: Moth.Tasks.Tests
+  name: Moth.Tasks.Tests
+  items:
+  - uid: Moth.Tasks.Tests.Tests
+    name: Tests

@@ -23,8 +23,6 @@
 
             // Round dataSize to number of IntPtr.Size data indices required to hold task data in a TaskQueue.
             DataIndices = (dataSize + IntPtr.Size - 1) / IntPtr.Size;
-
-            Disposable = dispose != null;
         }
 
         private delegate void RunOperation (ref TaskQueue.TaskDataAccess access, TaskInfo task);
@@ -54,7 +52,7 @@
         /// <summary>
         /// Gets a value indicating whether the task type implements <see cref="IDisposable"/>.
         /// </summary>
-        public bool Disposable { get; }
+        public bool Disposable => dispose != null;
 
         /// <summary>
         /// Creates a new TaskInfo from a type and ID.

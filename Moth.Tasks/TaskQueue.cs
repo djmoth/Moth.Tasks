@@ -303,32 +303,36 @@
 
             tasks.Enqueue (taskInfo.ID); // Add task ID to the queue
 
-            // If new task data will overflow the taskData array
-            if (lastTaskEnd + taskInfo.DataIndices > taskData.Length)
+            // Only write task data if present
+            if (taskInfo.DataIndices > 0)
             {
-                int totalTaskDataLength = lastTaskEnd - firstTask;
-
-                // If there is not enough total space in taskData array to hold new task, then resize taskData
-                if (totalTaskDataLength + taskInfo.DataIndices > taskData.Length)
+                // If new task data will overflow the taskData array
+                if (lastTaskEnd + taskInfo.DataIndices > taskData.Length)
                 {
-                    // If taskInfo.DataIndices is abnormally large, doubling the size might not always be enough
-                    int newSize = Math.Max (taskData.Length * 2, totalTaskDataLength + taskInfo.DataIndices);
-                    Array.Resize (ref taskData, taskData.Length * 2);
+                    int totalTaskDataLength = lastTaskEnd - firstTask;
+
+                    // If there is not enough total space in taskData array to hold new task, then resize taskData
+                    if (totalTaskDataLength + taskInfo.DataIndices > taskData.Length)
+                    {
+                        // If taskInfo.DataIndices is abnormally large, doubling the size might not always be enough
+                        int newSize = Math.Max (taskData.Length * 2, totalTaskDataLength + taskInfo.DataIndices);
+                        Array.Resize (ref taskData, taskData.Length * 2);
+                    }
+
+                    if (firstTask != 0)
+                    {
+                        Buffer.BlockCopy (taskData, firstTask, taskData, 0, totalTaskDataLength); // Move tasks to the beginning of taskData, to eliminate wasted space
+
+                        lastTaskEnd = totalTaskDataLength;
+                        firstTask = 0;
+                    }
                 }
 
-                if (firstTask != 0)
-                {
-                    Buffer.BlockCopy (taskData, firstTask, taskData, 0, totalTaskDataLength); // Move tasks to the beginning of taskData, to eliminate wasted space
+                ref T newTask = ref Unsafe.As<object, T> (ref taskData[lastTaskEnd]);
+                newTask = task; // Write task data
 
-                    lastTaskEnd = totalTaskDataLength;
-                    firstTask = 0;
-                }
+                lastTaskEnd += taskInfo.DataIndices;
             }
-
-            ref T newTask = ref Unsafe.As<object, T> (ref taskData[lastTaskEnd]);
-            newTask = task; // Write task data
-
-            lastTaskEnd += taskInfo.DataIndices;
         }
 
         private ref T GetNextTask<T> (TaskInfo task) where T : struct, ITask
