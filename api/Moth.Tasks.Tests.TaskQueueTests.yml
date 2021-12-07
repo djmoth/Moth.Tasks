@@ -1,0 +1,618 @@
+### YamlMime:ManagedReference
+items:
+- uid: Moth.Tasks.Tests.TaskQueueTests
+  commentId: T:Moth.Tasks.Tests.TaskQueueTests
+  id: TaskQueueTests
+  parent: Moth.Tasks.Tests
+  children:
+  - Moth.Tasks.Tests.TaskQueueTests.EnqueueAction
+  - Moth.Tasks.Tests.TaskQueueTests.EnqueueAndTryRun_Action
+  - Moth.Tasks.Tests.TaskQueueTests.EnqueueAndTryRun_IDisposable
+  - Moth.Tasks.Tests.TaskQueueTests.EnqueueAndTryRun_ITask
+  - Moth.Tasks.Tests.TaskQueueTests.EnqueueAndTryRun_Profiler
+  - Moth.Tasks.Tests.TaskQueueTests.EnqueueITask
+  langs:
+  - csharp
+  - vb
+  name: TaskQueueTests
+  nameWithType: TaskQueueTests
+  fullName: Moth.Tasks.Tests.TaskQueueTests
+  type: Class
+  source:
+    remote:
+      path: Moth.Tasks.Tests/TaskQueueTests.cs
+      branch: main
+      repo: https://github.com/djmoth/Moth.Tasks.git
+    id: TaskQueueTests
+    path: ../Moth.Tasks.Tests/TaskQueueTests.cs
+    startLine: 6
+  assemblies:
+  - Moth.Tasks.Tests
+  namespace: Moth.Tasks.Tests
+  syntax:
+    content: public class TaskQueueTests
+    content.vb: Public Class TaskQueueTests
+  inheritance:
+  - System.Object
+  inheritedMembers:
+  - System.Object.Equals(System.Object)
+  - System.Object.Equals(System.Object,System.Object)
+  - System.Object.GetHashCode
+  - System.Object.GetType
+  - System.Object.MemberwiseClone
+  - System.Object.ReferenceEquals(System.Object,System.Object)
+  - System.Object.ToString
+  modifiers.csharp:
+  - public
+  - class
+  modifiers.vb:
+  - Public
+  - Class
+- uid: Moth.Tasks.Tests.TaskQueueTests.EnqueueITask
+  commentId: M:Moth.Tasks.Tests.TaskQueueTests.EnqueueITask
+  id: EnqueueITask
+  parent: Moth.Tasks.Tests.TaskQueueTests
+  langs:
+  - csharp
+  - vb
+  name: EnqueueITask()
+  nameWithType: TaskQueueTests.EnqueueITask()
+  fullName: Moth.Tasks.Tests.TaskQueueTests.EnqueueITask()
+  type: Method
+  source:
+    remote:
+      path: Moth.Tasks.Tests/TaskQueueTests.cs
+      branch: main
+      repo: https://github.com/djmoth/Moth.Tasks.git
+    id: EnqueueITask
+    path: ../Moth.Tasks.Tests/TaskQueueTests.cs
+    startLine: 8
+  assemblies:
+  - Moth.Tasks.Tests
+  namespace: Moth.Tasks.Tests
+  syntax:
+    content: >-
+      [Test]
+
+      public void EnqueueITask()
+    content.vb: >-
+      <Test>
+
+      Public Sub EnqueueITask
+  overload: Moth.Tasks.Tests.TaskQueueTests.EnqueueITask*
+  attributes:
+  - type: NUnit.Framework.TestAttribute
+    ctor: NUnit.Framework.TestAttribute.#ctor
+    arguments: []
+  modifiers.csharp:
+  - public
+  modifiers.vb:
+  - Public
+- uid: Moth.Tasks.Tests.TaskQueueTests.EnqueueAction
+  commentId: M:Moth.Tasks.Tests.TaskQueueTests.EnqueueAction
+  id: EnqueueAction
+  parent: Moth.Tasks.Tests.TaskQueueTests
+  langs:
+  - csharp
+  - vb
+  name: EnqueueAction()
+  nameWithType: TaskQueueTests.EnqueueAction()
+  fullName: Moth.Tasks.Tests.TaskQueueTests.EnqueueAction()
+  type: Method
+  source:
+    remote:
+      path: Moth.Tasks.Tests/TaskQueueTests.cs
+      branch: main
+      repo: https://github.com/djmoth/Moth.Tasks.git
+    id: EnqueueAction
+    path: ../Moth.Tasks.Tests/TaskQueueTests.cs
+    startLine: 16
+  assemblies:
+  - Moth.Tasks.Tests
+  namespace: Moth.Tasks.Tests
+  syntax:
+    content: >-
+      [Test]
+
+      public void EnqueueAction()
+    content.vb: >-
+      <Test>
+
+      Public Sub EnqueueAction
+  overload: Moth.Tasks.Tests.TaskQueueTests.EnqueueAction*
+  attributes:
+  - type: NUnit.Framework.TestAttribute
+    ctor: NUnit.Framework.TestAttribute.#ctor
+    arguments: []
+  modifiers.csharp:
+  - public
+  modifiers.vb:
+  - Public
+- uid: Moth.Tasks.Tests.TaskQueueTests.EnqueueAndTryRun_ITask
+  commentId: M:Moth.Tasks.Tests.TaskQueueTests.EnqueueAndTryRun_ITask
+  id: EnqueueAndTryRun_ITask
+  parent: Moth.Tasks.Tests.TaskQueueTests
+  langs:
+  - csharp
+  - vb
+  name: EnqueueAndTryRun_ITask()
+  nameWithType: TaskQueueTests.EnqueueAndTryRun_ITask()
+  fullName: Moth.Tasks.Tests.TaskQueueTests.EnqueueAndTryRun_ITask()
+  type: Method
+  source:
+    remote:
+      path: Moth.Tasks.Tests/TaskQueueTests.cs
+      branch: main
+      repo: https://github.com/djmoth/Moth.Tasks.git
+    id: EnqueueAndTryRun_ITask
+    path: ../Moth.Tasks.Tests/TaskQueueTests.cs
+    startLine: 31
+  assemblies:
+  - Moth.Tasks.Tests
+  namespace: Moth.Tasks.Tests
+  syntax:
+    content: >-
+      [Test]
+
+      public void EnqueueAndTryRun_ITask()
+    content.vb: >-
+      <Test>
+
+      Public Sub EnqueueAndTryRun_ITask
+  overload: Moth.Tasks.Tests.TaskQueueTests.EnqueueAndTryRun_ITask*
+  attributes:
+  - type: NUnit.Framework.TestAttribute
+    ctor: NUnit.Framework.TestAttribute.#ctor
+    arguments: []
+  modifiers.csharp:
+  - public
+  modifiers.vb:
+  - Public
+- uid: Moth.Tasks.Tests.TaskQueueTests.EnqueueAndTryRun_Action
+  commentId: M:Moth.Tasks.Tests.TaskQueueTests.EnqueueAndTryRun_Action
+  id: EnqueueAndTryRun_Action
+  parent: Moth.Tasks.Tests.TaskQueueTests
+  langs:
+  - csharp
+  - vb
+  name: EnqueueAndTryRun_Action()
+  nameWithType: TaskQueueTests.EnqueueAndTryRun_Action()
+  fullName: Moth.Tasks.Tests.TaskQueueTests.EnqueueAndTryRun_Action()
+  type: Method
+  source:
+    remote:
+      path: Moth.Tasks.Tests/TaskQueueTests.cs
+      branch: main
+      repo: https://github.com/djmoth/Moth.Tasks.git
+    id: EnqueueAndTryRun_Action
+    path: ../Moth.Tasks.Tests/TaskQueueTests.cs
+    startLine: 50
+  assemblies:
+  - Moth.Tasks.Tests
+  namespace: Moth.Tasks.Tests
+  syntax:
+    content: >-
+      [Test]
+
+      public void EnqueueAndTryRun_Action()
+    content.vb: >-
+      <Test>
+
+      Public Sub EnqueueAndTryRun_Action
+  overload: Moth.Tasks.Tests.TaskQueueTests.EnqueueAndTryRun_Action*
+  attributes:
+  - type: NUnit.Framework.TestAttribute
+    ctor: NUnit.Framework.TestAttribute.#ctor
+    arguments: []
+  modifiers.csharp:
+  - public
+  modifiers.vb:
+  - Public
+- uid: Moth.Tasks.Tests.TaskQueueTests.EnqueueAndTryRun_Profiler
+  commentId: M:Moth.Tasks.Tests.TaskQueueTests.EnqueueAndTryRun_Profiler
+  id: EnqueueAndTryRun_Profiler
+  parent: Moth.Tasks.Tests.TaskQueueTests
+  langs:
+  - csharp
+  - vb
+  name: EnqueueAndTryRun_Profiler()
+  nameWithType: TaskQueueTests.EnqueueAndTryRun_Profiler()
+  fullName: Moth.Tasks.Tests.TaskQueueTests.EnqueueAndTryRun_Profiler()
+  type: Method
+  source:
+    remote:
+      path: Moth.Tasks.Tests/TaskQueueTests.cs
+      branch: main
+      repo: https://github.com/djmoth/Moth.Tasks.git
+    id: EnqueueAndTryRun_Profiler
+    path: ../Moth.Tasks.Tests/TaskQueueTests.cs
+    startLine: 69
+  assemblies:
+  - Moth.Tasks.Tests
+  namespace: Moth.Tasks.Tests
+  syntax:
+    content: >-
+      [Test]
+
+      public void EnqueueAndTryRun_Profiler()
+    content.vb: >-
+      <Test>
+
+      Public Sub EnqueueAndTryRun_Profiler
+  overload: Moth.Tasks.Tests.TaskQueueTests.EnqueueAndTryRun_Profiler*
+  attributes:
+  - type: NUnit.Framework.TestAttribute
+    ctor: NUnit.Framework.TestAttribute.#ctor
+    arguments: []
+  modifiers.csharp:
+  - public
+  modifiers.vb:
+  - Public
+- uid: Moth.Tasks.Tests.TaskQueueTests.EnqueueAndTryRun_IDisposable
+  commentId: M:Moth.Tasks.Tests.TaskQueueTests.EnqueueAndTryRun_IDisposable
+  id: EnqueueAndTryRun_IDisposable
+  parent: Moth.Tasks.Tests.TaskQueueTests
+  langs:
+  - csharp
+  - vb
+  name: EnqueueAndTryRun_IDisposable()
+  nameWithType: TaskQueueTests.EnqueueAndTryRun_IDisposable()
+  fullName: Moth.Tasks.Tests.TaskQueueTests.EnqueueAndTryRun_IDisposable()
+  type: Method
+  source:
+    remote:
+      path: Moth.Tasks.Tests/TaskQueueTests.cs
+      branch: main
+      repo: https://github.com/djmoth/Moth.Tasks.git
+    id: EnqueueAndTryRun_IDisposable
+    path: ../Moth.Tasks.Tests/TaskQueueTests.cs
+    startLine: 90
+  assemblies:
+  - Moth.Tasks.Tests
+  namespace: Moth.Tasks.Tests
+  syntax:
+    content: >-
+      [Test]
+
+      public void EnqueueAndTryRun_IDisposable()
+    content.vb: >-
+      <Test>
+
+      Public Sub EnqueueAndTryRun_IDisposable
+  overload: Moth.Tasks.Tests.TaskQueueTests.EnqueueAndTryRun_IDisposable*
+  attributes:
+  - type: NUnit.Framework.TestAttribute
+    ctor: NUnit.Framework.TestAttribute.#ctor
+    arguments: []
+  modifiers.csharp:
+  - public
+  modifiers.vb:
+  - Public
+references:
+- uid: Moth.Tasks.Tests
+  commentId: N:Moth.Tasks.Tests
+  name: Moth.Tasks.Tests
+  nameWithType: Moth.Tasks.Tests
+  fullName: Moth.Tasks.Tests
+- uid: System.Object
+  commentId: T:System.Object
+  parent: System
+  isExternal: true
+  name: Object
+  nameWithType: Object
+  fullName: System.Object
+- uid: System.Object.Equals(System.Object)
+  commentId: M:System.Object.Equals(System.Object)
+  parent: System.Object
+  isExternal: true
+  name: Equals(Object)
+  nameWithType: Object.Equals(Object)
+  fullName: System.Object.Equals(System.Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    nameWithType: Object.Equals
+    fullName: System.Object.Equals
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    nameWithType: Object.Equals
+    fullName: System.Object.Equals
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System.Object.Equals(System.Object,System.Object)
+  commentId: M:System.Object.Equals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  name: Equals(Object, Object)
+  nameWithType: Object.Equals(Object, Object)
+  fullName: System.Object.Equals(System.Object, System.Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    nameWithType: Object.Equals
+    fullName: System.Object.Equals
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    nameWithType: Object.Equals
+    fullName: System.Object.Equals
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System.Object.GetHashCode
+  commentId: M:System.Object.GetHashCode
+  parent: System.Object
+  isExternal: true
+  name: GetHashCode()
+  nameWithType: Object.GetHashCode()
+  fullName: System.Object.GetHashCode()
+  spec.csharp:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    nameWithType: Object.GetHashCode
+    fullName: System.Object.GetHashCode
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    nameWithType: Object.GetHashCode
+    fullName: System.Object.GetHashCode
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System.Object.GetType
+  commentId: M:System.Object.GetType
+  parent: System.Object
+  isExternal: true
+  name: GetType()
+  nameWithType: Object.GetType()
+  fullName: System.Object.GetType()
+  spec.csharp:
+  - uid: System.Object.GetType
+    name: GetType
+    nameWithType: Object.GetType
+    fullName: System.Object.GetType
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: System.Object.GetType
+    name: GetType
+    nameWithType: Object.GetType
+    fullName: System.Object.GetType
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System.Object.MemberwiseClone
+  commentId: M:System.Object.MemberwiseClone
+  parent: System.Object
+  isExternal: true
+  name: MemberwiseClone()
+  nameWithType: Object.MemberwiseClone()
+  fullName: System.Object.MemberwiseClone()
+  spec.csharp:
+  - uid: System.Object.MemberwiseClone
+    name: MemberwiseClone
+    nameWithType: Object.MemberwiseClone
+    fullName: System.Object.MemberwiseClone
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: System.Object.MemberwiseClone
+    name: MemberwiseClone
+    nameWithType: Object.MemberwiseClone
+    fullName: System.Object.MemberwiseClone
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System.Object.ReferenceEquals(System.Object,System.Object)
+  commentId: M:System.Object.ReferenceEquals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  name: ReferenceEquals(Object, Object)
+  nameWithType: Object.ReferenceEquals(Object, Object)
+  fullName: System.Object.ReferenceEquals(System.Object, System.Object)
+  spec.csharp:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    nameWithType: Object.ReferenceEquals
+    fullName: System.Object.ReferenceEquals
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    nameWithType: Object.ReferenceEquals
+    fullName: System.Object.ReferenceEquals
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System.Object.ToString
+  commentId: M:System.Object.ToString
+  parent: System.Object
+  isExternal: true
+  name: ToString()
+  nameWithType: Object.ToString()
+  fullName: System.Object.ToString()
+  spec.csharp:
+  - uid: System.Object.ToString
+    name: ToString
+    nameWithType: Object.ToString
+    fullName: System.Object.ToString
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: System.Object.ToString
+    name: ToString
+    nameWithType: Object.ToString
+    fullName: System.Object.ToString
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System
+  commentId: N:System
+  isExternal: true
+  name: System
+  nameWithType: System
+  fullName: System
+- uid: Moth.Tasks.Tests.TaskQueueTests.EnqueueITask*
+  commentId: Overload:Moth.Tasks.Tests.TaskQueueTests.EnqueueITask
+  name: EnqueueITask
+  nameWithType: TaskQueueTests.EnqueueITask
+  fullName: Moth.Tasks.Tests.TaskQueueTests.EnqueueITask
+- uid: Moth.Tasks.Tests.TaskQueueTests.EnqueueAction*
+  commentId: Overload:Moth.Tasks.Tests.TaskQueueTests.EnqueueAction
+  name: EnqueueAction
+  nameWithType: TaskQueueTests.EnqueueAction
+  fullName: Moth.Tasks.Tests.TaskQueueTests.EnqueueAction
+- uid: Moth.Tasks.Tests.TaskQueueTests.EnqueueAndTryRun_ITask*
+  commentId: Overload:Moth.Tasks.Tests.TaskQueueTests.EnqueueAndTryRun_ITask
+  name: EnqueueAndTryRun_ITask
+  nameWithType: TaskQueueTests.EnqueueAndTryRun_ITask
+  fullName: Moth.Tasks.Tests.TaskQueueTests.EnqueueAndTryRun_ITask
+- uid: Moth.Tasks.Tests.TaskQueueTests.EnqueueAndTryRun_Action*
+  commentId: Overload:Moth.Tasks.Tests.TaskQueueTests.EnqueueAndTryRun_Action
+  name: EnqueueAndTryRun_Action
+  nameWithType: TaskQueueTests.EnqueueAndTryRun_Action
+  fullName: Moth.Tasks.Tests.TaskQueueTests.EnqueueAndTryRun_Action
+- uid: Moth.Tasks.Tests.TaskQueueTests.EnqueueAndTryRun_Profiler*
+  commentId: Overload:Moth.Tasks.Tests.TaskQueueTests.EnqueueAndTryRun_Profiler
+  name: EnqueueAndTryRun_Profiler
+  nameWithType: TaskQueueTests.EnqueueAndTryRun_Profiler
+  fullName: Moth.Tasks.Tests.TaskQueueTests.EnqueueAndTryRun_Profiler
+- uid: Moth.Tasks.Tests.TaskQueueTests.EnqueueAndTryRun_IDisposable*
+  commentId: Overload:Moth.Tasks.Tests.TaskQueueTests.EnqueueAndTryRun_IDisposable
+  name: EnqueueAndTryRun_IDisposable
+  nameWithType: TaskQueueTests.EnqueueAndTryRun_IDisposable
+  fullName: Moth.Tasks.Tests.TaskQueueTests.EnqueueAndTryRun_IDisposable

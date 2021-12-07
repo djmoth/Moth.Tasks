@@ -6,16 +6,17 @@ items:
   parent: Moth.Tasks
   children:
   - Moth.Tasks.TaskQueue.Clear(System.Action{System.Exception})
+  - Moth.Tasks.TaskQueue.Count
   - Moth.Tasks.TaskQueue.Dispose
   - Moth.Tasks.TaskQueue.Enqueue(System.Action)
   - Moth.Tasks.TaskQueue.Enqueue``1(``0@)
   - Moth.Tasks.TaskQueue.Enqueue``1(``0@,Moth.Tasks.TaskHandle@)
   - Moth.Tasks.TaskQueue.Enqueue``1(System.Action{``0},``0)
   - Moth.Tasks.TaskQueue.Finalize
-  - Moth.Tasks.TaskQueue.TryRunNextTask
-  - Moth.Tasks.TaskQueue.TryRunNextTask(Moth.Tasks.IProfiler)
-  - Moth.Tasks.TaskQueue.TryRunNextTask(Moth.Tasks.IProfiler,System.Exception@)
-  - Moth.Tasks.TaskQueue.TryRunNextTask(System.Exception@)
+  - Moth.Tasks.TaskQueue.RunNextTask
+  - Moth.Tasks.TaskQueue.RunNextTask(Moth.Tasks.IProfiler)
+  - Moth.Tasks.TaskQueue.RunNextTask(Moth.Tasks.IProfiler,System.Exception@)
+  - Moth.Tasks.TaskQueue.RunNextTask(System.Exception@)
   langs:
   - csharp
   - vb
@@ -27,7 +28,7 @@ items:
     remote:
       path: Moth.Tasks/TaskQueue.cs
       branch: main
-      repo: https://github.com/djmoth/Moth.Tasks
+      repo: https://github.com/djmoth/Moth.Tasks.git
     id: TaskQueue
     path: TaskQueue.cs
     startLine: 12
@@ -76,7 +77,7 @@ items:
     remote:
       path: Moth.Tasks/TaskQueue.cs
       branch: main
-      repo: https://github.com/djmoth/Moth.Tasks
+      repo: https://github.com/djmoth/Moth.Tasks.git
     id: Finalize
     path: TaskQueue.cs
     startLine: 29
@@ -93,6 +94,44 @@ items:
   - protected
   modifiers.vb:
   - Protected
+- uid: Moth.Tasks.TaskQueue.Count
+  commentId: P:Moth.Tasks.TaskQueue.Count
+  id: Count
+  parent: Moth.Tasks.TaskQueue
+  langs:
+  - csharp
+  - vb
+  name: Count
+  nameWithType: TaskQueue.Count
+  fullName: Moth.Tasks.TaskQueue.Count
+  type: Property
+  source:
+    remote:
+      path: Moth.Tasks/TaskQueue.cs
+      branch: main
+      repo: https://github.com/djmoth/Moth.Tasks.git
+    id: Count
+    path: TaskQueue.cs
+    startLine: 37
+  assemblies:
+  - Moth.Tasks
+  namespace: Moth.Tasks
+  summary: "\nThe number of tasks enqueued.\n"
+  remarks: "\nAs the <xref href=\"Moth.Tasks.TaskQueue\" data-throw-if-not-resolved=\"false\"></xref> may be used from multiple threads, reading and acting on the value of this property may cause a race condition.\n"
+  example: []
+  syntax:
+    content: public int Count { get; }
+    parameters: []
+    return:
+      type: System.Int32
+    content.vb: Public ReadOnly Property Count As Integer
+  overload: Moth.Tasks.TaskQueue.Count*
+  modifiers.csharp:
+  - public
+  - get
+  modifiers.vb:
+  - Public
+  - ReadOnly
 - uid: Moth.Tasks.TaskQueue.Enqueue(System.Action)
   commentId: M:Moth.Tasks.TaskQueue.Enqueue(System.Action)
   id: Enqueue(System.Action)
@@ -108,10 +147,10 @@ items:
     remote:
       path: Moth.Tasks/TaskQueue.cs
       branch: main
-      repo: https://github.com/djmoth/Moth.Tasks
+      repo: https://github.com/djmoth/Moth.Tasks.git
     id: Enqueue
     path: TaskQueue.cs
-    startLine: 35
+    startLine: 52
   assemblies:
   - Moth.Tasks
   namespace: Moth.Tasks
@@ -144,10 +183,10 @@ items:
     remote:
       path: Moth.Tasks/TaskQueue.cs
       branch: main
-      repo: https://github.com/djmoth/Moth.Tasks
+      repo: https://github.com/djmoth/Moth.Tasks.git
     id: Enqueue
     path: TaskQueue.cs
-    startLine: 43
+    startLine: 60
   assemblies:
   - Moth.Tasks
   namespace: Moth.Tasks
@@ -189,10 +228,10 @@ items:
     remote:
       path: Moth.Tasks/TaskQueue.cs
       branch: main
-      repo: https://github.com/djmoth/Moth.Tasks
+      repo: https://github.com/djmoth/Moth.Tasks.git
     id: Enqueue
     path: TaskQueue.cs
-    startLine: 50
+    startLine: 67
   assemblies:
   - Moth.Tasks
   namespace: Moth.Tasks
@@ -233,10 +272,10 @@ items:
     remote:
       path: Moth.Tasks/TaskQueue.cs
       branch: main
-      repo: https://github.com/djmoth/Moth.Tasks
+      repo: https://github.com/djmoth/Moth.Tasks.git
     id: Enqueue
     path: TaskQueue.cs
-    startLine: 64
+    startLine: 81
   assemblies:
   - Moth.Tasks
   namespace: Moth.Tasks
@@ -265,25 +304,25 @@ items:
   - Public
   fullName.vb: Moth.Tasks.TaskQueue.Enqueue(Of T)(ByRef T, ByRef Moth.Tasks.TaskHandle)
   name.vb: Enqueue(Of T)(ByRef T, ByRef TaskHandle)
-- uid: Moth.Tasks.TaskQueue.TryRunNextTask
-  commentId: M:Moth.Tasks.TaskQueue.TryRunNextTask
-  id: TryRunNextTask
+- uid: Moth.Tasks.TaskQueue.RunNextTask
+  commentId: M:Moth.Tasks.TaskQueue.RunNextTask
+  id: RunNextTask
   parent: Moth.Tasks.TaskQueue
   langs:
   - csharp
   - vb
-  name: TryRunNextTask()
-  nameWithType: TaskQueue.TryRunNextTask()
-  fullName: Moth.Tasks.TaskQueue.TryRunNextTask()
+  name: RunNextTask()
+  nameWithType: TaskQueue.RunNextTask()
+  fullName: Moth.Tasks.TaskQueue.RunNextTask()
   type: Method
   source:
     remote:
       path: Moth.Tasks/TaskQueue.cs
       branch: main
-      repo: https://github.com/djmoth/Moth.Tasks
-    id: TryRunNextTask
+      repo: https://github.com/djmoth/Moth.Tasks.git
+    id: RunNextTask
     path: TaskQueue.cs
-    startLine: 91
+    startLine: 108
   assemblies:
   - Moth.Tasks
   namespace: Moth.Tasks
@@ -291,35 +330,35 @@ items:
   remarks: "\nPlease note that the return value does not indicate if a task was successful. The method will return <xref uid=\"langword_csharp_true\" name=\"true\" href=\"\"></xref> if a task was ready in the queue, regardless if an exception occured.\n"
   example: []
   syntax:
-    content: public bool TryRunNextTask()
+    content: public bool RunNextTask()
     return:
       type: System.Boolean
       description: <xref uid="langword_csharp_true" name="true" href=""></xref> if a task was run, <xref uid="langword_csharp_false" name="false" href=""></xref> if the <xref href="Moth.Tasks.TaskQueue" data-throw-if-not-resolved="false"></xref> is empty.
-    content.vb: Public Function TryRunNextTask As Boolean
-  overload: Moth.Tasks.TaskQueue.TryRunNextTask*
+    content.vb: Public Function RunNextTask As Boolean
+  overload: Moth.Tasks.TaskQueue.RunNextTask*
   modifiers.csharp:
   - public
   modifiers.vb:
   - Public
-- uid: Moth.Tasks.TaskQueue.TryRunNextTask(Moth.Tasks.IProfiler)
-  commentId: M:Moth.Tasks.TaskQueue.TryRunNextTask(Moth.Tasks.IProfiler)
-  id: TryRunNextTask(Moth.Tasks.IProfiler)
+- uid: Moth.Tasks.TaskQueue.RunNextTask(Moth.Tasks.IProfiler)
+  commentId: M:Moth.Tasks.TaskQueue.RunNextTask(Moth.Tasks.IProfiler)
+  id: RunNextTask(Moth.Tasks.IProfiler)
   parent: Moth.Tasks.TaskQueue
   langs:
   - csharp
   - vb
-  name: TryRunNextTask(IProfiler)
-  nameWithType: TaskQueue.TryRunNextTask(IProfiler)
-  fullName: Moth.Tasks.TaskQueue.TryRunNextTask(Moth.Tasks.IProfiler)
+  name: RunNextTask(IProfiler)
+  nameWithType: TaskQueue.RunNextTask(IProfiler)
+  fullName: Moth.Tasks.TaskQueue.RunNextTask(Moth.Tasks.IProfiler)
   type: Method
   source:
     remote:
       path: Moth.Tasks/TaskQueue.cs
       branch: main
-      repo: https://github.com/djmoth/Moth.Tasks
-    id: TryRunNextTask
+      repo: https://github.com/djmoth/Moth.Tasks.git
+    id: RunNextTask
     path: TaskQueue.cs
-    startLine: 101
+    startLine: 118
   assemblies:
   - Moth.Tasks
   namespace: Moth.Tasks
@@ -327,7 +366,7 @@ items:
   remarks: "\nPlease note that the return value does not indicate if a task was successful. The method will return <xref uid=\"langword_csharp_true\" name=\"true\" href=\"\"></xref> if a task was ready in the queue, regardless if an exception occured.\n"
   example: []
   syntax:
-    content: public bool TryRunNextTask(IProfiler profiler)
+    content: public bool RunNextTask(IProfiler profiler)
     parameters:
     - id: profiler
       type: Moth.Tasks.IProfiler
@@ -335,31 +374,31 @@ items:
     return:
       type: System.Boolean
       description: <xref uid="langword_csharp_true" name="true" href=""></xref> if a task was run, <xref uid="langword_csharp_false" name="false" href=""></xref> if the <xref href="Moth.Tasks.TaskQueue" data-throw-if-not-resolved="false"></xref> is empty.
-    content.vb: Public Function TryRunNextTask(profiler As IProfiler) As Boolean
-  overload: Moth.Tasks.TaskQueue.TryRunNextTask*
+    content.vb: Public Function RunNextTask(profiler As IProfiler) As Boolean
+  overload: Moth.Tasks.TaskQueue.RunNextTask*
   modifiers.csharp:
   - public
   modifiers.vb:
   - Public
-- uid: Moth.Tasks.TaskQueue.TryRunNextTask(System.Exception@)
-  commentId: M:Moth.Tasks.TaskQueue.TryRunNextTask(System.Exception@)
-  id: TryRunNextTask(System.Exception@)
+- uid: Moth.Tasks.TaskQueue.RunNextTask(System.Exception@)
+  commentId: M:Moth.Tasks.TaskQueue.RunNextTask(System.Exception@)
+  id: RunNextTask(System.Exception@)
   parent: Moth.Tasks.TaskQueue
   langs:
   - csharp
   - vb
-  name: TryRunNextTask(out Exception)
-  nameWithType: TaskQueue.TryRunNextTask(out Exception)
-  fullName: Moth.Tasks.TaskQueue.TryRunNextTask(out System.Exception)
+  name: RunNextTask(out Exception)
+  nameWithType: TaskQueue.RunNextTask(out Exception)
+  fullName: Moth.Tasks.TaskQueue.RunNextTask(out System.Exception)
   type: Method
   source:
     remote:
       path: Moth.Tasks/TaskQueue.cs
       branch: main
-      repo: https://github.com/djmoth/Moth.Tasks
-    id: TryRunNextTask
+      repo: https://github.com/djmoth/Moth.Tasks.git
+    id: RunNextTask
     path: TaskQueue.cs
-    startLine: 111
+    startLine: 128
   assemblies:
   - Moth.Tasks
   namespace: Moth.Tasks
@@ -367,7 +406,7 @@ items:
   remarks: "\nPlease note that the return value does not indicate if a task was successful. The method will return <xref uid=\"langword_csharp_true\" name=\"true\" href=\"\"></xref> if a task was ready in the queue, regardless if an exception occured.\n"
   example: []
   syntax:
-    content: public bool TryRunNextTask(out Exception exception)
+    content: public bool RunNextTask(out Exception exception)
     parameters:
     - id: exception
       type: System.Exception
@@ -375,34 +414,34 @@ items:
     return:
       type: System.Boolean
       description: <xref uid="langword_csharp_true" name="true" href=""></xref> if a task was run, <xref uid="langword_csharp_false" name="false" href=""></xref> if the <xref href="Moth.Tasks.TaskQueue" data-throw-if-not-resolved="false"></xref> is empty.
-    content.vb: Public Function TryRunNextTask(ByRef exception As Exception) As Boolean
-  overload: Moth.Tasks.TaskQueue.TryRunNextTask*
-  nameWithType.vb: TaskQueue.TryRunNextTask(ByRef Exception)
+    content.vb: Public Function RunNextTask(ByRef exception As Exception) As Boolean
+  overload: Moth.Tasks.TaskQueue.RunNextTask*
+  nameWithType.vb: TaskQueue.RunNextTask(ByRef Exception)
   modifiers.csharp:
   - public
   modifiers.vb:
   - Public
-  fullName.vb: Moth.Tasks.TaskQueue.TryRunNextTask(ByRef System.Exception)
-  name.vb: TryRunNextTask(ByRef Exception)
-- uid: Moth.Tasks.TaskQueue.TryRunNextTask(Moth.Tasks.IProfiler,System.Exception@)
-  commentId: M:Moth.Tasks.TaskQueue.TryRunNextTask(Moth.Tasks.IProfiler,System.Exception@)
-  id: TryRunNextTask(Moth.Tasks.IProfiler,System.Exception@)
+  fullName.vb: Moth.Tasks.TaskQueue.RunNextTask(ByRef System.Exception)
+  name.vb: RunNextTask(ByRef Exception)
+- uid: Moth.Tasks.TaskQueue.RunNextTask(Moth.Tasks.IProfiler,System.Exception@)
+  commentId: M:Moth.Tasks.TaskQueue.RunNextTask(Moth.Tasks.IProfiler,System.Exception@)
+  id: RunNextTask(Moth.Tasks.IProfiler,System.Exception@)
   parent: Moth.Tasks.TaskQueue
   langs:
   - csharp
   - vb
-  name: TryRunNextTask(IProfiler, out Exception)
-  nameWithType: TaskQueue.TryRunNextTask(IProfiler, out Exception)
-  fullName: Moth.Tasks.TaskQueue.TryRunNextTask(Moth.Tasks.IProfiler, out System.Exception)
+  name: RunNextTask(IProfiler, out Exception)
+  nameWithType: TaskQueue.RunNextTask(IProfiler, out Exception)
+  fullName: Moth.Tasks.TaskQueue.RunNextTask(Moth.Tasks.IProfiler, out System.Exception)
   type: Method
   source:
     remote:
       path: Moth.Tasks/TaskQueue.cs
       branch: main
-      repo: https://github.com/djmoth/Moth.Tasks
-    id: TryRunNextTask
+      repo: https://github.com/djmoth/Moth.Tasks.git
+    id: RunNextTask
     path: TaskQueue.cs
-    startLine: 122
+    startLine: 139
   assemblies:
   - Moth.Tasks
   namespace: Moth.Tasks
@@ -410,7 +449,7 @@ items:
   remarks: "\nPlease note that the return value does not indicate if a task was successful. The method will return <xref uid=\"langword_csharp_true\" name=\"true\" href=\"\"></xref> if a task was ready in the queue, regardless if an exception occured.\n"
   example: []
   syntax:
-    content: public bool TryRunNextTask(IProfiler profiler, out Exception exception)
+    content: public bool RunNextTask(IProfiler profiler, out Exception exception)
     parameters:
     - id: profiler
       type: Moth.Tasks.IProfiler
@@ -421,15 +460,15 @@ items:
     return:
       type: System.Boolean
       description: <xref uid="langword_csharp_true" name="true" href=""></xref> if a task was run, <xref uid="langword_csharp_false" name="false" href=""></xref> if the <xref href="Moth.Tasks.TaskQueue" data-throw-if-not-resolved="false"></xref> is empty.
-    content.vb: Public Function TryRunNextTask(profiler As IProfiler, ByRef exception As Exception) As Boolean
-  overload: Moth.Tasks.TaskQueue.TryRunNextTask*
-  nameWithType.vb: TaskQueue.TryRunNextTask(IProfiler, ByRef Exception)
+    content.vb: Public Function RunNextTask(profiler As IProfiler, ByRef exception As Exception) As Boolean
+  overload: Moth.Tasks.TaskQueue.RunNextTask*
+  nameWithType.vb: TaskQueue.RunNextTask(IProfiler, ByRef Exception)
   modifiers.csharp:
   - public
   modifiers.vb:
   - Public
-  fullName.vb: Moth.Tasks.TaskQueue.TryRunNextTask(Moth.Tasks.IProfiler, ByRef System.Exception)
-  name.vb: TryRunNextTask(IProfiler, ByRef Exception)
+  fullName.vb: Moth.Tasks.TaskQueue.RunNextTask(Moth.Tasks.IProfiler, ByRef System.Exception)
+  name.vb: RunNextTask(IProfiler, ByRef Exception)
 - uid: Moth.Tasks.TaskQueue.Clear(System.Action{System.Exception})
   commentId: M:Moth.Tasks.TaskQueue.Clear(System.Action{System.Exception})
   id: Clear(System.Action{System.Exception})
@@ -445,10 +484,10 @@ items:
     remote:
       path: Moth.Tasks/TaskQueue.cs
       branch: main
-      repo: https://github.com/djmoth/Moth.Tasks
+      repo: https://github.com/djmoth/Moth.Tasks.git
     id: Clear
     path: TaskQueue.cs
-    startLine: 190
+    startLine: 207
   assemblies:
   - Moth.Tasks
   namespace: Moth.Tasks
@@ -485,10 +524,10 @@ items:
     remote:
       path: Moth.Tasks/TaskQueue.cs
       branch: main
-      repo: https://github.com/djmoth/Moth.Tasks
+      repo: https://github.com/djmoth/Moth.Tasks.git
     id: Dispose
     path: TaskQueue.cs
-    startLine: 226
+    startLine: 243
   assemblies:
   - Moth.Tasks
   namespace: Moth.Tasks
@@ -851,6 +890,18 @@ references:
   name: Finalize
   nameWithType: TaskQueue.Finalize
   fullName: Moth.Tasks.TaskQueue.Finalize
+- uid: Moth.Tasks.TaskQueue.Count*
+  commentId: Overload:Moth.Tasks.TaskQueue.Count
+  name: Count
+  nameWithType: TaskQueue.Count
+  fullName: Moth.Tasks.TaskQueue.Count
+- uid: System.Int32
+  commentId: T:System.Int32
+  parent: System
+  isExternal: true
+  name: Int32
+  nameWithType: Int32
+  fullName: System.Int32
 - uid: Moth.Tasks.TaskQueue.Enqueue*
   commentId: Overload:Moth.Tasks.TaskQueue.Enqueue
   name: Enqueue
@@ -963,11 +1014,11 @@ references:
   name: TaskHandle
   nameWithType: TaskHandle
   fullName: Moth.Tasks.TaskHandle
-- uid: Moth.Tasks.TaskQueue.TryRunNextTask*
-  commentId: Overload:Moth.Tasks.TaskQueue.TryRunNextTask
-  name: TryRunNextTask
-  nameWithType: TaskQueue.TryRunNextTask
-  fullName: Moth.Tasks.TaskQueue.TryRunNextTask
+- uid: Moth.Tasks.TaskQueue.RunNextTask*
+  commentId: Overload:Moth.Tasks.TaskQueue.RunNextTask
+  name: RunNextTask
+  nameWithType: TaskQueue.RunNextTask
+  fullName: Moth.Tasks.TaskQueue.RunNextTask
 - uid: System.Boolean
   commentId: T:System.Boolean
   parent: System

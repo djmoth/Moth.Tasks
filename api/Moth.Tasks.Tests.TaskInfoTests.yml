@@ -1,33 +1,33 @@
 ### YamlMime:ManagedReference
 items:
-- uid: Moth.Tasks.Tests.Tests
-  commentId: T:Moth.Tasks.Tests.Tests
-  id: Tests
+- uid: Moth.Tasks.Tests.TaskInfoTests
+  commentId: T:Moth.Tasks.Tests.TaskInfoTests
+  id: TaskInfoTests
   parent: Moth.Tasks.Tests
   children:
-  - Moth.Tasks.Tests.Tests.EnqueueAndTryRunTask
-  - Moth.Tasks.Tests.Tests.Setup
+  - Moth.Tasks.Tests.TaskInfoTests.CreateDisposableTask
+  - Moth.Tasks.Tests.TaskInfoTests.CreateTask
   langs:
   - csharp
   - vb
-  name: Tests
-  nameWithType: Tests
-  fullName: Moth.Tasks.Tests.Tests
+  name: TaskInfoTests
+  nameWithType: TaskInfoTests
+  fullName: Moth.Tasks.Tests.TaskInfoTests
   type: Class
   source:
     remote:
-      path: Moth.Tasks.Tests/TaskQueue.cs
+      path: Moth.Tasks.Tests/TaskInfoTests.cs
       branch: main
-      repo: https://github.com/djmoth/Moth.Tasks
-    id: Tests
-    path: ../Moth.Tasks.Tests/TaskQueue.cs
-    startLine: 5
+      repo: https://github.com/djmoth/Moth.Tasks.git
+    id: TaskInfoTests
+    path: ../Moth.Tasks.Tests/TaskInfoTests.cs
+    startLine: 8
   assemblies:
   - Moth.Tasks.Tests
   namespace: Moth.Tasks.Tests
   syntax:
-    content: public class Tests
-    content.vb: Public Class Tests
+    content: public class TaskInfoTests
+    content.vb: Public Class TaskInfoTests
   inheritance:
   - System.Object
   inheritedMembers:
@@ -44,65 +44,25 @@ items:
   modifiers.vb:
   - Public
   - Class
-- uid: Moth.Tasks.Tests.Tests.Setup
-  commentId: M:Moth.Tasks.Tests.Tests.Setup
-  id: Setup
-  parent: Moth.Tasks.Tests.Tests
+- uid: Moth.Tasks.Tests.TaskInfoTests.CreateTask
+  commentId: M:Moth.Tasks.Tests.TaskInfoTests.CreateTask
+  id: CreateTask
+  parent: Moth.Tasks.Tests.TaskInfoTests
   langs:
   - csharp
   - vb
-  name: Setup()
-  nameWithType: Tests.Setup()
-  fullName: Moth.Tasks.Tests.Tests.Setup()
+  name: CreateTask()
+  nameWithType: TaskInfoTests.CreateTask()
+  fullName: Moth.Tasks.Tests.TaskInfoTests.CreateTask()
   type: Method
   source:
     remote:
-      path: Moth.Tasks.Tests/TaskQueue.cs
+      path: Moth.Tasks.Tests/TaskInfoTests.cs
       branch: main
-      repo: https://github.com/djmoth/Moth.Tasks
-    id: Setup
-    path: ../Moth.Tasks.Tests/TaskQueue.cs
-    startLine: 7
-  assemblies:
-  - Moth.Tasks.Tests
-  namespace: Moth.Tasks.Tests
-  syntax:
-    content: >-
-      [SetUp]
-
-      public void Setup()
-    content.vb: >-
-      <SetUp>
-
-      Public Sub Setup
-  overload: Moth.Tasks.Tests.Tests.Setup*
-  attributes:
-  - type: NUnit.Framework.SetUpAttribute
-    ctor: NUnit.Framework.SetUpAttribute.#ctor
-    arguments: []
-  modifiers.csharp:
-  - public
-  modifiers.vb:
-  - Public
-- uid: Moth.Tasks.Tests.Tests.EnqueueAndTryRunTask
-  commentId: M:Moth.Tasks.Tests.Tests.EnqueueAndTryRunTask
-  id: EnqueueAndTryRunTask
-  parent: Moth.Tasks.Tests.Tests
-  langs:
-  - csharp
-  - vb
-  name: EnqueueAndTryRunTask()
-  nameWithType: Tests.EnqueueAndTryRunTask()
-  fullName: Moth.Tasks.Tests.Tests.EnqueueAndTryRunTask()
-  type: Method
-  source:
-    remote:
-      path: Moth.Tasks.Tests/TaskQueue.cs
-      branch: main
-      repo: https://github.com/djmoth/Moth.Tasks
-    id: EnqueueAndTryRunTask
-    path: ../Moth.Tasks.Tests/TaskQueue.cs
-    startLine: 13
+      repo: https://github.com/djmoth/Moth.Tasks.git
+    id: CreateTask
+    path: ../Moth.Tasks.Tests/TaskInfoTests.cs
+    startLine: 10
   assemblies:
   - Moth.Tasks.Tests
   namespace: Moth.Tasks.Tests
@@ -110,12 +70,52 @@ items:
     content: >-
       [Test]
 
-      public void EnqueueAndTryRunTask()
+      public void CreateTask()
     content.vb: >-
       <Test>
 
-      Public Sub EnqueueAndTryRunTask
-  overload: Moth.Tasks.Tests.Tests.EnqueueAndTryRunTask*
+      Public Sub CreateTask
+  overload: Moth.Tasks.Tests.TaskInfoTests.CreateTask*
+  attributes:
+  - type: NUnit.Framework.TestAttribute
+    ctor: NUnit.Framework.TestAttribute.#ctor
+    arguments: []
+  modifiers.csharp:
+  - public
+  modifiers.vb:
+  - Public
+- uid: Moth.Tasks.Tests.TaskInfoTests.CreateDisposableTask
+  commentId: M:Moth.Tasks.Tests.TaskInfoTests.CreateDisposableTask
+  id: CreateDisposableTask
+  parent: Moth.Tasks.Tests.TaskInfoTests
+  langs:
+  - csharp
+  - vb
+  name: CreateDisposableTask()
+  nameWithType: TaskInfoTests.CreateDisposableTask()
+  fullName: Moth.Tasks.Tests.TaskInfoTests.CreateDisposableTask()
+  type: Method
+  source:
+    remote:
+      path: Moth.Tasks.Tests/TaskInfoTests.cs
+      branch: main
+      repo: https://github.com/djmoth/Moth.Tasks.git
+    id: CreateDisposableTask
+    path: ../Moth.Tasks.Tests/TaskInfoTests.cs
+    startLine: 16
+  assemblies:
+  - Moth.Tasks.Tests
+  namespace: Moth.Tasks.Tests
+  syntax:
+    content: >-
+      [Test]
+
+      public void CreateDisposableTask()
+    content.vb: >-
+      <Test>
+
+      Public Sub CreateDisposableTask
+  overload: Moth.Tasks.Tests.TaskInfoTests.CreateDisposableTask*
   attributes:
   - type: NUnit.Framework.TestAttribute
     ctor: NUnit.Framework.TestAttribute.#ctor
@@ -422,13 +422,13 @@ references:
   name: System
   nameWithType: System
   fullName: System
-- uid: Moth.Tasks.Tests.Tests.Setup*
-  commentId: Overload:Moth.Tasks.Tests.Tests.Setup
-  name: Setup
-  nameWithType: Tests.Setup
-  fullName: Moth.Tasks.Tests.Tests.Setup
-- uid: Moth.Tasks.Tests.Tests.EnqueueAndTryRunTask*
-  commentId: Overload:Moth.Tasks.Tests.Tests.EnqueueAndTryRunTask
-  name: EnqueueAndTryRunTask
-  nameWithType: Tests.EnqueueAndTryRunTask
-  fullName: Moth.Tasks.Tests.Tests.EnqueueAndTryRunTask
+- uid: Moth.Tasks.Tests.TaskInfoTests.CreateTask*
+  commentId: Overload:Moth.Tasks.Tests.TaskInfoTests.CreateTask
+  name: CreateTask
+  nameWithType: TaskInfoTests.CreateTask
+  fullName: Moth.Tasks.Tests.TaskInfoTests.CreateTask
+- uid: Moth.Tasks.Tests.TaskInfoTests.CreateDisposableTask*
+  commentId: Overload:Moth.Tasks.Tests.TaskInfoTests.CreateDisposableTask
+  name: CreateDisposableTask
+  nameWithType: TaskInfoTests.CreateDisposableTask
+  fullName: Moth.Tasks.Tests.TaskInfoTests.CreateDisposableTask

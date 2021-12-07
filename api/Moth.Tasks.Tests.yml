@@ -4,7 +4,8 @@ items:
   commentId: N:Moth.Tasks.Tests
   id: Moth.Tasks.Tests
   children:
-  - Moth.Tasks.Tests.Tests
+  - Moth.Tasks.Tests.TaskInfoTests
+  - Moth.Tasks.Tests.TaskQueueTests
   langs:
   - csharp
   - vb
@@ -15,8 +16,13 @@ items:
   assemblies:
   - Moth.Tasks.Tests
 references:
-- uid: Moth.Tasks.Tests.Tests
-  commentId: T:Moth.Tasks.Tests.Tests
-  name: Tests
-  nameWithType: Tests
-  fullName: Moth.Tasks.Tests.Tests
+- uid: Moth.Tasks.Tests.TaskInfoTests
+  commentId: T:Moth.Tasks.Tests.TaskInfoTests
+  name: TaskInfoTests
+  nameWithType: TaskInfoTests
+  fullName: Moth.Tasks.Tests.TaskInfoTests
+- uid: Moth.Tasks.Tests.TaskQueueTests
+  commentId: T:Moth.Tasks.Tests.TaskQueueTests
+  name: TaskQueueTests
+  nameWithType: TaskQueueTests
+  fullName: Moth.Tasks.Tests.TaskQueueTests

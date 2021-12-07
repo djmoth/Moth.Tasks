@@ -30,6 +30,23 @@
         ~TaskQueue () => Clear ();
 
         /// <summary>
+        /// The number of tasks enqueued.
+        /// </summary>
+        /// <remarks>
+        /// As the <see cref="TaskQueue"/> may be used from multiple threads, reading and acting on the value of this property may cause a race condition.
+        /// </remarks>
+        public int Count
+        {
+            get
+            {
+                lock (taskLock)
+                {
+                    return tasks.Count;
+                }
+            }
+        }
+
+        /// <summary>
         /// Enqueue an action to be run later.
         /// </summary>
         /// <param name="action">Action to enqueue.</param>
@@ -89,7 +106,7 @@
         /// <remarks>
         /// Please note that the return value does not indicate if a task was successful. The method will return <see langword="true"/> if a task was ready in the queue, regardless if an exception occured.
         /// </remarks>
-        public bool TryRunNextTask () => TryRunNextTask (null, out _);
+        public bool RunNextTask () => RunNextTask (null, out _);
 
         /// <summary>
         /// Try to run the next task in the queue, if present. Also performs profiling on the task through an <see cref="IProfiler"/>.
@@ -99,7 +116,7 @@
         /// <remarks>
         /// Please note that the return value does not indicate if a task was successful. The method will return <see langword="true"/> if a task was ready in the queue, regardless if an exception occured.
         /// </remarks>
-        public bool TryRunNextTask (IProfiler profiler) => TryRunNextTask (profiler, out _);
+        public bool RunNextTask (IProfiler profiler) => RunNextTask (profiler, out _);
 
         /// <summary>
         /// Try to run the next task in the queue, if present. Also provides an <see cref="Exception"/> thrown by the task in case it fails.
@@ -109,7 +126,7 @@
         /// <remarks>
         /// Please note that the return value does not indicate if a task was successful. The method will return <see langword="true"/> if a task was ready in the queue, regardless if an exception occured.
         /// </remarks>
-        public bool TryRunNextTask (out Exception exception) => TryRunNextTask (null, out exception);
+        public bool RunNextTask (out Exception exception) => RunNextTask (null, out exception);
 
         /// <summary>
         /// Try to run the next task in the queue, if present. Also performs profiling on the task through an <see cref="IProfiler"/>, and provides an <see cref="Exception"/> thrown by the task in case it fails.
@@ -120,7 +137,7 @@
         /// <remarks>
         /// Please note that the return value does not indicate if a task was successful. The method will return <see langword="true"/> if a task was ready in the queue, regardless if an exception occured.
         /// </remarks>
-        public bool TryRunNextTask (IProfiler profiler, out Exception exception)
+        public bool RunNextTask (IProfiler profiler, out Exception exception)
         {
             exception = null;
 

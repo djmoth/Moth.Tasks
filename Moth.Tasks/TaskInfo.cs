@@ -67,7 +67,7 @@
             RunOperation run = null;
             DisposeOperation dispose = null;
 
-            if (default (T) is IDisposable) // If T implements IDisposable
+            if (typeof (IDisposable).IsAssignableFrom (type)) // If T implements IDisposable
             {
                 BindingFlags methodBindingFlags = BindingFlags.Static | BindingFlags.NonPublic;
 
@@ -79,7 +79,7 @@
                 run = Run;
             }
 
-            return new TaskInfo (Run, dispose, id, type, Unsafe.SizeOf<T> ());
+            return new TaskInfo (run, dispose, id, type, Unsafe.SizeOf<T> ());
 
             // Run the task
             static void Run (ref TaskQueue.TaskDataAccess access, TaskInfo task)

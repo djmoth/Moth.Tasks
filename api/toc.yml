@@ -13,5 +13,7 @@
 - uid: Moth.Tasks.Tests
   name: Moth.Tasks.Tests
   items:
-  - uid: Moth.Tasks.Tests.Tests
-    name: Tests
+  - uid: Moth.Tasks.Tests.TaskInfoTests
+    name: TaskInfoTests
+  - uid: Moth.Tasks.Tests.TaskQueueTests
+    name: TaskQueueTests

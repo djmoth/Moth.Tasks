@@ -175,6 +175,14 @@
             Finalizes an instance of the <see cref="T:Moth.Tasks.TaskQueue"/> class. Also disposes of tasks implementing <see cref="M:System.IDisposable.Dispose"/>.
             </summary>
         </member>
+        <member name="P:Moth.Tasks.TaskQueue.Count">
+            <summary>
+            The number of tasks enqueued.
+            </summary>
+            <remarks>
+            As the <see cref="T:Moth.Tasks.TaskQueue"/> may be used from multiple threads, reading and acting on the value of this property may cause a race condition.
+            </remarks>
+        </member>
         <member name="M:Moth.Tasks.TaskQueue.Enqueue(System.Action)">
             <summary>
             Enqueue an action to be run later.
@@ -204,7 +212,7 @@
             <param name="task">Task data.</param>
             <param name="handle">Handle for checking task status.</param>
         </member>
-        <member name="M:Moth.Tasks.TaskQueue.TryRunNextTask">
+        <member name="M:Moth.Tasks.TaskQueue.RunNextTask">
             <summary>
             Try to run the next task in the queue, if present.
             </summary>
@@ -213,7 +221,7 @@
             Please note that the return value does not indicate if a task was successful. The method will return <see langword="true"/> if a task was ready in the queue, regardless if an exception occured.
             </remarks>
         </member>
-        <member name="M:Moth.Tasks.TaskQueue.TryRunNextTask(Moth.Tasks.IProfiler)">
+        <member name="M:Moth.Tasks.TaskQueue.RunNextTask(Moth.Tasks.IProfiler)">
             <summary>
             Try to run the next task in the queue, if present. Also performs profiling on the task through an <see cref="T:Moth.Tasks.IProfiler"/>.
             </summary>
@@ -223,7 +231,7 @@
             Please note that the return value does not indicate if a task was successful. The method will return <see langword="true"/> if a task was ready in the queue, regardless if an exception occured.
             </remarks>
         </member>
-        <member name="M:Moth.Tasks.TaskQueue.TryRunNextTask(System.Exception@)">
+        <member name="M:Moth.Tasks.TaskQueue.RunNextTask(System.Exception@)">
             <summary>
             Try to run the next task in the queue, if present. Also provides an <see cref="T:System.Exception"/> thrown by the task in case it fails.
             </summary>
@@ -233,7 +241,7 @@
             Please note that the return value does not indicate if a task was successful. The method will return <see langword="true"/> if a task was ready in the queue, regardless if an exception occured.
             </remarks>
         </member>
-        <member name="M:Moth.Tasks.TaskQueue.TryRunNextTask(Moth.Tasks.IProfiler,System.Exception@)">
+        <member name="M:Moth.Tasks.TaskQueue.RunNextTask(Moth.Tasks.IProfiler,System.Exception@)">
             <summary>
             Try to run the next task in the queue, if present. Also performs profiling on the task through an <see cref="T:Moth.Tasks.IProfiler"/>, and provides an <see cref="T:System.Exception"/> thrown by the task in case it fails.
             </summary>
