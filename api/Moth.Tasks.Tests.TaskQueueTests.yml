@@ -7,10 +7,13 @@ items:
   children:
   - Moth.Tasks.Tests.TaskQueueTests.EnqueueAction
   - Moth.Tasks.Tests.TaskQueueTests.EnqueueAndTryRun_Action
+  - Moth.Tasks.Tests.TaskQueueTests.EnqueueAndTryRun_ActionWithArg
   - Moth.Tasks.Tests.TaskQueueTests.EnqueueAndTryRun_IDisposable
   - Moth.Tasks.Tests.TaskQueueTests.EnqueueAndTryRun_ITask
   - Moth.Tasks.Tests.TaskQueueTests.EnqueueAndTryRun_Profiler
+  - Moth.Tasks.Tests.TaskQueueTests.EnqueueAndWait
   - Moth.Tasks.Tests.TaskQueueTests.EnqueueITask
+  - Moth.Tasks.Tests.TaskQueueTests.EnqueueWithTaskHandle
   langs:
   - csharp
   - vb
@@ -25,7 +28,7 @@ items:
       repo: https://github.com/djmoth/Moth.Tasks.git
     id: TaskQueueTests
     path: ../Moth.Tasks.Tests/TaskQueueTests.cs
-    startLine: 6
+    startLine: 7
   assemblies:
   - Moth.Tasks.Tests
   namespace: Moth.Tasks.Tests
@@ -66,7 +69,7 @@ items:
       repo: https://github.com/djmoth/Moth.Tasks.git
     id: EnqueueITask
     path: ../Moth.Tasks.Tests/TaskQueueTests.cs
-    startLine: 8
+    startLine: 9
   assemblies:
   - Moth.Tasks.Tests
   namespace: Moth.Tasks.Tests
@@ -106,7 +109,7 @@ items:
       repo: https://github.com/djmoth/Moth.Tasks.git
     id: EnqueueAction
     path: ../Moth.Tasks.Tests/TaskQueueTests.cs
-    startLine: 16
+    startLine: 17
   assemblies:
   - Moth.Tasks.Tests
   namespace: Moth.Tasks.Tests
@@ -146,7 +149,7 @@ items:
       repo: https://github.com/djmoth/Moth.Tasks.git
     id: EnqueueAndTryRun_ITask
     path: ../Moth.Tasks.Tests/TaskQueueTests.cs
-    startLine: 31
+    startLine: 32
   assemblies:
   - Moth.Tasks.Tests
   namespace: Moth.Tasks.Tests
@@ -186,7 +189,7 @@ items:
       repo: https://github.com/djmoth/Moth.Tasks.git
     id: EnqueueAndTryRun_Action
     path: ../Moth.Tasks.Tests/TaskQueueTests.cs
-    startLine: 50
+    startLine: 51
   assemblies:
   - Moth.Tasks.Tests
   namespace: Moth.Tasks.Tests
@@ -200,6 +203,46 @@ items:
 
       Public Sub EnqueueAndTryRun_Action
   overload: Moth.Tasks.Tests.TaskQueueTests.EnqueueAndTryRun_Action*
+  attributes:
+  - type: NUnit.Framework.TestAttribute
+    ctor: NUnit.Framework.TestAttribute.#ctor
+    arguments: []
+  modifiers.csharp:
+  - public
+  modifiers.vb:
+  - Public
+- uid: Moth.Tasks.Tests.TaskQueueTests.EnqueueAndTryRun_ActionWithArg
+  commentId: M:Moth.Tasks.Tests.TaskQueueTests.EnqueueAndTryRun_ActionWithArg
+  id: EnqueueAndTryRun_ActionWithArg
+  parent: Moth.Tasks.Tests.TaskQueueTests
+  langs:
+  - csharp
+  - vb
+  name: EnqueueAndTryRun_ActionWithArg()
+  nameWithType: TaskQueueTests.EnqueueAndTryRun_ActionWithArg()
+  fullName: Moth.Tasks.Tests.TaskQueueTests.EnqueueAndTryRun_ActionWithArg()
+  type: Method
+  source:
+    remote:
+      path: Moth.Tasks.Tests/TaskQueueTests.cs
+      branch: main
+      repo: https://github.com/djmoth/Moth.Tasks.git
+    id: EnqueueAndTryRun_ActionWithArg
+    path: ../Moth.Tasks.Tests/TaskQueueTests.cs
+    startLine: 70
+  assemblies:
+  - Moth.Tasks.Tests
+  namespace: Moth.Tasks.Tests
+  syntax:
+    content: >-
+      [Test]
+
+      public void EnqueueAndTryRun_ActionWithArg()
+    content.vb: >-
+      <Test>
+
+      Public Sub EnqueueAndTryRun_ActionWithArg
+  overload: Moth.Tasks.Tests.TaskQueueTests.EnqueueAndTryRun_ActionWithArg*
   attributes:
   - type: NUnit.Framework.TestAttribute
     ctor: NUnit.Framework.TestAttribute.#ctor
@@ -226,7 +269,7 @@ items:
       repo: https://github.com/djmoth/Moth.Tasks.git
     id: EnqueueAndTryRun_Profiler
     path: ../Moth.Tasks.Tests/TaskQueueTests.cs
-    startLine: 69
+    startLine: 89
   assemblies:
   - Moth.Tasks.Tests
   namespace: Moth.Tasks.Tests
@@ -266,7 +309,7 @@ items:
       repo: https://github.com/djmoth/Moth.Tasks.git
     id: EnqueueAndTryRun_IDisposable
     path: ../Moth.Tasks.Tests/TaskQueueTests.cs
-    startLine: 90
+    startLine: 110
   assemblies:
   - Moth.Tasks.Tests
   namespace: Moth.Tasks.Tests
@@ -280,6 +323,86 @@ items:
 
       Public Sub EnqueueAndTryRun_IDisposable
   overload: Moth.Tasks.Tests.TaskQueueTests.EnqueueAndTryRun_IDisposable*
+  attributes:
+  - type: NUnit.Framework.TestAttribute
+    ctor: NUnit.Framework.TestAttribute.#ctor
+    arguments: []
+  modifiers.csharp:
+  - public
+  modifiers.vb:
+  - Public
+- uid: Moth.Tasks.Tests.TaskQueueTests.EnqueueWithTaskHandle
+  commentId: M:Moth.Tasks.Tests.TaskQueueTests.EnqueueWithTaskHandle
+  id: EnqueueWithTaskHandle
+  parent: Moth.Tasks.Tests.TaskQueueTests
+  langs:
+  - csharp
+  - vb
+  name: EnqueueWithTaskHandle()
+  nameWithType: TaskQueueTests.EnqueueWithTaskHandle()
+  fullName: Moth.Tasks.Tests.TaskQueueTests.EnqueueWithTaskHandle()
+  type: Method
+  source:
+    remote:
+      path: Moth.Tasks.Tests/TaskQueueTests.cs
+      branch: main
+      repo: https://github.com/djmoth/Moth.Tasks.git
+    id: EnqueueWithTaskHandle
+    path: ../Moth.Tasks.Tests/TaskQueueTests.cs
+    startLine: 129
+  assemblies:
+  - Moth.Tasks.Tests
+  namespace: Moth.Tasks.Tests
+  syntax:
+    content: >-
+      [Test]
+
+      public void EnqueueWithTaskHandle()
+    content.vb: >-
+      <Test>
+
+      Public Sub EnqueueWithTaskHandle
+  overload: Moth.Tasks.Tests.TaskQueueTests.EnqueueWithTaskHandle*
+  attributes:
+  - type: NUnit.Framework.TestAttribute
+    ctor: NUnit.Framework.TestAttribute.#ctor
+    arguments: []
+  modifiers.csharp:
+  - public
+  modifiers.vb:
+  - Public
+- uid: Moth.Tasks.Tests.TaskQueueTests.EnqueueAndWait
+  commentId: M:Moth.Tasks.Tests.TaskQueueTests.EnqueueAndWait
+  id: EnqueueAndWait
+  parent: Moth.Tasks.Tests.TaskQueueTests
+  langs:
+  - csharp
+  - vb
+  name: EnqueueAndWait()
+  nameWithType: TaskQueueTests.EnqueueAndWait()
+  fullName: Moth.Tasks.Tests.TaskQueueTests.EnqueueAndWait()
+  type: Method
+  source:
+    remote:
+      path: Moth.Tasks.Tests/TaskQueueTests.cs
+      branch: main
+      repo: https://github.com/djmoth/Moth.Tasks.git
+    id: EnqueueAndWait
+    path: ../Moth.Tasks.Tests/TaskQueueTests.cs
+    startLine: 139
+  assemblies:
+  - Moth.Tasks.Tests
+  namespace: Moth.Tasks.Tests
+  syntax:
+    content: >-
+      [Test]
+
+      public void EnqueueAndWait()
+    content.vb: >-
+      <Test>
+
+      Public Sub EnqueueAndWait
+  overload: Moth.Tasks.Tests.TaskQueueTests.EnqueueAndWait*
   attributes:
   - type: NUnit.Framework.TestAttribute
     ctor: NUnit.Framework.TestAttribute.#ctor
@@ -606,6 +729,11 @@ references:
   name: EnqueueAndTryRun_Action
   nameWithType: TaskQueueTests.EnqueueAndTryRun_Action
   fullName: Moth.Tasks.Tests.TaskQueueTests.EnqueueAndTryRun_Action
+- uid: Moth.Tasks.Tests.TaskQueueTests.EnqueueAndTryRun_ActionWithArg*
+  commentId: Overload:Moth.Tasks.Tests.TaskQueueTests.EnqueueAndTryRun_ActionWithArg
+  name: EnqueueAndTryRun_ActionWithArg
+  nameWithType: TaskQueueTests.EnqueueAndTryRun_ActionWithArg
+  fullName: Moth.Tasks.Tests.TaskQueueTests.EnqueueAndTryRun_ActionWithArg
 - uid: Moth.Tasks.Tests.TaskQueueTests.EnqueueAndTryRun_Profiler*
   commentId: Overload:Moth.Tasks.Tests.TaskQueueTests.EnqueueAndTryRun_Profiler
   name: EnqueueAndTryRun_Profiler
@@ -616,3 +744,13 @@ references:
   name: EnqueueAndTryRun_IDisposable
   nameWithType: TaskQueueTests.EnqueueAndTryRun_IDisposable
   fullName: Moth.Tasks.Tests.TaskQueueTests.EnqueueAndTryRun_IDisposable
+- uid: Moth.Tasks.Tests.TaskQueueTests.EnqueueWithTaskHandle*
+  commentId: Overload:Moth.Tasks.Tests.TaskQueueTests.EnqueueWithTaskHandle
+  name: EnqueueWithTaskHandle
+  nameWithType: TaskQueueTests.EnqueueWithTaskHandle
+  fullName: Moth.Tasks.Tests.TaskQueueTests.EnqueueWithTaskHandle
+- uid: Moth.Tasks.Tests.TaskQueueTests.EnqueueAndWait*
+  commentId: Overload:Moth.Tasks.Tests.TaskQueueTests.EnqueueAndWait
+  name: EnqueueAndWait
+  nameWithType: TaskQueueTests.EnqueueAndWait
+  fullName: Moth.Tasks.Tests.TaskQueueTests.EnqueueAndWait

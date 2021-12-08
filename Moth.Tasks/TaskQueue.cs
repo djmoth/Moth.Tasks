@@ -85,7 +85,7 @@
             {
                 int handleID = nextTaskHandle++;
 
-                taskHandles.Add (handleID, default);
+                taskHandles.Add (handleID, null);
 
                 handle = new TaskHandle (this, handleID);
 
@@ -305,7 +305,7 @@
         {
             lock (taskLock)
             {
-                return taskHandles.ContainsKey (handleID);
+                return !taskHandles.ContainsKey (handleID);
             }
         }
 

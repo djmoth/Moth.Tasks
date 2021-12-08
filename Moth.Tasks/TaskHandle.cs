@@ -30,7 +30,7 @@
         /// <summary>
         /// Waits indefinitely until the task has been completed.
         /// </summary>
-        public void WaitForCompletion () => WaitForCompletion (-1);
+        public void WaitForCompletion () => WaitForCompletion (System.Threading.Timeout.Infinite);
 
         /// <summary>
         /// Waits for a maximum time in milliseconds for the task to complete.

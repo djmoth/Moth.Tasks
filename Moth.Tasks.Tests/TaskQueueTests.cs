@@ -1,5 +1,6 @@
 using System;
 using System.Diagnostics;
+using System.Threading;
 using NUnit.Framework;
 
 namespace Moth.Tasks.Tests
@@ -50,6 +51,25 @@ namespace Moth.Tasks.Tests
 
         [Test]
         public void EnqueueAndTryRun_Action ()
+        {
+            TaskQueue queue = new TaskQueue ();
+
+            TaskResult result = new TaskResult ();
+            int value = 42;
+
+            queue.Enqueue (() => result.Value = value);
+
+            Assert.AreEqual (queue.Count, 1);
+
+            queue.RunNextTask (out Exception ex);
+
+            Assert.AreEqual (queue.Count, 0);
+
+            AssertTaskResult (ex, value, result);
+        }
+
+        [Test]
+        public void EnqueueAndTryRun_ActionWithArg ()
         {
             TaskQueue queue = new TaskQueue ();
 
@@ -107,9 +127,56 @@ namespace Moth.Tasks.Tests
             AssertTaskResult (ex, disposeValue, disposeResult);
         }
 
+        [Test]
+        public void EnqueueWithTaskHandle ()
+        {
+            TaskQueue queue = new TaskQueue ();
+
+            queue.Enqueue (new Task (), out TaskHandle handle);
+
+            Assert.IsFalse (handle.IsComplete);
+        }
+
+        [Test]
+        public void EnqueueAndWait ()
+        {
+            TaskQueue queue = new TaskQueue ();
+
+            TaskResult result = new TaskResult ();
+            int value = 42;
+
+            queue.Enqueue (new PutValueTask (value, result), out TaskHandle handle);
+
+            Assert.IsFalse (handle.IsComplete);
+
+            AutoResetEvent workerReadyEvent = new AutoResetEvent (false);
+
+            Thread worker = new Thread (() =>
+            {
+                workerReadyEvent.Set ();
+
+                queue.RunNextTask ();
+            });
+
+            worker.Start ();
+
+            workerReadyEvent.WaitOne ();
+            handle.WaitForCompletion ();
+
+            Assert.IsTrue (handle.IsComplete);
+        }
+
         class TaskResult
         {
             public int Value { get; set; }
+        }
+
+        struct Task : ITask
+        {
+            public void Run ()
+            {
+
+            }
         }
 
         readonly struct PutValueTask : ITask

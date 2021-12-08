@@ -47,6 +47,7 @@
     /// Encapsulates a task which implements <see cref="IDisposable"/>, enqueued with a <see cref="TaskHandle"/>.
     /// </summary>
     /// <typeparam name="T">Type of task.</typeparam>
+    [StructLayout (LayoutKind.Auto)]
     internal readonly struct DisposableTaskWithHandle<T> : ITask, IDisposable where T : struct, ITask
     {
         private static readonly IDisposable DisposableTemplate = (IDisposable)default (T);
