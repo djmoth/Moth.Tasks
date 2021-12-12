@@ -89,12 +89,12 @@
 
                 handle = new TaskHandle (this, handleID);
 
-                if (task is IDisposable)
-                {
-                    EnqueueImpl (new TaskWithHandle<T> (this, task, handleID));
-                } else
+                if (typeof (IDisposable).IsAssignableFrom (typeof (T))) // If T implements IDisposable
                 {
                     EnqueueImpl (new DisposableTaskWithHandle<T> (this, task, handleID));
+                } else
+                {
+                    EnqueueImpl (new TaskWithHandle<T> (this, task, handleID));
                 }
             }
         }
@@ -173,7 +173,7 @@
                     isProfiling = true; // If profiler was started without throwing an exception
                 }
 
-                task.Run (ref access); // Run the task
+                task.RunAndDispose (ref access); // Run the task
 
                 if (isProfiling)
                 {
@@ -291,7 +291,13 @@
             lock (taskLock)
             {
                 ManualResetEventSlim waitEvent = taskHandles[handleID];
-                waitEvent?.Set ();
+
+                if (waitEvent != null)
+                {
+                    waitEvent.Set ();
+                    waitEvent.Dispose ();
+                }
+
                 taskHandles.Remove (handleID);
             }
         }

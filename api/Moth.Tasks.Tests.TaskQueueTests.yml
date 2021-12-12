@@ -12,6 +12,7 @@ items:
   - Moth.Tasks.Tests.TaskQueueTests.EnqueueAndTryRun_ITask
   - Moth.Tasks.Tests.TaskQueueTests.EnqueueAndTryRun_Profiler
   - Moth.Tasks.Tests.TaskQueueTests.EnqueueAndWait
+  - Moth.Tasks.Tests.TaskQueueTests.EnqueueAndWait_IDisposable
   - Moth.Tasks.Tests.TaskQueueTests.EnqueueITask
   - Moth.Tasks.Tests.TaskQueueTests.EnqueueWithTaskHandle
   langs:
@@ -411,6 +412,46 @@ items:
   - public
   modifiers.vb:
   - Public
+- uid: Moth.Tasks.Tests.TaskQueueTests.EnqueueAndWait_IDisposable
+  commentId: M:Moth.Tasks.Tests.TaskQueueTests.EnqueueAndWait_IDisposable
+  id: EnqueueAndWait_IDisposable
+  parent: Moth.Tasks.Tests.TaskQueueTests
+  langs:
+  - csharp
+  - vb
+  name: EnqueueAndWait_IDisposable()
+  nameWithType: TaskQueueTests.EnqueueAndWait_IDisposable()
+  fullName: Moth.Tasks.Tests.TaskQueueTests.EnqueueAndWait_IDisposable()
+  type: Method
+  source:
+    remote:
+      path: Moth.Tasks.Tests/TaskQueueTests.cs
+      branch: main
+      repo: https://github.com/djmoth/Moth.Tasks.git
+    id: EnqueueAndWait_IDisposable
+    path: ../Moth.Tasks.Tests/TaskQueueTests.cs
+    startLine: 170
+  assemblies:
+  - Moth.Tasks.Tests
+  namespace: Moth.Tasks.Tests
+  syntax:
+    content: >-
+      [Test]
+
+      public void EnqueueAndWait_IDisposable()
+    content.vb: >-
+      <Test>
+
+      Public Sub EnqueueAndWait_IDisposable
+  overload: Moth.Tasks.Tests.TaskQueueTests.EnqueueAndWait_IDisposable*
+  attributes:
+  - type: NUnit.Framework.TestAttribute
+    ctor: NUnit.Framework.TestAttribute.#ctor
+    arguments: []
+  modifiers.csharp:
+  - public
+  modifiers.vb:
+  - Public
 references:
 - uid: Moth.Tasks.Tests
   commentId: N:Moth.Tasks.Tests
@@ -754,3 +795,8 @@ references:
   name: EnqueueAndWait
   nameWithType: TaskQueueTests.EnqueueAndWait
   fullName: Moth.Tasks.Tests.TaskQueueTests.EnqueueAndWait
+- uid: Moth.Tasks.Tests.TaskQueueTests.EnqueueAndWait_IDisposable*
+  commentId: Overload:Moth.Tasks.Tests.TaskQueueTests.EnqueueAndWait_IDisposable
+  name: EnqueueAndWait_IDisposable
+  nameWithType: TaskQueueTests.EnqueueAndWait_IDisposable
+  fullName: Moth.Tasks.Tests.TaskQueueTests.EnqueueAndWait_IDisposable

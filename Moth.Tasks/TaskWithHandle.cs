@@ -50,7 +50,8 @@
     [StructLayout (LayoutKind.Auto)]
     internal readonly struct DisposableTaskWithHandle<T> : ITask, IDisposable where T : struct, ITask
     {
-        private static readonly IDisposable DisposableTemplate = (IDisposable)default (T);
+        [ThreadStatic]
+        private static IDisposable DisposableTemplate;
 
         private readonly T task;
         private readonly TaskQueue queue;
@@ -77,27 +78,29 @@
         /// </summary>
         public unsafe void Dispose ()
         {
-            int headerSize = IntPtr.Size * 2;
-            int dataSize = headerSize + Unsafe.SizeOf<T> (); // (IntPtr.Size * 2) for object header, plus actual task data
-            byte* disposableCopyData = stackalloc byte[dataSize];
+            if (DisposableTemplate == null)
+            {
+                DisposableTemplate = (IDisposable)default (T);
+            }
 
-            RefPointerUnion disposableTemplateRef = new RefPointerUnion { Reference = DisposableTemplate };
-            RefPointerUnion disposableCopyRef = new RefPointerUnion { Pointer = disposableCopyData + headerSize };
+            ref T disposableData = ref Unsafe.Unbox<T> (DisposableTemplate);
 
-            Unsafe.CopyBlock (disposableCopyData, (byte*)disposableTemplateRef.Pointer - headerSize, (uint)dataSize);
+            disposableData = task; // Copy data to DisposableTemplate object
 
-            disposableCopyRef.Reference.Dispose ();
+            DisposableTemplate.Dispose (); // Call Dispose with data from task
+
+            disposableData = default; // Clear data so as to not leave any object references hanging
 
             queue.NotifyTaskComplete (handleID);
         }
+    }
 
-        [StructLayout (LayoutKind.Explicit)]
-        private unsafe struct RefPointerUnion
-        {
-            [FieldOffset (0)]
-            public void* Pointer;
-            [FieldOffset (0)]
-            public IDisposable Reference;
-        }
+    [StructLayout (LayoutKind.Explicit)]
+    internal unsafe struct RefPointerUnion
+    {
+        [FieldOffset (0)]
+        public void* Pointer;
+        [FieldOffset (0)]
+        public IDisposable Reference;
     }
 }

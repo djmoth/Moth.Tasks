@@ -34,6 +34,7 @@
   "Moth.Tasks.Tests.TaskQueueTests.EnqueueAndTryRun_ITask": "Moth.Tasks.Tests.TaskQueueTests.yml",
   "Moth.Tasks.Tests.TaskQueueTests.EnqueueAndTryRun_Profiler": "Moth.Tasks.Tests.TaskQueueTests.yml",
   "Moth.Tasks.Tests.TaskQueueTests.EnqueueAndWait": "Moth.Tasks.Tests.TaskQueueTests.yml",
+  "Moth.Tasks.Tests.TaskQueueTests.EnqueueAndWait_IDisposable": "Moth.Tasks.Tests.TaskQueueTests.yml",
   "Moth.Tasks.Tests.TaskQueueTests.EnqueueITask": "Moth.Tasks.Tests.TaskQueueTests.yml",
   "Moth.Tasks.Tests.TaskQueueTests.EnqueueWithTaskHandle": "Moth.Tasks.Tests.TaskQueueTests.yml"
 }

@@ -7,15 +7,10 @@
     /// <summary>
     /// Representation of a task in a <see cref="TaskCache"/>.
     /// </summary>
-    internal class TaskInfo
+    internal abstract class TaskInfo
     {
-        private readonly RunOperation run;
-        private readonly DisposeOperation dispose;
-
-        private TaskInfo (RunOperation run, DisposeOperation dispose, int id, Type type, int dataSize)
+        private TaskInfo (int id, Type type, int dataSize)
         {
-            this.run = run;
-            this.dispose = dispose;
             ID = id;
             Type = type;
 
@@ -24,10 +19,6 @@
             // Round dataSize to number of IntPtr.Size data indices required to hold task data in a TaskQueue.
             DataIndices = (dataSize + IntPtr.Size - 1) / IntPtr.Size;
         }
-
-        private delegate void RunOperation (ref TaskQueue.TaskDataAccess access, TaskInfo task);
-
-        private delegate void DisposeOperation (in TaskQueue.TaskDataAccess access, TaskInfo task);
 
         /// <summary>
         /// ID of task.
@@ -52,7 +43,7 @@
         /// <summary>
         /// Gets a value indicating whether the task type implements <see cref="IDisposable"/>.
         /// </summary>
-        public bool Disposable => dispose != null;
+        public abstract bool Disposable { get; }
 
         /// <summary>
         /// Creates a new TaskInfo from a type and ID.
@@ -64,68 +55,74 @@
         {
             Type type = typeof (T);
 
-            RunOperation run = null;
-            DisposeOperation dispose = null;
-
             if (typeof (IDisposable).IsAssignableFrom (type)) // If T implements IDisposable
             {
-                BindingFlags methodBindingFlags = BindingFlags.Static | BindingFlags.NonPublic;
+                Type disposableImplementationOfT = typeof (DisposableImplementation<>).MakeGenericType (type);
 
-                run = (RunOperation)typeof (TaskInfo).GetMethod (nameof (RunAndDispose), methodBindingFlags).MakeGenericMethod (type).CreateDelegate (typeof (RunOperation));
-
-                dispose = (DisposeOperation)typeof (TaskInfo).GetMethod (nameof (Dispose), methodBindingFlags).MakeGenericMethod (type).CreateDelegate (typeof (DisposeOperation));
+                return (TaskInfo)Activator.CreateInstance (disposableImplementationOfT, id);
             } else
             {
-                run = Run;
-            }
-
-            return new TaskInfo (run, dispose, id, type, Unsafe.SizeOf<T> ());
-
-            // Run the task
-            static void Run (ref TaskQueue.TaskDataAccess access, TaskInfo task)
-            {
-                T data = access.GetTaskData<T> (task);
-                access.Dispose ();
-
-                data.Run ();
+                return new Implementation<T> (id);
             }
         }
 
         /// <summary>
-        /// Call the <see cref="ITask.Run"/> method of the task, with <see cref="TaskQueue.TaskDataAccess"/> for getting task data.
+        /// Call the <see cref="ITask.Run"/> method of the task, with <see cref="TaskQueue.TaskDataAccess"/> for getting task data. Also calls <see cref="IDisposable.Dispose"/>, if implemented.
         /// </summary>
         /// <param name="access">Access to data from <see cref="TaskQueue"/>.</param>
         [MethodImpl (MethodImplOptions.AggressiveInlining)]
-        public void Run (ref TaskQueue.TaskDataAccess access) => run (ref access, this);
+        public abstract void RunAndDispose (ref TaskQueue.TaskDataAccess access);
 
         /// <summary>
         /// Call the <see cref="IDisposable.Dispose"/> method of the task, with <see cref="TaskQueue.TaskDataAccess"/> for getting task data.
         /// </summary>
         /// <param name="access">Access to data from <see cref="TaskQueue"/>.</param>
         [MethodImpl (MethodImplOptions.AggressiveInlining)]
-        public void Dispose (in TaskQueue.TaskDataAccess access) => dispose (in access, this);
+        public virtual void Dispose (in TaskQueue.TaskDataAccess access) { }
 
-        // Run and dispose the task
-        private static void RunAndDispose<T> (ref TaskQueue.TaskDataAccess access, TaskInfo task) where T : struct, ITask, IDisposable
+        private class Implementation<T> : TaskInfo where T : struct, ITask
         {
-            T data = access.GetTaskData<T> (task);
-            access.Dispose ();
+            public Implementation (int id)
+                : base (id, typeof (T), Unsafe.SizeOf<T> ()) { }
 
-            try
+            public override bool Disposable => false;
+
+            public override void RunAndDispose (ref TaskQueue.TaskDataAccess access)
             {
+                T data = access.GetTaskData<T> (this);
+                access.Dispose ();
+
                 data.Run ();
-            } finally
-            {
-                data.Dispose ();
             }
         }
 
-        // Dispose the task
-        private static void Dispose<T> (in TaskQueue.TaskDataAccess access, TaskInfo task) where T : struct, ITask, IDisposable
+        private class DisposableImplementation<T> : TaskInfo where T : struct, ITask, IDisposable
         {
-            T data = access.GetTaskData<T> (task);
+            public DisposableImplementation (int id)
+                : base (id, typeof (T), Unsafe.SizeOf<T> ()) { }
 
-            data.Dispose ();
+            public override bool Disposable => true;
+
+            public override void RunAndDispose (ref TaskQueue.TaskDataAccess access)
+            {
+                T data = access.GetTaskData<T> (this);
+                access.Dispose ();
+
+                try
+                {
+                    data.Run ();
+                } finally
+                {
+                    data.Dispose ();
+                }
+            }
+
+            public override void Dispose (in TaskQueue.TaskDataAccess access)
+            {
+                T data = access.GetTaskData<T> (this);
+
+                data.Dispose ();
+            }
         }
     }
 }

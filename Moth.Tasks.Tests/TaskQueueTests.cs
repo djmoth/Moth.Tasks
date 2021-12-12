@@ -164,6 +164,43 @@ namespace Moth.Tasks.Tests
             handle.WaitForCompletion ();
 
             Assert.IsTrue (handle.IsComplete);
+
+            AssertTaskResult (null, value, result);
+        }
+
+        [Test]
+        public void EnqueueAndWait_IDisposable ()
+        {
+            TaskQueue queue = new TaskQueue ();
+
+            TaskResult runResult = new TaskResult ();
+            int runValue = 42;
+
+            TaskResult disposeResult = new TaskResult ();
+            int disposeValue = 21;
+
+            queue.Enqueue (new PutValueAndDisposeTask (runValue, runResult, disposeValue, disposeResult), out TaskHandle handle);
+
+            Assert.IsFalse (handle.IsComplete);
+
+            AutoResetEvent workerReadyEvent = new AutoResetEvent (false);
+
+            Thread worker = new Thread (() =>
+            {
+                workerReadyEvent.Set ();
+
+                queue.RunNextTask ();
+            });
+
+            worker.Start ();
+
+            workerReadyEvent.WaitOne ();
+            handle.WaitForCompletion ();
+
+            Assert.IsTrue (handle.IsComplete);
+
+            AssertTaskResult (null, runValue, runResult);
+            AssertTaskResult (null, disposeValue, disposeResult);
         }
 
         class TaskResult
