@@ -153,6 +153,13 @@
             <param name="id">ID of task.</param>
             <returns>A new TaskInfo representing the task <typeparamref name="T"/>.</returns>
         </member>
+        <member name="M:Moth.Tasks.TaskInfo.GetDataIndexSize(System.Int32)">
+            <summary>
+            Calculates how many indices of <see cref="F:Moth.Tasks.TaskQueue.taskData"/> it will take to store a struct of <paramref name="dataSize"/> bytes.
+            </summary>
+            <param name="dataSize">Raw size of struct.</param>
+            <returns>Number of indices.</returns>
+        </member>
         <member name="M:Moth.Tasks.TaskInfo.RunAndDispose(Moth.Tasks.TaskQueue.TaskDataAccess@)">
             <summary>
             Call the <see cref="M:Moth.Tasks.ITask.Run"/> method of the task, with <see cref="T:Moth.Tasks.TaskQueue.TaskDataAccess"/> for getting task data. Also calls <see cref="M:System.IDisposable.Dispose"/>, if implemented.

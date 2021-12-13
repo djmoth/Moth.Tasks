@@ -354,7 +354,7 @@ items:
       repo: https://github.com/djmoth/Moth.Tasks.git
     id: RunNextTask
     path: TaskQueue.cs
-    startLine: 120
+    startLine: 125
   assemblies:
   - Moth.Tasks
   namespace: Moth.Tasks
@@ -390,7 +390,7 @@ items:
       repo: https://github.com/djmoth/Moth.Tasks.git
     id: RunNextTask
     path: TaskQueue.cs
-    startLine: 130
+    startLine: 135
   assemblies:
   - Moth.Tasks
   namespace: Moth.Tasks
@@ -430,7 +430,7 @@ items:
       repo: https://github.com/djmoth/Moth.Tasks.git
     id: RunNextTask
     path: TaskQueue.cs
-    startLine: 140
+    startLine: 145
   assemblies:
   - Moth.Tasks
   namespace: Moth.Tasks
@@ -473,7 +473,7 @@ items:
       repo: https://github.com/djmoth/Moth.Tasks.git
     id: RunNextTask
     path: TaskQueue.cs
-    startLine: 151
+    startLine: 156
   assemblies:
   - Moth.Tasks
   namespace: Moth.Tasks
@@ -519,7 +519,7 @@ items:
       repo: https://github.com/djmoth/Moth.Tasks.git
     id: Clear
     path: TaskQueue.cs
-    startLine: 219
+    startLine: 224
   assemblies:
   - Moth.Tasks
   namespace: Moth.Tasks
@@ -559,7 +559,7 @@ items:
       repo: https://github.com/djmoth/Moth.Tasks.git
     id: Dispose
     path: TaskQueue.cs
-    startLine: 255
+    startLine: 260
   assemblies:
   - Moth.Tasks
   namespace: Moth.Tasks

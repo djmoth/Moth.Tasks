@@ -1,7 +1,7 @@
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Reflection;
+using System.Runtime.CompilerServices;
 using System.Threading;
 using NUnit.Framework;
 
@@ -9,20 +9,135 @@ namespace Moth.Tasks.Tests
 {
     public class TaskQueueTests
     {
+        /// <summary>
+        /// Enqueues an <see cref="ITask"/> in an empty <see cref="TaskQueue"/>.
+        /// </summary>
         [Test]
         public void EnqueueITask ()
         {
             TaskQueue queue = new TaskQueue ();
 
-            queue.Enqueue (new PutValueTask ());
+            queue.Enqueue (new Task ());
+
+            Assert.AreEqual (1, queue.Count);
         }
 
+        /// <summary>
+        /// Enqueues an <see cref="Action"/> in an empty <see cref="TaskQueue"/>.
+        /// </summary>
         [Test]
         public void EnqueueAction ()
         {
             TaskQueue queue = new TaskQueue ();
 
             queue.Enqueue (() => { });
+
+            Assert.AreEqual (1, queue.Count);
+        }
+
+        /// <summary>
+        /// Enqueues multiple tasks, asserts that the internal <see cref="TaskQueue.taskData"/> array expands accordingly.
+        /// Also runs a task, to ensure that the internal <see cref="TaskQueue.firstTask"/> index points correctly.
+        /// </summary>
+        [Test]
+        public void EnqueueTask_ExpandTaskData ()
+        {
+            TaskQueue queue = new TaskQueue (1, 1);
+
+            AssertTaskDataLength (1);
+
+            queue.Enqueue (new Task ());
+
+            AssertTaskDataLength (1);
+
+            queue.Enqueue (new Task ());
+
+            AssertTaskDataLength (2);
+
+            queue.RunNextTask ();
+
+            AssertFirstTaskIndex (1);
+
+            queue.Enqueue (new Task ());
+
+            AssertFirstTaskIndex (0);
+            AssertTaskDataLength (2);
+
+            queue.Enqueue (new Task ());
+
+            AssertTaskDataLength (4);
+
+            T GetPrivateValue<T> (string fieldName) => (T)typeof (TaskQueue).GetField (fieldName, BindingFlags.NonPublic | BindingFlags.Instance).GetValue (queue);
+
+            void AssertTaskDataLength (int expectedValue)
+            {
+                int queue_taskData_Length = GetPrivateValue<object[]> ("taskData").Length;
+                Assert.AreEqual (expectedValue, queue_taskData_Length);
+            }
+
+            void AssertFirstTaskIndex (int expectedValue)
+            {
+                int queue_firstTask = GetPrivateValue<int> ("firstTask");
+                Assert.AreEqual (expectedValue, queue_firstTask);
+            }
+        }
+
+        /// <summary>
+        /// Enqueues and runs multiple tasks, and asserts that the internal <see cref="TaskQueue.firstTask"/> index points to the right task.
+        /// </summary>
+        [Test]
+        public void EnqueueAndTryRun_AssertValidData ()
+        {
+            TaskQueue queue = new TaskQueue (2, 2);
+
+            Queue<TaskResult> results = new Queue<TaskResult> ();
+            int nextTaskIndex = 1;
+
+            int nextTaskResult = 1;
+
+            int putValueTaskDataIndices = TaskInfo.GetDataIndexSize (Unsafe.SizeOf<PutValueTask> ());
+
+            EnqueueTask ();
+            EnqueueTask ();
+
+            // Run the first task
+            AssertNextTaskResult ();
+
+            // queue.firstTask should now be equal putValueTaskDataIndices, pointing to the second task enqueued
+            AssertTestFirstTaskIndex (putValueTaskDataIndices);
+
+            // Enqueue another task, the contents of queue.taskData should now be moved to the front to make space
+            EnqueueTask ();
+
+            // Check if task data matches
+            AssertNextTaskResult ();
+            AssertNextTaskResult ();
+
+            void EnqueueTask ()
+            {
+                TaskResult result = new TaskResult ();
+                int value = nextTaskIndex++;
+
+                results.Enqueue (result);
+                queue.Enqueue (new PutValueTask (value, result));
+            }
+
+            void AssertNextTaskResult ()
+            {
+                queue.RunNextTask ();
+
+                int expectedResult = nextTaskResult++;
+
+                Assert.AreEqual (expectedResult, results.Dequeue ().Value);
+            }
+
+            T GetPrivateValue<T> (string fieldName) => (T)typeof (TaskQueue).GetField (fieldName, BindingFlags.NonPublic | BindingFlags.Instance).GetValue (queue);
+
+            void AssertTestFirstTaskIndex (int expectedValue)
+            {
+                int queue_firstTask = GetPrivateValue<int> ("firstTask");
+                Assert.AreEqual (expectedValue, queue_firstTask);
+            }
         }
 
         void AssertTaskResult (Exception ex, int correctValue, TaskResult result)
@@ -32,51 +147,9 @@ namespace Moth.Tasks.Tests
             Assert.AreEqual (correctValue, result.Value);
         }
 
-        [Test]
-        public void EnqueueTask_ExpandTaskData ()
-        {
-            TaskQueue queue = new TaskQueue (1, 1);
-
-            Type queueType = typeof (TaskQueue);
-
-            FetchAndTestTaskDataLength (1);
-
-            queue.Enqueue (new Task ());
-
-            FetchAndTestTaskDataLength (1);
-
-            queue.Enqueue (new Task ());
-
-            FetchAndTestTaskDataLength (2);
-
-            queue.RunNextTask ();
-
-            FetchAndTestFirstTaskIndex (1);
-
-            queue.Enqueue (new Task ());
-
-            FetchAndTestFirstTaskIndex (0);
-            FetchAndTestTaskDataLength (2);
-
-            queue.Enqueue (new Task ());
-
-            FetchAndTestTaskDataLength (4);
-
-            T GetPrivateValue<T> (string fieldName) => (T)queueType.GetField (fieldName, BindingFlags.NonPublic | BindingFlags.Instance).GetValue (queue);
-
-            void FetchAndTestTaskDataLength (int expectedValue)
-            {
-                int queue_taskData_Length = GetPrivateValue<object[]> ("taskData").Length;
-                Assert.AreEqual (expectedValue, queue_taskData_Length);
-            }
-
-            void FetchAndTestFirstTaskIndex (int expectedValue)
-            {
-                int queue_firstTask = GetPrivateValue<int> ("firstTask");
-                Assert.AreEqual (expectedValue, queue_firstTask);
-            }
-        }
-
+        /// <summary>
+        /// Enqueues and runs an <see cref="ITask"/>.
+        /// </summary>
         [Test]
         public void EnqueueAndTryRun_ITask ()
         {
@@ -96,6 +169,9 @@ namespace Moth.Tasks.Tests
             AssertTaskResult (ex, value, result);
         }
 
+        /// <summary>
+        /// Enqueues and runs an <see cref="Action"/>.
+        /// </summary>
         [Test]
         public void EnqueueAndTryRun_Action ()
         {
@@ -115,6 +191,9 @@ namespace Moth.Tasks.Tests
             AssertTaskResult (ex, value, result);
         }
 
+        /// <summary>
+        /// Enqueues and runs an <see cref="Action"/> with a supplied argument.
+        /// </summary>
         [Test]
         public void EnqueueAndTryRun_ActionWithArg ()
         {
@@ -134,6 +213,9 @@ namespace Moth.Tasks.Tests
             AssertTaskResult (ex, value, result);
         }
 
+        /// <summary>
+        /// Enqueues and runs a task, while running an <see cref="IProfiler"/>
+        /// </summary>
         [Test]
         public void EnqueueAndTryRun_Profiler ()
         {
@@ -155,6 +237,9 @@ namespace Moth.Tasks.Tests
             Assert.NotNull (profiler.LastTask);
         }
 
+        /// <summary>
+        /// Enqueues and runs a task implementing <see cref="IDisposable"/>, asserting that <see cref="IDisposable"/> is run.
+        /// </summary>
         [Test]
         public void EnqueueAndTryRun_IDisposable ()
         {
@@ -174,6 +259,9 @@ namespace Moth.Tasks.Tests
             AssertTaskResult (ex, disposeValue, disposeResult);
         }
 
+        /// <summary>
+        /// Enqueues and runs a task which throws an <see cref="InvalidOperationException"/> in its <see cref="ITask.Run"/> method. Asserts that the exception is returned from <see cref="TaskQueue.RunNextTask(out Exception)"/>.
+        /// </summary>
         [Test]
         public void EnqueueAndTryRun_Exception ()
         {
@@ -186,6 +274,9 @@ namespace Moth.Tasks.Tests
             Assert.IsInstanceOf<InvalidOperationException> (ex);
         }
 
+        /// <summary>
+        /// Enqueues and runs a task which throws an <see cref="InvalidOperationException"/> in its <see cref="ITask.Run"/> method, while running an <see cref="IProfiler"/>. Asserts profiling is stopped correctly.
+        /// </summary>
         [Test]
         public void EnqueueAndTryRun_ExceptionWhileProfiling ()
         {
@@ -204,6 +295,9 @@ namespace Moth.Tasks.Tests
             Assert.NotNull (profiler.LastTask);
         }
 
+        /// <summary>
+        /// Enqueues a task with <see cref="TaskQueue.Enqueue{T}(in T, out TaskHandle)"/> and asserts that the <see cref="TaskHandle"/> returned is valid.
+        /// </summary>
         [Test]
         public void EnqueueWithTaskHandle ()
         {
@@ -214,6 +308,9 @@ namespace Moth.Tasks.Tests
             Assert.IsFalse (handle.IsComplete);
         }
 
+        /// <summary>
+        /// Enqueues a task and runs it in a seperate thread, while waiting for its completion with <see cref="TaskHandle.WaitForCompletion"/>.
+        /// </summary>
         [Test]
         public void EnqueueAndWait ()
         {
@@ -245,6 +342,9 @@ namespace Moth.Tasks.Tests
             AssertTaskResult (null, value, result);
         }
 
+        /// <summary>
+        /// Enqueues a task implementing <see cref="IDisposable"/>, and asserts that its <see cref="IDisposable.Dispose"/> method is called from <see cref="DisposableTaskWithHandle{T}.Dispose"/>.
+        /// </summary>
         [Test]
         public void EnqueueAndWait_IDisposable ()
         {
@@ -280,6 +380,48 @@ namespace Moth.Tasks.Tests
             AssertTaskResult (null, disposeValue, disposeResult);
         }
 
+        /// <summary>
+        /// Enqueues and runs a task, calling <see cref="TaskHandle.WaitForCompletion"/> after its supposed completion. Asserts that the call does not hang.
+        /// </summary>
+        [Test]
+        public void EnqueueAndWait_Completed ()
+        {
+            TaskQueue queue = new TaskQueue ();
+
+            queue.Enqueue (new Task (), out TaskHandle handle);
+
+            queue.RunNextTask ();
+
+            handle.WaitForCompletion ();
+        }
+
+        /// <summary>
+        /// Asserts that <see cref="TaskQueue.RunNextTask"/> will return <see langword="false"/> when the <see cref="TaskQueue"/> is empty.
+        /// </summary>
+        [Test]
+        public void TryRun_ReturnFalse ()
+        {
+            TaskQueue queue = new TaskQueue ();
+
+            Assert.IsFalse (queue.RunNextTask ());
+        }
+
+        /// <summary>
+        /// Asserts that <see cref="TaskQueue.RunNextTask"/> will return <see langword="true"/> when the <see cref="TaskQueue"/> has a task enqueued and ready to be ran.
+        /// </summary>
+        [Test]
+        public void TryRun_ReturnTrue ()
+        {
+            TaskQueue queue = new TaskQueue ();
+
+            queue.Enqueue (new Task ());
+
+            Assert.IsTrue (queue.RunNextTask ());
+        }
+
+        /// <summary>
+        /// Enqueues a series of alternating <see cref="ExceptionOnDisposeTask"/> and <see cref="PutValueAndDisposeTask"/>, asserting that the exceptions thrown from <see cref="ExceptionOnDisposeTask.Dispose"/> will not disrupt the execution of <see cref="PutValueAndDisposeTask.Dispose"/>.
+        /// </summary>
         [Test]
         public void Clear ()
         {
@@ -315,17 +457,37 @@ namespace Moth.Tasks.Tests
             }
         }
 
+        /// <summary>
+        /// Disposes a <see cref="TaskQueue"/>, asserting that the internal <see cref="TaskQueue.disposed"/> flag is set. Also asserts that following calls to <see cref="TaskQueue.Enqueue{T}(in T)"/> & <see cref="TaskQueue.Enqueue{T}(in T, out TaskHandle)"/> throw an <see cref="ObjectDisposedException"/>.
+        /// </summary>
         [Test]
         public void Dispose ()
         {
-            Clear ();
+            TaskQueue queue = new TaskQueue ();
+
+            Assert.IsFalse (GetPrivateValue<bool> ("disposed"));
+
+            queue.Dispose ();
+
+            Assert.IsTrue (GetPrivateValue<bool> ("disposed"));
+
+            Assert.Throws<ObjectDisposedException> (() => queue.Enqueue (new Task ()));
+            Assert.Throws<ObjectDisposedException> (() => queue.Enqueue (new Task (), out _));
+
+            T GetPrivateValue<T> (string fieldName) => (T)typeof (TaskQueue).GetField (fieldName, BindingFlags.NonPublic | BindingFlags.Instance).GetValue (queue);
         }
 
+        /// <summary>
+        /// Object for storing the result of a <see cref="PutValueTask"/> or <see cref="PutValueAndDisposeTask"/>.
+        /// </summary>
         class TaskResult
         {
             public int Value { get; set; }
         }
 
+        /// <summary>
+        /// Mock task, with size of one Data Index
+        /// </summary>
         struct Task : ITask
         {
             public IntPtr MockData;
@@ -336,6 +498,9 @@ namespace Moth.Tasks.Tests
             }
         }
 
+        /// <summary>
+        /// Stores a value in a <see cref="TaskResult"/> object.
+        /// </summary>
         readonly struct PutValueTask : ITask
         {
             private readonly int value;
@@ -353,6 +518,9 @@ namespace Moth.Tasks.Tests
             }
         }
 
+        /// <summary>
+        /// Stores a value in a <see cref="TaskResult"/> object on <see cref="ITask.Run"/>, and another value in another <see cref="TaskResult"/> object on <see cref="IDisposable.Dispose"/>.
+        /// </summary>
         readonly struct PutValueAndDisposeTask : ITask, IDisposable
         {
             private readonly int runValue;
@@ -379,6 +547,9 @@ namespace Moth.Tasks.Tests
             }
         }
 
+        /// <summary>
+        /// Throws an <see cref="InvalidOperationException"/> on <see cref="IDisposable.Dispose"/>.
+        /// </summary>
         readonly struct ExceptionOnDisposeTask : ITask, IDisposable
         {
             public void Run ()
@@ -392,6 +563,9 @@ namespace Moth.Tasks.Tests
             }
         }
 
+        /// <summary>
+        /// Mock profiler, with flags for checking if <see cref="BeginTask(string)"/> and <see cref="EndTask"/> has been called.
+        /// </summary>
         class Profiler : IProfiler
         {
             public bool HasRun { get; private set; }

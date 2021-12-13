@@ -16,8 +16,7 @@
 
             DataSize = dataSize;
 
-            // Round dataSize to number of IntPtr.Size data indices required to hold task data in a TaskQueue.
-            DataIndices = (dataSize + IntPtr.Size - 1) / IntPtr.Size;
+            DataIndices = GetDataIndexSize (dataSize);
         }
 
         /// <summary>
@@ -65,6 +64,13 @@
                 return new Implementation<T> (id);
             }
         }
+
+        /// <summary>
+        /// Calculates how many indices of <see cref="TaskQueue.taskData"/> it will take to store a struct of <paramref name="dataSize"/> bytes.
+        /// </summary>
+        /// <param name="dataSize">Raw size of struct.</param>
+        /// <returns>Number of indices.</returns>
+        public static int GetDataIndexSize (int dataSize) => (dataSize + IntPtr.Size - 1) / IntPtr.Size;
 
         /// <summary>
         /// Call the <see cref="ITask.Run"/> method of the task, with <see cref="TaskQueue.TaskDataAccess"/> for getting task data. Also calls <see cref="IDisposable.Dispose"/>, if implemented.

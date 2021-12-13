@@ -95,6 +95,11 @@
         {
             lock (taskLock)
             {
+                if (disposed)
+                {
+                    throw new ObjectDisposedException (nameof (TaskQueue), "New tasks may not be enqueued after TaskQueue has been disposed.");
+                }
+
                 int handleID = nextTaskHandle++;
 
                 taskHandles.Add (handleID, null);
@@ -168,11 +173,11 @@
                 int id = tasks.Dequeue ();
 
                 task = taskCache.GetTask (id);
-            } catch
+            } catch // Internal error
             {
                 access.Dispose ();
 
-                throw; // Rethrow without setting exception, this is an internal error
+                throw;
             }
 
             bool isProfiling = false;
