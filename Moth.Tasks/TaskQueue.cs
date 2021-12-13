@@ -12,17 +12,32 @@
     /// </summary>
     public sealed unsafe class TaskQueue : IDisposable
     {
-        private const int StartCapacity = 256;
-
         private readonly object taskLock = new object ();
         private readonly TaskCache taskCache = new TaskCache ();
-        private readonly Queue<int> tasks = new Queue<int> (16);
         private readonly Dictionary<int, ManualResetEventSlim> taskHandles = new Dictionary<int, ManualResetEventSlim> ();
-        private object[] taskData = new object[StartCapacity];
+        private readonly Queue<int> tasks;
+        private object[] taskData;
         private int firstTask;
         private int lastTaskEnd;
         private bool disposed;
         private int nextTaskHandle = 1;
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="TaskQueue"/> class.
+        /// </summary>
+        public TaskQueue ()
+            : this (16, 256) { }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="TaskQueue"/> class.
+        /// </summary>
+        /// <param name="taskCapacity">Starting capacity for the internal task queue.</param>
+        /// <param name="dataCapacity">Starting capacity for the internal task data array.</param>
+        internal TaskQueue (int taskCapacity, int dataCapacity)
+        {
+            tasks = new Queue<int> (taskCapacity);
+            taskData = new object[dataCapacity];
+        }
 
         /// <summary>
         /// Finalizes an instance of the <see cref="TaskQueue"/> class. Also disposes of tasks implementing <see cref="IDisposable.Dispose"/>.
@@ -32,9 +47,6 @@
         /// <summary>
         /// The number of tasks enqueued.
         /// </summary>
-        /// <remarks>
-        /// As the <see cref="TaskQueue"/> may be used from multiple threads, reading and acting on the value of this property may cause a race condition.
-        /// </remarks>
         public int Count
         {
             get
@@ -184,7 +196,7 @@
             {
                 exception = ex;
 
-                if (!access.Disposed)
+                if (!access.Disposed) // Internal error, TaskInfo should always call TaskDataAccess.Dispose after getting task data in TaskInfo.RunAndDispose
                 {
                     access.Dispose ();
                 }
@@ -339,12 +351,12 @@
                     {
                         // If taskInfo.DataIndices is abnormally large, doubling the size might not always be enough
                         int newSize = Math.Max (taskData.Length * 2, totalTaskDataLength + taskInfo.DataIndices);
-                        Array.Resize (ref taskData, taskData.Length * 2);
+                        Array.Resize (ref taskData, newSize);
                     }
 
                     if (firstTask != 0)
                     {
-                        Buffer.BlockCopy (taskData, firstTask, taskData, 0, totalTaskDataLength); // Move tasks to the beginning of taskData, to eliminate wasted space
+                        Array.Copy (taskData, firstTask, taskData, 0, totalTaskDataLength); // Move tasks to the beginning of taskData, to eliminate wasted space
 
                         lastTaskEnd = totalTaskDataLength;
                         firstTask = 0;

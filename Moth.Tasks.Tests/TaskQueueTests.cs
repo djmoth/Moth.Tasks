@@ -1,5 +1,7 @@
 using System;
+using System.Collections.Generic;
 using System.Diagnostics;
+using System.Reflection;
 using System.Threading;
 using NUnit.Framework;
 
@@ -28,6 +30,51 @@ namespace Moth.Tasks.Tests
             Assert.IsNull (ex, ex?.Message);
 
             Assert.AreEqual (correctValue, result.Value);
+        }
+
+        [Test]
+        public void EnqueueTask_ExpandTaskData ()
+        {
+            TaskQueue queue = new TaskQueue (1, 1);
+
+            Type queueType = typeof (TaskQueue);
+
+            FetchAndTestTaskDataLength (1);
+
+            queue.Enqueue (new Task ());
+
+            FetchAndTestTaskDataLength (1);
+
+            queue.Enqueue (new Task ());
+
+            FetchAndTestTaskDataLength (2);
+
+            queue.RunNextTask ();
+
+            FetchAndTestFirstTaskIndex (1);
+
+            queue.Enqueue (new Task ());
+
+            FetchAndTestFirstTaskIndex (0);
+            FetchAndTestTaskDataLength (2);
+
+            queue.Enqueue (new Task ());
+
+            FetchAndTestTaskDataLength (4);
+
+            T GetPrivateValue<T> (string fieldName) => (T)queueType.GetField (fieldName, BindingFlags.NonPublic | BindingFlags.Instance).GetValue (queue);
+
+            void FetchAndTestTaskDataLength (int expectedValue)
+            {
+                int queue_taskData_Length = GetPrivateValue<object[]> ("taskData").Length;
+                Assert.AreEqual (expectedValue, queue_taskData_Length);
+            }
+
+            void FetchAndTestFirstTaskIndex (int expectedValue)
+            {
+                int queue_firstTask = GetPrivateValue<int> ("firstTask");
+                Assert.AreEqual (expectedValue, queue_firstTask);
+            }
         }
 
         [Test]
@@ -128,6 +175,36 @@ namespace Moth.Tasks.Tests
         }
 
         [Test]
+        public void EnqueueAndTryRun_Exception ()
+        {
+            TaskQueue queue = new TaskQueue ();
+
+            queue.Enqueue (() => throw new InvalidOperationException ());
+
+            queue.RunNextTask (out Exception ex);
+
+            Assert.IsInstanceOf<InvalidOperationException> (ex);
+        }
+
+        [Test]
+        public void EnqueueAndTryRun_ExceptionWhileProfiling ()
+        {
+            TaskQueue queue = new TaskQueue ();
+
+            queue.Enqueue (() => throw new InvalidOperationException ());
+
+            Profiler profiler = new Profiler ();
+
+            queue.RunNextTask (profiler, out Exception ex);
+
+            Assert.IsInstanceOf<InvalidOperationException> (ex);
+
+            Assert.IsTrue (profiler.HasRun);
+            Assert.IsFalse (profiler.Running);
+            Assert.NotNull (profiler.LastTask);
+        }
+
+        [Test]
         public void EnqueueWithTaskHandle ()
         {
             TaskQueue queue = new TaskQueue ();
@@ -203,6 +280,47 @@ namespace Moth.Tasks.Tests
             AssertTaskResult (null, disposeValue, disposeResult);
         }
 
+        [Test]
+        public void Clear ()
+        {
+            TaskQueue queue = new TaskQueue ();
+
+            TaskResult[] disposeResults = new TaskResult[10];
+
+            for (int i = 0; i < disposeResults.Length; i++)
+            {
+                queue.Enqueue (new ExceptionOnDisposeTask ());
+
+                disposeResults[i] = new TaskResult ();
+
+                queue.Enqueue (new PutValueAndDisposeTask (0, null, i, disposeResults[i]));
+            }
+
+            List<Exception> exceptions = new List<Exception> ();
+
+            queue.Clear (ex => exceptions.Add (ex));
+
+            Assert.AreEqual (0, queue.Count);
+
+            Assert.AreEqual (disposeResults.Length, exceptions.Count);
+
+            foreach (Exception ex in exceptions)
+            {
+                Assert.IsInstanceOf<InvalidOperationException> (ex);
+            }
+            
+            for (int i = 0; i < 10; i++)
+            {
+                Assert.AreEqual (i, disposeResults[i].Value);
+            }
+        }
+
+        [Test]
+        public void Dispose ()
+        {
+            Clear ();
+        }
+
         class TaskResult
         {
             public int Value { get; set; }
@@ -210,6 +328,8 @@ namespace Moth.Tasks.Tests
 
         struct Task : ITask
         {
+            public IntPtr MockData;
+
             public void Run ()
             {
 
@@ -256,6 +376,19 @@ namespace Moth.Tasks.Tests
             public void Dispose ()
             {
                 disposeResult.Value = disposeValue;
+            }
+        }
+
+        readonly struct ExceptionOnDisposeTask : ITask, IDisposable
+        {
+            public void Run ()
+            {
+
+            }
+
+            public void Dispose ()
+            {
+                throw new InvalidOperationException ();
             }
         }
 

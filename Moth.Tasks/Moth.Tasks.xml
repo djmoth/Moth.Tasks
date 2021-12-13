@@ -170,6 +170,18 @@
             A queue of tasks, which can be run in FIFO order.
             </summary>
         </member>
+        <member name="M:Moth.Tasks.TaskQueue.#ctor">
+            <summary>
+            Initializes a new instance of the <see cref="T:Moth.Tasks.TaskQueue"/> class.
+            </summary>
+        </member>
+        <member name="M:Moth.Tasks.TaskQueue.#ctor(System.Int32,System.Int32)">
+            <summary>
+            Initializes a new instance of the <see cref="T:Moth.Tasks.TaskQueue"/> class.
+            </summary>
+            <param name="taskCapacity">Starting capacity for the internal task queue.</param>
+            <param name="dataCapacity">Starting capacity for the internal task data array.</param>
+        </member>
         <member name="M:Moth.Tasks.TaskQueue.Finalize">
             <summary>
             Finalizes an instance of the <see cref="T:Moth.Tasks.TaskQueue"/> class. Also disposes of tasks implementing <see cref="M:System.IDisposable.Dispose"/>.
@@ -179,9 +191,6 @@
             <summary>
             The number of tasks enqueued.
             </summary>
-            <remarks>
-            As the <see cref="T:Moth.Tasks.TaskQueue"/> may be used from multiple threads, reading and acting on the value of this property may cause a race condition.
-            </remarks>
         </member>
         <member name="M:Moth.Tasks.TaskQueue.Enqueue(System.Action)">
             <summary>

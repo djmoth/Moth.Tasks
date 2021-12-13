@@ -5,6 +5,7 @@ items:
   id: TaskQueue
   parent: Moth.Tasks
   children:
+  - Moth.Tasks.TaskQueue.#ctor
   - Moth.Tasks.TaskQueue.Clear(System.Action{System.Exception})
   - Moth.Tasks.TaskQueue.Count
   - Moth.Tasks.TaskQueue.Dispose
@@ -62,6 +63,38 @@ items:
   - Public
   - NotInheritable
   - Class
+- uid: Moth.Tasks.TaskQueue.#ctor
+  commentId: M:Moth.Tasks.TaskQueue.#ctor
+  id: '#ctor'
+  parent: Moth.Tasks.TaskQueue
+  langs:
+  - csharp
+  - vb
+  name: TaskQueue()
+  nameWithType: TaskQueue.TaskQueue()
+  fullName: Moth.Tasks.TaskQueue.TaskQueue()
+  type: Constructor
+  source:
+    remote:
+      path: Moth.Tasks/TaskQueue.cs
+      branch: main
+      repo: https://github.com/djmoth/Moth.Tasks.git
+    id: .ctor
+    path: TaskQueue.cs
+    startLine: 27
+  assemblies:
+  - Moth.Tasks
+  namespace: Moth.Tasks
+  summary: "\nInitializes a new instance of the <xref href=\"Moth.Tasks.TaskQueue\" data-throw-if-not-resolved=\"false\"></xref> class.\n"
+  example: []
+  syntax:
+    content: public TaskQueue()
+    content.vb: Public Sub New
+  overload: Moth.Tasks.TaskQueue.#ctor*
+  modifiers.csharp:
+  - public
+  modifiers.vb:
+  - Public
 - uid: Moth.Tasks.TaskQueue.Finalize
   commentId: M:Moth.Tasks.TaskQueue.Finalize
   id: Finalize
@@ -80,7 +113,7 @@ items:
       repo: https://github.com/djmoth/Moth.Tasks.git
     id: Finalize
     path: TaskQueue.cs
-    startLine: 29
+    startLine: 44
   assemblies:
   - Moth.Tasks
   namespace: Moth.Tasks
@@ -112,12 +145,11 @@ items:
       repo: https://github.com/djmoth/Moth.Tasks.git
     id: Count
     path: TaskQueue.cs
-    startLine: 37
+    startLine: 49
   assemblies:
   - Moth.Tasks
   namespace: Moth.Tasks
   summary: "\nThe number of tasks enqueued.\n"
-  remarks: "\nAs the <xref href=\"Moth.Tasks.TaskQueue\" data-throw-if-not-resolved=\"false\"></xref> may be used from multiple threads, reading and acting on the value of this property may cause a race condition.\n"
   example: []
   syntax:
     content: public int Count { get; }
@@ -150,7 +182,7 @@ items:
       repo: https://github.com/djmoth/Moth.Tasks.git
     id: Enqueue
     path: TaskQueue.cs
-    startLine: 52
+    startLine: 64
   assemblies:
   - Moth.Tasks
   namespace: Moth.Tasks
@@ -186,7 +218,7 @@ items:
       repo: https://github.com/djmoth/Moth.Tasks.git
     id: Enqueue
     path: TaskQueue.cs
-    startLine: 60
+    startLine: 72
   assemblies:
   - Moth.Tasks
   namespace: Moth.Tasks
@@ -231,7 +263,7 @@ items:
       repo: https://github.com/djmoth/Moth.Tasks.git
     id: Enqueue
     path: TaskQueue.cs
-    startLine: 67
+    startLine: 79
   assemblies:
   - Moth.Tasks
   namespace: Moth.Tasks
@@ -275,7 +307,7 @@ items:
       repo: https://github.com/djmoth/Moth.Tasks.git
     id: Enqueue
     path: TaskQueue.cs
-    startLine: 81
+    startLine: 93
   assemblies:
   - Moth.Tasks
   namespace: Moth.Tasks
@@ -322,7 +354,7 @@ items:
       repo: https://github.com/djmoth/Moth.Tasks.git
     id: RunNextTask
     path: TaskQueue.cs
-    startLine: 108
+    startLine: 120
   assemblies:
   - Moth.Tasks
   namespace: Moth.Tasks
@@ -358,7 +390,7 @@ items:
       repo: https://github.com/djmoth/Moth.Tasks.git
     id: RunNextTask
     path: TaskQueue.cs
-    startLine: 118
+    startLine: 130
   assemblies:
   - Moth.Tasks
   namespace: Moth.Tasks
@@ -398,7 +430,7 @@ items:
       repo: https://github.com/djmoth/Moth.Tasks.git
     id: RunNextTask
     path: TaskQueue.cs
-    startLine: 128
+    startLine: 140
   assemblies:
   - Moth.Tasks
   namespace: Moth.Tasks
@@ -441,7 +473,7 @@ items:
       repo: https://github.com/djmoth/Moth.Tasks.git
     id: RunNextTask
     path: TaskQueue.cs
-    startLine: 139
+    startLine: 151
   assemblies:
   - Moth.Tasks
   namespace: Moth.Tasks
@@ -487,7 +519,7 @@ items:
       repo: https://github.com/djmoth/Moth.Tasks.git
     id: Clear
     path: TaskQueue.cs
-    startLine: 207
+    startLine: 219
   assemblies:
   - Moth.Tasks
   namespace: Moth.Tasks
@@ -527,7 +559,7 @@ items:
       repo: https://github.com/djmoth/Moth.Tasks.git
     id: Dispose
     path: TaskQueue.cs
-    startLine: 243
+    startLine: 255
   assemblies:
   - Moth.Tasks
   namespace: Moth.Tasks
@@ -854,6 +886,11 @@ references:
   name: TaskQueue
   nameWithType: TaskQueue
   fullName: Moth.Tasks.TaskQueue
+- uid: Moth.Tasks.TaskQueue.#ctor*
+  commentId: Overload:Moth.Tasks.TaskQueue.#ctor
+  name: TaskQueue
+  nameWithType: TaskQueue.TaskQueue
+  fullName: Moth.Tasks.TaskQueue.TaskQueue
 - uid: System.IDisposable.Dispose
   commentId: M:System.IDisposable.Dispose
   parent: System.IDisposable

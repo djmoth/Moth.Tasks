@@ -31,14 +31,14 @@ namespace Moth.Tasks.Tests
 
             Assert.AreEqual (IntPtr.Size, taskInfo.DataSize); // Task contains one field of IntPtr, size should match IntPtr.Size then
 
-            Assert.AreEqual (1, taskInfo.DataIndices); // One "Data Index" refers to an index in the internal TaskQueue.taskData object array
+            Assert.AreEqual (1, taskInfo.DataIndices); // A "Data Index" refers to an index in the internal TaskQueue.taskData object array
 
             Assert.AreEqual (disposable, taskInfo.Disposable); // Task does not implement IDisposable
         }
 
         struct Task : ITask
         {
-            IntPtr mockData;
+            public IntPtr MockData;
 
             public void Run ()
             {
@@ -48,7 +48,7 @@ namespace Moth.Tasks.Tests
 
         struct DisposableTask : ITask, IDisposable
         {
-            IntPtr mockData;
+            public IntPtr MockData;
 
             public void Run ()
             {

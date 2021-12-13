@@ -51,7 +51,7 @@
     internal readonly struct DisposableTaskWithHandle<T> : ITask, IDisposable where T : struct, ITask
     {
         [ThreadStatic]
-        private static IDisposable DisposableTemplate;
+        private static IDisposable disposableTemplate;
 
         private readonly T task;
         private readonly TaskQueue queue;
@@ -78,29 +78,20 @@
         /// </summary>
         public unsafe void Dispose ()
         {
-            if (DisposableTemplate == null)
+            if (disposableTemplate == null)
             {
-                DisposableTemplate = (IDisposable)default (T);
+                disposableTemplate = (IDisposable)default (T);
             }
 
-            ref T disposableData = ref Unsafe.Unbox<T> (DisposableTemplate);
+            ref T disposableData = ref Unsafe.Unbox<T> (disposableTemplate);
 
             disposableData = task; // Copy data to DisposableTemplate object
 
-            DisposableTemplate.Dispose (); // Call Dispose with data from task
+            disposableTemplate.Dispose (); // Call Dispose with data from task
 
             disposableData = default; // Clear data so as to not leave any object references hanging
 
             queue.NotifyTaskComplete (handleID);
         }
-    }
-
-    [StructLayout (LayoutKind.Explicit)]
-    internal unsafe struct RefPointerUnion
-    {
-        [FieldOffset (0)]
-        public void* Pointer;
-        [FieldOffset (0)]
-        public IDisposable Reference;
     }
 }
