@@ -62,7 +62,17 @@
         /// Enqueue an action to be run later.
         /// </summary>
         /// <param name="action">Action to enqueue.</param>
-        public void Enqueue (Action action) => Enqueue (new DelegateTask (action));
+        /// <exception cref="ArgumentNullException"><paramref name="action"/> is <see langword="null"/>.</exception>
+        /// <exception cref="ObjectDisposedException">The <see cref="TaskQueue"/> has been disposed.</exception>
+        public void Enqueue (Action action)
+        {
+            if (action == null)
+            {
+                throw new ArgumentNullException (nameof (action));
+            }
+
+            Enqueue (new DelegateTask (action));
+        }
 
         /// <summary>
         /// Enqueue an action to be run later with an argument.
@@ -70,13 +80,24 @@
         /// <typeparam name="T">The type of the parameter that <paramref name="action"/> encapsulates.</typeparam>
         /// <param name="action">Action to enqueue.</param>
         /// <param name="arg">Argument to run <paramref name="action"/> with.</param>
-        public void Enqueue<T> (Action<T> action, T arg) => Enqueue (new DelegateTask<T> (action, arg));
+        /// <exception cref="ArgumentNullException"><paramref name="action"/> is <see langword="null"/>.</exception>
+        /// <exception cref="ObjectDisposedException">The <see cref="TaskQueue"/> has been disposed.</exception>
+        public void Enqueue<T> (Action<T> action, T arg)
+        {
+            if (action == null)
+            {
+                throw new ArgumentNullException (nameof (action));
+            }
+
+            Enqueue (new DelegateTask<T> (action, arg));
+        }
 
         /// <summary>
         /// Enqueue an <see cref="ITask"/> to be run later.
         /// </summary>
         /// <typeparam name="T">Type of task to run.</typeparam>
         /// <param name="task">Task data.</param>
+        /// <exception cref="ObjectDisposedException">The <see cref="TaskQueue"/> has been disposed.</exception>
         public void Enqueue<T> (in T task) where T : struct, ITask
         {
             lock (taskLock)
@@ -91,6 +112,7 @@
         /// <typeparam name="T">Type of task to run.</typeparam>
         /// <param name="task">Task data.</param>
         /// <param name="handle">Handle for checking task status.</param>
+        /// <exception cref="ObjectDisposedException">The <see cref="TaskQueue"/> has been disposed.</exception>
         public void Enqueue<T> (in T task, out TaskHandle handle) where T : struct, ITask
         {
             lock (taskLock)
