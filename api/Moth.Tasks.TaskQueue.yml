@@ -182,7 +182,7 @@ items:
       repo: https://github.com/djmoth/Moth.Tasks.git
     id: Enqueue
     path: TaskQueue.cs
-    startLine: 64
+    startLine: 66
   assemblies:
   - Moth.Tasks
   namespace: Moth.Tasks
@@ -196,6 +196,13 @@ items:
       description: Action to enqueue.
     content.vb: Public Sub Enqueue(action As Action)
   overload: Moth.Tasks.TaskQueue.Enqueue*
+  exceptions:
+  - type: System.ArgumentNullException
+    commentId: T:System.ArgumentNullException
+    description: <code data-dev-comment-type="paramref" class="paramref">action</code> is <xref uid="langword_csharp_null" name="null" href=""></xref>.
+  - type: System.ObjectDisposedException
+    commentId: T:System.ObjectDisposedException
+    description: The <xref href="Moth.Tasks.TaskQueue" data-throw-if-not-resolved="false"></xref> has been disposed.
   modifiers.csharp:
   - public
   modifiers.vb:
@@ -218,7 +225,7 @@ items:
       repo: https://github.com/djmoth/Moth.Tasks.git
     id: Enqueue
     path: TaskQueue.cs
-    startLine: 72
+    startLine: 84
   assemblies:
   - Moth.Tasks
   namespace: Moth.Tasks
@@ -238,6 +245,13 @@ items:
       description: The type of the parameter that <code data-dev-comment-type="paramref" class="paramref">action</code> encapsulates.
     content.vb: Public Sub Enqueue(Of T)(action As Action(Of T), arg As T)
   overload: Moth.Tasks.TaskQueue.Enqueue*
+  exceptions:
+  - type: System.ArgumentNullException
+    commentId: T:System.ArgumentNullException
+    description: <code data-dev-comment-type="paramref" class="paramref">action</code> is <xref uid="langword_csharp_null" name="null" href=""></xref>.
+  - type: System.ObjectDisposedException
+    commentId: T:System.ObjectDisposedException
+    description: The <xref href="Moth.Tasks.TaskQueue" data-throw-if-not-resolved="false"></xref> has been disposed.
   nameWithType.vb: TaskQueue.Enqueue(Of T)(Action(Of T), T)
   modifiers.csharp:
   - public
@@ -263,7 +277,7 @@ items:
       repo: https://github.com/djmoth/Moth.Tasks.git
     id: Enqueue
     path: TaskQueue.cs
-    startLine: 79
+    startLine: 100
   assemblies:
   - Moth.Tasks
   namespace: Moth.Tasks
@@ -282,6 +296,10 @@ items:
       description: Type of task to run.
     content.vb: Public Sub Enqueue(Of T As {Structure, ITask})(ByRef task As T)
   overload: Moth.Tasks.TaskQueue.Enqueue*
+  exceptions:
+  - type: System.ObjectDisposedException
+    commentId: T:System.ObjectDisposedException
+    description: The <xref href="Moth.Tasks.TaskQueue" data-throw-if-not-resolved="false"></xref> has been disposed.
   nameWithType.vb: TaskQueue.Enqueue(Of T)(ByRef T)
   modifiers.csharp:
   - public
@@ -307,7 +325,7 @@ items:
       repo: https://github.com/djmoth/Moth.Tasks.git
     id: Enqueue
     path: TaskQueue.cs
-    startLine: 93
+    startLine: 115
   assemblies:
   - Moth.Tasks
   namespace: Moth.Tasks
@@ -329,6 +347,10 @@ items:
       description: Type of task to run.
     content.vb: Public Sub Enqueue(Of T As {Structure, ITask})(ByRef task As T, ByRef handle As TaskHandle)
   overload: Moth.Tasks.TaskQueue.Enqueue*
+  exceptions:
+  - type: System.ObjectDisposedException
+    commentId: T:System.ObjectDisposedException
+    description: The <xref href="Moth.Tasks.TaskQueue" data-throw-if-not-resolved="false"></xref> has been disposed.
   nameWithType.vb: TaskQueue.Enqueue(Of T)(ByRef T, ByRef TaskHandle)
   modifiers.csharp:
   - public
@@ -354,7 +376,7 @@ items:
       repo: https://github.com/djmoth/Moth.Tasks.git
     id: RunNextTask
     path: TaskQueue.cs
-    startLine: 125
+    startLine: 147
   assemblies:
   - Moth.Tasks
   namespace: Moth.Tasks
@@ -390,7 +412,7 @@ items:
       repo: https://github.com/djmoth/Moth.Tasks.git
     id: RunNextTask
     path: TaskQueue.cs
-    startLine: 135
+    startLine: 157
   assemblies:
   - Moth.Tasks
   namespace: Moth.Tasks
@@ -430,7 +452,7 @@ items:
       repo: https://github.com/djmoth/Moth.Tasks.git
     id: RunNextTask
     path: TaskQueue.cs
-    startLine: 145
+    startLine: 167
   assemblies:
   - Moth.Tasks
   namespace: Moth.Tasks
@@ -473,7 +495,7 @@ items:
       repo: https://github.com/djmoth/Moth.Tasks.git
     id: RunNextTask
     path: TaskQueue.cs
-    startLine: 156
+    startLine: 178
   assemblies:
   - Moth.Tasks
   namespace: Moth.Tasks
@@ -519,7 +541,7 @@ items:
       repo: https://github.com/djmoth/Moth.Tasks.git
     id: Clear
     path: TaskQueue.cs
-    startLine: 224
+    startLine: 246
   assemblies:
   - Moth.Tasks
   namespace: Moth.Tasks
@@ -559,7 +581,7 @@ items:
       repo: https://github.com/djmoth/Moth.Tasks.git
     id: Dispose
     path: TaskQueue.cs
-    startLine: 260
+    startLine: 282
   assemblies:
   - Moth.Tasks
   namespace: Moth.Tasks
@@ -939,6 +961,12 @@ references:
   name: Int32
   nameWithType: Int32
   fullName: System.Int32
+- uid: System.ArgumentNullException
+  commentId: T:System.ArgumentNullException
+  isExternal: true
+- uid: System.ObjectDisposedException
+  commentId: T:System.ObjectDisposedException
+  isExternal: true
 - uid: Moth.Tasks.TaskQueue.Enqueue*
   commentId: Overload:Moth.Tasks.TaskQueue.Enqueue
   name: Enqueue

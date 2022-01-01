@@ -204,6 +204,8 @@
             Enqueue an action to be run later.
             </summary>
             <param name="action">Action to enqueue.</param>
+            <exception cref="T:System.ArgumentNullException"><paramref name="action"/> is <see langword="null"/>.</exception>
+            <exception cref="T:System.ObjectDisposedException">The <see cref="T:Moth.Tasks.TaskQueue"/> has been disposed.</exception>
         </member>
         <member name="M:Moth.Tasks.TaskQueue.Enqueue``1(System.Action{``0},``0)">
             <summary>
@@ -212,6 +214,8 @@
             <typeparam name="T">The type of the parameter that <paramref name="action"/> encapsulates.</typeparam>
             <param name="action">Action to enqueue.</param>
             <param name="arg">Argument to run <paramref name="action"/> with.</param>
+            <exception cref="T:System.ArgumentNullException"><paramref name="action"/> is <see langword="null"/>.</exception>
+            <exception cref="T:System.ObjectDisposedException">The <see cref="T:Moth.Tasks.TaskQueue"/> has been disposed.</exception>
         </member>
         <member name="M:Moth.Tasks.TaskQueue.Enqueue``1(``0@)">
             <summary>
@@ -219,6 +223,7 @@
             </summary>
             <typeparam name="T">Type of task to run.</typeparam>
             <param name="task">Task data.</param>
+            <exception cref="T:System.ObjectDisposedException">The <see cref="T:Moth.Tasks.TaskQueue"/> has been disposed.</exception>
         </member>
         <member name="M:Moth.Tasks.TaskQueue.Enqueue``1(``0@,Moth.Tasks.TaskHandle@)">
             <summary>
@@ -227,6 +232,7 @@
             <typeparam name="T">Type of task to run.</typeparam>
             <param name="task">Task data.</param>
             <param name="handle">Handle for checking task status.</param>
+            <exception cref="T:System.ObjectDisposedException">The <see cref="T:Moth.Tasks.TaskQueue"/> has been disposed.</exception>
         </member>
         <member name="M:Moth.Tasks.TaskQueue.RunNextTask">
             <summary>

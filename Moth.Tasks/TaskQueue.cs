@@ -397,19 +397,22 @@
             }
         }
 
-        private ref T GetNextTask<T> (TaskInfo task) where T : struct, ITask
+        private T GetNextTask<T> (TaskInfo task) where T : struct, ITask
         {
-            ref T data = ref Unsafe.As<object, T> (ref taskData[firstTask]);
+            ref T dataRef = ref Unsafe.As<object, T> (ref taskData[firstTask]);
+            T data = dataRef;
+
+            dataRef = default; // Clear stored data, as to not leave references hanging
 
             firstTask += task.DataIndices;
 
-            if (firstTask == lastTaskEnd) // If firstTask is equal to lastTaskEnd, it means that this was the last task in the queue
+            if (firstTask == lastTaskEnd) // If firstTask is now equal to lastTaskEnd, then this was the last task in the queue
             {
                 firstTask = 0;
                 lastTaskEnd = 0;
             }
 
-            return ref data;
+            return data;
         }
 
         /// <summary>
