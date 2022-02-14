@@ -143,7 +143,7 @@
         /// </summary>
         /// <returns><see langword="true"/> if a task was run, <see langword="false"/> if the <see cref="TaskQueue"/> is empty.</returns>
         /// <remarks>
-        /// Please note that the return value does not indicate if a task was successful. The method will return <see langword="true"/> if a task was ready in the queue, regardless if an exception occured.
+        /// Please note that the return value does not indicate whether task was successful or not. The method will return <see langword="true"/> if a task was ready in the queue, regardless if an exception occured.
         /// </remarks>
         public bool RunNextTask () => RunNextTask (null, out _);
 
@@ -153,7 +153,7 @@
         /// <param name="profiler"><see cref="IProfiler"/> to profile the run-time of the task.</param>
         /// <returns><see langword="true"/> if a task was run, <see langword="false"/> if the <see cref="TaskQueue"/> is empty.</returns>
         /// <remarks>
-        /// Please note that the return value does not indicate if a task was successful. The method will return <see langword="true"/> if a task was ready in the queue, regardless if an exception occured.
+        /// Please note that the return value does not indicate whether task was successful or not. The method will return <see langword="true"/> if a task was ready in the queue, regardless if an exception occured.
         /// </remarks>
         public bool RunNextTask (IProfiler profiler) => RunNextTask (profiler, out _);
 
@@ -163,7 +163,7 @@
         /// <param name="exception"><see cref="Exception"/> thrown if task failed. Is <see langword="null"/> if task was run successfully.</param>
         /// <returns><see langword="true"/> if a task was run, <see langword="false"/> if the <see cref="TaskQueue"/> is empty.</returns>
         /// <remarks>
-        /// Please note that the return value does not indicate if a task was successful. The method will return <see langword="true"/> if a task was ready in the queue, regardless if an exception occured.
+        /// Please note that the return value does not indicate whether task was successful or not. The method will return <see langword="true"/> if a task was ready in the queue, regardless if an exception occured.
         /// </remarks>
         public bool RunNextTask (out Exception exception) => RunNextTask (null, out exception);
 
@@ -174,7 +174,7 @@
         /// <param name="exception"><see cref="Exception"/> thrown if task failed. Is <see langword="null"/> if task was run successfully.</param>
         /// <returns><see langword="true"/> if a task was run, <see langword="false"/> if the <see cref="TaskQueue"/> is empty.</returns>
         /// <remarks>
-        /// Please note that the return value does not indicate if a task was successful. The method will return <see langword="true"/> if a task was ready in the queue, regardless if an exception occured.
+        /// Please note that the return value does not indicate whether task was successful or not. The method will return <see langword="true"/> if a task was ready in the queue, regardless if an exception occured.
         /// </remarks>
         public bool RunNextTask (IProfiler profiler, out Exception exception)
         {
@@ -242,7 +242,7 @@
         /// </summary>
         /// <param name="exceptionHandler">Method for handling an exception thrown by a task's <see cref="IDisposable.Dispose"/>.</param>
         /// <remarks>
-        /// As the method iterates through all tasks in the queue and calls <see cref="IDisposable.Dispose"/> on tasks, it can hang for an unknown amount of time. If an exception is thrown in an <see cref="IDisposable.Dispose"/> call, the method continues on with disposing the remaining tasks.
+        /// As the method iterates through all tasks in the queue and calls <see cref="IDisposable.Dispose"/> each one, it can block for an unknown amount of time. If an exception is thrown in an <see cref="IDisposable.Dispose"/> call, the method continues on with disposing the remaining tasks.
         /// </remarks>
         public void Clear (Action<Exception> exceptionHandler = null)
         {
@@ -278,7 +278,7 @@
         /// Disposes all tasks which implements <see cref="IDisposable"/>.
         /// </summary>
         /// <remarks>
-        /// As the method iterates through all tasks in the queue and calls <see cref="IDisposable.Dispose"/> on tasks, it can hang for an unknown amount of time. If an exception is thrown in an <see cref="IDisposable.Dispose"/> call, the method continues on with disposing the remaining tasks.
+        /// As the method iterates through all tasks in the queue and calls <see cref="IDisposable.Dispose"/> each one, it can block for an unknown amount of time. If an exception is thrown in an <see cref="IDisposable.Dispose"/> call, the method continues on with disposing the remaining tasks.
         /// </remarks>
         public void Dispose ()
         {
