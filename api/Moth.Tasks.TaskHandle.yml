@@ -19,7 +19,7 @@ items:
     remote:
       path: Moth.Tasks/TaskHandle.cs
       branch: main
-      repo: https://github.com/djmoth/Moth.Tasks.git
+      repo: https://github.com/djmoth/Moth.Tasks
     id: TaskHandle
     path: TaskHandle.cs
     startLine: 5
@@ -60,7 +60,7 @@ items:
     remote:
       path: Moth.Tasks/TaskHandle.cs
       branch: main
-      repo: https://github.com/djmoth/Moth.Tasks.git
+      repo: https://github.com/djmoth/Moth.Tasks
     id: IsComplete
     path: TaskHandle.cs
     startLine: 27
@@ -99,7 +99,7 @@ items:
     remote:
       path: Moth.Tasks/TaskHandle.cs
       branch: main
-      repo: https://github.com/djmoth/Moth.Tasks.git
+      repo: https://github.com/djmoth/Moth.Tasks
     id: WaitForCompletion
     path: TaskHandle.cs
     startLine: 32
@@ -132,7 +132,7 @@ items:
     remote:
       path: Moth.Tasks/TaskHandle.cs
       branch: main
-      repo: https://github.com/djmoth/Moth.Tasks.git
+      repo: https://github.com/djmoth/Moth.Tasks
     id: WaitForCompletion
     path: TaskHandle.cs
     startLine: 39

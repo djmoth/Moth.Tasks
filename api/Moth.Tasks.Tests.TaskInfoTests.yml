@@ -18,7 +18,7 @@ items:
     remote:
       path: Moth.Tasks.Tests/TaskInfoTests.cs
       branch: main
-      repo: https://github.com/djmoth/Moth.Tasks.git
+      repo: https://github.com/djmoth/Moth.Tasks
     id: TaskInfoTests
     path: ../Moth.Tasks.Tests/TaskInfoTests.cs
     startLine: 8
@@ -59,7 +59,7 @@ items:
     remote:
       path: Moth.Tasks.Tests/TaskInfoTests.cs
       branch: main
-      repo: https://github.com/djmoth/Moth.Tasks.git
+      repo: https://github.com/djmoth/Moth.Tasks
     id: CreateTask
     path: ../Moth.Tasks.Tests/TaskInfoTests.cs
     startLine: 10
@@ -99,7 +99,7 @@ items:
     remote:
       path: Moth.Tasks.Tests/TaskInfoTests.cs
       branch: main
-      repo: https://github.com/djmoth/Moth.Tasks.git
+      repo: https://github.com/djmoth/Moth.Tasks
     id: CreateDisposableTask
     path: ../Moth.Tasks.Tests/TaskInfoTests.cs
     startLine: 16
