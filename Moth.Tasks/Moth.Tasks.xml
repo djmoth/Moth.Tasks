@@ -240,7 +240,7 @@
             </summary>
             <returns><see langword="true"/> if a task was run, <see langword="false"/> if the <see cref="T:Moth.Tasks.TaskQueue"/> is empty.</returns>
             <remarks>
-            Please note that the return value does not indicate if a task was successful. The method will return <see langword="true"/> if a task was ready in the queue, regardless if an exception occured.
+            Please note that the return value does not indicate whether task was successful or not. The method will return <see langword="true"/> if a task was ready in the queue, regardless if an exception occured.
             </remarks>
         </member>
         <member name="M:Moth.Tasks.TaskQueue.RunNextTask(Moth.Tasks.IProfiler)">
@@ -250,7 +250,7 @@
             <param name="profiler"><see cref="T:Moth.Tasks.IProfiler"/> to profile the run-time of the task.</param>
             <returns><see langword="true"/> if a task was run, <see langword="false"/> if the <see cref="T:Moth.Tasks.TaskQueue"/> is empty.</returns>
             <remarks>
-            Please note that the return value does not indicate if a task was successful. The method will return <see langword="true"/> if a task was ready in the queue, regardless if an exception occured.
+            Please note that the return value does not indicate whether task was successful or not. The method will return <see langword="true"/> if a task was ready in the queue, regardless if an exception occured.
             </remarks>
         </member>
         <member name="M:Moth.Tasks.TaskQueue.RunNextTask(System.Exception@)">
@@ -260,7 +260,7 @@
             <param name="exception"><see cref="T:System.Exception"/> thrown if task failed. Is <see langword="null"/> if task was run successfully.</param>
             <returns><see langword="true"/> if a task was run, <see langword="false"/> if the <see cref="T:Moth.Tasks.TaskQueue"/> is empty.</returns>
             <remarks>
-            Please note that the return value does not indicate if a task was successful. The method will return <see langword="true"/> if a task was ready in the queue, regardless if an exception occured.
+            Please note that the return value does not indicate whether task was successful or not. The method will return <see langword="true"/> if a task was ready in the queue, regardless if an exception occured.
             </remarks>
         </member>
         <member name="M:Moth.Tasks.TaskQueue.RunNextTask(Moth.Tasks.IProfiler,System.Exception@)">
@@ -271,7 +271,7 @@
             <param name="exception"><see cref="T:System.Exception"/> thrown if task failed. Is <see langword="null"/> if task was run successfully.</param>
             <returns><see langword="true"/> if a task was run, <see langword="false"/> if the <see cref="T:Moth.Tasks.TaskQueue"/> is empty.</returns>
             <remarks>
-            Please note that the return value does not indicate if a task was successful. The method will return <see langword="true"/> if a task was ready in the queue, regardless if an exception occured.
+            Please note that the return value does not indicate whether task was successful or not. The method will return <see langword="true"/> if a task was ready in the queue, regardless if an exception occured.
             </remarks>
         </member>
         <member name="M:Moth.Tasks.TaskQueue.Clear(System.Action{System.Exception})">
@@ -280,7 +280,7 @@
             </summary>
             <param name="exceptionHandler">Method for handling an exception thrown by a task's <see cref="M:System.IDisposable.Dispose"/>.</param>
             <remarks>
-            As the method iterates through all tasks in the queue and calls <see cref="M:System.IDisposable.Dispose"/> on tasks, it can hang for an unknown amount of time. If an exception is thrown in an <see cref="M:System.IDisposable.Dispose"/> call, the method continues on with disposing the remaining tasks.
+            As the method iterates through all tasks in the queue and calls <see cref="M:System.IDisposable.Dispose"/> each one, it can block for an unknown amount of time. If an exception is thrown in an <see cref="M:System.IDisposable.Dispose"/> call, the method continues on with disposing the remaining tasks.
             </remarks>
         </member>
         <member name="M:Moth.Tasks.TaskQueue.Dispose">
@@ -288,7 +288,7 @@
             Disposes all tasks which implements <see cref="T:System.IDisposable"/>.
             </summary>
             <remarks>
-            As the method iterates through all tasks in the queue and calls <see cref="M:System.IDisposable.Dispose"/> on tasks, it can hang for an unknown amount of time. If an exception is thrown in an <see cref="M:System.IDisposable.Dispose"/> call, the method continues on with disposing the remaining tasks.
+            As the method iterates through all tasks in the queue and calls <see cref="M:System.IDisposable.Dispose"/> each one, it can block for an unknown amount of time. If an exception is thrown in an <see cref="M:System.IDisposable.Dispose"/> call, the method continues on with disposing the remaining tasks.
             </remarks>
         </member>
         <member name="M:Moth.Tasks.TaskQueue.WaitForCompletion(System.Int32,System.Int32)">

@@ -17,7 +17,7 @@ items:
   source:
     remote:
       path: Moth.Tasks.Tests/TaskInfoTests.cs
-      branch: main
+      branch: awaitables
       repo: https://github.com/djmoth/Moth.Tasks.git
     id: TaskInfoTests
     path: ../Moth.Tasks.Tests/TaskInfoTests.cs
@@ -58,7 +58,7 @@ items:
   source:
     remote:
       path: Moth.Tasks.Tests/TaskInfoTests.cs
-      branch: main
+      branch: awaitables
       repo: https://github.com/djmoth/Moth.Tasks.git
     id: CreateTask
     path: ../Moth.Tasks.Tests/TaskInfoTests.cs
@@ -98,7 +98,7 @@ items:
   source:
     remote:
       path: Moth.Tasks.Tests/TaskInfoTests.cs
-      branch: main
+      branch: awaitables
       repo: https://github.com/djmoth/Moth.Tasks.git
     id: CreateDisposableTask
     path: ../Moth.Tasks.Tests/TaskInfoTests.cs

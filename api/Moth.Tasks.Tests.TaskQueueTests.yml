@@ -5,6 +5,7 @@ items:
   id: TaskQueueTests
   parent: Moth.Tasks.Tests
   children:
+  - Moth.Tasks.Tests.TaskQueueTests.Awaitable
   - Moth.Tasks.Tests.TaskQueueTests.Clear
   - Moth.Tasks.Tests.TaskQueueTests.Dispose
   - Moth.Tasks.Tests.TaskQueueTests.EnqueueAction
@@ -34,7 +35,7 @@ items:
   source:
     remote:
       path: Moth.Tasks.Tests/TaskQueueTests.cs
-      branch: main
+      branch: awaitables
       repo: https://github.com/djmoth/Moth.Tasks.git
     id: TaskQueueTests
     path: ../Moth.Tasks.Tests/TaskQueueTests.cs
@@ -75,7 +76,7 @@ items:
   source:
     remote:
       path: Moth.Tasks.Tests/TaskQueueTests.cs
-      branch: main
+      branch: awaitables
       repo: https://github.com/djmoth/Moth.Tasks.git
     id: EnqueueITask
     path: ../Moth.Tasks.Tests/TaskQueueTests.cs
@@ -117,7 +118,7 @@ items:
   source:
     remote:
       path: Moth.Tasks.Tests/TaskQueueTests.cs
-      branch: main
+      branch: awaitables
       repo: https://github.com/djmoth/Moth.Tasks.git
     id: EnqueueAction
     path: ../Moth.Tasks.Tests/TaskQueueTests.cs
@@ -159,7 +160,7 @@ items:
   source:
     remote:
       path: Moth.Tasks.Tests/TaskQueueTests.cs
-      branch: main
+      branch: awaitables
       repo: https://github.com/djmoth/Moth.Tasks.git
     id: EnqueueTask_ExpandTaskData
     path: ../Moth.Tasks.Tests/TaskQueueTests.cs
@@ -201,7 +202,7 @@ items:
   source:
     remote:
       path: Moth.Tasks.Tests/TaskQueueTests.cs
-      branch: main
+      branch: awaitables
       repo: https://github.com/djmoth/Moth.Tasks.git
     id: EnqueueAndTryRun_AssertValidData
     path: ../Moth.Tasks.Tests/TaskQueueTests.cs
@@ -243,7 +244,7 @@ items:
   source:
     remote:
       path: Moth.Tasks.Tests/TaskQueueTests.cs
-      branch: main
+      branch: awaitables
       repo: https://github.com/djmoth/Moth.Tasks.git
     id: EnqueueAndTryRun_ITask
     path: ../Moth.Tasks.Tests/TaskQueueTests.cs
@@ -285,7 +286,7 @@ items:
   source:
     remote:
       path: Moth.Tasks.Tests/TaskQueueTests.cs
-      branch: main
+      branch: awaitables
       repo: https://github.com/djmoth/Moth.Tasks.git
     id: EnqueueAndTryRun_Action
     path: ../Moth.Tasks.Tests/TaskQueueTests.cs
@@ -327,7 +328,7 @@ items:
   source:
     remote:
       path: Moth.Tasks.Tests/TaskQueueTests.cs
-      branch: main
+      branch: awaitables
       repo: https://github.com/djmoth/Moth.Tasks.git
     id: EnqueueAndTryRun_ActionWithArg
     path: ../Moth.Tasks.Tests/TaskQueueTests.cs
@@ -369,7 +370,7 @@ items:
   source:
     remote:
       path: Moth.Tasks.Tests/TaskQueueTests.cs
-      branch: main
+      branch: awaitables
       repo: https://github.com/djmoth/Moth.Tasks.git
     id: EnqueueAndTryRun_Profiler
     path: ../Moth.Tasks.Tests/TaskQueueTests.cs
@@ -411,7 +412,7 @@ items:
   source:
     remote:
       path: Moth.Tasks.Tests/TaskQueueTests.cs
-      branch: main
+      branch: awaitables
       repo: https://github.com/djmoth/Moth.Tasks.git
     id: EnqueueAndTryRun_IDisposable
     path: ../Moth.Tasks.Tests/TaskQueueTests.cs
@@ -453,7 +454,7 @@ items:
   source:
     remote:
       path: Moth.Tasks.Tests/TaskQueueTests.cs
-      branch: main
+      branch: awaitables
       repo: https://github.com/djmoth/Moth.Tasks.git
     id: EnqueueAndTryRun_Exception
     path: ../Moth.Tasks.Tests/TaskQueueTests.cs
@@ -495,7 +496,7 @@ items:
   source:
     remote:
       path: Moth.Tasks.Tests/TaskQueueTests.cs
-      branch: main
+      branch: awaitables
       repo: https://github.com/djmoth/Moth.Tasks.git
     id: EnqueueAndTryRun_ExceptionWhileProfiling
     path: ../Moth.Tasks.Tests/TaskQueueTests.cs
@@ -537,7 +538,7 @@ items:
   source:
     remote:
       path: Moth.Tasks.Tests/TaskQueueTests.cs
-      branch: main
+      branch: awaitables
       repo: https://github.com/djmoth/Moth.Tasks.git
     id: EnqueueWithTaskHandle
     path: ../Moth.Tasks.Tests/TaskQueueTests.cs
@@ -579,7 +580,7 @@ items:
   source:
     remote:
       path: Moth.Tasks.Tests/TaskQueueTests.cs
-      branch: main
+      branch: awaitables
       repo: https://github.com/djmoth/Moth.Tasks.git
     id: EnqueueAndWait
     path: ../Moth.Tasks.Tests/TaskQueueTests.cs
@@ -621,7 +622,7 @@ items:
   source:
     remote:
       path: Moth.Tasks.Tests/TaskQueueTests.cs
-      branch: main
+      branch: awaitables
       repo: https://github.com/djmoth/Moth.Tasks.git
     id: EnqueueAndWait_IDisposable
     path: ../Moth.Tasks.Tests/TaskQueueTests.cs
@@ -663,7 +664,7 @@ items:
   source:
     remote:
       path: Moth.Tasks.Tests/TaskQueueTests.cs
-      branch: main
+      branch: awaitables
       repo: https://github.com/djmoth/Moth.Tasks.git
     id: EnqueueAndWait_Completed
     path: ../Moth.Tasks.Tests/TaskQueueTests.cs
@@ -705,7 +706,7 @@ items:
   source:
     remote:
       path: Moth.Tasks.Tests/TaskQueueTests.cs
-      branch: main
+      branch: awaitables
       repo: https://github.com/djmoth/Moth.Tasks.git
     id: TryRun_ReturnFalse
     path: ../Moth.Tasks.Tests/TaskQueueTests.cs
@@ -747,7 +748,7 @@ items:
   source:
     remote:
       path: Moth.Tasks.Tests/TaskQueueTests.cs
-      branch: main
+      branch: awaitables
       repo: https://github.com/djmoth/Moth.Tasks.git
     id: TryRun_ReturnTrue
     path: ../Moth.Tasks.Tests/TaskQueueTests.cs
@@ -789,7 +790,7 @@ items:
   source:
     remote:
       path: Moth.Tasks.Tests/TaskQueueTests.cs
-      branch: main
+      branch: awaitables
       repo: https://github.com/djmoth/Moth.Tasks.git
     id: Clear
     path: ../Moth.Tasks.Tests/TaskQueueTests.cs
@@ -831,7 +832,7 @@ items:
   source:
     remote:
       path: Moth.Tasks.Tests/TaskQueueTests.cs
-      branch: main
+      branch: awaitables
       repo: https://github.com/djmoth/Moth.Tasks.git
     id: Dispose
     path: ../Moth.Tasks.Tests/TaskQueueTests.cs
@@ -849,6 +850,46 @@ items:
 
       Public Sub Dispose
   overload: Moth.Tasks.Tests.TaskQueueTests.Dispose*
+  attributes:
+  - type: NUnit.Framework.TestAttribute
+    ctor: NUnit.Framework.TestAttribute.#ctor
+    arguments: []
+  modifiers.csharp:
+  - public
+  modifiers.vb:
+  - Public
+- uid: Moth.Tasks.Tests.TaskQueueTests.Awaitable
+  commentId: M:Moth.Tasks.Tests.TaskQueueTests.Awaitable
+  id: Awaitable
+  parent: Moth.Tasks.Tests.TaskQueueTests
+  langs:
+  - csharp
+  - vb
+  name: Awaitable()
+  nameWithType: TaskQueueTests.Awaitable()
+  fullName: Moth.Tasks.Tests.TaskQueueTests.Awaitable()
+  type: Method
+  source:
+    remote:
+      path: Moth.Tasks.Tests/TaskQueueTests.cs
+      branch: awaitables
+      repo: https://github.com/djmoth/Moth.Tasks.git
+    id: Awaitable
+    path: ../Moth.Tasks.Tests/TaskQueueTests.cs
+    startLine: 479
+  assemblies:
+  - Moth.Tasks.Tests
+  namespace: Moth.Tasks.Tests
+  syntax:
+    content: >-
+      [Test]
+
+      public void Awaitable()
+    content.vb: >-
+      <Test>
+
+      Public Sub Awaitable
+  overload: Moth.Tasks.Tests.TaskQueueTests.Awaitable*
   attributes:
   - type: NUnit.Framework.TestAttribute
     ctor: NUnit.Framework.TestAttribute.#ctor
@@ -1355,3 +1396,8 @@ references:
   name: Dispose
   nameWithType: TaskQueueTests.Dispose
   fullName: Moth.Tasks.Tests.TaskQueueTests.Dispose
+- uid: Moth.Tasks.Tests.TaskQueueTests.Awaitable*
+  commentId: Overload:Moth.Tasks.Tests.TaskQueueTests.Awaitable
+  name: Awaitable
+  nameWithType: TaskQueueTests.Awaitable
+  fullName: Moth.Tasks.Tests.TaskQueueTests.Awaitable

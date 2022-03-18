@@ -17,7 +17,7 @@ namespace Moth.Tasks.Tests
         {
             TaskQueue queue = new TaskQueue ();
 
-            queue.Enqueue (new Task ());
+            queue.Enqueue (new MockTask ());
 
             Assert.AreEqual (1, queue.Count);
         }
@@ -46,11 +46,11 @@ namespace Moth.Tasks.Tests
 
             AssertTaskDataLength (1);
 
-            queue.Enqueue (new Task ());
+            queue.Enqueue (new MockTask ());
 
             AssertTaskDataLength (1);
 
-            queue.Enqueue (new Task ());
+            queue.Enqueue (new MockTask ());
 
             AssertTaskDataLength (2);
 
@@ -58,12 +58,12 @@ namespace Moth.Tasks.Tests
 
             AssertFirstTaskIndex (1);
 
-            queue.Enqueue (new Task ());
+            queue.Enqueue (new MockTask ());
 
             AssertFirstTaskIndex (0);
             AssertTaskDataLength (2);
 
-            queue.Enqueue (new Task ());
+            queue.Enqueue (new MockTask ());
 
             AssertTaskDataLength (4);
 
@@ -303,7 +303,7 @@ namespace Moth.Tasks.Tests
         {
             TaskQueue queue = new TaskQueue ();
 
-            queue.Enqueue (new Task (), out TaskHandle handle);
+            queue.Enqueue (new MockTask (), out TaskHandle handle);
 
             Assert.IsFalse (handle.IsComplete);
         }
@@ -388,7 +388,7 @@ namespace Moth.Tasks.Tests
         {
             TaskQueue queue = new TaskQueue ();
 
-            queue.Enqueue (new Task (), out TaskHandle handle);
+            queue.Enqueue (new MockTask (), out TaskHandle handle);
 
             queue.RunNextTask ();
 
@@ -414,7 +414,7 @@ namespace Moth.Tasks.Tests
         {
             TaskQueue queue = new TaskQueue ();
 
-            queue.Enqueue (new Task ());
+            queue.Enqueue (new MockTask ());
 
             Assert.IsTrue (queue.RunNextTask ());
         }
@@ -471,10 +471,18 @@ namespace Moth.Tasks.Tests
 
             Assert.IsTrue (GetPrivateValue<bool> ("disposed"));
 
-            Assert.Throws<ObjectDisposedException> (() => queue.Enqueue (new Task ()));
-            Assert.Throws<ObjectDisposedException> (() => queue.Enqueue (new Task (), out _));
+            Assert.Throws<ObjectDisposedException> (() => queue.Enqueue (new MockTask ()));
+            Assert.Throws<ObjectDisposedException> (() => queue.Enqueue (new MockTask (), out _));
 
             T GetPrivateValue<T> (string fieldName) => (T)typeof (TaskQueue).GetField (fieldName, BindingFlags.NonPublic | BindingFlags.Instance).GetValue (queue);
+        }
+
+        [Test]
+        public async void Awaitable ()
+        {
+            Task t;
+
+            await t;
         }
 
         /// <summary>
@@ -488,7 +496,7 @@ namespace Moth.Tasks.Tests
         /// <summary>
         /// Mock task, with size of one Data Index
         /// </summary>
-        struct Task : ITask
+        struct MockTask : ITask
         {
             public IntPtr MockData;
 

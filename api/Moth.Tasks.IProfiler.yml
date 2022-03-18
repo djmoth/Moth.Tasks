@@ -17,7 +17,7 @@ items:
   source:
     remote:
       path: Moth.Tasks/IProfiler.cs
-      branch: main
+      branch: awaitables
       repo: https://github.com/djmoth/Moth.Tasks.git
     id: IProfiler
     path: IProfiler.cs
@@ -50,7 +50,7 @@ items:
   source:
     remote:
       path: Moth.Tasks/IProfiler.cs
-      branch: main
+      branch: awaitables
       repo: https://github.com/djmoth/Moth.Tasks.git
     id: BeginTask
     path: IProfiler.cs
@@ -82,7 +82,7 @@ items:
   source:
     remote:
       path: Moth.Tasks/IProfiler.cs
-      branch: main
+      branch: awaitables
       repo: https://github.com/djmoth/Moth.Tasks.git
     id: EndTask
     path: IProfiler.cs

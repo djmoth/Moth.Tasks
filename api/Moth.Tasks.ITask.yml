@@ -16,7 +16,7 @@ items:
   source:
     remote:
       path: Moth.Tasks/ITask.cs
-      branch: main
+      branch: awaitables
       repo: https://github.com/djmoth/Moth.Tasks.git
     id: ITask
     path: ITask.cs
@@ -49,7 +49,7 @@ items:
   source:
     remote:
       path: Moth.Tasks/ITask.cs
-      branch: main
+      branch: awaitables
       repo: https://github.com/djmoth/Moth.Tasks.git
     id: Run
     path: ITask.cs

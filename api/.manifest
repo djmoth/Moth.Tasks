@@ -28,6 +28,7 @@
   "Moth.Tasks.Tests.TaskInfoTests.CreateDisposableTask": "Moth.Tasks.Tests.TaskInfoTests.yml",
   "Moth.Tasks.Tests.TaskInfoTests.CreateTask": "Moth.Tasks.Tests.TaskInfoTests.yml",
   "Moth.Tasks.Tests.TaskQueueTests": "Moth.Tasks.Tests.TaskQueueTests.yml",
+  "Moth.Tasks.Tests.TaskQueueTests.Awaitable": "Moth.Tasks.Tests.TaskQueueTests.yml",
   "Moth.Tasks.Tests.TaskQueueTests.Clear": "Moth.Tasks.Tests.TaskQueueTests.yml",
   "Moth.Tasks.Tests.TaskQueueTests.Dispose": "Moth.Tasks.Tests.TaskQueueTests.yml",
   "Moth.Tasks.Tests.TaskQueueTests.EnqueueAction": "Moth.Tasks.Tests.TaskQueueTests.yml",
