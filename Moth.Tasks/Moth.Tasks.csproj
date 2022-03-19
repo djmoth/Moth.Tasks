@@ -21,6 +21,14 @@
   </ItemGroup>
 
   <ItemGroup>
+    <None Include="TaskQueueActions.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>TaskQueueActions.tt</DependentUpon>
+    </None>
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="docfx.console" Version="2.58.9">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
@@ -31,6 +39,39 @@
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
     <PackageReference Include="System.Memory" Version="4.5.4" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Update="DelegateTask.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>DelegateTask.cs</LastGenOutput>
+    </None>
+    <None Update="TaskQueueActions.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>TaskQueueActions.cs</LastGenOutput>
+    </None>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Service Include="{508349b6-6b84-4df5-91f0-309beebad82d}" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Update="DelegateTask.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>DelegateTask.tt</DependentUpon>
+    </Compile>
+    <Compile Update="TaskQueue.g.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>TaskQueue.g.tt</DependentUpon>
+    </Compile>
+    <Compile Update="TaskQueueActions.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>TaskQueueActions.tt</DependentUpon>
+    </Compile>
   </ItemGroup>
 
 </Project>
