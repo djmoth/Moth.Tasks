@@ -29,95 +29,95 @@
         /// Enqueue an action to be run later with supplied arguments.
         /// </summary>
         /// <param name="action">Action to enqueue.</param>
-        /// <param name="arg1">1st argument to run <paramref name="action"/> with.</param>
+        /// <param name="arg1">The 1st argument to run <paramref name="action"/> with.</param>
         /// <typeparam name="T1">The type of the 1st parameter of <paramref name="action"/>.</typeparam>
         /// <exception cref="ArgumentNullException"><paramref name="action"/> is <see langword="null"/>.</exception>
         /// <exception cref="ObjectDisposedException">The <see cref="TaskQueue"/> has been disposed.</exception>
-        public void Enqueue<T1> (Action<T1> action)
+        public void Enqueue<T1> (Action<T1> action, T1 arg1)
         {
             if (action == null)
             {
                 throw new ArgumentNullException (nameof (action));
             }
 
-            Enqueue (new DelegateTask<T> (action, arg));
+            Enqueue (new DelegateTask<T1> (action, arg1));
         }
 
         /// <summary>
         /// Enqueue an action to be run later with supplied arguments.
         /// </summary>
         /// <param name="action">Action to enqueue.</param>
-        /// <param name="arg1">1st argument to run <paramref name="action"/> with.</param>
-        /// <param name="arg2">2nd argument to run <paramref name="action"/> with.</param>
+        /// <param name="arg1">The 1st argument to run <paramref name="action"/> with.</param>
+        /// <param name="arg2">The 2nd argument to run <paramref name="action"/> with.</param>
         /// <typeparam name="T1">The type of the 1st parameter of <paramref name="action"/>.</typeparam>
         /// <typeparam name="T2">The type of the 2nd parameter of <paramref name="action"/>.</typeparam>
         /// <exception cref="ArgumentNullException"><paramref name="action"/> is <see langword="null"/>.</exception>
         /// <exception cref="ObjectDisposedException">The <see cref="TaskQueue"/> has been disposed.</exception>
-        public void Enqueue<T1, T2> (Action<T1, T2> action)
+        public void Enqueue<T1, T2> (Action<T1, T2> action, T1 arg1, T2 arg2)
         {
             if (action == null)
             {
                 throw new ArgumentNullException (nameof (action));
             }
 
-            Enqueue (new DelegateTask<T> (action, arg));
+            Enqueue (new DelegateTask<T1, T2> (action, arg1, arg2));
         }
 
         /// <summary>
         /// Enqueue an action to be run later with supplied arguments.
         /// </summary>
         /// <param name="action">Action to enqueue.</param>
-        /// <param name="arg1">1st argument to run <paramref name="action"/> with.</param>
-        /// <param name="arg2">2nd argument to run <paramref name="action"/> with.</param>
-        /// <param name="arg3">3rd argument to run <paramref name="action"/> with.</param>
+        /// <param name="arg1">The 1st argument to run <paramref name="action"/> with.</param>
+        /// <param name="arg2">The 2nd argument to run <paramref name="action"/> with.</param>
+        /// <param name="arg3">The 3rd argument to run <paramref name="action"/> with.</param>
         /// <typeparam name="T1">The type of the 1st parameter of <paramref name="action"/>.</typeparam>
         /// <typeparam name="T2">The type of the 2nd parameter of <paramref name="action"/>.</typeparam>
         /// <typeparam name="T3">The type of the 3rd parameter of <paramref name="action"/>.</typeparam>
         /// <exception cref="ArgumentNullException"><paramref name="action"/> is <see langword="null"/>.</exception>
         /// <exception cref="ObjectDisposedException">The <see cref="TaskQueue"/> has been disposed.</exception>
-        public void Enqueue<T1, T2, T3> (Action<T1, T2, T3> action)
+        public void Enqueue<T1, T2, T3> (Action<T1, T2, T3> action, T1 arg1, T2 arg2, T3 arg3)
         {
             if (action == null)
             {
                 throw new ArgumentNullException (nameof (action));
             }
 
-            Enqueue (new DelegateTask<T> (action, arg));
+            Enqueue (new DelegateTask<T1, T2, T3> (action, arg1, arg2, arg3));
         }
 
         /// <summary>
         /// Enqueue an action to be run later with supplied arguments.
         /// </summary>
         /// <param name="action">Action to enqueue.</param>
-        /// <param name="arg1">1st argument to run <paramref name="action"/> with.</param>
-        /// <param name="arg2">2nd argument to run <paramref name="action"/> with.</param>
-        /// <param name="arg3">3rd argument to run <paramref name="action"/> with.</param>
-        /// <param name="arg4">4th argument to run <paramref name="action"/> with.</param>
+        /// <param name="arg1">The 1st argument to run <paramref name="action"/> with.</param>
+        /// <param name="arg2">The 2nd argument to run <paramref name="action"/> with.</param>
+        /// <param name="arg3">The 3rd argument to run <paramref name="action"/> with.</param>
+        /// <param name="arg4">The 4th argument to run <paramref name="action"/> with.</param>
         /// <typeparam name="T1">The type of the 1st parameter of <paramref name="action"/>.</typeparam>
         /// <typeparam name="T2">The type of the 2nd parameter of <paramref name="action"/>.</typeparam>
         /// <typeparam name="T3">The type of the 3rd parameter of <paramref name="action"/>.</typeparam>
         /// <typeparam name="T4">The type of the 4th parameter of <paramref name="action"/>.</typeparam>
         /// <exception cref="ArgumentNullException"><paramref name="action"/> is <see langword="null"/>.</exception>
         /// <exception cref="ObjectDisposedException">The <see cref="TaskQueue"/> has been disposed.</exception>
-        public void Enqueue<T1, T2, T3, T4> (Action<T1, T2, T3, T4> action)
+        public void Enqueue<T1, T2, T3, T4> (Action<T1, T2, T3, T4> action, T1 arg1, T2 arg2, T3 arg3, T4 arg4)
         {
             if (action == null)
             {
                 throw new ArgumentNullException (nameof (action));
             }
 
-            Enqueue (new DelegateTask<T> (action, arg));
+            Enqueue (new DelegateTask<T1, T2, T3, T4> (action, arg1, arg2, arg3, arg4));
         }
 
         /// <summary>
         /// Enqueue an action to be run later with supplied arguments.
         /// </summary>
         /// <param name="action">Action to enqueue.</param>
-        /// <param name="arg1">1st argument to run <paramref name="action"/> with.</param>
-        /// <param name="arg2">2nd argument to run <paramref name="action"/> with.</param>
-        /// <param name="arg3">3rd argument to run <paramref name="action"/> with.</param>
-        /// <param name="arg4">4th argument to run <paramref name="action"/> with.</param>
-        /// <param name="arg5">5th argument to run <paramref name="action"/> with.</param>
+        /// <param name="arg1">The 1st argument to run <paramref name="action"/> with.</param>
+        /// <param name="arg2">The 2nd argument to run <paramref name="action"/> with.</param>
+        /// <param name="arg3">The 3rd argument to run <paramref name="action"/> with.</param>
+        /// <param name="arg4">The 4th argument to run <paramref name="action"/> with.</param>
+        /// <param name="arg5">The 5th argument to run <paramref name="action"/> with.</param>
         /// <typeparam name="T1">The type of the 1st parameter of <paramref name="action"/>.</typeparam>
         /// <typeparam name="T2">The type of the 2nd parameter of <paramref name="action"/>.</typeparam>
         /// <typeparam name="T3">The type of the 3rd parameter of <paramref name="action"/>.</typeparam>
@@ -125,26 +125,26 @@
         /// <typeparam name="T5">The type of the 5th parameter of <paramref name="action"/>.</typeparam>
         /// <exception cref="ArgumentNullException"><paramref name="action"/> is <see langword="null"/>.</exception>
         /// <exception cref="ObjectDisposedException">The <see cref="TaskQueue"/> has been disposed.</exception>
-        public void Enqueue<T1, T2, T3, T4, T5> (Action<T1, T2, T3, T4, T5> action)
+        public void Enqueue<T1, T2, T3, T4, T5> (Action<T1, T2, T3, T4, T5> action, T1 arg1, T2 arg2, T3 arg3, T4 arg4, T5 arg5)
         {
             if (action == null)
             {
                 throw new ArgumentNullException (nameof (action));
             }
 
-            Enqueue (new DelegateTask<T> (action, arg));
+            Enqueue (new DelegateTask<T1, T2, T3, T4, T5> (action, arg1, arg2, arg3, arg4, arg5));
         }
 
         /// <summary>
         /// Enqueue an action to be run later with supplied arguments.
         /// </summary>
         /// <param name="action">Action to enqueue.</param>
-        /// <param name="arg1">1st argument to run <paramref name="action"/> with.</param>
-        /// <param name="arg2">2nd argument to run <paramref name="action"/> with.</param>
-        /// <param name="arg3">3rd argument to run <paramref name="action"/> with.</param>
-        /// <param name="arg4">4th argument to run <paramref name="action"/> with.</param>
-        /// <param name="arg5">5th argument to run <paramref name="action"/> with.</param>
-        /// <param name="arg6">6th argument to run <paramref name="action"/> with.</param>
+        /// <param name="arg1">The 1st argument to run <paramref name="action"/> with.</param>
+        /// <param name="arg2">The 2nd argument to run <paramref name="action"/> with.</param>
+        /// <param name="arg3">The 3rd argument to run <paramref name="action"/> with.</param>
+        /// <param name="arg4">The 4th argument to run <paramref name="action"/> with.</param>
+        /// <param name="arg5">The 5th argument to run <paramref name="action"/> with.</param>
+        /// <param name="arg6">The 6th argument to run <paramref name="action"/> with.</param>
         /// <typeparam name="T1">The type of the 1st parameter of <paramref name="action"/>.</typeparam>
         /// <typeparam name="T2">The type of the 2nd parameter of <paramref name="action"/>.</typeparam>
         /// <typeparam name="T3">The type of the 3rd parameter of <paramref name="action"/>.</typeparam>
@@ -153,27 +153,27 @@
         /// <typeparam name="T6">The type of the 6th parameter of <paramref name="action"/>.</typeparam>
         /// <exception cref="ArgumentNullException"><paramref name="action"/> is <see langword="null"/>.</exception>
         /// <exception cref="ObjectDisposedException">The <see cref="TaskQueue"/> has been disposed.</exception>
-        public void Enqueue<T1, T2, T3, T4, T5, T6> (Action<T1, T2, T3, T4, T5, T6> action)
+        public void Enqueue<T1, T2, T3, T4, T5, T6> (Action<T1, T2, T3, T4, T5, T6> action, T1 arg1, T2 arg2, T3 arg3, T4 arg4, T5 arg5, T6 arg6)
         {
             if (action == null)
             {
                 throw new ArgumentNullException (nameof (action));
             }
 
-            Enqueue (new DelegateTask<T> (action, arg));
+            Enqueue (new DelegateTask<T1, T2, T3, T4, T5, T6> (action, arg1, arg2, arg3, arg4, arg5, arg6));
         }
 
         /// <summary>
         /// Enqueue an action to be run later with supplied arguments.
         /// </summary>
         /// <param name="action">Action to enqueue.</param>
-        /// <param name="arg1">1st argument to run <paramref name="action"/> with.</param>
-        /// <param name="arg2">2nd argument to run <paramref name="action"/> with.</param>
-        /// <param name="arg3">3rd argument to run <paramref name="action"/> with.</param>
-        /// <param name="arg4">4th argument to run <paramref name="action"/> with.</param>
-        /// <param name="arg5">5th argument to run <paramref name="action"/> with.</param>
-        /// <param name="arg6">6th argument to run <paramref name="action"/> with.</param>
-        /// <param name="arg7">7th argument to run <paramref name="action"/> with.</param>
+        /// <param name="arg1">The 1st argument to run <paramref name="action"/> with.</param>
+        /// <param name="arg2">The 2nd argument to run <paramref name="action"/> with.</param>
+        /// <param name="arg3">The 3rd argument to run <paramref name="action"/> with.</param>
+        /// <param name="arg4">The 4th argument to run <paramref name="action"/> with.</param>
+        /// <param name="arg5">The 5th argument to run <paramref name="action"/> with.</param>
+        /// <param name="arg6">The 6th argument to run <paramref name="action"/> with.</param>
+        /// <param name="arg7">The 7th argument to run <paramref name="action"/> with.</param>
         /// <typeparam name="T1">The type of the 1st parameter of <paramref name="action"/>.</typeparam>
         /// <typeparam name="T2">The type of the 2nd parameter of <paramref name="action"/>.</typeparam>
         /// <typeparam name="T3">The type of the 3rd parameter of <paramref name="action"/>.</typeparam>
@@ -183,28 +183,28 @@
         /// <typeparam name="T7">The type of the 7th parameter of <paramref name="action"/>.</typeparam>
         /// <exception cref="ArgumentNullException"><paramref name="action"/> is <see langword="null"/>.</exception>
         /// <exception cref="ObjectDisposedException">The <see cref="TaskQueue"/> has been disposed.</exception>
-        public void Enqueue<T1, T2, T3, T4, T5, T6, T7> (Action<T1, T2, T3, T4, T5, T6, T7> action)
+        public void Enqueue<T1, T2, T3, T4, T5, T6, T7> (Action<T1, T2, T3, T4, T5, T6, T7> action, T1 arg1, T2 arg2, T3 arg3, T4 arg4, T5 arg5, T6 arg6, T7 arg7)
         {
             if (action == null)
             {
                 throw new ArgumentNullException (nameof (action));
             }
 
-            Enqueue (new DelegateTask<T> (action, arg));
+            Enqueue (new DelegateTask<T1, T2, T3, T4, T5, T6, T7> (action, arg1, arg2, arg3, arg4, arg5, arg6, arg7));
         }
 
         /// <summary>
         /// Enqueue an action to be run later with supplied arguments.
         /// </summary>
         /// <param name="action">Action to enqueue.</param>
-        /// <param name="arg1">1st argument to run <paramref name="action"/> with.</param>
-        /// <param name="arg2">2nd argument to run <paramref name="action"/> with.</param>
-        /// <param name="arg3">3rd argument to run <paramref name="action"/> with.</param>
-        /// <param name="arg4">4th argument to run <paramref name="action"/> with.</param>
-        /// <param name="arg5">5th argument to run <paramref name="action"/> with.</param>
-        /// <param name="arg6">6th argument to run <paramref name="action"/> with.</param>
-        /// <param name="arg7">7th argument to run <paramref name="action"/> with.</param>
-        /// <param name="arg8">8th argument to run <paramref name="action"/> with.</param>
+        /// <param name="arg1">The 1st argument to run <paramref name="action"/> with.</param>
+        /// <param name="arg2">The 2nd argument to run <paramref name="action"/> with.</param>
+        /// <param name="arg3">The 3rd argument to run <paramref name="action"/> with.</param>
+        /// <param name="arg4">The 4th argument to run <paramref name="action"/> with.</param>
+        /// <param name="arg5">The 5th argument to run <paramref name="action"/> with.</param>
+        /// <param name="arg6">The 6th argument to run <paramref name="action"/> with.</param>
+        /// <param name="arg7">The 7th argument to run <paramref name="action"/> with.</param>
+        /// <param name="arg8">The 8th argument to run <paramref name="action"/> with.</param>
         /// <typeparam name="T1">The type of the 1st parameter of <paramref name="action"/>.</typeparam>
         /// <typeparam name="T2">The type of the 2nd parameter of <paramref name="action"/>.</typeparam>
         /// <typeparam name="T3">The type of the 3rd parameter of <paramref name="action"/>.</typeparam>
@@ -215,29 +215,29 @@
         /// <typeparam name="T8">The type of the 8th parameter of <paramref name="action"/>.</typeparam>
         /// <exception cref="ArgumentNullException"><paramref name="action"/> is <see langword="null"/>.</exception>
         /// <exception cref="ObjectDisposedException">The <see cref="TaskQueue"/> has been disposed.</exception>
-        public void Enqueue<T1, T2, T3, T4, T5, T6, T7, T8> (Action<T1, T2, T3, T4, T5, T6, T7, T8> action)
+        public void Enqueue<T1, T2, T3, T4, T5, T6, T7, T8> (Action<T1, T2, T3, T4, T5, T6, T7, T8> action, T1 arg1, T2 arg2, T3 arg3, T4 arg4, T5 arg5, T6 arg6, T7 arg7, T8 arg8)
         {
             if (action == null)
             {
                 throw new ArgumentNullException (nameof (action));
             }
 
-            Enqueue (new DelegateTask<T> (action, arg));
+            Enqueue (new DelegateTask<T1, T2, T3, T4, T5, T6, T7, T8> (action, arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8));
         }
 
         /// <summary>
         /// Enqueue an action to be run later with supplied arguments.
         /// </summary>
         /// <param name="action">Action to enqueue.</param>
-        /// <param name="arg1">1st argument to run <paramref name="action"/> with.</param>
-        /// <param name="arg2">2nd argument to run <paramref name="action"/> with.</param>
-        /// <param name="arg3">3rd argument to run <paramref name="action"/> with.</param>
-        /// <param name="arg4">4th argument to run <paramref name="action"/> with.</param>
-        /// <param name="arg5">5th argument to run <paramref name="action"/> with.</param>
-        /// <param name="arg6">6th argument to run <paramref name="action"/> with.</param>
-        /// <param name="arg7">7th argument to run <paramref name="action"/> with.</param>
-        /// <param name="arg8">8th argument to run <paramref name="action"/> with.</param>
-        /// <param name="arg9">9th argument to run <paramref name="action"/> with.</param>
+        /// <param name="arg1">The 1st argument to run <paramref name="action"/> with.</param>
+        /// <param name="arg2">The 2nd argument to run <paramref name="action"/> with.</param>
+        /// <param name="arg3">The 3rd argument to run <paramref name="action"/> with.</param>
+        /// <param name="arg4">The 4th argument to run <paramref name="action"/> with.</param>
+        /// <param name="arg5">The 5th argument to run <paramref name="action"/> with.</param>
+        /// <param name="arg6">The 6th argument to run <paramref name="action"/> with.</param>
+        /// <param name="arg7">The 7th argument to run <paramref name="action"/> with.</param>
+        /// <param name="arg8">The 8th argument to run <paramref name="action"/> with.</param>
+        /// <param name="arg9">The 9th argument to run <paramref name="action"/> with.</param>
         /// <typeparam name="T1">The type of the 1st parameter of <paramref name="action"/>.</typeparam>
         /// <typeparam name="T2">The type of the 2nd parameter of <paramref name="action"/>.</typeparam>
         /// <typeparam name="T3">The type of the 3rd parameter of <paramref name="action"/>.</typeparam>
@@ -249,30 +249,30 @@
         /// <typeparam name="T9">The type of the 9th parameter of <paramref name="action"/>.</typeparam>
         /// <exception cref="ArgumentNullException"><paramref name="action"/> is <see langword="null"/>.</exception>
         /// <exception cref="ObjectDisposedException">The <see cref="TaskQueue"/> has been disposed.</exception>
-        public void Enqueue<T1, T2, T3, T4, T5, T6, T7, T8, T9> (Action<T1, T2, T3, T4, T5, T6, T7, T8, T9> action)
+        public void Enqueue<T1, T2, T3, T4, T5, T6, T7, T8, T9> (Action<T1, T2, T3, T4, T5, T6, T7, T8, T9> action, T1 arg1, T2 arg2, T3 arg3, T4 arg4, T5 arg5, T6 arg6, T7 arg7, T8 arg8, T9 arg9)
         {
             if (action == null)
             {
                 throw new ArgumentNullException (nameof (action));
             }
 
-            Enqueue (new DelegateTask<T> (action, arg));
+            Enqueue (new DelegateTask<T1, T2, T3, T4, T5, T6, T7, T8, T9> (action, arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8, arg9));
         }
 
         /// <summary>
         /// Enqueue an action to be run later with supplied arguments.
         /// </summary>
         /// <param name="action">Action to enqueue.</param>
-        /// <param name="arg1">1st argument to run <paramref name="action"/> with.</param>
-        /// <param name="arg2">2nd argument to run <paramref name="action"/> with.</param>
-        /// <param name="arg3">3rd argument to run <paramref name="action"/> with.</param>
-        /// <param name="arg4">4th argument to run <paramref name="action"/> with.</param>
-        /// <param name="arg5">5th argument to run <paramref name="action"/> with.</param>
-        /// <param name="arg6">6th argument to run <paramref name="action"/> with.</param>
-        /// <param name="arg7">7th argument to run <paramref name="action"/> with.</param>
-        /// <param name="arg8">8th argument to run <paramref name="action"/> with.</param>
-        /// <param name="arg9">9th argument to run <paramref name="action"/> with.</param>
-        /// <param name="arg10">10th argument to run <paramref name="action"/> with.</param>
+        /// <param name="arg1">The 1st argument to run <paramref name="action"/> with.</param>
+        /// <param name="arg2">The 2nd argument to run <paramref name="action"/> with.</param>
+        /// <param name="arg3">The 3rd argument to run <paramref name="action"/> with.</param>
+        /// <param name="arg4">The 4th argument to run <paramref name="action"/> with.</param>
+        /// <param name="arg5">The 5th argument to run <paramref name="action"/> with.</param>
+        /// <param name="arg6">The 6th argument to run <paramref name="action"/> with.</param>
+        /// <param name="arg7">The 7th argument to run <paramref name="action"/> with.</param>
+        /// <param name="arg8">The 8th argument to run <paramref name="action"/> with.</param>
+        /// <param name="arg9">The 9th argument to run <paramref name="action"/> with.</param>
+        /// <param name="arg10">The 10th argument to run <paramref name="action"/> with.</param>
         /// <typeparam name="T1">The type of the 1st parameter of <paramref name="action"/>.</typeparam>
         /// <typeparam name="T2">The type of the 2nd parameter of <paramref name="action"/>.</typeparam>
         /// <typeparam name="T3">The type of the 3rd parameter of <paramref name="action"/>.</typeparam>
@@ -285,31 +285,31 @@
         /// <typeparam name="T10">The type of the 10th parameter of <paramref name="action"/>.</typeparam>
         /// <exception cref="ArgumentNullException"><paramref name="action"/> is <see langword="null"/>.</exception>
         /// <exception cref="ObjectDisposedException">The <see cref="TaskQueue"/> has been disposed.</exception>
-        public void Enqueue<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10> (Action<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10> action)
+        public void Enqueue<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10> (Action<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10> action, T1 arg1, T2 arg2, T3 arg3, T4 arg4, T5 arg5, T6 arg6, T7 arg7, T8 arg8, T9 arg9, T10 arg10)
         {
             if (action == null)
             {
                 throw new ArgumentNullException (nameof (action));
             }
 
-            Enqueue (new DelegateTask<T> (action, arg));
+            Enqueue (new DelegateTask<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10> (action, arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8, arg9, arg10));
         }
 
         /// <summary>
         /// Enqueue an action to be run later with supplied arguments.
         /// </summary>
         /// <param name="action">Action to enqueue.</param>
-        /// <param name="arg1">1st argument to run <paramref name="action"/> with.</param>
-        /// <param name="arg2">2nd argument to run <paramref name="action"/> with.</param>
-        /// <param name="arg3">3rd argument to run <paramref name="action"/> with.</param>
-        /// <param name="arg4">4th argument to run <paramref name="action"/> with.</param>
-        /// <param name="arg5">5th argument to run <paramref name="action"/> with.</param>
-        /// <param name="arg6">6th argument to run <paramref name="action"/> with.</param>
-        /// <param name="arg7">7th argument to run <paramref name="action"/> with.</param>
-        /// <param name="arg8">8th argument to run <paramref name="action"/> with.</param>
-        /// <param name="arg9">9th argument to run <paramref name="action"/> with.</param>
-        /// <param name="arg10">10th argument to run <paramref name="action"/> with.</param>
-        /// <param name="arg11">11th argument to run <paramref name="action"/> with.</param>
+        /// <param name="arg1">The 1st argument to run <paramref name="action"/> with.</param>
+        /// <param name="arg2">The 2nd argument to run <paramref name="action"/> with.</param>
+        /// <param name="arg3">The 3rd argument to run <paramref name="action"/> with.</param>
+        /// <param name="arg4">The 4th argument to run <paramref name="action"/> with.</param>
+        /// <param name="arg5">The 5th argument to run <paramref name="action"/> with.</param>
+        /// <param name="arg6">The 6th argument to run <paramref name="action"/> with.</param>
+        /// <param name="arg7">The 7th argument to run <paramref name="action"/> with.</param>
+        /// <param name="arg8">The 8th argument to run <paramref name="action"/> with.</param>
+        /// <param name="arg9">The 9th argument to run <paramref name="action"/> with.</param>
+        /// <param name="arg10">The 10th argument to run <paramref name="action"/> with.</param>
+        /// <param name="arg11">The 11th argument to run <paramref name="action"/> with.</param>
         /// <typeparam name="T1">The type of the 1st parameter of <paramref name="action"/>.</typeparam>
         /// <typeparam name="T2">The type of the 2nd parameter of <paramref name="action"/>.</typeparam>
         /// <typeparam name="T3">The type of the 3rd parameter of <paramref name="action"/>.</typeparam>
@@ -323,32 +323,32 @@
         /// <typeparam name="T11">The type of the 11th parameter of <paramref name="action"/>.</typeparam>
         /// <exception cref="ArgumentNullException"><paramref name="action"/> is <see langword="null"/>.</exception>
         /// <exception cref="ObjectDisposedException">The <see cref="TaskQueue"/> has been disposed.</exception>
-        public void Enqueue<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11> (Action<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11> action)
+        public void Enqueue<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11> (Action<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11> action, T1 arg1, T2 arg2, T3 arg3, T4 arg4, T5 arg5, T6 arg6, T7 arg7, T8 arg8, T9 arg9, T10 arg10, T11 arg11)
         {
             if (action == null)
             {
                 throw new ArgumentNullException (nameof (action));
             }
 
-            Enqueue (new DelegateTask<T> (action, arg));
+            Enqueue (new DelegateTask<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11> (action, arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8, arg9, arg10, arg11));
         }
 
         /// <summary>
         /// Enqueue an action to be run later with supplied arguments.
         /// </summary>
         /// <param name="action">Action to enqueue.</param>
-        /// <param name="arg1">1st argument to run <paramref name="action"/> with.</param>
-        /// <param name="arg2">2nd argument to run <paramref name="action"/> with.</param>
-        /// <param name="arg3">3rd argument to run <paramref name="action"/> with.</param>
-        /// <param name="arg4">4th argument to run <paramref name="action"/> with.</param>
-        /// <param name="arg5">5th argument to run <paramref name="action"/> with.</param>
-        /// <param name="arg6">6th argument to run <paramref name="action"/> with.</param>
-        /// <param name="arg7">7th argument to run <paramref name="action"/> with.</param>
-        /// <param name="arg8">8th argument to run <paramref name="action"/> with.</param>
-        /// <param name="arg9">9th argument to run <paramref name="action"/> with.</param>
-        /// <param name="arg10">10th argument to run <paramref name="action"/> with.</param>
-        /// <param name="arg11">11th argument to run <paramref name="action"/> with.</param>
-        /// <param name="arg12">12th argument to run <paramref name="action"/> with.</param>
+        /// <param name="arg1">The 1st argument to run <paramref name="action"/> with.</param>
+        /// <param name="arg2">The 2nd argument to run <paramref name="action"/> with.</param>
+        /// <param name="arg3">The 3rd argument to run <paramref name="action"/> with.</param>
+        /// <param name="arg4">The 4th argument to run <paramref name="action"/> with.</param>
+        /// <param name="arg5">The 5th argument to run <paramref name="action"/> with.</param>
+        /// <param name="arg6">The 6th argument to run <paramref name="action"/> with.</param>
+        /// <param name="arg7">The 7th argument to run <paramref name="action"/> with.</param>
+        /// <param name="arg8">The 8th argument to run <paramref name="action"/> with.</param>
+        /// <param name="arg9">The 9th argument to run <paramref name="action"/> with.</param>
+        /// <param name="arg10">The 10th argument to run <paramref name="action"/> with.</param>
+        /// <param name="arg11">The 11th argument to run <paramref name="action"/> with.</param>
+        /// <param name="arg12">The 12th argument to run <paramref name="action"/> with.</param>
         /// <typeparam name="T1">The type of the 1st parameter of <paramref name="action"/>.</typeparam>
         /// <typeparam name="T2">The type of the 2nd parameter of <paramref name="action"/>.</typeparam>
         /// <typeparam name="T3">The type of the 3rd parameter of <paramref name="action"/>.</typeparam>
@@ -363,33 +363,33 @@
         /// <typeparam name="T12">The type of the 12th parameter of <paramref name="action"/>.</typeparam>
         /// <exception cref="ArgumentNullException"><paramref name="action"/> is <see langword="null"/>.</exception>
         /// <exception cref="ObjectDisposedException">The <see cref="TaskQueue"/> has been disposed.</exception>
-        public void Enqueue<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12> (Action<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12> action)
+        public void Enqueue<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12> (Action<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12> action, T1 arg1, T2 arg2, T3 arg3, T4 arg4, T5 arg5, T6 arg6, T7 arg7, T8 arg8, T9 arg9, T10 arg10, T11 arg11, T12 arg12)
         {
             if (action == null)
             {
                 throw new ArgumentNullException (nameof (action));
             }
 
-            Enqueue (new DelegateTask<T> (action, arg));
+            Enqueue (new DelegateTask<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12> (action, arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8, arg9, arg10, arg11, arg12));
         }
 
         /// <summary>
         /// Enqueue an action to be run later with supplied arguments.
         /// </summary>
         /// <param name="action">Action to enqueue.</param>
-        /// <param name="arg1">1st argument to run <paramref name="action"/> with.</param>
-        /// <param name="arg2">2nd argument to run <paramref name="action"/> with.</param>
-        /// <param name="arg3">3rd argument to run <paramref name="action"/> with.</param>
-        /// <param name="arg4">4th argument to run <paramref name="action"/> with.</param>
-        /// <param name="arg5">5th argument to run <paramref name="action"/> with.</param>
-        /// <param name="arg6">6th argument to run <paramref name="action"/> with.</param>
-        /// <param name="arg7">7th argument to run <paramref name="action"/> with.</param>
-        /// <param name="arg8">8th argument to run <paramref name="action"/> with.</param>
-        /// <param name="arg9">9th argument to run <paramref name="action"/> with.</param>
-        /// <param name="arg10">10th argument to run <paramref name="action"/> with.</param>
-        /// <param name="arg11">11th argument to run <paramref name="action"/> with.</param>
-        /// <param name="arg12">12th argument to run <paramref name="action"/> with.</param>
-        /// <param name="arg13">13th argument to run <paramref name="action"/> with.</param>
+        /// <param name="arg1">The 1st argument to run <paramref name="action"/> with.</param>
+        /// <param name="arg2">The 2nd argument to run <paramref name="action"/> with.</param>
+        /// <param name="arg3">The 3rd argument to run <paramref name="action"/> with.</param>
+        /// <param name="arg4">The 4th argument to run <paramref name="action"/> with.</param>
+        /// <param name="arg5">The 5th argument to run <paramref name="action"/> with.</param>
+        /// <param name="arg6">The 6th argument to run <paramref name="action"/> with.</param>
+        /// <param name="arg7">The 7th argument to run <paramref name="action"/> with.</param>
+        /// <param name="arg8">The 8th argument to run <paramref name="action"/> with.</param>
+        /// <param name="arg9">The 9th argument to run <paramref name="action"/> with.</param>
+        /// <param name="arg10">The 10th argument to run <paramref name="action"/> with.</param>
+        /// <param name="arg11">The 11th argument to run <paramref name="action"/> with.</param>
+        /// <param name="arg12">The 12th argument to run <paramref name="action"/> with.</param>
+        /// <param name="arg13">The 13th argument to run <paramref name="action"/> with.</param>
         /// <typeparam name="T1">The type of the 1st parameter of <paramref name="action"/>.</typeparam>
         /// <typeparam name="T2">The type of the 2nd parameter of <paramref name="action"/>.</typeparam>
         /// <typeparam name="T3">The type of the 3rd parameter of <paramref name="action"/>.</typeparam>
@@ -405,34 +405,34 @@
         /// <typeparam name="T13">The type of the 13th parameter of <paramref name="action"/>.</typeparam>
         /// <exception cref="ArgumentNullException"><paramref name="action"/> is <see langword="null"/>.</exception>
         /// <exception cref="ObjectDisposedException">The <see cref="TaskQueue"/> has been disposed.</exception>
-        public void Enqueue<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13> (Action<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13> action)
+        public void Enqueue<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13> (Action<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13> action, T1 arg1, T2 arg2, T3 arg3, T4 arg4, T5 arg5, T6 arg6, T7 arg7, T8 arg8, T9 arg9, T10 arg10, T11 arg11, T12 arg12, T13 arg13)
         {
             if (action == null)
             {
                 throw new ArgumentNullException (nameof (action));
             }
 
-            Enqueue (new DelegateTask<T> (action, arg));
+            Enqueue (new DelegateTask<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13> (action, arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8, arg9, arg10, arg11, arg12, arg13));
         }
 
         /// <summary>
         /// Enqueue an action to be run later with supplied arguments.
         /// </summary>
         /// <param name="action">Action to enqueue.</param>
-        /// <param name="arg1">1st argument to run <paramref name="action"/> with.</param>
-        /// <param name="arg2">2nd argument to run <paramref name="action"/> with.</param>
-        /// <param name="arg3">3rd argument to run <paramref name="action"/> with.</param>
-        /// <param name="arg4">4th argument to run <paramref name="action"/> with.</param>
-        /// <param name="arg5">5th argument to run <paramref name="action"/> with.</param>
-        /// <param name="arg6">6th argument to run <paramref name="action"/> with.</param>
-        /// <param name="arg7">7th argument to run <paramref name="action"/> with.</param>
-        /// <param name="arg8">8th argument to run <paramref name="action"/> with.</param>
-        /// <param name="arg9">9th argument to run <paramref name="action"/> with.</param>
-        /// <param name="arg10">10th argument to run <paramref name="action"/> with.</param>
-        /// <param name="arg11">11th argument to run <paramref name="action"/> with.</param>
-        /// <param name="arg12">12th argument to run <paramref name="action"/> with.</param>
-        /// <param name="arg13">13th argument to run <paramref name="action"/> with.</param>
-        /// <param name="arg14">14th argument to run <paramref name="action"/> with.</param>
+        /// <param name="arg1">The 1st argument to run <paramref name="action"/> with.</param>
+        /// <param name="arg2">The 2nd argument to run <paramref name="action"/> with.</param>
+        /// <param name="arg3">The 3rd argument to run <paramref name="action"/> with.</param>
+        /// <param name="arg4">The 4th argument to run <paramref name="action"/> with.</param>
+        /// <param name="arg5">The 5th argument to run <paramref name="action"/> with.</param>
+        /// <param name="arg6">The 6th argument to run <paramref name="action"/> with.</param>
+        /// <param name="arg7">The 7th argument to run <paramref name="action"/> with.</param>
+        /// <param name="arg8">The 8th argument to run <paramref name="action"/> with.</param>
+        /// <param name="arg9">The 9th argument to run <paramref name="action"/> with.</param>
+        /// <param name="arg10">The 10th argument to run <paramref name="action"/> with.</param>
+        /// <param name="arg11">The 11th argument to run <paramref name="action"/> with.</param>
+        /// <param name="arg12">The 12th argument to run <paramref name="action"/> with.</param>
+        /// <param name="arg13">The 13th argument to run <paramref name="action"/> with.</param>
+        /// <param name="arg14">The 14th argument to run <paramref name="action"/> with.</param>
         /// <typeparam name="T1">The type of the 1st parameter of <paramref name="action"/>.</typeparam>
         /// <typeparam name="T2">The type of the 2nd parameter of <paramref name="action"/>.</typeparam>
         /// <typeparam name="T3">The type of the 3rd parameter of <paramref name="action"/>.</typeparam>
@@ -449,35 +449,35 @@
         /// <typeparam name="T14">The type of the 14th parameter of <paramref name="action"/>.</typeparam>
         /// <exception cref="ArgumentNullException"><paramref name="action"/> is <see langword="null"/>.</exception>
         /// <exception cref="ObjectDisposedException">The <see cref="TaskQueue"/> has been disposed.</exception>
-        public void Enqueue<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14> (Action<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14> action)
+        public void Enqueue<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14> (Action<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14> action, T1 arg1, T2 arg2, T3 arg3, T4 arg4, T5 arg5, T6 arg6, T7 arg7, T8 arg8, T9 arg9, T10 arg10, T11 arg11, T12 arg12, T13 arg13, T14 arg14)
         {
             if (action == null)
             {
                 throw new ArgumentNullException (nameof (action));
             }
 
-            Enqueue (new DelegateTask<T> (action, arg));
+            Enqueue (new DelegateTask<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14> (action, arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8, arg9, arg10, arg11, arg12, arg13, arg14));
         }
 
         /// <summary>
         /// Enqueue an action to be run later with supplied arguments.
         /// </summary>
         /// <param name="action">Action to enqueue.</param>
-        /// <param name="arg1">1st argument to run <paramref name="action"/> with.</param>
-        /// <param name="arg2">2nd argument to run <paramref name="action"/> with.</param>
-        /// <param name="arg3">3rd argument to run <paramref name="action"/> with.</param>
-        /// <param name="arg4">4th argument to run <paramref name="action"/> with.</param>
-        /// <param name="arg5">5th argument to run <paramref name="action"/> with.</param>
-        /// <param name="arg6">6th argument to run <paramref name="action"/> with.</param>
-        /// <param name="arg7">7th argument to run <paramref name="action"/> with.</param>
-        /// <param name="arg8">8th argument to run <paramref name="action"/> with.</param>
-        /// <param name="arg9">9th argument to run <paramref name="action"/> with.</param>
-        /// <param name="arg10">10th argument to run <paramref name="action"/> with.</param>
-        /// <param name="arg11">11th argument to run <paramref name="action"/> with.</param>
-        /// <param name="arg12">12th argument to run <paramref name="action"/> with.</param>
-        /// <param name="arg13">13th argument to run <paramref name="action"/> with.</param>
-        /// <param name="arg14">14th argument to run <paramref name="action"/> with.</param>
-        /// <param name="arg15">15th argument to run <paramref name="action"/> with.</param>
+        /// <param name="arg1">The 1st argument to run <paramref name="action"/> with.</param>
+        /// <param name="arg2">The 2nd argument to run <paramref name="action"/> with.</param>
+        /// <param name="arg3">The 3rd argument to run <paramref name="action"/> with.</param>
+        /// <param name="arg4">The 4th argument to run <paramref name="action"/> with.</param>
+        /// <param name="arg5">The 5th argument to run <paramref name="action"/> with.</param>
+        /// <param name="arg6">The 6th argument to run <paramref name="action"/> with.</param>
+        /// <param name="arg7">The 7th argument to run <paramref name="action"/> with.</param>
+        /// <param name="arg8">The 8th argument to run <paramref name="action"/> with.</param>
+        /// <param name="arg9">The 9th argument to run <paramref name="action"/> with.</param>
+        /// <param name="arg10">The 10th argument to run <paramref name="action"/> with.</param>
+        /// <param name="arg11">The 11th argument to run <paramref name="action"/> with.</param>
+        /// <param name="arg12">The 12th argument to run <paramref name="action"/> with.</param>
+        /// <param name="arg13">The 13th argument to run <paramref name="action"/> with.</param>
+        /// <param name="arg14">The 14th argument to run <paramref name="action"/> with.</param>
+        /// <param name="arg15">The 15th argument to run <paramref name="action"/> with.</param>
         /// <typeparam name="T1">The type of the 1st parameter of <paramref name="action"/>.</typeparam>
         /// <typeparam name="T2">The type of the 2nd parameter of <paramref name="action"/>.</typeparam>
         /// <typeparam name="T3">The type of the 3rd parameter of <paramref name="action"/>.</typeparam>
@@ -495,36 +495,36 @@
         /// <typeparam name="T15">The type of the 15th parameter of <paramref name="action"/>.</typeparam>
         /// <exception cref="ArgumentNullException"><paramref name="action"/> is <see langword="null"/>.</exception>
         /// <exception cref="ObjectDisposedException">The <see cref="TaskQueue"/> has been disposed.</exception>
-        public void Enqueue<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15> (Action<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15> action)
+        public void Enqueue<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15> (Action<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15> action, T1 arg1, T2 arg2, T3 arg3, T4 arg4, T5 arg5, T6 arg6, T7 arg7, T8 arg8, T9 arg9, T10 arg10, T11 arg11, T12 arg12, T13 arg13, T14 arg14, T15 arg15)
         {
             if (action == null)
             {
                 throw new ArgumentNullException (nameof (action));
             }
 
-            Enqueue (new DelegateTask<T> (action, arg));
+            Enqueue (new DelegateTask<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15> (action, arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8, arg9, arg10, arg11, arg12, arg13, arg14, arg15));
         }
 
         /// <summary>
         /// Enqueue an action to be run later with supplied arguments.
         /// </summary>
         /// <param name="action">Action to enqueue.</param>
-        /// <param name="arg1">1st argument to run <paramref name="action"/> with.</param>
-        /// <param name="arg2">2nd argument to run <paramref name="action"/> with.</param>
-        /// <param name="arg3">3rd argument to run <paramref name="action"/> with.</param>
-        /// <param name="arg4">4th argument to run <paramref name="action"/> with.</param>
-        /// <param name="arg5">5th argument to run <paramref name="action"/> with.</param>
-        /// <param name="arg6">6th argument to run <paramref name="action"/> with.</param>
-        /// <param name="arg7">7th argument to run <paramref name="action"/> with.</param>
-        /// <param name="arg8">8th argument to run <paramref name="action"/> with.</param>
-        /// <param name="arg9">9th argument to run <paramref name="action"/> with.</param>
-        /// <param name="arg10">10th argument to run <paramref name="action"/> with.</param>
-        /// <param name="arg11">11th argument to run <paramref name="action"/> with.</param>
-        /// <param name="arg12">12th argument to run <paramref name="action"/> with.</param>
-        /// <param name="arg13">13th argument to run <paramref name="action"/> with.</param>
-        /// <param name="arg14">14th argument to run <paramref name="action"/> with.</param>
-        /// <param name="arg15">15th argument to run <paramref name="action"/> with.</param>
-        /// <param name="arg16">16th argument to run <paramref name="action"/> with.</param>
+        /// <param name="arg1">The 1st argument to run <paramref name="action"/> with.</param>
+        /// <param name="arg2">The 2nd argument to run <paramref name="action"/> with.</param>
+        /// <param name="arg3">The 3rd argument to run <paramref name="action"/> with.</param>
+        /// <param name="arg4">The 4th argument to run <paramref name="action"/> with.</param>
+        /// <param name="arg5">The 5th argument to run <paramref name="action"/> with.</param>
+        /// <param name="arg6">The 6th argument to run <paramref name="action"/> with.</param>
+        /// <param name="arg7">The 7th argument to run <paramref name="action"/> with.</param>
+        /// <param name="arg8">The 8th argument to run <paramref name="action"/> with.</param>
+        /// <param name="arg9">The 9th argument to run <paramref name="action"/> with.</param>
+        /// <param name="arg10">The 10th argument to run <paramref name="action"/> with.</param>
+        /// <param name="arg11">The 11th argument to run <paramref name="action"/> with.</param>
+        /// <param name="arg12">The 12th argument to run <paramref name="action"/> with.</param>
+        /// <param name="arg13">The 13th argument to run <paramref name="action"/> with.</param>
+        /// <param name="arg14">The 14th argument to run <paramref name="action"/> with.</param>
+        /// <param name="arg15">The 15th argument to run <paramref name="action"/> with.</param>
+        /// <param name="arg16">The 16th argument to run <paramref name="action"/> with.</param>
         /// <typeparam name="T1">The type of the 1st parameter of <paramref name="action"/>.</typeparam>
         /// <typeparam name="T2">The type of the 2nd parameter of <paramref name="action"/>.</typeparam>
         /// <typeparam name="T3">The type of the 3rd parameter of <paramref name="action"/>.</typeparam>
@@ -543,14 +543,14 @@
         /// <typeparam name="T16">The type of the 16th parameter of <paramref name="action"/>.</typeparam>
         /// <exception cref="ArgumentNullException"><paramref name="action"/> is <see langword="null"/>.</exception>
         /// <exception cref="ObjectDisposedException">The <see cref="TaskQueue"/> has been disposed.</exception>
-        public void Enqueue<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, T16> (Action<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, T16> action)
+        public void Enqueue<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, T16> (Action<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, T16> action, T1 arg1, T2 arg2, T3 arg3, T4 arg4, T5 arg5, T6 arg6, T7 arg7, T8 arg8, T9 arg9, T10 arg10, T11 arg11, T12 arg12, T13 arg13, T14 arg14, T15 arg15, T16 arg16)
         {
             if (action == null)
             {
                 throw new ArgumentNullException (nameof (action));
             }
 
-            Enqueue (new DelegateTask<T> (action, arg));
+            Enqueue (new DelegateTask<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, T16> (action, arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8, arg9, arg10, arg11, arg12, arg13, arg14, arg15, arg16));
         }
-	}
+    }
 }
