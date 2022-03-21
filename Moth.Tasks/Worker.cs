@@ -2,43 +2,73 @@
 {
     using System;
     using System.Collections.Generic;
+    using System.Diagnostics;
     using System.Text;
     using System.Threading;
     using Validation;
 
     public class Worker : IDisposable
     {
-        private TaskQueue tasks;
-        private Thread thread;
-        private CancellationTokenSource cancel;
-        private IProfiler profiler;
-        private EventHandler<TaskExceptionEventArgs> exceptionEvent;
+        private readonly TaskQueue tasks;
+        private readonly bool disposeTasks;
+        private readonly Thread thread;
+        private readonly CancellationToken sharedCancel;
+        private readonly CancellationTokenSource localCancelSource;
+        private readonly IProfiler profiler;
+        private readonly EventHandler<TaskExceptionEventArgs> exceptionEventHandler;
 
-        public Worker () : this (new TaskQueue (), new CancellationTokenSource ()) { }
+        public Worker () : this (new TaskQueue (), CancellationToken.None) { }
 
-        public Worker (TaskQueue taskQueue, CancellationTokenSource cancellationTokenSource, EventHandler<TaskExceptionEventArgs> exceptionEvent = null, IProfiler profiler = null)
+        public Worker (TaskQueue taskQueue, CancellationToken sharedCancelToken, EventHandler<TaskExceptionEventArgs> exceptionEventHandler = null, IProfiler profiler = null, bool disposeTaskQueue = false)
         {
             tasks = taskQueue ?? throw new ArgumentNullException (nameof (taskQueue));
-            cancel = cancellationTokenSource ?? throw new ArgumentNullException (nameof (cancellationTokenSource));
+            this.disposeTasks = disposeTaskQueue;
+
+            localCancelSource = new CancellationTokenSource ();
+            sharedCancel = sharedCancelToken != CancellationToken.None ? sharedCancel : localCancelSource.Token;
+
+            this.exceptionEventHandler = exceptionEventHandler;
             this.profiler = profiler;
 
             thread = new Thread (Work);
+            thread.Start ();
         }
 
-        private void Work (object workerObj)
+        public bool IsRunning { get; private set; } = true;
+
+        public bool IsCancelledRequested => sharedCancel.IsCancellationRequested || localCancelSource.IsCancellationRequested;
+
+        private void Work ()
         {
-            Worker worker = (Worker)workerObj;
-
-            while (!cancel.IsCancellationRequested)
+            try
             {
-                bool ranTask = tasks.RunNextTask (profiler, out Exception exception);
-
-                if (exception != null)
+                while (!IsCancelledRequested)
                 {
-                    exceptionEvent?.Invoke (workerObj, new TaskExceptionEventArgs (exception));
+                    bool ranTask = tasks.RunNextTask (profiler, out Exception exception);
 
+                    if (exception != null)
+                    {
+                        exceptionEventHandler?.Invoke (this, new TaskExceptionEventArgs (exception));
+                    }
                 }
+            } catch (Exception ex)
+            {
+                Trace.TraceError ("Internal exception in Worker: " + ex.ToString ());
+                Dispose ();
+            } finally
+            {
+                IsRunning = false;
             }
+        }
+
+        public void Dispose ()
+        {
+            if (disposeTasks)
+            {
+                tasks.Dispose ();
+            }
+
+            localCancelSource.Cancel ();
         }
     }
 }
