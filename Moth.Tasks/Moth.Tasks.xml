@@ -83,6 +83,22 @@
             <param name="id">Assigned id of task.</param>
             <returns><see cref="T:Moth.Tasks.TaskInfo"/> for <paramref name="id"/>.</returns>
         </member>
+        <member name="T:Moth.Tasks.TaskExceptionEventArgs">
+            <summary>
+            Contains information about an exception that was thrown in a task.
+            </summary>
+        </member>
+        <member name="M:Moth.Tasks.TaskExceptionEventArgs.#ctor(System.Exception)">
+            <summary>
+            Initializes a new instance of the <see cref="T:Moth.Tasks.TaskExceptionEventArgs"/> class.
+            </summary>
+            <param name="exception"><see cref="T:System.Exception"/> thrown.</param>
+        </member>
+        <member name="P:Moth.Tasks.TaskExceptionEventArgs.Exception">
+            <summary>
+            <see cref="T:System.Exception"/> thrown.
+            </summary>
+        </member>
         <member name="T:Moth.Tasks.TaskHandle">
             <summary>
             Handle for checking task status.

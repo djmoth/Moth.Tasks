@@ -6,13 +6,14 @@
     using System.Threading;
     using Validation;
 
+    
     public class WorkerGroup : IDisposable
     {
         private readonly Worker[] workers;
         private readonly bool disposeTasks;
         private readonly CancellationTokenSource cancellation = new CancellationTokenSource ();
 
-        public WorkerGroup (int workerCount, TaskQueue taskQueue = null, EventHandler<TaskExceptionEventArgs> exceptionEventHandler = null, IProfiler profiler = null, bool disposeTaskQueue = false)
+        public WorkerGroup (int workerCount, TaskQueue taskQueue = null, bool isBackground = true, EventHandler<TaskExceptionEventArgs> exceptionEventHandler = null, IProfiler profiler = null, bool disposeTaskQueue = false)
         {
             Requires.Range (workerCount > 0, nameof (workerCount), $"{nameof (workerCount)} must be greater than zero.");
 
@@ -23,7 +24,7 @@
 
             for (int i = 0; i < workerCount; i++)
             {
-                workers[i] = new Worker (taskQueue, cancellation.Token, exceptionEventHandler, profiler, false);
+                workers[i] = new Worker (taskQueue, cancellation.Token, isBackground, exceptionEventHandler, profiler, false);
             }
         }
 

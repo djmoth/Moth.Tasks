@@ -34,7 +34,7 @@ items:
   source:
     remote:
       path: Moth.Tasks.Tests/TaskQueueTests.cs
-      branch: main
+      branch: workers
       repo: https://github.com/djmoth/Moth.Tasks
     id: TaskQueueTests
     path: ../Moth.Tasks.Tests/TaskQueueTests.cs
@@ -75,7 +75,7 @@ items:
   source:
     remote:
       path: Moth.Tasks.Tests/TaskQueueTests.cs
-      branch: main
+      branch: workers
       repo: https://github.com/djmoth/Moth.Tasks
     id: EnqueueITask
     path: ../Moth.Tasks.Tests/TaskQueueTests.cs
@@ -117,7 +117,7 @@ items:
   source:
     remote:
       path: Moth.Tasks.Tests/TaskQueueTests.cs
-      branch: main
+      branch: workers
       repo: https://github.com/djmoth/Moth.Tasks
     id: EnqueueAction
     path: ../Moth.Tasks.Tests/TaskQueueTests.cs
@@ -159,7 +159,7 @@ items:
   source:
     remote:
       path: Moth.Tasks.Tests/TaskQueueTests.cs
-      branch: main
+      branch: workers
       repo: https://github.com/djmoth/Moth.Tasks
     id: EnqueueTask_ExpandTaskData
     path: ../Moth.Tasks.Tests/TaskQueueTests.cs
@@ -201,7 +201,7 @@ items:
   source:
     remote:
       path: Moth.Tasks.Tests/TaskQueueTests.cs
-      branch: main
+      branch: workers
       repo: https://github.com/djmoth/Moth.Tasks
     id: EnqueueAndTryRun_AssertValidData
     path: ../Moth.Tasks.Tests/TaskQueueTests.cs
@@ -243,7 +243,7 @@ items:
   source:
     remote:
       path: Moth.Tasks.Tests/TaskQueueTests.cs
-      branch: main
+      branch: workers
       repo: https://github.com/djmoth/Moth.Tasks
     id: EnqueueAndTryRun_ITask
     path: ../Moth.Tasks.Tests/TaskQueueTests.cs
@@ -285,7 +285,7 @@ items:
   source:
     remote:
       path: Moth.Tasks.Tests/TaskQueueTests.cs
-      branch: main
+      branch: workers
       repo: https://github.com/djmoth/Moth.Tasks
     id: EnqueueAndTryRun_Action
     path: ../Moth.Tasks.Tests/TaskQueueTests.cs
@@ -327,7 +327,7 @@ items:
   source:
     remote:
       path: Moth.Tasks.Tests/TaskQueueTests.cs
-      branch: main
+      branch: workers
       repo: https://github.com/djmoth/Moth.Tasks
     id: EnqueueAndTryRun_ActionWithArg
     path: ../Moth.Tasks.Tests/TaskQueueTests.cs
@@ -369,7 +369,7 @@ items:
   source:
     remote:
       path: Moth.Tasks.Tests/TaskQueueTests.cs
-      branch: main
+      branch: workers
       repo: https://github.com/djmoth/Moth.Tasks
     id: EnqueueAndTryRun_Profiler
     path: ../Moth.Tasks.Tests/TaskQueueTests.cs
@@ -411,7 +411,7 @@ items:
   source:
     remote:
       path: Moth.Tasks.Tests/TaskQueueTests.cs
-      branch: main
+      branch: workers
       repo: https://github.com/djmoth/Moth.Tasks
     id: EnqueueAndTryRun_IDisposable
     path: ../Moth.Tasks.Tests/TaskQueueTests.cs
@@ -453,7 +453,7 @@ items:
   source:
     remote:
       path: Moth.Tasks.Tests/TaskQueueTests.cs
-      branch: main
+      branch: workers
       repo: https://github.com/djmoth/Moth.Tasks
     id: EnqueueAndTryRun_Exception
     path: ../Moth.Tasks.Tests/TaskQueueTests.cs
@@ -495,7 +495,7 @@ items:
   source:
     remote:
       path: Moth.Tasks.Tests/TaskQueueTests.cs
-      branch: main
+      branch: workers
       repo: https://github.com/djmoth/Moth.Tasks
     id: EnqueueAndTryRun_ExceptionWhileProfiling
     path: ../Moth.Tasks.Tests/TaskQueueTests.cs
@@ -537,7 +537,7 @@ items:
   source:
     remote:
       path: Moth.Tasks.Tests/TaskQueueTests.cs
-      branch: main
+      branch: workers
       repo: https://github.com/djmoth/Moth.Tasks
     id: EnqueueWithTaskHandle
     path: ../Moth.Tasks.Tests/TaskQueueTests.cs
@@ -579,7 +579,7 @@ items:
   source:
     remote:
       path: Moth.Tasks.Tests/TaskQueueTests.cs
-      branch: main
+      branch: workers
       repo: https://github.com/djmoth/Moth.Tasks
     id: EnqueueAndWait
     path: ../Moth.Tasks.Tests/TaskQueueTests.cs
@@ -621,7 +621,7 @@ items:
   source:
     remote:
       path: Moth.Tasks.Tests/TaskQueueTests.cs
-      branch: main
+      branch: workers
       repo: https://github.com/djmoth/Moth.Tasks
     id: EnqueueAndWait_IDisposable
     path: ../Moth.Tasks.Tests/TaskQueueTests.cs
@@ -663,7 +663,7 @@ items:
   source:
     remote:
       path: Moth.Tasks.Tests/TaskQueueTests.cs
-      branch: main
+      branch: workers
       repo: https://github.com/djmoth/Moth.Tasks
     id: EnqueueAndWait_Completed
     path: ../Moth.Tasks.Tests/TaskQueueTests.cs
@@ -705,7 +705,7 @@ items:
   source:
     remote:
       path: Moth.Tasks.Tests/TaskQueueTests.cs
-      branch: main
+      branch: workers
       repo: https://github.com/djmoth/Moth.Tasks
     id: TryRun_ReturnFalse
     path: ../Moth.Tasks.Tests/TaskQueueTests.cs
@@ -747,7 +747,7 @@ items:
   source:
     remote:
       path: Moth.Tasks.Tests/TaskQueueTests.cs
-      branch: main
+      branch: workers
       repo: https://github.com/djmoth/Moth.Tasks
     id: TryRun_ReturnTrue
     path: ../Moth.Tasks.Tests/TaskQueueTests.cs
@@ -789,7 +789,7 @@ items:
   source:
     remote:
       path: Moth.Tasks.Tests/TaskQueueTests.cs
-      branch: main
+      branch: workers
       repo: https://github.com/djmoth/Moth.Tasks
     id: Clear
     path: ../Moth.Tasks.Tests/TaskQueueTests.cs
@@ -831,7 +831,7 @@ items:
   source:
     remote:
       path: Moth.Tasks.Tests/TaskQueueTests.cs
-      branch: main
+      branch: workers
       repo: https://github.com/djmoth/Moth.Tasks
     id: Dispose
     path: ../Moth.Tasks.Tests/TaskQueueTests.cs
@@ -1162,6 +1162,7 @@ references:
   fullName: Moth.Tasks.ITask
 - uid: Moth.Tasks.TaskQueue
   commentId: T:Moth.Tasks.TaskQueue
+  parent: Moth.Tasks
   name: TaskQueue
   nameWithType: TaskQueue
   fullName: Moth.Tasks.TaskQueue
@@ -1170,6 +1171,11 @@ references:
   name: EnqueueITask
   nameWithType: TaskQueueTests.EnqueueITask
   fullName: Moth.Tasks.Tests.TaskQueueTests.EnqueueITask
+- uid: Moth.Tasks
+  commentId: N:Moth.Tasks
+  name: Moth.Tasks
+  nameWithType: Moth.Tasks
+  fullName: Moth.Tasks
 - uid: System.Action
   commentId: T:System.Action
   parent: System
@@ -1218,11 +1224,6 @@ references:
   name: EnqueueAndTryRun_Profiler
   nameWithType: TaskQueueTests.EnqueueAndTryRun_Profiler
   fullName: Moth.Tasks.Tests.TaskQueueTests.EnqueueAndTryRun_Profiler
-- uid: Moth.Tasks
-  commentId: N:Moth.Tasks
-  name: Moth.Tasks
-  nameWithType: Moth.Tasks
-  fullName: Moth.Tasks
 - uid: System.IDisposable
   commentId: T:System.IDisposable
   parent: System

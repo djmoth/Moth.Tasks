@@ -1,0 +1,620 @@
+### YamlMime:ManagedReference
+items:
+- uid: Moth.Tasks.WorkerGroup
+  commentId: T:Moth.Tasks.WorkerGroup
+  id: WorkerGroup
+  parent: Moth.Tasks
+  children:
+  - Moth.Tasks.WorkerGroup.#ctor(System.Int32,Moth.Tasks.TaskQueue,System.EventHandler{Moth.Tasks.TaskExceptionEventArgs},Moth.Tasks.IProfiler,System.Boolean)
+  - Moth.Tasks.WorkerGroup.Dispose
+  - Moth.Tasks.WorkerGroup.Tasks
+  langs:
+  - csharp
+  - vb
+  name: WorkerGroup
+  nameWithType: WorkerGroup
+  fullName: Moth.Tasks.WorkerGroup
+  type: Class
+  source:
+    remote:
+      path: Moth.Tasks/WorkerGroup.cs
+      branch: workers
+      repo: https://github.com/djmoth/Moth.Tasks
+    id: WorkerGroup
+    path: WorkerGroup.cs
+    startLine: 8
+  assemblies:
+  - Moth.Tasks
+  namespace: Moth.Tasks
+  syntax:
+    content: 'public class WorkerGroup : IDisposable'
+    content.vb: >-
+      Public Class WorkerGroup
+          Implements IDisposable
+  inheritance:
+  - System.Object
+  implements:
+  - System.IDisposable
+  inheritedMembers:
+  - System.Object.Equals(System.Object)
+  - System.Object.Equals(System.Object,System.Object)
+  - System.Object.GetHashCode
+  - System.Object.GetType
+  - System.Object.MemberwiseClone
+  - System.Object.ReferenceEquals(System.Object,System.Object)
+  - System.Object.ToString
+  modifiers.csharp:
+  - public
+  - class
+  modifiers.vb:
+  - Public
+  - Class
+- uid: Moth.Tasks.WorkerGroup.#ctor(System.Int32,Moth.Tasks.TaskQueue,System.EventHandler{Moth.Tasks.TaskExceptionEventArgs},Moth.Tasks.IProfiler,System.Boolean)
+  commentId: M:Moth.Tasks.WorkerGroup.#ctor(System.Int32,Moth.Tasks.TaskQueue,System.EventHandler{Moth.Tasks.TaskExceptionEventArgs},Moth.Tasks.IProfiler,System.Boolean)
+  id: '#ctor(System.Int32,Moth.Tasks.TaskQueue,System.EventHandler{Moth.Tasks.TaskExceptionEventArgs},Moth.Tasks.IProfiler,System.Boolean)'
+  parent: Moth.Tasks.WorkerGroup
+  langs:
+  - csharp
+  - vb
+  name: WorkerGroup(Int32, TaskQueue, EventHandler<TaskExceptionEventArgs>, IProfiler, Boolean)
+  nameWithType: WorkerGroup.WorkerGroup(Int32, TaskQueue, EventHandler<TaskExceptionEventArgs>, IProfiler, Boolean)
+  fullName: Moth.Tasks.WorkerGroup.WorkerGroup(System.Int32, Moth.Tasks.TaskQueue, System.EventHandler<Moth.Tasks.TaskExceptionEventArgs>, Moth.Tasks.IProfiler, System.Boolean)
+  type: Constructor
+  source:
+    remote:
+      path: Moth.Tasks/WorkerGroup.cs
+      branch: workers
+      repo: https://github.com/djmoth/Moth.Tasks
+    id: .ctor
+    path: WorkerGroup.cs
+    startLine: 14
+  assemblies:
+  - Moth.Tasks
+  namespace: Moth.Tasks
+  syntax:
+    content: public WorkerGroup(int workerCount, TaskQueue taskQueue = null, EventHandler<TaskExceptionEventArgs> exceptionEventHandler = null, IProfiler profiler = null, bool disposeTaskQueue = false)
+    parameters:
+    - id: workerCount
+      type: System.Int32
+    - id: taskQueue
+      type: Moth.Tasks.TaskQueue
+    - id: exceptionEventHandler
+      type: System.EventHandler{Moth.Tasks.TaskExceptionEventArgs}
+    - id: profiler
+      type: Moth.Tasks.IProfiler
+    - id: disposeTaskQueue
+      type: System.Boolean
+    content.vb: Public Sub New(workerCount As Integer, taskQueue As TaskQueue = Nothing, exceptionEventHandler As EventHandler(Of TaskExceptionEventArgs) = Nothing, profiler As IProfiler = Nothing, disposeTaskQueue As Boolean = False)
+  overload: Moth.Tasks.WorkerGroup.#ctor*
+  nameWithType.vb: WorkerGroup.WorkerGroup(Int32, TaskQueue, EventHandler(Of TaskExceptionEventArgs), IProfiler, Boolean)
+  modifiers.csharp:
+  - public
+  modifiers.vb:
+  - Public
+  fullName.vb: Moth.Tasks.WorkerGroup.WorkerGroup(System.Int32, Moth.Tasks.TaskQueue, System.EventHandler(Of Moth.Tasks.TaskExceptionEventArgs), Moth.Tasks.IProfiler, System.Boolean)
+  name.vb: WorkerGroup(Int32, TaskQueue, EventHandler(Of TaskExceptionEventArgs), IProfiler, Boolean)
+- uid: Moth.Tasks.WorkerGroup.Tasks
+  commentId: P:Moth.Tasks.WorkerGroup.Tasks
+  id: Tasks
+  parent: Moth.Tasks.WorkerGroup
+  langs:
+  - csharp
+  - vb
+  name: Tasks
+  nameWithType: WorkerGroup.Tasks
+  fullName: Moth.Tasks.WorkerGroup.Tasks
+  type: Property
+  source:
+    remote:
+      path: Moth.Tasks/WorkerGroup.cs
+      branch: workers
+      repo: https://github.com/djmoth/Moth.Tasks
+    id: Tasks
+    path: WorkerGroup.cs
+    startLine: 29
+  assemblies:
+  - Moth.Tasks
+  namespace: Moth.Tasks
+  syntax:
+    content: public TaskQueue Tasks { get; }
+    parameters: []
+    return:
+      type: Moth.Tasks.TaskQueue
+    content.vb: Public ReadOnly Property Tasks As TaskQueue
+  overload: Moth.Tasks.WorkerGroup.Tasks*
+  modifiers.csharp:
+  - public
+  - get
+  modifiers.vb:
+  - Public
+  - ReadOnly
+- uid: Moth.Tasks.WorkerGroup.Dispose
+  commentId: M:Moth.Tasks.WorkerGroup.Dispose
+  id: Dispose
+  parent: Moth.Tasks.WorkerGroup
+  langs:
+  - csharp
+  - vb
+  name: Dispose()
+  nameWithType: WorkerGroup.Dispose()
+  fullName: Moth.Tasks.WorkerGroup.Dispose()
+  type: Method
+  source:
+    remote:
+      path: Moth.Tasks/WorkerGroup.cs
+      branch: workers
+      repo: https://github.com/djmoth/Moth.Tasks
+    id: Dispose
+    path: WorkerGroup.cs
+    startLine: 31
+  assemblies:
+  - Moth.Tasks
+  namespace: Moth.Tasks
+  syntax:
+    content: public void Dispose()
+    content.vb: Public Sub Dispose
+  overload: Moth.Tasks.WorkerGroup.Dispose*
+  implements:
+  - System.IDisposable.Dispose
+  modifiers.csharp:
+  - public
+  modifiers.vb:
+  - Public
+references:
+- uid: Moth.Tasks
+  commentId: N:Moth.Tasks
+  name: Moth.Tasks
+  nameWithType: Moth.Tasks
+  fullName: Moth.Tasks
+- uid: System.Object
+  commentId: T:System.Object
+  parent: System
+  isExternal: true
+  name: Object
+  nameWithType: Object
+  fullName: System.Object
+- uid: System.IDisposable
+  commentId: T:System.IDisposable
+  parent: System
+  isExternal: true
+  name: IDisposable
+  nameWithType: IDisposable
+  fullName: System.IDisposable
+- uid: System.Object.Equals(System.Object)
+  commentId: M:System.Object.Equals(System.Object)
+  parent: System.Object
+  isExternal: true
+  name: Equals(Object)
+  nameWithType: Object.Equals(Object)
+  fullName: System.Object.Equals(System.Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    nameWithType: Object.Equals
+    fullName: System.Object.Equals
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    nameWithType: Object.Equals
+    fullName: System.Object.Equals
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System.Object.Equals(System.Object,System.Object)
+  commentId: M:System.Object.Equals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  name: Equals(Object, Object)
+  nameWithType: Object.Equals(Object, Object)
+  fullName: System.Object.Equals(System.Object, System.Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    nameWithType: Object.Equals
+    fullName: System.Object.Equals
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    nameWithType: Object.Equals
+    fullName: System.Object.Equals
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System.Object.GetHashCode
+  commentId: M:System.Object.GetHashCode
+  parent: System.Object
+  isExternal: true
+  name: GetHashCode()
+  nameWithType: Object.GetHashCode()
+  fullName: System.Object.GetHashCode()
+  spec.csharp:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    nameWithType: Object.GetHashCode
+    fullName: System.Object.GetHashCode
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    nameWithType: Object.GetHashCode
+    fullName: System.Object.GetHashCode
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System.Object.GetType
+  commentId: M:System.Object.GetType
+  parent: System.Object
+  isExternal: true
+  name: GetType()
+  nameWithType: Object.GetType()
+  fullName: System.Object.GetType()
+  spec.csharp:
+  - uid: System.Object.GetType
+    name: GetType
+    nameWithType: Object.GetType
+    fullName: System.Object.GetType
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: System.Object.GetType
+    name: GetType
+    nameWithType: Object.GetType
+    fullName: System.Object.GetType
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System.Object.MemberwiseClone
+  commentId: M:System.Object.MemberwiseClone
+  parent: System.Object
+  isExternal: true
+  name: MemberwiseClone()
+  nameWithType: Object.MemberwiseClone()
+  fullName: System.Object.MemberwiseClone()
+  spec.csharp:
+  - uid: System.Object.MemberwiseClone
+    name: MemberwiseClone
+    nameWithType: Object.MemberwiseClone
+    fullName: System.Object.MemberwiseClone
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: System.Object.MemberwiseClone
+    name: MemberwiseClone
+    nameWithType: Object.MemberwiseClone
+    fullName: System.Object.MemberwiseClone
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System.Object.ReferenceEquals(System.Object,System.Object)
+  commentId: M:System.Object.ReferenceEquals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  name: ReferenceEquals(Object, Object)
+  nameWithType: Object.ReferenceEquals(Object, Object)
+  fullName: System.Object.ReferenceEquals(System.Object, System.Object)
+  spec.csharp:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    nameWithType: Object.ReferenceEquals
+    fullName: System.Object.ReferenceEquals
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    nameWithType: Object.ReferenceEquals
+    fullName: System.Object.ReferenceEquals
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System.Object.ToString
+  commentId: M:System.Object.ToString
+  parent: System.Object
+  isExternal: true
+  name: ToString()
+  nameWithType: Object.ToString()
+  fullName: System.Object.ToString()
+  spec.csharp:
+  - uid: System.Object.ToString
+    name: ToString
+    nameWithType: Object.ToString
+    fullName: System.Object.ToString
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: System.Object.ToString
+    name: ToString
+    nameWithType: Object.ToString
+    fullName: System.Object.ToString
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System
+  commentId: N:System
+  isExternal: true
+  name: System
+  nameWithType: System
+  fullName: System
+- uid: Moth.Tasks.WorkerGroup.#ctor*
+  commentId: Overload:Moth.Tasks.WorkerGroup.#ctor
+  name: WorkerGroup
+  nameWithType: WorkerGroup.WorkerGroup
+  fullName: Moth.Tasks.WorkerGroup.WorkerGroup
+- uid: System.Int32
+  commentId: T:System.Int32
+  parent: System
+  isExternal: true
+  name: Int32
+  nameWithType: Int32
+  fullName: System.Int32
+- uid: Moth.Tasks.TaskQueue
+  commentId: T:Moth.Tasks.TaskQueue
+  parent: Moth.Tasks
+  name: TaskQueue
+  nameWithType: TaskQueue
+  fullName: Moth.Tasks.TaskQueue
+- uid: System.EventHandler{Moth.Tasks.TaskExceptionEventArgs}
+  commentId: T:System.EventHandler{Moth.Tasks.TaskExceptionEventArgs}
+  parent: System
+  definition: System.EventHandler`1
+  name: EventHandler<TaskExceptionEventArgs>
+  nameWithType: EventHandler<TaskExceptionEventArgs>
+  fullName: System.EventHandler<Moth.Tasks.TaskExceptionEventArgs>
+  nameWithType.vb: EventHandler(Of TaskExceptionEventArgs)
+  fullName.vb: System.EventHandler(Of Moth.Tasks.TaskExceptionEventArgs)
+  name.vb: EventHandler(Of TaskExceptionEventArgs)
+  spec.csharp:
+  - uid: System.EventHandler`1
+    name: EventHandler
+    nameWithType: EventHandler
+    fullName: System.EventHandler
+    isExternal: true
+  - name: <
+    nameWithType: <
+    fullName: <
+  - uid: Moth.Tasks.TaskExceptionEventArgs
+    name: TaskExceptionEventArgs
+    nameWithType: TaskExceptionEventArgs
+    fullName: Moth.Tasks.TaskExceptionEventArgs
+  - name: '>'
+    nameWithType: '>'
+    fullName: '>'
+  spec.vb:
+  - uid: System.EventHandler`1
+    name: EventHandler
+    nameWithType: EventHandler
+    fullName: System.EventHandler
+    isExternal: true
+  - name: '(Of '
+    nameWithType: '(Of '
+    fullName: '(Of '
+  - uid: Moth.Tasks.TaskExceptionEventArgs
+    name: TaskExceptionEventArgs
+    nameWithType: TaskExceptionEventArgs
+    fullName: Moth.Tasks.TaskExceptionEventArgs
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: Moth.Tasks.IProfiler
+  commentId: T:Moth.Tasks.IProfiler
+  parent: Moth.Tasks
+  name: IProfiler
+  nameWithType: IProfiler
+  fullName: Moth.Tasks.IProfiler
+- uid: System.Boolean
+  commentId: T:System.Boolean
+  parent: System
+  isExternal: true
+  name: Boolean
+  nameWithType: Boolean
+  fullName: System.Boolean
+- uid: System.EventHandler`1
+  commentId: T:System.EventHandler`1
+  isExternal: true
+  name: EventHandler<TEventArgs>
+  nameWithType: EventHandler<TEventArgs>
+  fullName: System.EventHandler<TEventArgs>
+  nameWithType.vb: EventHandler(Of TEventArgs)
+  fullName.vb: System.EventHandler(Of TEventArgs)
+  name.vb: EventHandler(Of TEventArgs)
+  spec.csharp:
+  - uid: System.EventHandler`1
+    name: EventHandler
+    nameWithType: EventHandler
+    fullName: System.EventHandler
+    isExternal: true
+  - name: <
+    nameWithType: <
+    fullName: <
+  - name: TEventArgs
+    nameWithType: TEventArgs
+    fullName: TEventArgs
+  - name: '>'
+    nameWithType: '>'
+    fullName: '>'
+  spec.vb:
+  - uid: System.EventHandler`1
+    name: EventHandler
+    nameWithType: EventHandler
+    fullName: System.EventHandler
+    isExternal: true
+  - name: '(Of '
+    nameWithType: '(Of '
+    fullName: '(Of '
+  - name: TEventArgs
+    nameWithType: TEventArgs
+    fullName: TEventArgs
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: Moth.Tasks.WorkerGroup.Tasks*
+  commentId: Overload:Moth.Tasks.WorkerGroup.Tasks
+  name: Tasks
+  nameWithType: WorkerGroup.Tasks
+  fullName: Moth.Tasks.WorkerGroup.Tasks
+- uid: Moth.Tasks.WorkerGroup.Dispose*
+  commentId: Overload:Moth.Tasks.WorkerGroup.Dispose
+  name: Dispose
+  nameWithType: WorkerGroup.Dispose
+  fullName: Moth.Tasks.WorkerGroup.Dispose
+- uid: System.IDisposable.Dispose
+  commentId: M:System.IDisposable.Dispose
+  parent: System.IDisposable
+  isExternal: true
+  name: Dispose()
+  nameWithType: IDisposable.Dispose()
+  fullName: System.IDisposable.Dispose()
+  spec.csharp:
+  - uid: System.IDisposable.Dispose
+    name: Dispose
+    nameWithType: IDisposable.Dispose
+    fullName: System.IDisposable.Dispose
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: System.IDisposable.Dispose
+    name: Dispose
+    nameWithType: IDisposable.Dispose
+    fullName: System.IDisposable.Dispose
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )

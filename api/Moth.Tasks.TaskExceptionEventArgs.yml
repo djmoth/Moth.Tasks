@@ -1,36 +1,42 @@
 ### YamlMime:ManagedReference
 items:
-- uid: Moth.Tasks.Tests.TaskInfoTests
-  commentId: T:Moth.Tasks.Tests.TaskInfoTests
-  id: TaskInfoTests
-  parent: Moth.Tasks.Tests
+- uid: Moth.Tasks.TaskExceptionEventArgs
+  commentId: T:Moth.Tasks.TaskExceptionEventArgs
+  id: TaskExceptionEventArgs
+  parent: Moth.Tasks
   children:
-  - Moth.Tasks.Tests.TaskInfoTests.CreateDisposableTask
-  - Moth.Tasks.Tests.TaskInfoTests.CreateTask
+  - Moth.Tasks.TaskExceptionEventArgs.#ctor(System.Exception)
+  - Moth.Tasks.TaskExceptionEventArgs.Exception
   langs:
   - csharp
   - vb
-  name: TaskInfoTests
-  nameWithType: TaskInfoTests
-  fullName: Moth.Tasks.Tests.TaskInfoTests
+  name: TaskExceptionEventArgs
+  nameWithType: TaskExceptionEventArgs
+  fullName: Moth.Tasks.TaskExceptionEventArgs
   type: Class
   source:
     remote:
-      path: Moth.Tasks.Tests/TaskInfoTests.cs
+      path: Moth.Tasks/TaskExceptionEventArgs.cs
       branch: workers
       repo: https://github.com/djmoth/Moth.Tasks
-    id: TaskInfoTests
-    path: ../Moth.Tasks.Tests/TaskInfoTests.cs
-    startLine: 8
+    id: TaskExceptionEventArgs
+    path: TaskExceptionEventArgs.cs
+    startLine: 7
   assemblies:
-  - Moth.Tasks.Tests
-  namespace: Moth.Tasks.Tests
+  - Moth.Tasks
+  namespace: Moth.Tasks
+  summary: "\nContains information about an exception that was thrown in a task.\n"
+  example: []
   syntax:
-    content: public class TaskInfoTests
-    content.vb: Public Class TaskInfoTests
+    content: 'public class TaskExceptionEventArgs : EventArgs'
+    content.vb: >-
+      Public Class TaskExceptionEventArgs
+          Inherits EventArgs
   inheritance:
   - System.Object
+  - System.EventArgs
   inheritedMembers:
+  - System.EventArgs.Empty
   - System.Object.Equals(System.Object)
   - System.Object.Equals(System.Object,System.Object)
   - System.Object.GetHashCode
@@ -44,92 +50,85 @@ items:
   modifiers.vb:
   - Public
   - Class
-- uid: Moth.Tasks.Tests.TaskInfoTests.CreateTask
-  commentId: M:Moth.Tasks.Tests.TaskInfoTests.CreateTask
-  id: CreateTask
-  parent: Moth.Tasks.Tests.TaskInfoTests
+- uid: Moth.Tasks.TaskExceptionEventArgs.#ctor(System.Exception)
+  commentId: M:Moth.Tasks.TaskExceptionEventArgs.#ctor(System.Exception)
+  id: '#ctor(System.Exception)'
+  parent: Moth.Tasks.TaskExceptionEventArgs
   langs:
   - csharp
   - vb
-  name: CreateTask()
-  nameWithType: TaskInfoTests.CreateTask()
-  fullName: Moth.Tasks.Tests.TaskInfoTests.CreateTask()
-  type: Method
+  name: TaskExceptionEventArgs(Exception)
+  nameWithType: TaskExceptionEventArgs.TaskExceptionEventArgs(Exception)
+  fullName: Moth.Tasks.TaskExceptionEventArgs.TaskExceptionEventArgs(System.Exception)
+  type: Constructor
   source:
     remote:
-      path: Moth.Tasks.Tests/TaskInfoTests.cs
+      path: Moth.Tasks/TaskExceptionEventArgs.cs
       branch: workers
       repo: https://github.com/djmoth/Moth.Tasks
-    id: CreateTask
-    path: ../Moth.Tasks.Tests/TaskInfoTests.cs
-    startLine: 10
+    id: .ctor
+    path: TaskExceptionEventArgs.cs
+    startLine: 13
   assemblies:
-  - Moth.Tasks.Tests
-  namespace: Moth.Tasks.Tests
+  - Moth.Tasks
+  namespace: Moth.Tasks
+  summary: "\nInitializes a new instance of the <xref href=\"Moth.Tasks.TaskExceptionEventArgs\" data-throw-if-not-resolved=\"false\"></xref> class.\n"
+  example: []
   syntax:
-    content: >-
-      [Test]
-
-      public void CreateTask()
-    content.vb: >-
-      <Test>
-
-      Public Sub CreateTask
-  overload: Moth.Tasks.Tests.TaskInfoTests.CreateTask*
-  attributes:
-  - type: NUnit.Framework.TestAttribute
-    ctor: NUnit.Framework.TestAttribute.#ctor
-    arguments: []
+    content: public TaskExceptionEventArgs(Exception exception)
+    parameters:
+    - id: exception
+      type: System.Exception
+      description: <xref href="System.Exception" data-throw-if-not-resolved="false"></xref> thrown.
+    content.vb: Public Sub New(exception As Exception)
+  overload: Moth.Tasks.TaskExceptionEventArgs.#ctor*
   modifiers.csharp:
   - public
   modifiers.vb:
   - Public
-- uid: Moth.Tasks.Tests.TaskInfoTests.CreateDisposableTask
-  commentId: M:Moth.Tasks.Tests.TaskInfoTests.CreateDisposableTask
-  id: CreateDisposableTask
-  parent: Moth.Tasks.Tests.TaskInfoTests
+- uid: Moth.Tasks.TaskExceptionEventArgs.Exception
+  commentId: P:Moth.Tasks.TaskExceptionEventArgs.Exception
+  id: Exception
+  parent: Moth.Tasks.TaskExceptionEventArgs
   langs:
   - csharp
   - vb
-  name: CreateDisposableTask()
-  nameWithType: TaskInfoTests.CreateDisposableTask()
-  fullName: Moth.Tasks.Tests.TaskInfoTests.CreateDisposableTask()
-  type: Method
+  name: Exception
+  nameWithType: TaskExceptionEventArgs.Exception
+  fullName: Moth.Tasks.TaskExceptionEventArgs.Exception
+  type: Property
   source:
     remote:
-      path: Moth.Tasks.Tests/TaskInfoTests.cs
+      path: Moth.Tasks/TaskExceptionEventArgs.cs
       branch: workers
       repo: https://github.com/djmoth/Moth.Tasks
-    id: CreateDisposableTask
-    path: ../Moth.Tasks.Tests/TaskInfoTests.cs
-    startLine: 16
+    id: Exception
+    path: TaskExceptionEventArgs.cs
+    startLine: 21
   assemblies:
-  - Moth.Tasks.Tests
-  namespace: Moth.Tasks.Tests
+  - Moth.Tasks
+  namespace: Moth.Tasks
+  summary: "\n<xref href=\"System.Exception\" data-throw-if-not-resolved=\"false\"></xref> thrown.\n"
+  example: []
   syntax:
-    content: >-
-      [Test]
-
-      public void CreateDisposableTask()
-    content.vb: >-
-      <Test>
-
-      Public Sub CreateDisposableTask
-  overload: Moth.Tasks.Tests.TaskInfoTests.CreateDisposableTask*
-  attributes:
-  - type: NUnit.Framework.TestAttribute
-    ctor: NUnit.Framework.TestAttribute.#ctor
-    arguments: []
+    content: public Exception Exception { get; }
+    parameters: []
+    return:
+      type: System.Exception
+    content.vb: Public ReadOnly Property Exception As Exception
+  overload: Moth.Tasks.TaskExceptionEventArgs.Exception*
   modifiers.csharp:
   - public
+  - get
   modifiers.vb:
   - Public
+  - ReadOnly
 references:
-- uid: Moth.Tasks.Tests
-  commentId: N:Moth.Tasks.Tests
-  name: Moth.Tasks.Tests
-  nameWithType: Moth.Tasks.Tests
-  fullName: Moth.Tasks.Tests
+- uid: Moth.Tasks
+  commentId: N:Moth.Tasks
+  name: Moth.Tasks
+  nameWithType: Moth.Tasks
+  fullName: Moth.Tasks
 - uid: System.Object
   commentId: T:System.Object
   parent: System
@@ -137,6 +136,20 @@ references:
   name: Object
   nameWithType: Object
   fullName: System.Object
+- uid: System.EventArgs
+  commentId: T:System.EventArgs
+  parent: System
+  isExternal: true
+  name: EventArgs
+  nameWithType: EventArgs
+  fullName: System.EventArgs
+- uid: System.EventArgs.Empty
+  commentId: F:System.EventArgs.Empty
+  parent: System.EventArgs
+  isExternal: true
+  name: Empty
+  nameWithType: EventArgs.Empty
+  fullName: System.EventArgs.Empty
 - uid: System.Object.Equals(System.Object)
   commentId: M:System.Object.Equals(System.Object)
   parent: System.Object
@@ -422,13 +435,25 @@ references:
   name: System
   nameWithType: System
   fullName: System
-- uid: Moth.Tasks.Tests.TaskInfoTests.CreateTask*
-  commentId: Overload:Moth.Tasks.Tests.TaskInfoTests.CreateTask
-  name: CreateTask
-  nameWithType: TaskInfoTests.CreateTask
-  fullName: Moth.Tasks.Tests.TaskInfoTests.CreateTask
-- uid: Moth.Tasks.Tests.TaskInfoTests.CreateDisposableTask*
-  commentId: Overload:Moth.Tasks.Tests.TaskInfoTests.CreateDisposableTask
-  name: CreateDisposableTask
-  nameWithType: TaskInfoTests.CreateDisposableTask
-  fullName: Moth.Tasks.Tests.TaskInfoTests.CreateDisposableTask
+- uid: Moth.Tasks.TaskExceptionEventArgs
+  commentId: T:Moth.Tasks.TaskExceptionEventArgs
+  name: TaskExceptionEventArgs
+  nameWithType: TaskExceptionEventArgs
+  fullName: Moth.Tasks.TaskExceptionEventArgs
+- uid: System.Exception
+  commentId: T:System.Exception
+  parent: System
+  isExternal: true
+  name: Exception
+  nameWithType: Exception
+  fullName: System.Exception
+- uid: Moth.Tasks.TaskExceptionEventArgs.#ctor*
+  commentId: Overload:Moth.Tasks.TaskExceptionEventArgs.#ctor
+  name: TaskExceptionEventArgs
+  nameWithType: TaskExceptionEventArgs.TaskExceptionEventArgs
+  fullName: Moth.Tasks.TaskExceptionEventArgs.TaskExceptionEventArgs
+- uid: Moth.Tasks.TaskExceptionEventArgs.Exception*
+  commentId: Overload:Moth.Tasks.TaskExceptionEventArgs.Exception
+  name: Exception
+  nameWithType: TaskExceptionEventArgs.Exception
+  fullName: Moth.Tasks.TaskExceptionEventArgs.Exception

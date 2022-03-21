@@ -7,6 +7,9 @@
     using System.Threading;
     using Validation;
 
+    /// <summary>
+    /// Encapsulates a thread running in the background, executing tasks from a <see cref="TaskQueue"/>.
+    /// </summary>
     public class Worker : IDisposable
     {
         private readonly TaskQueue tasks;
@@ -16,10 +19,11 @@
         private readonly CancellationTokenSource localCancelSource;
         private readonly IProfiler profiler;
         private readonly EventHandler<TaskExceptionEventArgs> exceptionEventHandler;
+        private readonly AutoResetEvent runEvent = new AutoResetEvent (true);
 
         public Worker () : this (new TaskQueue (), CancellationToken.None) { }
 
-        public Worker (TaskQueue taskQueue, CancellationToken sharedCancelToken, EventHandler<TaskExceptionEventArgs> exceptionEventHandler = null, IProfiler profiler = null, bool disposeTaskQueue = false)
+        public Worker (TaskQueue taskQueue, CancellationToken sharedCancelToken, bool isBackground = true, EventHandler<TaskExceptionEventArgs> exceptionEventHandler = null, IProfiler profiler = null, bool disposeTaskQueue = false)
         {
             tasks = taskQueue ?? throw new ArgumentNullException (nameof (taskQueue));
             this.disposeTasks = disposeTaskQueue;
@@ -30,13 +34,37 @@
             this.exceptionEventHandler = exceptionEventHandler;
             this.profiler = profiler;
 
-            thread = new Thread (Work);
+            taskQueue.TaskEnqueued += RunEvent;
+
+            thread = new Thread (Work)
+            {
+                IsBackground = isBackground,
+            };
             thread.Start ();
         }
 
+        /// <summary>
+        /// Is the thread still running? May be <see langword="true"/> for a short while even after <see cref="Dispose"/> is called.
+        /// </summary>
         public bool IsRunning { get; private set; } = true;
 
         public bool IsCancelledRequested => sharedCancel.IsCancellationRequested || localCancelSource.IsCancellationRequested;
+
+        public void Dispose ()
+        {
+            tasks.TaskEnqueued -= RunEvent;
+
+            if (disposeTasks)
+            {
+                tasks.Dispose ();
+            }
+
+            localCancelSource.Cancel ();
+
+            runEvent.Set (); // Signal event incase thread is waiting, to alert thread of cancellation
+        }
+
+        private void RunEvent (object sender, EventArgs e) => runEvent.Set ();
 
         private void Work ()
         {
@@ -44,7 +72,14 @@
             {
                 while (!IsCancelledRequested)
                 {
-                    bool ranTask = tasks.RunNextTask (profiler, out Exception exception);
+                    runEvent.WaitOne ();
+
+                    if (IsCancelledRequested)
+                    {
+                        break;
+                    }
+
+                    bool ranTask = tasks.TryRunNextTask (profiler, out Exception exception);
 
                     if (exception != null)
                     {
@@ -59,16 +94,6 @@
             {
                 IsRunning = false;
             }
-        }
-
-        public void Dispose ()
-        {
-            if (disposeTasks)
-            {
-                tasks.Dispose ();
-            }
-
-            localCancelSource.Cancel ();
         }
     }
 }

@@ -16,12 +16,12 @@
         private readonly TaskCache taskCache = new TaskCache ();
         private readonly Dictionary<int, ManualResetEventSlim> taskHandles = new Dictionary<int, ManualResetEventSlim> ();
         private readonly Queue<int> tasks;
+        private readonly ManualResetEventSlim tasksEnqueuedEvent = new ManualResetEventSlim ();
         private object[] taskData;
         private int firstTask;
         private int lastTaskEnd;
         private bool disposed;
         private int nextTaskHandle = 1;
-
         /// <summary>
         /// Initializes a new instance of the <see cref="TaskQueue"/> class.
         /// </summary>
@@ -45,7 +45,7 @@
         ~TaskQueue () => Clear ();
 
         /// <summary>
-        /// The number of tasks enqueued.
+        /// The number of tasks currently enqueued.
         /// </summary>
         public int Count
         {
@@ -104,6 +104,8 @@
             {
                 EnqueueImpl (task);
             }
+
+            TaskEnqueued?.Invoke (this, EventArgs.Empty);
         }
 
         /// <summary>
@@ -136,6 +138,8 @@
                     EnqueueImpl (new TaskWithHandle<T> (this, task, handleID));
                 }
             }
+
+            TaskEnqueued?.Invoke (this, EventArgs.Empty);
         }
 
         /// <summary>
@@ -145,7 +149,7 @@
         /// <remarks>
         /// Please note that the return value does not indicate if a task was successful. The method will return <see langword="true"/> if a task was ready in the queue, regardless if an exception occured.
         /// </remarks>
-        public bool RunNextTask () => RunNextTask (null, out _);
+        public bool TryRunNextTask () => TryRunNextTask (null, out _);
 
         /// <summary>
         /// Try to run the next task in the queue, if present. Also performs profiling on the task through an <see cref="IProfiler"/>.
@@ -155,7 +159,7 @@
         /// <remarks>
         /// Please note that the return value does not indicate if a task was successful. The method will return <see langword="true"/> if a task was ready in the queue, regardless if an exception occured.
         /// </remarks>
-        public bool RunNextTask (IProfiler profiler) => RunNextTask (profiler, out _);
+        public bool TryRunNextTask (IProfiler profiler) => TryRunNextTask (profiler, out _);
 
         /// <summary>
         /// Try to run the next task in the queue, if present. Also provides an <see cref="Exception"/> thrown by the task in case it fails.
@@ -165,7 +169,7 @@
         /// <remarks>
         /// Please note that the return value does not indicate if a task was successful. The method will return <see langword="true"/> if a task was ready in the queue, regardless if an exception occured.
         /// </remarks>
-        public bool RunNextTask (out Exception exception) => RunNextTask (null, out exception);
+        public bool TryRunNextTask (out Exception exception) => TryRunNextTask (null, out exception);
 
         /// <summary>
         /// Try to run the next task in the queue, if present. Also performs profiling on the task through an <see cref="IProfiler"/>, and provides an <see cref="Exception"/> thrown by the task in case it fails.
@@ -176,7 +180,7 @@
         /// <remarks>
         /// Please note that the return value does not indicate if a task was successful. The method will return <see langword="true"/> if a task was ready in the queue, regardless if an exception occured.
         /// </remarks>
-        public bool RunNextTask (IProfiler profiler, out Exception exception)
+        public bool TryRunNextTask (IProfiler profiler, out Exception exception)
         {
             exception = null;
 
@@ -193,6 +197,11 @@
             try
             {
                 int id = tasks.Dequeue ();
+
+                if (tasks.Count == 0)
+                {
+                    tasksEnqueuedEvent.Reset ();
+                }
 
                 task = taskCache.GetTask (id);
             } catch // Internal error
@@ -395,6 +404,8 @@
 
                 lastTaskEnd += taskInfo.DataIndices;
             }
+
+            tasksEnqueuedEvent.Set (); // Signal potentially waiting threads that tasks are ready to be executed
         }
 
         private T GetNextTask<T> (TaskInfo task) where T : struct, ITask

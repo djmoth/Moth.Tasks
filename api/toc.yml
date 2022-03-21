@@ -6,10 +6,16 @@
     name: IProfiler
   - uid: Moth.Tasks.ITask
     name: ITask
+  - uid: Moth.Tasks.TaskExceptionEventArgs
+    name: TaskExceptionEventArgs
   - uid: Moth.Tasks.TaskHandle
     name: TaskHandle
   - uid: Moth.Tasks.TaskQueue
     name: TaskQueue
+  - uid: Moth.Tasks.Worker
+    name: Worker
+  - uid: Moth.Tasks.WorkerGroup
+    name: WorkerGroup
 - uid: Moth.Tasks.Tests
   name: Moth.Tasks.Tests
   items:

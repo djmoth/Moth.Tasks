@@ -6,8 +6,11 @@ items:
   children:
   - Moth.Tasks.IProfiler
   - Moth.Tasks.ITask
+  - Moth.Tasks.TaskExceptionEventArgs
   - Moth.Tasks.TaskHandle
   - Moth.Tasks.TaskQueue
+  - Moth.Tasks.Worker
+  - Moth.Tasks.WorkerGroup
   langs:
   - csharp
   - vb
@@ -29,6 +32,11 @@ references:
   name: ITask
   nameWithType: ITask
   fullName: Moth.Tasks.ITask
+- uid: Moth.Tasks.TaskExceptionEventArgs
+  commentId: T:Moth.Tasks.TaskExceptionEventArgs
+  name: TaskExceptionEventArgs
+  nameWithType: TaskExceptionEventArgs
+  fullName: Moth.Tasks.TaskExceptionEventArgs
 - uid: Moth.Tasks.TaskHandle
   commentId: T:Moth.Tasks.TaskHandle
   parent: Moth.Tasks
@@ -37,9 +45,20 @@ references:
   fullName: Moth.Tasks.TaskHandle
 - uid: Moth.Tasks.TaskQueue
   commentId: T:Moth.Tasks.TaskQueue
+  parent: Moth.Tasks
   name: TaskQueue
   nameWithType: TaskQueue
   fullName: Moth.Tasks.TaskQueue
+- uid: Moth.Tasks.Worker
+  commentId: T:Moth.Tasks.Worker
+  name: Worker
+  nameWithType: Worker
+  fullName: Moth.Tasks.Worker
+- uid: Moth.Tasks.WorkerGroup
+  commentId: T:Moth.Tasks.WorkerGroup
+  name: WorkerGroup
+  nameWithType: WorkerGroup
+  fullName: Moth.Tasks.WorkerGroup
 - uid: Moth.Tasks
   commentId: N:Moth.Tasks
   name: Moth.Tasks

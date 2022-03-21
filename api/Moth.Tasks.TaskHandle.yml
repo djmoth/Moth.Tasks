@@ -18,7 +18,7 @@ items:
   source:
     remote:
       path: Moth.Tasks/TaskHandle.cs
-      branch: main
+      branch: workers
       repo: https://github.com/djmoth/Moth.Tasks
     id: TaskHandle
     path: TaskHandle.cs
@@ -59,7 +59,7 @@ items:
   source:
     remote:
       path: Moth.Tasks/TaskHandle.cs
-      branch: main
+      branch: workers
       repo: https://github.com/djmoth/Moth.Tasks
     id: IsComplete
     path: TaskHandle.cs
@@ -98,7 +98,7 @@ items:
   source:
     remote:
       path: Moth.Tasks/TaskHandle.cs
-      branch: main
+      branch: workers
       repo: https://github.com/djmoth/Moth.Tasks
     id: WaitForCompletion
     path: TaskHandle.cs
@@ -131,7 +131,7 @@ items:
   source:
     remote:
       path: Moth.Tasks/TaskHandle.cs
-      branch: main
+      branch: workers
       repo: https://github.com/djmoth/Moth.Tasks
     id: WaitForCompletion
     path: TaskHandle.cs

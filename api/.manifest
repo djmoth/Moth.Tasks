@@ -5,6 +5,9 @@
   "Moth.Tasks.IProfiler.EndTask": "Moth.Tasks.IProfiler.yml",
   "Moth.Tasks.ITask": "Moth.Tasks.ITask.yml",
   "Moth.Tasks.ITask.Run": "Moth.Tasks.ITask.yml",
+  "Moth.Tasks.TaskExceptionEventArgs": "Moth.Tasks.TaskExceptionEventArgs.yml",
+  "Moth.Tasks.TaskExceptionEventArgs.#ctor(System.Exception)": "Moth.Tasks.TaskExceptionEventArgs.yml",
+  "Moth.Tasks.TaskExceptionEventArgs.Exception": "Moth.Tasks.TaskExceptionEventArgs.yml",
   "Moth.Tasks.TaskHandle": "Moth.Tasks.TaskHandle.yml",
   "Moth.Tasks.TaskHandle.IsComplete": "Moth.Tasks.TaskHandle.yml",
   "Moth.Tasks.TaskHandle.WaitForCompletion": "Moth.Tasks.TaskHandle.yml",
@@ -46,5 +49,15 @@
   "Moth.Tasks.Tests.TaskQueueTests.EnqueueTask_ExpandTaskData": "Moth.Tasks.Tests.TaskQueueTests.yml",
   "Moth.Tasks.Tests.TaskQueueTests.EnqueueWithTaskHandle": "Moth.Tasks.Tests.TaskQueueTests.yml",
   "Moth.Tasks.Tests.TaskQueueTests.TryRun_ReturnFalse": "Moth.Tasks.Tests.TaskQueueTests.yml",
-  "Moth.Tasks.Tests.TaskQueueTests.TryRun_ReturnTrue": "Moth.Tasks.Tests.TaskQueueTests.yml"
+  "Moth.Tasks.Tests.TaskQueueTests.TryRun_ReturnTrue": "Moth.Tasks.Tests.TaskQueueTests.yml",
+  "Moth.Tasks.Worker": "Moth.Tasks.Worker.yml",
+  "Moth.Tasks.Worker.#ctor": "Moth.Tasks.Worker.yml",
+  "Moth.Tasks.Worker.#ctor(Moth.Tasks.TaskQueue,System.Threading.CancellationToken,System.EventHandler{Moth.Tasks.TaskExceptionEventArgs},Moth.Tasks.IProfiler,System.Boolean)": "Moth.Tasks.Worker.yml",
+  "Moth.Tasks.Worker.Dispose": "Moth.Tasks.Worker.yml",
+  "Moth.Tasks.Worker.IsCancelledRequested": "Moth.Tasks.Worker.yml",
+  "Moth.Tasks.Worker.IsRunning": "Moth.Tasks.Worker.yml",
+  "Moth.Tasks.WorkerGroup": "Moth.Tasks.WorkerGroup.yml",
+  "Moth.Tasks.WorkerGroup.#ctor(System.Int32,Moth.Tasks.TaskQueue,System.EventHandler{Moth.Tasks.TaskExceptionEventArgs},Moth.Tasks.IProfiler,System.Boolean)": "Moth.Tasks.WorkerGroup.yml",
+  "Moth.Tasks.WorkerGroup.Dispose": "Moth.Tasks.WorkerGroup.yml",
+  "Moth.Tasks.WorkerGroup.Tasks": "Moth.Tasks.WorkerGroup.yml"
 }

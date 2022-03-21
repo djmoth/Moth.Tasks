@@ -28,7 +28,7 @@ items:
   source:
     remote:
       path: Moth.Tasks/TaskQueue.cs
-      branch: main
+      branch: workers
       repo: https://github.com/djmoth/Moth.Tasks
     id: TaskQueue
     path: TaskQueue.cs
@@ -77,7 +77,7 @@ items:
   source:
     remote:
       path: Moth.Tasks/TaskQueue.cs
-      branch: main
+      branch: workers
       repo: https://github.com/djmoth/Moth.Tasks
     id: .ctor
     path: TaskQueue.cs
@@ -109,7 +109,7 @@ items:
   source:
     remote:
       path: Moth.Tasks/TaskQueue.cs
-      branch: main
+      branch: workers
       repo: https://github.com/djmoth/Moth.Tasks
     id: Finalize
     path: TaskQueue.cs
@@ -141,7 +141,7 @@ items:
   source:
     remote:
       path: Moth.Tasks/TaskQueue.cs
-      branch: main
+      branch: workers
       repo: https://github.com/djmoth/Moth.Tasks
     id: Count
     path: TaskQueue.cs
@@ -178,7 +178,7 @@ items:
   source:
     remote:
       path: Moth.Tasks/TaskQueue.cs
-      branch: main
+      branch: workers
       repo: https://github.com/djmoth/Moth.Tasks
     id: Enqueue
     path: TaskQueue.cs
@@ -221,7 +221,7 @@ items:
   source:
     remote:
       path: Moth.Tasks/TaskQueue.cs
-      branch: main
+      branch: workers
       repo: https://github.com/djmoth/Moth.Tasks
     id: Enqueue
     path: TaskQueue.cs
@@ -273,7 +273,7 @@ items:
   source:
     remote:
       path: Moth.Tasks/TaskQueue.cs
-      branch: main
+      branch: workers
       repo: https://github.com/djmoth/Moth.Tasks
     id: Enqueue
     path: TaskQueue.cs
@@ -321,7 +321,7 @@ items:
   source:
     remote:
       path: Moth.Tasks/TaskQueue.cs
-      branch: main
+      branch: workers
       repo: https://github.com/djmoth/Moth.Tasks
     id: Enqueue
     path: TaskQueue.cs
@@ -372,7 +372,7 @@ items:
   source:
     remote:
       path: Moth.Tasks/TaskQueue.cs
-      branch: main
+      branch: workers
       repo: https://github.com/djmoth/Moth.Tasks
     id: RunNextTask
     path: TaskQueue.cs
@@ -408,7 +408,7 @@ items:
   source:
     remote:
       path: Moth.Tasks/TaskQueue.cs
-      branch: main
+      branch: workers
       repo: https://github.com/djmoth/Moth.Tasks
     id: RunNextTask
     path: TaskQueue.cs
@@ -448,7 +448,7 @@ items:
   source:
     remote:
       path: Moth.Tasks/TaskQueue.cs
-      branch: main
+      branch: workers
       repo: https://github.com/djmoth/Moth.Tasks
     id: RunNextTask
     path: TaskQueue.cs
@@ -491,7 +491,7 @@ items:
   source:
     remote:
       path: Moth.Tasks/TaskQueue.cs
-      branch: main
+      branch: workers
       repo: https://github.com/djmoth/Moth.Tasks
     id: RunNextTask
     path: TaskQueue.cs
@@ -537,7 +537,7 @@ items:
   source:
     remote:
       path: Moth.Tasks/TaskQueue.cs
-      branch: main
+      branch: workers
       repo: https://github.com/djmoth/Moth.Tasks
     id: Clear
     path: TaskQueue.cs
@@ -577,7 +577,7 @@ items:
   source:
     remote:
       path: Moth.Tasks/TaskQueue.cs
-      branch: main
+      branch: workers
       repo: https://github.com/djmoth/Moth.Tasks
     id: Dispose
     path: TaskQueue.cs
@@ -905,6 +905,7 @@ references:
   fullName: System
 - uid: Moth.Tasks.TaskQueue
   commentId: T:Moth.Tasks.TaskQueue
+  parent: Moth.Tasks
   name: TaskQueue
   nameWithType: TaskQueue
   fullName: Moth.Tasks.TaskQueue
