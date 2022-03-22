@@ -228,7 +228,7 @@ namespace Moth.Tasks.Tests
 
             Profiler profiler = new Profiler ();
 
-            queue.TryRunNextTask (profiler, out Exception ex);
+            queue.TryRunNextTask (out Exception ex, profiler);
 
             AssertTaskResult (ex, value, result);
 
@@ -286,7 +286,7 @@ namespace Moth.Tasks.Tests
 
             Profiler profiler = new Profiler ();
 
-            queue.TryRunNextTask (profiler, out Exception ex);
+            queue.TryRunNextTask (out Exception ex, profiler);
 
             Assert.IsInstanceOf<InvalidOperationException> (ex);
 

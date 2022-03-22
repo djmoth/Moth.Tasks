@@ -15,26 +15,21 @@
         private readonly TaskQueue tasks;
         private readonly bool disposeTasks;
         private readonly Thread thread;
-        private readonly CancellationToken sharedCancel;
-        private readonly CancellationTokenSource localCancelSource;
+        private readonly CancellationTokenSource cancelSource;
         private readonly IProfiler profiler;
         private readonly EventHandler<TaskExceptionEventArgs> exceptionEventHandler;
-        private readonly AutoResetEvent runEvent = new AutoResetEvent (true);
 
-        public Worker () : this (new TaskQueue (), CancellationToken.None) { }
+        public Worker () : this (new TaskQueue ()) { }
 
-        public Worker (TaskQueue taskQueue, CancellationToken sharedCancelToken, bool isBackground = true, EventHandler<TaskExceptionEventArgs> exceptionEventHandler = null, IProfiler profiler = null, bool disposeTaskQueue = false)
+        public Worker (TaskQueue taskQueue, bool isBackground = true, EventHandler<TaskExceptionEventArgs> exceptionEventHandler = null, IProfiler profiler = null, bool disposeTaskQueue = false)
         {
             tasks = taskQueue ?? throw new ArgumentNullException (nameof (taskQueue));
             this.disposeTasks = disposeTaskQueue;
 
-            localCancelSource = new CancellationTokenSource ();
-            sharedCancel = sharedCancelToken != CancellationToken.None ? sharedCancel : localCancelSource.Token;
+            cancelSource = new CancellationTokenSource ();
 
             this.exceptionEventHandler = exceptionEventHandler;
             this.profiler = profiler;
-
-            taskQueue.TaskEnqueued += RunEvent;
 
             thread = new Thread (Work)
             {
@@ -48,38 +43,28 @@
         /// </summary>
         public bool IsRunning { get; private set; } = true;
 
-        public bool IsCancelledRequested => sharedCancel.IsCancellationRequested || localCancelSource.IsCancellationRequested;
-
+        /// <summary>
+        /// Sends a signal to shutdown the thread. Also disposes of <see cref="TaskQueue"/> if specified in <see cref="Worker"/> constructor.
+        /// </summary>
         public void Dispose ()
         {
-            tasks.TaskEnqueued -= RunEvent;
+            cancelSource.Cancel ();
 
             if (disposeTasks)
             {
                 tasks.Dispose ();
             }
-
-            localCancelSource.Cancel ();
-
-            runEvent.Set (); // Signal event incase thread is waiting, to alert thread of cancellation
         }
-
-        private void RunEvent (object sender, EventArgs e) => runEvent.Set ();
 
         private void Work ()
         {
             try
             {
-                while (!IsCancelledRequested)
+                CancellationToken cancel = cancelSource.Token;
+
+                while (!cancel.IsCancellationRequested)
                 {
-                    runEvent.WaitOne ();
-
-                    if (IsCancelledRequested)
-                    {
-                        break;
-                    }
-
-                    bool ranTask = tasks.TryRunNextTask (profiler, out Exception exception);
+                    tasks.RunNextTask (out Exception exception, profiler, cancel);
 
                     if (exception != null)
                     {
