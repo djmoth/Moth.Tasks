@@ -6,7 +6,6 @@
     using System.Threading;
     using Validation;
 
-    
     public class WorkerGroup : IDisposable
     {
         private readonly Worker[] workers;
