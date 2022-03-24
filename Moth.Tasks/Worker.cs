@@ -19,12 +19,19 @@
         private readonly IProfiler profiler;
         private readonly EventHandler<TaskExceptionEventArgs> exceptionEventHandler;
 
-        public Worker () : this (new TaskQueue ()) { }
-
+        /// <summary>
+        /// Initializes a new instance of the <see cref="Worker"/> class.
+        /// </summary>
+        /// <param name="taskQueue">The <see cref="TaskQueue"/> that the <see cref="Worker"/> will execute tasks from.</param>
+        /// <param name="isBackground">Defines the <see cref="Thread.IsBackground"/> property of the internal thread.</param>
+        /// <param name="exceptionEventHandler">Method invoked if a task throws an exception. May be <see langword="null"/>.</param>
+        /// <param name="profiler"><see cref="IProfiler"/> used to profile tasks. May be <see langword="null"/>.</param>
+        /// <param name="disposeTaskQueue">Determines whether the <see cref="TaskQueue"/> supplied with <paramref name="taskQueue"/> is disposed when <see cref="Dispose"/> is called.</param>
+        /// <exception cref="ArgumentNullException"><paramref name="taskQueue"/> cannot be null.</exception>
         public Worker (TaskQueue taskQueue, bool isBackground = true, EventHandler<TaskExceptionEventArgs> exceptionEventHandler = null, IProfiler profiler = null, bool disposeTaskQueue = false)
         {
-            tasks = taskQueue ?? throw new ArgumentNullException (nameof (taskQueue));
-            this.disposeTasks = disposeTaskQueue;
+            tasks = taskQueue ?? throw new ArgumentNullException (nameof (taskQueue), $"{nameof (taskQueue)} cannot be null.");
+            disposeTasks = disposeTaskQueue;
 
             cancelSource = new CancellationTokenSource ();
 
