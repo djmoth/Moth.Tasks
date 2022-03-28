@@ -67,17 +67,15 @@ namespace Moth.Tasks.Tests
 
             AssertTaskDataLength (4);
 
-            T GetPrivateValue<T> (string fieldName) => (T)typeof (TaskQueue).GetField (fieldName, BindingFlags.NonPublic | BindingFlags.Instance).GetValue (queue);
-
             void AssertTaskDataLength (int expectedValue)
             {
-                int queue_taskData_Length = GetPrivateValue<object[]> ("taskData").Length;
+                int queue_taskData_Length = queue.GetPrivateValue<object[]> ("taskData").Length;
                 Assert.AreEqual (expectedValue, queue_taskData_Length);
             }
 
             void AssertFirstTaskIndex (int expectedValue)
             {
-                int queue_firstTask = GetPrivateValue<int> ("firstTask");
+                int queue_firstTask = queue.GetPrivateValue<int> ("firstTask");
                 Assert.AreEqual (expectedValue, queue_firstTask);
             }
         }
@@ -131,11 +129,9 @@ namespace Moth.Tasks.Tests
                 Assert.AreEqual (expectedResult, results.Dequeue ().Value);
             }
 
-            T GetPrivateValue<T> (string fieldName) => (T)typeof (TaskQueue).GetField (fieldName, BindingFlags.NonPublic | BindingFlags.Instance).GetValue (queue);
-
             void AssertTestFirstTaskIndex (int expectedValue)
             {
-                int queue_firstTask = GetPrivateValue<int> ("firstTask");
+                int queue_firstTask = queue.GetPrivateValue<int> ("firstTask");
                 Assert.AreEqual (expectedValue, queue_firstTask);
             }
         }

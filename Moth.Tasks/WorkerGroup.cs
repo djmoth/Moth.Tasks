@@ -41,6 +41,7 @@
             for (int i = 0; i < workerCount; i++)
             {
                 workers[i] = new Worker (taskQueue, false, isBackground, exceptionEventHandler, profiler);
+                GC.SuppressFinalize (workers[i]);
             }
         }
 

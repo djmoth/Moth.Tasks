@@ -23,3 +23,7 @@
     name: TaskInfoTests
   - uid: Moth.Tasks.Tests.TaskQueueTests
     name: TaskQueueTests
+  - uid: Moth.Tasks.Tests.TestUtilities
+    name: TestUtilities
+  - uid: Moth.Tasks.Tests.WorkerTests
+    name: WorkerTests

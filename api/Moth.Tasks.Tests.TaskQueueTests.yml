@@ -55,6 +55,8 @@ items:
   - System.Object.MemberwiseClone
   - System.Object.ReferenceEquals(System.Object,System.Object)
   - System.Object.ToString
+  extensionMethods:
+  - System.Object.Moth.Tasks.Tests.TestUtilities.GetPrivateValue``1(System.String)
   modifiers.csharp:
   - public
   - class
@@ -205,7 +207,7 @@ items:
       repo: https://github.com/djmoth/Moth.Tasks
     id: EnqueueAndTryRun_AssertValidData
     path: ../Moth.Tasks.Tests/TaskQueueTests.cs
-    startLine: 87
+    startLine: 85
   assemblies:
   - Moth.Tasks.Tests
   namespace: Moth.Tasks.Tests
@@ -247,7 +249,7 @@ items:
       repo: https://github.com/djmoth/Moth.Tasks
     id: EnqueueAndTryRun_ITask
     path: ../Moth.Tasks.Tests/TaskQueueTests.cs
-    startLine: 152
+    startLine: 148
   assemblies:
   - Moth.Tasks.Tests
   namespace: Moth.Tasks.Tests
@@ -289,7 +291,7 @@ items:
       repo: https://github.com/djmoth/Moth.Tasks
     id: EnqueueAndTryRun_Action
     path: ../Moth.Tasks.Tests/TaskQueueTests.cs
-    startLine: 174
+    startLine: 170
   assemblies:
   - Moth.Tasks.Tests
   namespace: Moth.Tasks.Tests
@@ -331,7 +333,7 @@ items:
       repo: https://github.com/djmoth/Moth.Tasks
     id: EnqueueAndTryRun_ActionWithArg
     path: ../Moth.Tasks.Tests/TaskQueueTests.cs
-    startLine: 196
+    startLine: 192
   assemblies:
   - Moth.Tasks.Tests
   namespace: Moth.Tasks.Tests
@@ -373,7 +375,7 @@ items:
       repo: https://github.com/djmoth/Moth.Tasks
     id: EnqueueAndTryRun_Profiler
     path: ../Moth.Tasks.Tests/TaskQueueTests.cs
-    startLine: 218
+    startLine: 214
   assemblies:
   - Moth.Tasks.Tests
   namespace: Moth.Tasks.Tests
@@ -415,7 +417,7 @@ items:
       repo: https://github.com/djmoth/Moth.Tasks
     id: EnqueueAndTryRun_IDisposable
     path: ../Moth.Tasks.Tests/TaskQueueTests.cs
-    startLine: 242
+    startLine: 238
   assemblies:
   - Moth.Tasks.Tests
   namespace: Moth.Tasks.Tests
@@ -457,11 +459,11 @@ items:
       repo: https://github.com/djmoth/Moth.Tasks
     id: EnqueueAndTryRun_Exception
     path: ../Moth.Tasks.Tests/TaskQueueTests.cs
-    startLine: 264
+    startLine: 260
   assemblies:
   - Moth.Tasks.Tests
   namespace: Moth.Tasks.Tests
-  summary: "\nEnqueues and runs a task which throws an <xref href=\"System.InvalidOperationException\" data-throw-if-not-resolved=\"false\"></xref> in its <xref href=\"Moth.Tasks.ITask.Run\" data-throw-if-not-resolved=\"false\"></xref> method. Asserts that the exception is returned from <xref href=\"Moth.Tasks.TaskQueue.RunNextTask(System.Exception%40)\" data-throw-if-not-resolved=\"false\"></xref>.\n"
+  summary: "\nEnqueues and runs a task which throws an <xref href=\"System.InvalidOperationException\" data-throw-if-not-resolved=\"false\"></xref> in its <xref href=\"Moth.Tasks.ITask.Run\" data-throw-if-not-resolved=\"false\"></xref> method. Asserts that the exception is returned from <see cref=\"!:TaskQueue.TryRunNextTask(out Exception)\"></see>.\n"
   example: []
   syntax:
     content: >-
@@ -499,7 +501,7 @@ items:
       repo: https://github.com/djmoth/Moth.Tasks
     id: EnqueueAndTryRun_ExceptionWhileProfiling
     path: ../Moth.Tasks.Tests/TaskQueueTests.cs
-    startLine: 279
+    startLine: 275
   assemblies:
   - Moth.Tasks.Tests
   namespace: Moth.Tasks.Tests
@@ -541,7 +543,7 @@ items:
       repo: https://github.com/djmoth/Moth.Tasks
     id: EnqueueWithTaskHandle
     path: ../Moth.Tasks.Tests/TaskQueueTests.cs
-    startLine: 300
+    startLine: 296
   assemblies:
   - Moth.Tasks.Tests
   namespace: Moth.Tasks.Tests
@@ -583,7 +585,7 @@ items:
       repo: https://github.com/djmoth/Moth.Tasks
     id: EnqueueAndWait
     path: ../Moth.Tasks.Tests/TaskQueueTests.cs
-    startLine: 313
+    startLine: 309
   assemblies:
   - Moth.Tasks.Tests
   namespace: Moth.Tasks.Tests
@@ -625,7 +627,7 @@ items:
       repo: https://github.com/djmoth/Moth.Tasks
     id: EnqueueAndWait_IDisposable
     path: ../Moth.Tasks.Tests/TaskQueueTests.cs
-    startLine: 347
+    startLine: 343
   assemblies:
   - Moth.Tasks.Tests
   namespace: Moth.Tasks.Tests
@@ -667,7 +669,7 @@ items:
       repo: https://github.com/djmoth/Moth.Tasks
     id: EnqueueAndWait_Completed
     path: ../Moth.Tasks.Tests/TaskQueueTests.cs
-    startLine: 385
+    startLine: 381
   assemblies:
   - Moth.Tasks.Tests
   namespace: Moth.Tasks.Tests
@@ -709,11 +711,11 @@ items:
       repo: https://github.com/djmoth/Moth.Tasks
     id: TryRun_ReturnFalse
     path: ../Moth.Tasks.Tests/TaskQueueTests.cs
-    startLine: 400
+    startLine: 396
   assemblies:
   - Moth.Tasks.Tests
   namespace: Moth.Tasks.Tests
-  summary: "\nAsserts that <xref href=\"Moth.Tasks.TaskQueue.RunNextTask\" data-throw-if-not-resolved=\"false\"></xref> will return <xref uid=\"langword_csharp_false\" name=\"false\" href=\"\"></xref> when the <xref href=\"Moth.Tasks.TaskQueue\" data-throw-if-not-resolved=\"false\"></xref> is empty.\n"
+  summary: "\nAsserts that <xref href=\"Moth.Tasks.TaskQueue.TryRunNextTask(Moth.Tasks.IProfiler)\" data-throw-if-not-resolved=\"false\"></xref> will return <xref uid=\"langword_csharp_false\" name=\"false\" href=\"\"></xref> when the <xref href=\"Moth.Tasks.TaskQueue\" data-throw-if-not-resolved=\"false\"></xref> is empty.\n"
   example: []
   syntax:
     content: >-
@@ -751,11 +753,11 @@ items:
       repo: https://github.com/djmoth/Moth.Tasks
     id: TryRun_ReturnTrue
     path: ../Moth.Tasks.Tests/TaskQueueTests.cs
-    startLine: 411
+    startLine: 407
   assemblies:
   - Moth.Tasks.Tests
   namespace: Moth.Tasks.Tests
-  summary: "\nAsserts that <xref href=\"Moth.Tasks.TaskQueue.RunNextTask\" data-throw-if-not-resolved=\"false\"></xref> will return <xref uid=\"langword_csharp_true\" name=\"true\" href=\"\"></xref> when the <xref href=\"Moth.Tasks.TaskQueue\" data-throw-if-not-resolved=\"false\"></xref> has a task enqueued and ready to be ran.\n"
+  summary: "\nAsserts that <xref href=\"Moth.Tasks.TaskQueue.TryRunNextTask(Moth.Tasks.IProfiler)\" data-throw-if-not-resolved=\"false\"></xref> will return <xref uid=\"langword_csharp_true\" name=\"true\" href=\"\"></xref> when the <xref href=\"Moth.Tasks.TaskQueue\" data-throw-if-not-resolved=\"false\"></xref> has a task enqueued and ready to be ran.\n"
   example: []
   syntax:
     content: >-
@@ -793,7 +795,7 @@ items:
       repo: https://github.com/djmoth/Moth.Tasks
     id: Clear
     path: ../Moth.Tasks.Tests/TaskQueueTests.cs
-    startLine: 424
+    startLine: 420
   assemblies:
   - Moth.Tasks.Tests
   namespace: Moth.Tasks.Tests
@@ -835,7 +837,7 @@ items:
       repo: https://github.com/djmoth/Moth.Tasks
     id: Dispose
     path: ../Moth.Tasks.Tests/TaskQueueTests.cs
-    startLine: 462
+    startLine: 458
   assemblies:
   - Moth.Tasks.Tests
   namespace: Moth.Tasks.Tests
@@ -1149,12 +1151,117 @@ references:
   - name: )
     nameWithType: )
     fullName: )
+- uid: System.Object.Moth.Tasks.Tests.TestUtilities.GetPrivateValue``1(System.String)
+  commentId: M:Moth.Tasks.Tests.TestUtilities.GetPrivateValue``1(System.Object,System.String)
+  parent: Moth.Tasks.Tests.TestUtilities
+  definition: Moth.Tasks.Tests.TestUtilities.GetPrivateValue``1(System.Object,System.String)
+  name: GetPrivateValue<T>(String)
+  nameWithType: TestUtilities.GetPrivateValue<T>(String)
+  fullName: Moth.Tasks.Tests.TestUtilities.GetPrivateValue<T>(System.String)
+  nameWithType.vb: TestUtilities.GetPrivateValue(Of T)(String)
+  fullName.vb: Moth.Tasks.Tests.TestUtilities.GetPrivateValue(Of T)(System.String)
+  name.vb: GetPrivateValue(Of T)(String)
+  spec.csharp:
+  - uid: Moth.Tasks.Tests.TestUtilities.GetPrivateValue``1(System.String)
+    name: GetPrivateValue<T>
+    nameWithType: TestUtilities.GetPrivateValue<T>
+    fullName: Moth.Tasks.Tests.TestUtilities.GetPrivateValue<T>
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.String
+    name: String
+    nameWithType: String
+    fullName: System.String
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: Moth.Tasks.Tests.TestUtilities.GetPrivateValue``1(System.String)
+    name: GetPrivateValue(Of T)
+    nameWithType: TestUtilities.GetPrivateValue(Of T)
+    fullName: Moth.Tasks.Tests.TestUtilities.GetPrivateValue(Of T)
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.String
+    name: String
+    nameWithType: String
+    fullName: System.String
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
 - uid: System
   commentId: N:System
   isExternal: true
   name: System
   nameWithType: System
   fullName: System
+- uid: Moth.Tasks.Tests.TestUtilities.GetPrivateValue``1(System.Object,System.String)
+  commentId: M:Moth.Tasks.Tests.TestUtilities.GetPrivateValue``1(System.Object,System.String)
+  isExternal: true
+  name: GetPrivateValue<T>(Object, String)
+  nameWithType: TestUtilities.GetPrivateValue<T>(Object, String)
+  fullName: Moth.Tasks.Tests.TestUtilities.GetPrivateValue<T>(System.Object, System.String)
+  nameWithType.vb: TestUtilities.GetPrivateValue(Of T)(Object, String)
+  fullName.vb: Moth.Tasks.Tests.TestUtilities.GetPrivateValue(Of T)(System.Object, System.String)
+  name.vb: GetPrivateValue(Of T)(Object, String)
+  spec.csharp:
+  - uid: Moth.Tasks.Tests.TestUtilities.GetPrivateValue``1(System.Object,System.String)
+    name: GetPrivateValue<T>
+    nameWithType: TestUtilities.GetPrivateValue<T>
+    fullName: Moth.Tasks.Tests.TestUtilities.GetPrivateValue<T>
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: System.String
+    name: String
+    nameWithType: String
+    fullName: System.String
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: Moth.Tasks.Tests.TestUtilities.GetPrivateValue``1(System.Object,System.String)
+    name: GetPrivateValue(Of T)
+    nameWithType: TestUtilities.GetPrivateValue(Of T)
+    fullName: Moth.Tasks.Tests.TestUtilities.GetPrivateValue(Of T)
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: System.String
+    name: String
+    nameWithType: String
+    fullName: System.String
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: Moth.Tasks.Tests.TestUtilities
+  commentId: T:Moth.Tasks.Tests.TestUtilities
+  parent: Moth.Tasks.Tests
+  name: TestUtilities
+  nameWithType: TestUtilities
+  fullName: Moth.Tasks.Tests.TestUtilities
 - uid: Moth.Tasks.ITask
   commentId: T:Moth.Tasks.ITask
   name: ITask
@@ -1242,9 +1349,6 @@ references:
 - uid: Moth.Tasks.ITask.Run
   commentId: M:Moth.Tasks.ITask.Run
   isExternal: true
-- uid: Moth.Tasks.TaskQueue.RunNextTask(System.Exception@)
-  commentId: M:Moth.Tasks.TaskQueue.RunNextTask(System.Exception@)
-  isExternal: true
 - uid: Moth.Tasks.Tests.TaskQueueTests.EnqueueAndTryRun_Exception*
   commentId: Overload:Moth.Tasks.Tests.TaskQueueTests.EnqueueAndTryRun_Exception
   name: EnqueueAndTryRun_Exception
@@ -1321,8 +1425,8 @@ references:
   name: EnqueueAndWait_Completed
   nameWithType: TaskQueueTests.EnqueueAndWait_Completed
   fullName: Moth.Tasks.Tests.TaskQueueTests.EnqueueAndWait_Completed
-- uid: Moth.Tasks.TaskQueue.RunNextTask
-  commentId: M:Moth.Tasks.TaskQueue.RunNextTask
+- uid: Moth.Tasks.TaskQueue.TryRunNextTask(Moth.Tasks.IProfiler)
+  commentId: M:Moth.Tasks.TaskQueue.TryRunNextTask(Moth.Tasks.IProfiler)
   isExternal: true
 - uid: Moth.Tasks.Tests.TaskQueueTests.TryRun_ReturnFalse*
   commentId: Overload:Moth.Tasks.Tests.TaskQueueTests.TryRun_ReturnFalse

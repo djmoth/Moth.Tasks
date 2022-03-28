@@ -34,6 +34,9 @@
             tasks = taskQueue ?? throw new ArgumentNullException (nameof (taskQueue), $"{nameof (taskQueue)} cannot be null.");
             disposeTasks = disposeTaskQueue;
 
+            if (disposeTasks)
+                GC.SuppressFinalize (tasks);
+
             cancelSource = new CancellationTokenSource ();
 
             this.exceptionEventHandler = exceptionEventHandler;

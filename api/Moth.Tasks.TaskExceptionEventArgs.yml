@@ -44,6 +44,8 @@ items:
   - System.Object.MemberwiseClone
   - System.Object.ReferenceEquals(System.Object,System.Object)
   - System.Object.ToString
+  extensionMethods:
+  - System.Object.Moth.Tasks.Tests.TestUtilities.GetPrivateValue``1(System.String)
   modifiers.csharp:
   - public
   - class
@@ -429,12 +431,122 @@ references:
   - name: )
     nameWithType: )
     fullName: )
+- uid: System.Object.Moth.Tasks.Tests.TestUtilities.GetPrivateValue``1(System.String)
+  commentId: M:Moth.Tasks.Tests.TestUtilities.GetPrivateValue``1(System.Object,System.String)
+  parent: Moth.Tasks.Tests.TestUtilities
+  definition: Moth.Tasks.Tests.TestUtilities.GetPrivateValue``1(System.Object,System.String)
+  name: GetPrivateValue<T>(String)
+  nameWithType: TestUtilities.GetPrivateValue<T>(String)
+  fullName: Moth.Tasks.Tests.TestUtilities.GetPrivateValue<T>(System.String)
+  nameWithType.vb: TestUtilities.GetPrivateValue(Of T)(String)
+  fullName.vb: Moth.Tasks.Tests.TestUtilities.GetPrivateValue(Of T)(System.String)
+  name.vb: GetPrivateValue(Of T)(String)
+  spec.csharp:
+  - uid: Moth.Tasks.Tests.TestUtilities.GetPrivateValue``1(System.String)
+    name: GetPrivateValue<T>
+    nameWithType: TestUtilities.GetPrivateValue<T>
+    fullName: Moth.Tasks.Tests.TestUtilities.GetPrivateValue<T>
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.String
+    name: String
+    nameWithType: String
+    fullName: System.String
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: Moth.Tasks.Tests.TestUtilities.GetPrivateValue``1(System.String)
+    name: GetPrivateValue(Of T)
+    nameWithType: TestUtilities.GetPrivateValue(Of T)
+    fullName: Moth.Tasks.Tests.TestUtilities.GetPrivateValue(Of T)
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.String
+    name: String
+    nameWithType: String
+    fullName: System.String
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
 - uid: System
   commentId: N:System
   isExternal: true
   name: System
   nameWithType: System
   fullName: System
+- uid: Moth.Tasks.Tests.TestUtilities.GetPrivateValue``1(System.Object,System.String)
+  commentId: M:Moth.Tasks.Tests.TestUtilities.GetPrivateValue``1(System.Object,System.String)
+  isExternal: true
+  name: GetPrivateValue<T>(Object, String)
+  nameWithType: TestUtilities.GetPrivateValue<T>(Object, String)
+  fullName: Moth.Tasks.Tests.TestUtilities.GetPrivateValue<T>(System.Object, System.String)
+  nameWithType.vb: TestUtilities.GetPrivateValue(Of T)(Object, String)
+  fullName.vb: Moth.Tasks.Tests.TestUtilities.GetPrivateValue(Of T)(System.Object, System.String)
+  name.vb: GetPrivateValue(Of T)(Object, String)
+  spec.csharp:
+  - uid: Moth.Tasks.Tests.TestUtilities.GetPrivateValue``1(System.Object,System.String)
+    name: GetPrivateValue<T>
+    nameWithType: TestUtilities.GetPrivateValue<T>
+    fullName: Moth.Tasks.Tests.TestUtilities.GetPrivateValue<T>
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: System.String
+    name: String
+    nameWithType: String
+    fullName: System.String
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: Moth.Tasks.Tests.TestUtilities.GetPrivateValue``1(System.Object,System.String)
+    name: GetPrivateValue(Of T)
+    nameWithType: TestUtilities.GetPrivateValue(Of T)
+    fullName: Moth.Tasks.Tests.TestUtilities.GetPrivateValue(Of T)
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: System.String
+    name: String
+    nameWithType: String
+    fullName: System.String
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: Moth.Tasks.Tests.TestUtilities
+  commentId: T:Moth.Tasks.Tests.TestUtilities
+  parent: Moth.Tasks.Tests
+  name: TestUtilities
+  nameWithType: TestUtilities
+  fullName: Moth.Tasks.Tests.TestUtilities
+- uid: Moth.Tasks.Tests
+  commentId: N:Moth.Tasks.Tests
+  name: Moth.Tasks.Tests
+  nameWithType: Moth.Tasks.Tests
+  fullName: Moth.Tasks.Tests
 - uid: Moth.Tasks.TaskExceptionEventArgs
   commentId: T:Moth.Tasks.TaskExceptionEventArgs
   name: TaskExceptionEventArgs
