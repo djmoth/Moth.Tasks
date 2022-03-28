@@ -18,17 +18,18 @@
         private readonly CancellationTokenSource cancelSource;
         private readonly IProfiler profiler;
         private readonly EventHandler<TaskExceptionEventArgs> exceptionEventHandler;
+        private int isRunningState = 1;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="Worker"/> class.
         /// </summary>
         /// <param name="taskQueue">The <see cref="TaskQueue"/> that the <see cref="Worker"/> will execute tasks from.</param>
+        /// <param name="disposeTaskQueue">Determines whether the <see cref="TaskQueue"/> supplied with <paramref name="taskQueue"/> is disposed when <see cref="Dispose ()"/> is called.</param>
         /// <param name="isBackground">Defines the <see cref="Thread.IsBackground"/> property of the internal thread.</param>
         /// <param name="exceptionEventHandler">Method invoked if a task throws an exception. May be <see langword="null"/>.</param>
         /// <param name="profiler"><see cref="IProfiler"/> used to profile tasks. May be <see langword="null"/>.</param>
-        /// <param name="disposeTaskQueue">Determines whether the <see cref="TaskQueue"/> supplied with <paramref name="taskQueue"/> is disposed when <see cref="Dispose"/> is called.</param>
         /// <exception cref="ArgumentNullException"><paramref name="taskQueue"/> cannot be null.</exception>
-        public Worker (TaskQueue taskQueue, bool isBackground = true, EventHandler<TaskExceptionEventArgs> exceptionEventHandler = null, IProfiler profiler = null, bool disposeTaskQueue = false)
+        public Worker (TaskQueue taskQueue, bool disposeTaskQueue = false, bool isBackground = true, EventHandler<TaskExceptionEventArgs> exceptionEventHandler = null, IProfiler profiler = null)
         {
             tasks = taskQueue ?? throw new ArgumentNullException (nameof (taskQueue), $"{nameof (taskQueue)} cannot be null.");
             disposeTasks = disposeTaskQueue;
@@ -46,21 +47,43 @@
         }
 
         /// <summary>
-        /// Is the thread still running? May be <see langword="true"/> for a short while even after <see cref="Dispose"/> is called.
+        /// Finalizes an instance of the <see cref="Worker"/> class.
         /// </summary>
-        public bool IsRunning { get; private set; } = true;
+        ~Worker () => Dispose (false);
 
         /// <summary>
-        /// Sends a signal to shutdown the thread. Also disposes of <see cref="TaskQueue"/> if specified in <see cref="Worker"/> constructor.
+        /// Is the thread still running? May be <see langword="true"/> for a short while even after <see cref="Dispose ()"/> is called.
+        /// </summary>
+        public bool IsRunning
+        {
+            get => Interlocked.CompareExchange (ref isRunningState, 1, 1) == 1;
+            protected set => Interlocked.Exchange (ref isRunningState, value ? 1 : 0);
+        }
+
+        /// <summary>
+        /// The <see cref="TaskQueue"/> of which the worker is executing tasks from.
+        /// </summary>
+        public TaskQueue Tasks => tasks;
+
+        /// <summary>
+        /// Sends a signal to shutdown the thread. Also disposes of <see cref="Tasks"/> if specified in <see cref="Worker"/> constructor.
         /// </summary>
         public void Dispose ()
+        {
+            Dispose (true);
+            GC.SuppressFinalize (this);
+        }
+
+        /// <summary>
+        /// Sends a signal to shutdown the thread. Also disposes of <see cref="Tasks"/> if specified in <see cref="Worker"/> constructor.
+        /// </summary>
+        /// <param name="disposing"><see langword="true"/> if called from <see cref="Dispose ()"/>, <see langword="false"/> if called from finalizer.</param>
+        protected virtual void Dispose (bool disposing)
         {
             cancelSource.Cancel ();
 
             if (disposeTasks)
-            {
                 tasks.Dispose ();
-            }
         }
 
         private void Work ()

@@ -10,7 +10,7 @@
     /// <summary>
     /// A queue of tasks, which can be run in FIFO order.
     /// </summary>
-    public sealed unsafe class TaskQueue : IDisposable
+    public unsafe class TaskQueue : IDisposable
     {
         private readonly object taskLock = new object ();
         private readonly TaskCache taskCache = new TaskCache ();
@@ -22,6 +22,7 @@
         private int lastTaskEnd;
         private bool disposed;
         private int nextTaskHandle = 1;
+
         /// <summary>
         /// Initializes a new instance of the <see cref="TaskQueue"/> class.
         /// </summary>
@@ -42,7 +43,7 @@
         /// <summary>
         /// Finalizes an instance of the <see cref="TaskQueue"/> class. Also disposes of tasks implementing <see cref="IDisposable.Dispose"/>.
         /// </summary>
-        ~TaskQueue () => Clear ();
+        ~TaskQueue () => Dispose (false);
 
         /// <summary>
         /// The number of tasks currently enqueued.
@@ -181,8 +182,8 @@
         /// <summary>
         /// Tries to run the next task in the queue, if present. Provides an <see cref="Exception"/> thrown by the task, in case it fails. May also perform profiling on the task through an <see cref="IProfiler"/>.
         /// </summary>
-        /// <param name="profiler"><see cref="IProfiler"/> to profile the run-time of the task.</param>
         /// <param name="exception"><see cref="Exception"/> thrown if task failed. Is <see langword="null"/> if task was run successfully.</param>
+        /// <param name="profiler"><see cref="IProfiler"/> to profile the run-time of the task.</param>
         /// <returns><see langword="true"/> if a task was run, <see langword="false"/> if the <see cref="TaskQueue"/> is empty.</returns>
         /// <remarks>
         /// Please note that the return value does not indicate if a task was successful. The method will return <see langword="true"/> if a task was ready in the queue, regardless of whether an exception occured.
@@ -300,11 +301,25 @@
         {
             lock (taskLock)
             {
-                Clear ();
+                Dispose (true);
                 GC.SuppressFinalize (this);
-
-                disposed = true;
             }
+        }
+
+        /// <summary>
+        /// Disposes all tasks which implements <see cref="IDisposable"/>.
+        /// </summary>
+        /// <remarks>
+        /// As the method iterates through all tasks in the queue and calls <see cref="IDisposable.Dispose"/> on tasks, it can hang for an unknown amount of time. If an exception is thrown in an <see cref="IDisposable.Dispose"/> call, the method continues on with disposing the remaining tasks.
+        /// </remarks>
+        /// <param name="disposing"><see langword="true"/> if called from <see cref="Dispose ()"/>, <see langword="false"/> if called from finalizer.</param>
+        protected virtual void Dispose (bool disposing)
+        {
+            if (disposed)
+                return;
+
+            Clear ();
+            disposed = true;
         }
 
         /// <summary>
