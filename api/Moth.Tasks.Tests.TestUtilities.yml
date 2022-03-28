@@ -1,33 +1,32 @@
 ### YamlMime:ManagedReference
 items:
-- uid: Moth.Tasks.Tests.TaskInfoTests
-  commentId: T:Moth.Tasks.Tests.TaskInfoTests
-  id: TaskInfoTests
+- uid: Moth.Tasks.Tests.TestUtilities
+  commentId: T:Moth.Tasks.Tests.TestUtilities
+  id: TestUtilities
   parent: Moth.Tasks.Tests
   children:
-  - Moth.Tasks.Tests.TaskInfoTests.CreateDisposableTask
-  - Moth.Tasks.Tests.TaskInfoTests.CreateTask
+  - Moth.Tasks.Tests.TestUtilities.GetPrivateValue``1(System.Object,System.String)
   langs:
   - csharp
   - vb
-  name: TaskInfoTests
-  nameWithType: TaskInfoTests
-  fullName: Moth.Tasks.Tests.TaskInfoTests
+  name: TestUtilities
+  nameWithType: TestUtilities
+  fullName: Moth.Tasks.Tests.TestUtilities
   type: Class
   source:
     remote:
-      path: Moth.Tasks.Tests/TaskInfoTests.cs
+      path: Moth.Tasks.Tests/TestUtilities.cs
       branch: workers
       repo: https://github.com/djmoth/Moth.Tasks
-    id: TaskInfoTests
-    path: ../Moth.Tasks.Tests/TaskInfoTests.cs
-    startLine: 8
+    id: TestUtilities
+    path: ../Moth.Tasks.Tests/TestUtilities.cs
+    startLine: 7
   assemblies:
   - Moth.Tasks.Tests
   namespace: Moth.Tasks.Tests
   syntax:
-    content: public class TaskInfoTests
-    content.vb: Public Class TaskInfoTests
+    content: public static class TestUtilities
+    content.vb: Public Module TestUtilities
   inheritance:
   - System.Object
   inheritedMembers:
@@ -38,94 +37,61 @@ items:
   - System.Object.MemberwiseClone
   - System.Object.ReferenceEquals(System.Object,System.Object)
   - System.Object.ToString
-  extensionMethods:
-  - System.Object.Moth.Tasks.Tests.TestUtilities.GetPrivateValue``1(System.String)
   modifiers.csharp:
   - public
+  - static
   - class
   modifiers.vb:
   - Public
-  - Class
-- uid: Moth.Tasks.Tests.TaskInfoTests.CreateTask
-  commentId: M:Moth.Tasks.Tests.TaskInfoTests.CreateTask
-  id: CreateTask
-  parent: Moth.Tasks.Tests.TaskInfoTests
+  - Module
+- uid: Moth.Tasks.Tests.TestUtilities.GetPrivateValue``1(System.Object,System.String)
+  commentId: M:Moth.Tasks.Tests.TestUtilities.GetPrivateValue``1(System.Object,System.String)
+  id: GetPrivateValue``1(System.Object,System.String)
+  isExtensionMethod: true
+  parent: Moth.Tasks.Tests.TestUtilities
   langs:
   - csharp
   - vb
-  name: CreateTask()
-  nameWithType: TaskInfoTests.CreateTask()
-  fullName: Moth.Tasks.Tests.TaskInfoTests.CreateTask()
+  name: GetPrivateValue<T>(Object, String)
+  nameWithType: TestUtilities.GetPrivateValue<T>(Object, String)
+  fullName: Moth.Tasks.Tests.TestUtilities.GetPrivateValue<T>(System.Object, System.String)
   type: Method
   source:
     remote:
-      path: Moth.Tasks.Tests/TaskInfoTests.cs
+      path: Moth.Tasks.Tests/TestUtilities.cs
       branch: workers
       repo: https://github.com/djmoth/Moth.Tasks
-    id: CreateTask
-    path: ../Moth.Tasks.Tests/TaskInfoTests.cs
-    startLine: 10
+    id: GetPrivateValue
+    path: ../Moth.Tasks.Tests/TestUtilities.cs
+    startLine: 9
   assemblies:
   - Moth.Tasks.Tests
   namespace: Moth.Tasks.Tests
   syntax:
-    content: >-
-      [Test]
-
-      public void CreateTask()
+    content: public static T GetPrivateValue<T>(this object obj, string fieldName)
+    parameters:
+    - id: obj
+      type: System.Object
+    - id: fieldName
+      type: System.String
+    typeParameters:
+    - id: T
+    return:
+      type: '{T}'
     content.vb: >-
-      <Test>
+      <ExtensionAttribute>
 
-      Public Sub CreateTask
-  overload: Moth.Tasks.Tests.TaskInfoTests.CreateTask*
-  attributes:
-  - type: NUnit.Framework.TestAttribute
-    ctor: NUnit.Framework.TestAttribute.#ctor
-    arguments: []
+      Public Shared Function GetPrivateValue(Of T)(obj As Object, fieldName As String) As T
+  overload: Moth.Tasks.Tests.TestUtilities.GetPrivateValue*
+  nameWithType.vb: TestUtilities.GetPrivateValue(Of T)(Object, String)
   modifiers.csharp:
   - public
+  - static
   modifiers.vb:
   - Public
-- uid: Moth.Tasks.Tests.TaskInfoTests.CreateDisposableTask
-  commentId: M:Moth.Tasks.Tests.TaskInfoTests.CreateDisposableTask
-  id: CreateDisposableTask
-  parent: Moth.Tasks.Tests.TaskInfoTests
-  langs:
-  - csharp
-  - vb
-  name: CreateDisposableTask()
-  nameWithType: TaskInfoTests.CreateDisposableTask()
-  fullName: Moth.Tasks.Tests.TaskInfoTests.CreateDisposableTask()
-  type: Method
-  source:
-    remote:
-      path: Moth.Tasks.Tests/TaskInfoTests.cs
-      branch: workers
-      repo: https://github.com/djmoth/Moth.Tasks
-    id: CreateDisposableTask
-    path: ../Moth.Tasks.Tests/TaskInfoTests.cs
-    startLine: 16
-  assemblies:
-  - Moth.Tasks.Tests
-  namespace: Moth.Tasks.Tests
-  syntax:
-    content: >-
-      [Test]
-
-      public void CreateDisposableTask()
-    content.vb: >-
-      <Test>
-
-      Public Sub CreateDisposableTask
-  overload: Moth.Tasks.Tests.TaskInfoTests.CreateDisposableTask*
-  attributes:
-  - type: NUnit.Framework.TestAttribute
-    ctor: NUnit.Framework.TestAttribute.#ctor
-    arguments: []
-  modifiers.csharp:
-  - public
-  modifiers.vb:
-  - Public
+  - Shared
+  fullName.vb: Moth.Tasks.Tests.TestUtilities.GetPrivateValue(Of T)(System.Object, System.String)
+  name.vb: GetPrivateValue(Of T)(Object, String)
 references:
 - uid: Moth.Tasks.Tests
   commentId: N:Moth.Tasks.Tests
@@ -418,124 +384,31 @@ references:
   - name: )
     nameWithType: )
     fullName: )
-- uid: System.Object.Moth.Tasks.Tests.TestUtilities.GetPrivateValue``1(System.String)
-  commentId: M:Moth.Tasks.Tests.TestUtilities.GetPrivateValue``1(System.Object,System.String)
-  parent: Moth.Tasks.Tests.TestUtilities
-  definition: Moth.Tasks.Tests.TestUtilities.GetPrivateValue``1(System.Object,System.String)
-  name: GetPrivateValue<T>(String)
-  nameWithType: TestUtilities.GetPrivateValue<T>(String)
-  fullName: Moth.Tasks.Tests.TestUtilities.GetPrivateValue<T>(System.String)
-  nameWithType.vb: TestUtilities.GetPrivateValue(Of T)(String)
-  fullName.vb: Moth.Tasks.Tests.TestUtilities.GetPrivateValue(Of T)(System.String)
-  name.vb: GetPrivateValue(Of T)(String)
-  spec.csharp:
-  - uid: Moth.Tasks.Tests.TestUtilities.GetPrivateValue``1(System.String)
-    name: GetPrivateValue<T>
-    nameWithType: TestUtilities.GetPrivateValue<T>
-    fullName: Moth.Tasks.Tests.TestUtilities.GetPrivateValue<T>
-  - name: (
-    nameWithType: (
-    fullName: (
-  - uid: System.String
-    name: String
-    nameWithType: String
-    fullName: System.String
-    isExternal: true
-  - name: )
-    nameWithType: )
-    fullName: )
-  spec.vb:
-  - uid: Moth.Tasks.Tests.TestUtilities.GetPrivateValue``1(System.String)
-    name: GetPrivateValue(Of T)
-    nameWithType: TestUtilities.GetPrivateValue(Of T)
-    fullName: Moth.Tasks.Tests.TestUtilities.GetPrivateValue(Of T)
-  - name: (
-    nameWithType: (
-    fullName: (
-  - uid: System.String
-    name: String
-    nameWithType: String
-    fullName: System.String
-    isExternal: true
-  - name: )
-    nameWithType: )
-    fullName: )
 - uid: System
   commentId: N:System
   isExternal: true
   name: System
   nameWithType: System
   fullName: System
-- uid: Moth.Tasks.Tests.TestUtilities.GetPrivateValue``1(System.Object,System.String)
-  commentId: M:Moth.Tasks.Tests.TestUtilities.GetPrivateValue``1(System.Object,System.String)
+- uid: Moth.Tasks.Tests.TestUtilities.GetPrivateValue*
+  commentId: Overload:Moth.Tasks.Tests.TestUtilities.GetPrivateValue
+  name: GetPrivateValue
+  nameWithType: TestUtilities.GetPrivateValue
+  fullName: Moth.Tasks.Tests.TestUtilities.GetPrivateValue
+- uid: System.String
+  commentId: T:System.String
+  parent: System
   isExternal: true
-  name: GetPrivateValue<T>(Object, String)
-  nameWithType: TestUtilities.GetPrivateValue<T>(Object, String)
-  fullName: Moth.Tasks.Tests.TestUtilities.GetPrivateValue<T>(System.Object, System.String)
-  nameWithType.vb: TestUtilities.GetPrivateValue(Of T)(Object, String)
-  fullName.vb: Moth.Tasks.Tests.TestUtilities.GetPrivateValue(Of T)(System.Object, System.String)
-  name.vb: GetPrivateValue(Of T)(Object, String)
-  spec.csharp:
-  - uid: Moth.Tasks.Tests.TestUtilities.GetPrivateValue``1(System.Object,System.String)
-    name: GetPrivateValue<T>
-    nameWithType: TestUtilities.GetPrivateValue<T>
-    fullName: Moth.Tasks.Tests.TestUtilities.GetPrivateValue<T>
-  - name: (
-    nameWithType: (
-    fullName: (
-  - uid: System.Object
-    name: Object
-    nameWithType: Object
-    fullName: System.Object
-    isExternal: true
-  - name: ', '
-    nameWithType: ', '
-    fullName: ', '
-  - uid: System.String
-    name: String
-    nameWithType: String
-    fullName: System.String
-    isExternal: true
-  - name: )
-    nameWithType: )
-    fullName: )
-  spec.vb:
-  - uid: Moth.Tasks.Tests.TestUtilities.GetPrivateValue``1(System.Object,System.String)
-    name: GetPrivateValue(Of T)
-    nameWithType: TestUtilities.GetPrivateValue(Of T)
-    fullName: Moth.Tasks.Tests.TestUtilities.GetPrivateValue(Of T)
-  - name: (
-    nameWithType: (
-    fullName: (
-  - uid: System.Object
-    name: Object
-    nameWithType: Object
-    fullName: System.Object
-    isExternal: true
-  - name: ', '
-    nameWithType: ', '
-    fullName: ', '
-  - uid: System.String
-    name: String
-    nameWithType: String
-    fullName: System.String
-    isExternal: true
-  - name: )
-    nameWithType: )
-    fullName: )
-- uid: Moth.Tasks.Tests.TestUtilities
-  commentId: T:Moth.Tasks.Tests.TestUtilities
-  parent: Moth.Tasks.Tests
-  name: TestUtilities
-  nameWithType: TestUtilities
-  fullName: Moth.Tasks.Tests.TestUtilities
-- uid: Moth.Tasks.Tests.TaskInfoTests.CreateTask*
-  commentId: Overload:Moth.Tasks.Tests.TaskInfoTests.CreateTask
-  name: CreateTask
-  nameWithType: TaskInfoTests.CreateTask
-  fullName: Moth.Tasks.Tests.TaskInfoTests.CreateTask
-- uid: Moth.Tasks.Tests.TaskInfoTests.CreateDisposableTask*
-  commentId: Overload:Moth.Tasks.Tests.TaskInfoTests.CreateDisposableTask
-  name: CreateDisposableTask
-  nameWithType: TaskInfoTests.CreateDisposableTask
-  fullName: Moth.Tasks.Tests.TaskInfoTests.CreateDisposableTask
+  name: String
+  nameWithType: String
+  fullName: System.String
+- uid: '{T}'
+  commentId: '!:T'
+  definition: T
+  name: T
+  nameWithType: T
+  fullName: T
+- uid: T
+  name: T
+  nameWithType: T
+  fullName: T

@@ -26,6 +26,7 @@
       <AutoGen>True</AutoGen>
       <DependentUpon>TaskQueueActions.tt</DependentUpon>
     </None>
+    <None Include="..\.editorconfig" Link=".editorconfig" />
   </ItemGroup>
 
   <ItemGroup>
@@ -39,6 +40,7 @@
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
     <PackageReference Include="System.Memory" Version="4.5.4" />
+    <PackageReference Include="Validation" Version="2.5.51" />
   </ItemGroup>
 
   <ItemGroup>

@@ -1,182 +1,169 @@
 ### YamlMime:ManagedReference
 items:
-- uid: Moth.Tasks.TaskHandle
-  commentId: T:Moth.Tasks.TaskHandle
-  id: TaskHandle
+- uid: Moth.Tasks.TaskExceptionEventArgs
+  commentId: T:Moth.Tasks.TaskExceptionEventArgs
+  id: TaskExceptionEventArgs
   parent: Moth.Tasks
   children:
-  - Moth.Tasks.TaskHandle.IsComplete
-  - Moth.Tasks.TaskHandle.WaitForCompletion
-  - Moth.Tasks.TaskHandle.WaitForCompletion(System.Int32)
+  - Moth.Tasks.TaskExceptionEventArgs.#ctor(System.Exception)
+  - Moth.Tasks.TaskExceptionEventArgs.Exception
   langs:
   - csharp
   - vb
-  name: TaskHandle
-  nameWithType: TaskHandle
-  fullName: Moth.Tasks.TaskHandle
-  type: Struct
+  name: TaskExceptionEventArgs
+  nameWithType: TaskExceptionEventArgs
+  fullName: Moth.Tasks.TaskExceptionEventArgs
+  type: Class
   source:
     remote:
-      path: Moth.Tasks/TaskHandle.cs
+      path: Moth.Tasks/TaskExceptionEventArgs.cs
       branch: workers
       repo: https://github.com/djmoth/Moth.Tasks
-    id: TaskHandle
-    path: TaskHandle.cs
-    startLine: 5
+    id: TaskExceptionEventArgs
+    path: TaskExceptionEventArgs.cs
+    startLine: 7
   assemblies:
   - Moth.Tasks
   namespace: Moth.Tasks
-  summary: "\nHandle for checking task status.\n"
+  summary: "\nContains information about an exception that was thrown in a task.\n"
   example: []
   syntax:
-    content: public readonly struct TaskHandle
-    content.vb: Public Structure TaskHandle
+    content: 'public class TaskExceptionEventArgs : EventArgs'
+    content.vb: >-
+      Public Class TaskExceptionEventArgs
+          Inherits EventArgs
+  inheritance:
+  - System.Object
+  - System.EventArgs
   inheritedMembers:
-  - System.ValueType.Equals(System.Object)
-  - System.ValueType.GetHashCode
-  - System.ValueType.ToString
+  - System.EventArgs.Empty
+  - System.Object.Equals(System.Object)
   - System.Object.Equals(System.Object,System.Object)
+  - System.Object.GetHashCode
   - System.Object.GetType
+  - System.Object.MemberwiseClone
   - System.Object.ReferenceEquals(System.Object,System.Object)
+  - System.Object.ToString
   extensionMethods:
   - System.Object.Moth.Tasks.Tests.TestUtilities.GetPrivateValue``1(System.String)
   modifiers.csharp:
   - public
-  - readonly
-  - struct
+  - class
   modifiers.vb:
   - Public
-  - Structure
-- uid: Moth.Tasks.TaskHandle.IsComplete
-  commentId: P:Moth.Tasks.TaskHandle.IsComplete
-  id: IsComplete
-  parent: Moth.Tasks.TaskHandle
+  - Class
+- uid: Moth.Tasks.TaskExceptionEventArgs.#ctor(System.Exception)
+  commentId: M:Moth.Tasks.TaskExceptionEventArgs.#ctor(System.Exception)
+  id: '#ctor(System.Exception)'
+  parent: Moth.Tasks.TaskExceptionEventArgs
   langs:
   - csharp
   - vb
-  name: IsComplete
-  nameWithType: TaskHandle.IsComplete
-  fullName: Moth.Tasks.TaskHandle.IsComplete
-  type: Property
+  name: TaskExceptionEventArgs(Exception)
+  nameWithType: TaskExceptionEventArgs.TaskExceptionEventArgs(Exception)
+  fullName: Moth.Tasks.TaskExceptionEventArgs.TaskExceptionEventArgs(System.Exception)
+  type: Constructor
   source:
     remote:
-      path: Moth.Tasks/TaskHandle.cs
+      path: Moth.Tasks/TaskExceptionEventArgs.cs
       branch: workers
       repo: https://github.com/djmoth/Moth.Tasks
-    id: IsComplete
-    path: TaskHandle.cs
-    startLine: 27
+    id: .ctor
+    path: TaskExceptionEventArgs.cs
+    startLine: 13
   assemblies:
   - Moth.Tasks
   namespace: Moth.Tasks
-  summary: "\nChecks if the task has been completed.\n"
-  remarks: "\nPlease note that this property does not indicate whether the task executed successfully or not.\n"
+  summary: "\nInitializes a new instance of the <xref href=\"Moth.Tasks.TaskExceptionEventArgs\" data-throw-if-not-resolved=\"false\"></xref> class.\n"
   example: []
   syntax:
-    content: public readonly bool IsComplete { get; }
-    parameters: []
-    return:
-      type: System.Boolean
-    content.vb: Public ReadOnly Property IsComplete As Boolean
-  overload: Moth.Tasks.TaskHandle.IsComplete*
+    content: public TaskExceptionEventArgs(Exception exception)
+    parameters:
+    - id: exception
+      type: System.Exception
+      description: <xref href="System.Exception" data-throw-if-not-resolved="false"></xref> thrown.
+    content.vb: Public Sub New(exception As Exception)
+  overload: Moth.Tasks.TaskExceptionEventArgs.#ctor*
   modifiers.csharp:
   - public
-  - readonly
+  modifiers.vb:
+  - Public
+- uid: Moth.Tasks.TaskExceptionEventArgs.Exception
+  commentId: P:Moth.Tasks.TaskExceptionEventArgs.Exception
+  id: Exception
+  parent: Moth.Tasks.TaskExceptionEventArgs
+  langs:
+  - csharp
+  - vb
+  name: Exception
+  nameWithType: TaskExceptionEventArgs.Exception
+  fullName: Moth.Tasks.TaskExceptionEventArgs.Exception
+  type: Property
+  source:
+    remote:
+      path: Moth.Tasks/TaskExceptionEventArgs.cs
+      branch: workers
+      repo: https://github.com/djmoth/Moth.Tasks
+    id: Exception
+    path: TaskExceptionEventArgs.cs
+    startLine: 21
+  assemblies:
+  - Moth.Tasks
+  namespace: Moth.Tasks
+  summary: "\n<xref href=\"System.Exception\" data-throw-if-not-resolved=\"false\"></xref> thrown.\n"
+  example: []
+  syntax:
+    content: public Exception Exception { get; }
+    parameters: []
+    return:
+      type: System.Exception
+    content.vb: Public ReadOnly Property Exception As Exception
+  overload: Moth.Tasks.TaskExceptionEventArgs.Exception*
+  modifiers.csharp:
+  - public
   - get
   modifiers.vb:
   - Public
   - ReadOnly
-- uid: Moth.Tasks.TaskHandle.WaitForCompletion
-  commentId: M:Moth.Tasks.TaskHandle.WaitForCompletion
-  id: WaitForCompletion
-  parent: Moth.Tasks.TaskHandle
-  langs:
-  - csharp
-  - vb
-  name: WaitForCompletion()
-  nameWithType: TaskHandle.WaitForCompletion()
-  fullName: Moth.Tasks.TaskHandle.WaitForCompletion()
-  type: Method
-  source:
-    remote:
-      path: Moth.Tasks/TaskHandle.cs
-      branch: workers
-      repo: https://github.com/djmoth/Moth.Tasks
-    id: WaitForCompletion
-    path: TaskHandle.cs
-    startLine: 32
-  assemblies:
-  - Moth.Tasks
-  namespace: Moth.Tasks
-  summary: "\nWaits indefinitely until the task has been completed.\n"
-  example: []
-  syntax:
-    content: public readonly void WaitForCompletion()
-    content.vb: Public Sub WaitForCompletion
-  overload: Moth.Tasks.TaskHandle.WaitForCompletion*
-  modifiers.csharp:
-  - public
-  - readonly
-  modifiers.vb:
-  - Public
-- uid: Moth.Tasks.TaskHandle.WaitForCompletion(System.Int32)
-  commentId: M:Moth.Tasks.TaskHandle.WaitForCompletion(System.Int32)
-  id: WaitForCompletion(System.Int32)
-  parent: Moth.Tasks.TaskHandle
-  langs:
-  - csharp
-  - vb
-  name: WaitForCompletion(Int32)
-  nameWithType: TaskHandle.WaitForCompletion(Int32)
-  fullName: Moth.Tasks.TaskHandle.WaitForCompletion(System.Int32)
-  type: Method
-  source:
-    remote:
-      path: Moth.Tasks/TaskHandle.cs
-      branch: workers
-      repo: https://github.com/djmoth/Moth.Tasks
-    id: WaitForCompletion
-    path: TaskHandle.cs
-    startLine: 39
-  assemblies:
-  - Moth.Tasks
-  namespace: Moth.Tasks
-  summary: "\nWaits for a maximum time in milliseconds for the task to complete.\n"
-  example: []
-  syntax:
-    content: public readonly bool WaitForCompletion(int millisceondsTimeout)
-    parameters:
-    - id: millisceondsTimeout
-      type: System.Int32
-      description: The number of milliseconds to wait, or <xref href="System.Threading.Timeout.Infinite" data-throw-if-not-resolved="false"></xref> (-1) to wait indefinitely.
-    return:
-      type: System.Boolean
-      description: <xref uid="langword_csharp_true" name="true" href=""></xref> if the task was completed before timeout; otherwise, <xref uid="langword_csharp_false" name="false" href=""></xref>.
-    content.vb: Public Function WaitForCompletion(millisceondsTimeout As Integer) As Boolean
-  overload: Moth.Tasks.TaskHandle.WaitForCompletion*
-  modifiers.csharp:
-  - public
-  - readonly
-  modifiers.vb:
-  - Public
 references:
 - uid: Moth.Tasks
   commentId: N:Moth.Tasks
   name: Moth.Tasks
   nameWithType: Moth.Tasks
   fullName: Moth.Tasks
-- uid: System.ValueType.Equals(System.Object)
-  commentId: M:System.ValueType.Equals(System.Object)
-  parent: System.ValueType
+- uid: System.Object
+  commentId: T:System.Object
+  parent: System
+  isExternal: true
+  name: Object
+  nameWithType: Object
+  fullName: System.Object
+- uid: System.EventArgs
+  commentId: T:System.EventArgs
+  parent: System
+  isExternal: true
+  name: EventArgs
+  nameWithType: EventArgs
+  fullName: System.EventArgs
+- uid: System.EventArgs.Empty
+  commentId: F:System.EventArgs.Empty
+  parent: System.EventArgs
+  isExternal: true
+  name: Empty
+  nameWithType: EventArgs.Empty
+  fullName: System.EventArgs.Empty
+- uid: System.Object.Equals(System.Object)
+  commentId: M:System.Object.Equals(System.Object)
+  parent: System.Object
   isExternal: true
   name: Equals(Object)
-  nameWithType: ValueType.Equals(Object)
-  fullName: System.ValueType.Equals(System.Object)
+  nameWithType: Object.Equals(Object)
+  fullName: System.Object.Equals(System.Object)
   spec.csharp:
-  - uid: System.ValueType.Equals(System.Object)
+  - uid: System.Object.Equals(System.Object)
     name: Equals
-    nameWithType: ValueType.Equals
-    fullName: System.ValueType.Equals
+    nameWithType: Object.Equals
+    fullName: System.Object.Equals
     isExternal: true
   - name: (
     nameWithType: (
@@ -190,10 +177,10 @@ references:
     nameWithType: )
     fullName: )
   spec.vb:
-  - uid: System.ValueType.Equals(System.Object)
+  - uid: System.Object.Equals(System.Object)
     name: Equals
-    nameWithType: ValueType.Equals
-    fullName: System.ValueType.Equals
+    nameWithType: Object.Equals
+    fullName: System.Object.Equals
     isExternal: true
   - name: (
     nameWithType: (
@@ -203,68 +190,6 @@ references:
     nameWithType: Object
     fullName: System.Object
     isExternal: true
-  - name: )
-    nameWithType: )
-    fullName: )
-- uid: System.ValueType.GetHashCode
-  commentId: M:System.ValueType.GetHashCode
-  parent: System.ValueType
-  isExternal: true
-  name: GetHashCode()
-  nameWithType: ValueType.GetHashCode()
-  fullName: System.ValueType.GetHashCode()
-  spec.csharp:
-  - uid: System.ValueType.GetHashCode
-    name: GetHashCode
-    nameWithType: ValueType.GetHashCode
-    fullName: System.ValueType.GetHashCode
-    isExternal: true
-  - name: (
-    nameWithType: (
-    fullName: (
-  - name: )
-    nameWithType: )
-    fullName: )
-  spec.vb:
-  - uid: System.ValueType.GetHashCode
-    name: GetHashCode
-    nameWithType: ValueType.GetHashCode
-    fullName: System.ValueType.GetHashCode
-    isExternal: true
-  - name: (
-    nameWithType: (
-    fullName: (
-  - name: )
-    nameWithType: )
-    fullName: )
-- uid: System.ValueType.ToString
-  commentId: M:System.ValueType.ToString
-  parent: System.ValueType
-  isExternal: true
-  name: ToString()
-  nameWithType: ValueType.ToString()
-  fullName: System.ValueType.ToString()
-  spec.csharp:
-  - uid: System.ValueType.ToString
-    name: ToString
-    nameWithType: ValueType.ToString
-    fullName: System.ValueType.ToString
-    isExternal: true
-  - name: (
-    nameWithType: (
-    fullName: (
-  - name: )
-    nameWithType: )
-    fullName: )
-  spec.vb:
-  - uid: System.ValueType.ToString
-    name: ToString
-    nameWithType: ValueType.ToString
-    fullName: System.ValueType.ToString
-    isExternal: true
-  - name: (
-    nameWithType: (
-    fullName: (
   - name: )
     nameWithType: )
     fullName: )
@@ -325,6 +250,37 @@ references:
   - name: )
     nameWithType: )
     fullName: )
+- uid: System.Object.GetHashCode
+  commentId: M:System.Object.GetHashCode
+  parent: System.Object
+  isExternal: true
+  name: GetHashCode()
+  nameWithType: Object.GetHashCode()
+  fullName: System.Object.GetHashCode()
+  spec.csharp:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    nameWithType: Object.GetHashCode
+    fullName: System.Object.GetHashCode
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    nameWithType: Object.GetHashCode
+    fullName: System.Object.GetHashCode
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
 - uid: System.Object.GetType
   commentId: M:System.Object.GetType
   parent: System.Object
@@ -349,6 +305,37 @@ references:
     name: GetType
     nameWithType: Object.GetType
     fullName: System.Object.GetType
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System.Object.MemberwiseClone
+  commentId: M:System.Object.MemberwiseClone
+  parent: System.Object
+  isExternal: true
+  name: MemberwiseClone()
+  nameWithType: Object.MemberwiseClone()
+  fullName: System.Object.MemberwiseClone()
+  spec.csharp:
+  - uid: System.Object.MemberwiseClone
+    name: MemberwiseClone
+    nameWithType: Object.MemberwiseClone
+    fullName: System.Object.MemberwiseClone
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: System.Object.MemberwiseClone
+    name: MemberwiseClone
+    nameWithType: Object.MemberwiseClone
+    fullName: System.Object.MemberwiseClone
     isExternal: true
   - name: (
     nameWithType: (
@@ -413,6 +400,37 @@ references:
   - name: )
     nameWithType: )
     fullName: )
+- uid: System.Object.ToString
+  commentId: M:System.Object.ToString
+  parent: System.Object
+  isExternal: true
+  name: ToString()
+  nameWithType: Object.ToString()
+  fullName: System.Object.ToString()
+  spec.csharp:
+  - uid: System.Object.ToString
+    name: ToString
+    nameWithType: Object.ToString
+    fullName: System.Object.ToString
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: System.Object.ToString
+    name: ToString
+    nameWithType: Object.ToString
+    fullName: System.Object.ToString
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
 - uid: System.Object.Moth.Tasks.Tests.TestUtilities.GetPrivateValue``1(System.String)
   commentId: M:Moth.Tasks.Tests.TestUtilities.GetPrivateValue``1(System.Object,System.String)
   parent: Moth.Tasks.Tests.TestUtilities
@@ -455,20 +473,12 @@ references:
   - name: )
     nameWithType: )
     fullName: )
-- uid: System.ValueType
-  commentId: T:System.ValueType
-  parent: System
+- uid: System
+  commentId: N:System
   isExternal: true
-  name: ValueType
-  nameWithType: ValueType
-  fullName: System.ValueType
-- uid: System.Object
-  commentId: T:System.Object
-  parent: System
-  isExternal: true
-  name: Object
-  nameWithType: Object
-  fullName: System.Object
+  name: System
+  nameWithType: System
+  fullName: System
 - uid: Moth.Tasks.Tests.TestUtilities.GetPrivateValue``1(System.Object,System.String)
   commentId: M:Moth.Tasks.Tests.TestUtilities.GetPrivateValue``1(System.Object,System.String)
   isExternal: true
@@ -532,41 +542,30 @@ references:
   name: TestUtilities
   nameWithType: TestUtilities
   fullName: Moth.Tasks.Tests.TestUtilities
-- uid: System
-  commentId: N:System
-  isExternal: true
-  name: System
-  nameWithType: System
-  fullName: System
 - uid: Moth.Tasks.Tests
   commentId: N:Moth.Tasks.Tests
   name: Moth.Tasks.Tests
   nameWithType: Moth.Tasks.Tests
   fullName: Moth.Tasks.Tests
-- uid: Moth.Tasks.TaskHandle.IsComplete*
-  commentId: Overload:Moth.Tasks.TaskHandle.IsComplete
-  name: IsComplete
-  nameWithType: TaskHandle.IsComplete
-  fullName: Moth.Tasks.TaskHandle.IsComplete
-- uid: System.Boolean
-  commentId: T:System.Boolean
+- uid: Moth.Tasks.TaskExceptionEventArgs
+  commentId: T:Moth.Tasks.TaskExceptionEventArgs
+  name: TaskExceptionEventArgs
+  nameWithType: TaskExceptionEventArgs
+  fullName: Moth.Tasks.TaskExceptionEventArgs
+- uid: System.Exception
+  commentId: T:System.Exception
   parent: System
   isExternal: true
-  name: Boolean
-  nameWithType: Boolean
-  fullName: System.Boolean
-- uid: Moth.Tasks.TaskHandle.WaitForCompletion*
-  commentId: Overload:Moth.Tasks.TaskHandle.WaitForCompletion
-  name: WaitForCompletion
-  nameWithType: TaskHandle.WaitForCompletion
-  fullName: Moth.Tasks.TaskHandle.WaitForCompletion
-- uid: System.Threading.Timeout.Infinite
-  commentId: F:System.Threading.Timeout.Infinite
-  isExternal: true
-- uid: System.Int32
-  commentId: T:System.Int32
-  parent: System
-  isExternal: true
-  name: Int32
-  nameWithType: Int32
-  fullName: System.Int32
+  name: Exception
+  nameWithType: Exception
+  fullName: System.Exception
+- uid: Moth.Tasks.TaskExceptionEventArgs.#ctor*
+  commentId: Overload:Moth.Tasks.TaskExceptionEventArgs.#ctor
+  name: TaskExceptionEventArgs
+  nameWithType: TaskExceptionEventArgs.TaskExceptionEventArgs
+  fullName: Moth.Tasks.TaskExceptionEventArgs.TaskExceptionEventArgs
+- uid: Moth.Tasks.TaskExceptionEventArgs.Exception*
+  commentId: Overload:Moth.Tasks.TaskExceptionEventArgs.Exception
+  name: Exception
+  nameWithType: TaskExceptionEventArgs.Exception
+  fullName: Moth.Tasks.TaskExceptionEventArgs.Exception

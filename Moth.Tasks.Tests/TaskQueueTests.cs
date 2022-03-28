@@ -54,7 +54,7 @@ namespace Moth.Tasks.Tests
 
             AssertTaskDataLength (2);
 
-            queue.RunNextTask ();
+            queue.TryRunNextTask ();
 
             AssertFirstTaskIndex (1);
 
@@ -67,17 +67,15 @@ namespace Moth.Tasks.Tests
 
             AssertTaskDataLength (4);
 
-            T GetPrivateValue<T> (string fieldName) => (T)typeof (TaskQueue).GetField (fieldName, BindingFlags.NonPublic | BindingFlags.Instance).GetValue (queue);
-
             void AssertTaskDataLength (int expectedValue)
             {
-                int queue_taskData_Length = GetPrivateValue<object[]> ("taskData").Length;
+                int queue_taskData_Length = queue.GetPrivateValue<object[]> ("taskData").Length;
                 Assert.AreEqual (expectedValue, queue_taskData_Length);
             }
 
             void AssertFirstTaskIndex (int expectedValue)
             {
-                int queue_firstTask = GetPrivateValue<int> ("firstTask");
+                int queue_firstTask = queue.GetPrivateValue<int> ("firstTask");
                 Assert.AreEqual (expectedValue, queue_firstTask);
             }
         }
@@ -124,18 +122,16 @@ namespace Moth.Tasks.Tests
 
             void AssertNextTaskResult ()
             {
-                queue.RunNextTask ();
+                queue.TryRunNextTask ();
 
                 int expectedResult = nextTaskResult++;
 
                 Assert.AreEqual (expectedResult, results.Dequeue ().Value);
             }
 
-            T GetPrivateValue<T> (string fieldName) => (T)typeof (TaskQueue).GetField (fieldName, BindingFlags.NonPublic | BindingFlags.Instance).GetValue (queue);
-
             void AssertTestFirstTaskIndex (int expectedValue)
             {
-                int queue_firstTask = GetPrivateValue<int> ("firstTask");
+                int queue_firstTask = queue.GetPrivateValue<int> ("firstTask");
                 Assert.AreEqual (expectedValue, queue_firstTask);
             }
         }
@@ -162,7 +158,7 @@ namespace Moth.Tasks.Tests
 
             Assert.AreEqual (queue.Count, 1);
 
-            queue.RunNextTask (out Exception ex);
+            queue.TryRunNextTask (out Exception ex);
 
             Assert.AreEqual (queue.Count, 0);
 
@@ -184,7 +180,7 @@ namespace Moth.Tasks.Tests
 
             Assert.AreEqual (queue.Count, 1);
 
-            queue.RunNextTask (out Exception ex);
+            queue.TryRunNextTask (out Exception ex);
 
             Assert.AreEqual (queue.Count, 0);
 
@@ -206,7 +202,7 @@ namespace Moth.Tasks.Tests
 
             Assert.AreEqual (queue.Count, 1);
 
-            queue.RunNextTask (out Exception ex);
+            queue.TryRunNextTask (out Exception ex);
 
             Assert.AreEqual (queue.Count, 0);
 
@@ -228,7 +224,7 @@ namespace Moth.Tasks.Tests
 
             Profiler profiler = new Profiler ();
 
-            queue.RunNextTask (profiler, out Exception ex);
+            queue.TryRunNextTask (out Exception ex, profiler);
 
             AssertTaskResult (ex, value, result);
 
@@ -253,14 +249,14 @@ namespace Moth.Tasks.Tests
 
             queue.Enqueue (new PutValueAndDisposeTask (runValue, runResult, disposeValue, disposeResult));
 
-            queue.RunNextTask (out Exception ex);
+            queue.TryRunNextTask (out Exception ex);
 
             AssertTaskResult (ex, runValue, runResult);
             AssertTaskResult (ex, disposeValue, disposeResult);
         }
 
         /// <summary>
-        /// Enqueues and runs a task which throws an <see cref="InvalidOperationException"/> in its <see cref="ITask.Run"/> method. Asserts that the exception is returned from <see cref="TaskQueue.RunNextTask(out Exception)"/>.
+        /// Enqueues and runs a task which throws an <see cref="InvalidOperationException"/> in its <see cref="ITask.Run"/> method. Asserts that the exception is returned from <see cref="TaskQueue.TryRunNextTask(out Exception)"/>.
         /// </summary>
         [Test]
         public void EnqueueAndTryRun_Exception ()
@@ -269,7 +265,7 @@ namespace Moth.Tasks.Tests
 
             queue.Enqueue (() => throw new InvalidOperationException ());
 
-            queue.RunNextTask (out Exception ex);
+            queue.TryRunNextTask (out Exception ex);
 
             Assert.IsInstanceOf<InvalidOperationException> (ex);
         }
@@ -286,7 +282,7 @@ namespace Moth.Tasks.Tests
 
             Profiler profiler = new Profiler ();
 
-            queue.RunNextTask (profiler, out Exception ex);
+            queue.TryRunNextTask (out Exception ex, profiler);
 
             Assert.IsInstanceOf<InvalidOperationException> (ex);
 
@@ -329,7 +325,7 @@ namespace Moth.Tasks.Tests
             {
                 workerReadyEvent.Set ();
 
-                queue.RunNextTask ();
+                queue.TryRunNextTask ();
             });
 
             worker.Start ();
@@ -366,7 +362,7 @@ namespace Moth.Tasks.Tests
             {
                 workerReadyEvent.Set ();
 
-                queue.RunNextTask ();
+                queue.TryRunNextTask ();
             });
 
             worker.Start ();
@@ -390,24 +386,24 @@ namespace Moth.Tasks.Tests
 
             queue.Enqueue (new Task (), out TaskHandle handle);
 
-            queue.RunNextTask ();
+            queue.TryRunNextTask ();
 
             handle.WaitForCompletion ();
         }
 
         /// <summary>
-        /// Asserts that <see cref="TaskQueue.RunNextTask"/> will return <see langword="false"/> when the <see cref="TaskQueue"/> is empty.
+        /// Asserts that <see cref="TaskQueue.TryRunNextTask"/> will return <see langword="false"/> when the <see cref="TaskQueue"/> is empty.
         /// </summary>
         [Test]
         public void TryRun_ReturnFalse ()
         {
             TaskQueue queue = new TaskQueue ();
 
-            Assert.IsFalse (queue.RunNextTask ());
+            Assert.IsFalse (queue.TryRunNextTask ());
         }
 
         /// <summary>
-        /// Asserts that <see cref="TaskQueue.RunNextTask"/> will return <see langword="true"/> when the <see cref="TaskQueue"/> has a task enqueued and ready to be ran.
+        /// Asserts that <see cref="TaskQueue.TryRunNextTask"/> will return <see langword="true"/> when the <see cref="TaskQueue"/> has a task enqueued and ready to be ran.
         /// </summary>
         [Test]
         public void TryRun_ReturnTrue ()
@@ -416,7 +412,7 @@ namespace Moth.Tasks.Tests
 
             queue.Enqueue (new Task ());
 
-            Assert.IsTrue (queue.RunNextTask ());
+            Assert.IsTrue (queue.TryRunNextTask ());
         }
 
         /// <summary>

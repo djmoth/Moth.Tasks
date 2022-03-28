@@ -1,4 +1,4 @@
-﻿namespace Moth.Tasks
+namespace Moth.Tasks
 {
     using System;
     using System.Collections.Generic;
@@ -16,6 +16,7 @@
         private readonly TaskCache taskCache = new TaskCache ();
         private readonly Dictionary<int, ManualResetEventSlim> taskHandles = new Dictionary<int, ManualResetEventSlim> ();
         private readonly Queue<int> tasks;
+        private readonly ManualResetEventSlim tasksEnqueuedEvent = new ManualResetEventSlim (); // Must be explicitly set by callers of EnqueueImpl
         private object[] taskData;
         private int firstTask;
         private int lastTaskEnd;
@@ -42,10 +43,10 @@
         /// <summary>
         /// Finalizes an instance of the <see cref="TaskQueue"/> class. Also disposes of tasks implementing <see cref="IDisposable.Dispose"/>.
         /// </summary>
-        ~TaskQueue () => Clear ();
+        ~TaskQueue () => Dispose (false);
 
         /// <summary>
-        /// The number of tasks enqueued.
+        /// The number of tasks currently enqueued.
         /// </summary>
         public int Count
         {
@@ -70,6 +71,8 @@
             {
                 EnqueueImpl (task);
             }
+
+            tasksEnqueuedEvent.Set (); // Signal potentially waiting threads that tasks are ready to be executed
         }
 
         /// <summary>
@@ -102,47 +105,56 @@
                     EnqueueImpl (new TaskWithHandle<T> (this, task, handleID));
                 }
             }
+
+            tasksEnqueuedEvent.Set (); // Signal potentially waiting threads that tasks are ready to be executed
         }
 
         /// <summary>
-        /// Try to run the next task in the queue, if present.
+        /// Blocks until a task is ready in the queue, then runs it.
         /// </summary>
-        /// <returns><see langword="true"/> if a task was run, <see langword="false"/> if the <see cref="TaskQueue"/> is empty.</returns>
-        /// <remarks>
-        /// Please note that the return value does not indicate if a task was successful. The method will return <see langword="true"/> if a task was ready in the queue, regardless if an exception occured.
-        /// </remarks>
-        public bool RunNextTask () => RunNextTask (null, out _);
+        /// <param name="profiler"><see cref="IProfiler"/> to profile the run-time of the task.</param>
+        /// <param name="token">A <see cref="CancellationToken"/> to observe when waiting for a task. Does not cancel actual task execution.</param>
+        public void RunNextTask (IProfiler profiler = null, CancellationToken token = default) => RunNextTask (out _, profiler, token);
 
         /// <summary>
-        /// Try to run the next task in the queue, if present. Also performs profiling on the task through an <see cref="IProfiler"/>.
+        /// Blocks until a task is ready in the queue, then runs it.
+        /// </summary>
+        /// <param name="exception"><see cref="Exception"/> thrown if task failed. Is <see langword="null"/> if task was run successfully.</param>
+        /// <param name="profiler"><see cref="IProfiler"/> to profile the run-time of the task.</param>
+        /// <param name="token">A <see cref="CancellationToken"/> to observe when waiting for a task. Does not cancel actual task execution.</param>
+        public void RunNextTask (out Exception exception, IProfiler profiler = null, CancellationToken token = default)
+        {
+            tasksEnqueuedEvent.Wait (token);
+
+            if (token.IsCancellationRequested)
+            {
+                exception = null;
+                return;
+            }
+
+            TryRunNextTask (out exception, profiler);
+        }
+
+        /// <summary>
+        /// Tries to run the next task in the queue, if present. May also perform profiling on the task through an <see cref="IProfiler"/>.
         /// </summary>
         /// <param name="profiler"><see cref="IProfiler"/> to profile the run-time of the task.</param>
         /// <returns><see langword="true"/> if a task was run, <see langword="false"/> if the <see cref="TaskQueue"/> is empty.</returns>
         /// <remarks>
-        /// Please note that the return value does not indicate if a task was successful. The method will return <see langword="true"/> if a task was ready in the queue, regardless if an exception occured.
+        /// Please note that the return value does not indicate if a task was successful. The method will return <see langword="true"/> if a task was ready in the queue, regardless of whether an exception occured.
         /// </remarks>
-        public bool RunNextTask (IProfiler profiler) => RunNextTask (profiler, out _);
+        public bool TryRunNextTask (IProfiler profiler = null) => TryRunNextTask (out _, profiler);
 
         /// <summary>
-        /// Try to run the next task in the queue, if present. Also provides an <see cref="Exception"/> thrown by the task in case it fails.
+        /// Tries to run the next task in the queue, if present. Provides an <see cref="Exception"/> thrown by the task, in case it fails. May also perform profiling on the task through an <see cref="IProfiler"/>.
         /// </summary>
         /// <param name="exception"><see cref="Exception"/> thrown if task failed. Is <see langword="null"/> if task was run successfully.</param>
-        /// <returns><see langword="true"/> if a task was run, <see langword="false"/> if the <see cref="TaskQueue"/> is empty.</returns>
-        /// <remarks>
-        /// Please note that the return value does not indicate if a task was successful. The method will return <see langword="true"/> if a task was ready in the queue, regardless if an exception occured.
-        /// </remarks>
-        public bool RunNextTask (out Exception exception) => RunNextTask (null, out exception);
-
-        /// <summary>
-        /// Try to run the next task in the queue, if present. Also performs profiling on the task through an <see cref="IProfiler"/>, and provides an <see cref="Exception"/> thrown by the task in case it fails.
-        /// </summary>
         /// <param name="profiler"><see cref="IProfiler"/> to profile the run-time of the task.</param>
-        /// <param name="exception"><see cref="Exception"/> thrown if task failed. Is <see langword="null"/> if task was run successfully.</param>
         /// <returns><see langword="true"/> if a task was run, <see langword="false"/> if the <see cref="TaskQueue"/> is empty.</returns>
         /// <remarks>
-        /// Please note that the return value does not indicate if a task was successful. The method will return <see langword="true"/> if a task was ready in the queue, regardless if an exception occured.
+        /// Please note that the return value does not indicate if a task was successful. The method will return <see langword="true"/> if a task was ready in the queue, regardless of whether an exception occured.
         /// </remarks>
-        public bool RunNextTask (IProfiler profiler, out Exception exception)
+        public bool TryRunNextTask (out Exception exception, IProfiler profiler = null)
         {
             exception = null;
 
@@ -159,6 +171,11 @@
             try
             {
                 int id = tasks.Dequeue ();
+
+                if (tasks.Count == 0)
+                {
+                    tasksEnqueuedEvent.Reset (); // All tasks have fetched, and as so the event can be reset.
+                }
 
                 task = taskCache.GetTask (id);
             } catch // Internal error
@@ -250,11 +267,25 @@
         {
             lock (taskLock)
             {
-                Clear ();
+                Dispose (true);
                 GC.SuppressFinalize (this);
-
-                disposed = true;
             }
+        }
+
+        /// <summary>
+        /// Disposes all tasks which implements <see cref="IDisposable"/>.
+        /// </summary>
+        /// <remarks>
+        /// As the method iterates through all tasks in the queue and calls <see cref="IDisposable.Dispose"/> on tasks, it can hang for an unknown amount of time. If an exception is thrown in an <see cref="IDisposable.Dispose"/> call, the method continues on with disposing the remaining tasks.
+        /// </remarks>
+        /// <param name="disposing"><see langword="true"/> if called from <see cref="Dispose ()"/>, <see langword="false"/> if called from finalizer.</param>
+        protected virtual void Dispose (bool disposing)
+        {
+            if (disposed)
+                return;
+
+            Clear ();
+            disposed = true;
         }
 
         /// <summary>
@@ -361,6 +392,10 @@
 
                 lastTaskEnd += taskInfo.DataIndices;
             }
+
+            /* tasksEnqueuedEvent.Set () could be called here as this is the shared Enqueue implementation, but taskLock is still locked at this point:
+             * As so, it is better to wait and let it be called explicitly by callers of EnqueueImpl
+             */
         }
 
         private T GetNextTask<T> (TaskInfo task) where T : struct, ITask
