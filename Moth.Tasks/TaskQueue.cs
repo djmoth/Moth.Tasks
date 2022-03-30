@@ -10,7 +10,7 @@
     /// <summary>
     /// A queue of tasks, which can be run in FIFO order.
     /// </summary>
-    public unsafe class TaskQueue : IDisposable
+    public unsafe sealed partial class TaskQueue : IDisposable
     {
         private readonly object taskLock = new object ();
         private readonly TaskCache taskCache = new TaskCache ();
@@ -57,40 +57,6 @@
                     return tasks.Count;
                 }
             }
-        }
-
-        /// <summary>
-        /// Enqueue an action to be run later.
-        /// </summary>
-        /// <param name="action">Action to enqueue.</param>
-        /// <exception cref="ArgumentNullException"><paramref name="action"/> is <see langword="null"/>.</exception>
-        /// <exception cref="ObjectDisposedException">The <see cref="TaskQueue"/> has been disposed.</exception>
-        public void Enqueue (Action action)
-        {
-            if (action == null)
-            {
-                throw new ArgumentNullException (nameof (action));
-            }
-
-            Enqueue (new DelegateTask (action));
-        }
-
-        /// <summary>
-        /// Enqueue an action to be run later with an argument.
-        /// </summary>
-        /// <typeparam name="T">The type of the parameter that <paramref name="action"/> encapsulates.</typeparam>
-        /// <param name="action">Action to enqueue.</param>
-        /// <param name="arg">Argument to run <paramref name="action"/> with.</param>
-        /// <exception cref="ArgumentNullException"><paramref name="action"/> is <see langword="null"/>.</exception>
-        /// <exception cref="ObjectDisposedException">The <see cref="TaskQueue"/> has been disposed.</exception>
-        public void Enqueue<T> (Action<T> action, T arg)
-        {
-            if (action == null)
-            {
-                throw new ArgumentNullException (nameof (action));
-            }
-
-            Enqueue (new DelegateTask<T> (action, arg));
         }
 
         /// <summary>
