@@ -25,5 +25,7 @@
     name: TaskQueueTests
   - uid: Moth.Tasks.Tests.TestUtilities
     name: TestUtilities
+  - uid: Moth.Tasks.Tests.WorkerGroupTests
+    name: WorkerGroupTests
   - uid: Moth.Tasks.Tests.WorkerTests
     name: WorkerTests

@@ -1,33 +1,33 @@
 ### YamlMime:ManagedReference
 items:
-- uid: Moth.Tasks.Tests.WorkerTests
-  commentId: T:Moth.Tasks.Tests.WorkerTests
-  id: WorkerTests
+- uid: Moth.Tasks.Tests.WorkerGroupTests
+  commentId: T:Moth.Tasks.Tests.WorkerGroupTests
+  id: WorkerGroupTests
   parent: Moth.Tasks.Tests
   children:
-  - Moth.Tasks.Tests.WorkerTests.Disposable
-  - Moth.Tasks.Tests.WorkerTests.Work
+  - Moth.Tasks.Tests.WorkerGroupTests.Disposable
+  - Moth.Tasks.Tests.WorkerGroupTests.Work
   langs:
   - csharp
   - vb
-  name: WorkerTests
-  nameWithType: WorkerTests
-  fullName: Moth.Tasks.Tests.WorkerTests
+  name: WorkerGroupTests
+  nameWithType: WorkerGroupTests
+  fullName: Moth.Tasks.Tests.WorkerGroupTests
   type: Class
   source:
     remote:
-      path: Moth.Tasks.Tests/WorkerTests.cs
+      path: Moth.Tasks.Tests/WorkerGroupTests.cs
       branch: workers
       repo: https://github.com/djmoth/Moth.Tasks
-    id: WorkerTests
-    path: ../Moth.Tasks.Tests/WorkerTests.cs
+    id: WorkerGroupTests
+    path: ../Moth.Tasks.Tests/WorkerGroupTests.cs
     startLine: 8
   assemblies:
   - Moth.Tasks.Tests
   namespace: Moth.Tasks.Tests
   syntax:
-    content: public class WorkerTests
-    content.vb: Public Class WorkerTests
+    content: public class WorkerGroupTests
+    content.vb: Public Class WorkerGroupTests
   inheritance:
   - System.Object
   inheritedMembers:
@@ -46,24 +46,24 @@ items:
   modifiers.vb:
   - Public
   - Class
-- uid: Moth.Tasks.Tests.WorkerTests.Work
-  commentId: M:Moth.Tasks.Tests.WorkerTests.Work
+- uid: Moth.Tasks.Tests.WorkerGroupTests.Work
+  commentId: M:Moth.Tasks.Tests.WorkerGroupTests.Work
   id: Work
-  parent: Moth.Tasks.Tests.WorkerTests
+  parent: Moth.Tasks.Tests.WorkerGroupTests
   langs:
   - csharp
   - vb
   name: Work()
-  nameWithType: WorkerTests.Work()
-  fullName: Moth.Tasks.Tests.WorkerTests.Work()
+  nameWithType: WorkerGroupTests.Work()
+  fullName: Moth.Tasks.Tests.WorkerGroupTests.Work()
   type: Method
   source:
     remote:
-      path: Moth.Tasks.Tests/WorkerTests.cs
+      path: Moth.Tasks.Tests/WorkerGroupTests.cs
       branch: workers
       repo: https://github.com/djmoth/Moth.Tasks
     id: Work
-    path: ../Moth.Tasks.Tests/WorkerTests.cs
+    path: ../Moth.Tasks.Tests/WorkerGroupTests.cs
     startLine: 10
   assemblies:
   - Moth.Tasks.Tests
@@ -72,48 +72,39 @@ items:
     content: >-
       [Test]
 
-      [MaxTime(100)]
-
       public void Work()
     content.vb: >-
       <Test>
 
-      <MaxTime(100)>
-
       Public Sub Work
-  overload: Moth.Tasks.Tests.WorkerTests.Work*
+  overload: Moth.Tasks.Tests.WorkerGroupTests.Work*
   attributes:
   - type: NUnit.Framework.TestAttribute
     ctor: NUnit.Framework.TestAttribute.#ctor
     arguments: []
-  - type: NUnit.Framework.MaxTimeAttribute
-    ctor: NUnit.Framework.MaxTimeAttribute.#ctor(System.Int32)
-    arguments:
-    - type: System.Int32
-      value: 100
   modifiers.csharp:
   - public
   modifiers.vb:
   - Public
-- uid: Moth.Tasks.Tests.WorkerTests.Disposable
-  commentId: M:Moth.Tasks.Tests.WorkerTests.Disposable
+- uid: Moth.Tasks.Tests.WorkerGroupTests.Disposable
+  commentId: M:Moth.Tasks.Tests.WorkerGroupTests.Disposable
   id: Disposable
-  parent: Moth.Tasks.Tests.WorkerTests
+  parent: Moth.Tasks.Tests.WorkerGroupTests
   langs:
   - csharp
   - vb
   name: Disposable()
-  nameWithType: WorkerTests.Disposable()
-  fullName: Moth.Tasks.Tests.WorkerTests.Disposable()
+  nameWithType: WorkerGroupTests.Disposable()
+  fullName: Moth.Tasks.Tests.WorkerGroupTests.Disposable()
   type: Method
   source:
     remote:
-      path: Moth.Tasks.Tests/WorkerTests.cs
+      path: Moth.Tasks.Tests/WorkerGroupTests.cs
       branch: workers
       repo: https://github.com/djmoth/Moth.Tasks
     id: Disposable
-    path: ../Moth.Tasks.Tests/WorkerTests.cs
-    startLine: 27
+    path: ../Moth.Tasks.Tests/WorkerGroupTests.cs
+    startLine: 42
   assemblies:
   - Moth.Tasks.Tests
   namespace: Moth.Tasks.Tests
@@ -126,7 +117,7 @@ items:
       <Test>
 
       Public Sub Disposable
-  overload: Moth.Tasks.Tests.WorkerTests.Disposable*
+  overload: Moth.Tasks.Tests.WorkerGroupTests.Disposable*
   attributes:
   - type: NUnit.Framework.TestAttribute
     ctor: NUnit.Framework.TestAttribute.#ctor
@@ -538,13 +529,13 @@ references:
   name: TestUtilities
   nameWithType: TestUtilities
   fullName: Moth.Tasks.Tests.TestUtilities
-- uid: Moth.Tasks.Tests.WorkerTests.Work*
-  commentId: Overload:Moth.Tasks.Tests.WorkerTests.Work
+- uid: Moth.Tasks.Tests.WorkerGroupTests.Work*
+  commentId: Overload:Moth.Tasks.Tests.WorkerGroupTests.Work
   name: Work
-  nameWithType: WorkerTests.Work
-  fullName: Moth.Tasks.Tests.WorkerTests.Work
-- uid: Moth.Tasks.Tests.WorkerTests.Disposable*
-  commentId: Overload:Moth.Tasks.Tests.WorkerTests.Disposable
+  nameWithType: WorkerGroupTests.Work
+  fullName: Moth.Tasks.Tests.WorkerGroupTests.Work
+- uid: Moth.Tasks.Tests.WorkerGroupTests.Disposable*
+  commentId: Overload:Moth.Tasks.Tests.WorkerGroupTests.Disposable
   name: Disposable
-  nameWithType: WorkerTests.Disposable
-  fullName: Moth.Tasks.Tests.WorkerTests.Disposable
+  nameWithType: WorkerGroupTests.Disposable
+  fullName: Moth.Tasks.Tests.WorkerGroupTests.Disposable

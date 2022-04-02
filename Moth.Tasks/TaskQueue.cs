@@ -10,7 +10,7 @@
     /// <summary>
     /// A queue of tasks, which can be run in FIFO order.
     /// </summary>
-    public unsafe sealed partial class TaskQueue : IDisposable
+    public unsafe partial class TaskQueue : IDisposable
     {
         private readonly object taskLock = new object ();
         private readonly TaskCache taskCache = new TaskCache ();

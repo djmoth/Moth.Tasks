@@ -8,7 +8,7 @@
     using Validation;
 
     /// <summary>
-    /// Encapsulates a thread running in the background, executing tasks from a <see cref="TaskQueue"/>.
+    /// Encapsulates a <see cref="Thread"/> running in the background, executing tasks from a <see cref="TaskQueue"/>.
     /// </summary>
     public class Worker : IDisposable
     {
@@ -26,10 +26,36 @@
         /// <param name="taskQueue">The <see cref="TaskQueue"/> that the <see cref="Worker"/> will execute tasks from.</param>
         /// <param name="disposeTaskQueue">Determines whether the <see cref="TaskQueue"/> supplied with <paramref name="taskQueue"/> is disposed when <see cref="Dispose ()"/> is called.</param>
         /// <param name="isBackground">Defines the <see cref="Thread.IsBackground"/> property of the internal thread.</param>
+        /// <param name="profilerProvider">A <see cref="ProfilerProvider"/> which may provide an <see cref="IProfiler"/> for the <see cref="Worker"/>. May be <see langword="null"/>.</param>
         /// <param name="exceptionEventHandler">Method invoked if a task throws an exception. May be <see langword="null"/>.</param>
-        /// <param name="profiler"><see cref="IProfiler"/> used to profile tasks. May be <see langword="null"/>.</param>
         /// <exception cref="ArgumentNullException"><paramref name="taskQueue"/> cannot be null.</exception>
-        public Worker (TaskQueue taskQueue, bool disposeTaskQueue = false, bool isBackground = true, EventHandler<TaskExceptionEventArgs> exceptionEventHandler = null, IProfiler profiler = null)
+        public Worker (
+            TaskQueue taskQueue,
+            bool disposeTaskQueue,
+            bool isBackground,
+            ProfilerProvider profilerProvider,
+            EventHandler<TaskExceptionEventArgs> exceptionEventHandler = null)
+
+            : this (taskQueue, disposeTaskQueue, isBackground, (IProfiler)null, exceptionEventHandler)
+        {
+            profiler = profilerProvider?.Invoke (this);
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="Worker"/> class.
+        /// </summary>
+        /// <param name="taskQueue">The <see cref="TaskQueue"/> that the <see cref="Worker"/> will execute tasks from.</param>
+        /// <param name="disposeTaskQueue">Determines whether the <see cref="TaskQueue"/> supplied with <paramref name="taskQueue"/> is disposed when <see cref="Dispose ()"/> is called.</param>
+        /// <param name="isBackground">Defines the <see cref="Thread.IsBackground"/> property of the internal thread.</param>
+        /// <param name="profiler"><see cref="IProfiler"/> used to profile tasks. May be <see langword="null"/>.</param>
+        /// <param name="exceptionEventHandler">Method invoked if a task throws an exception. May be <see langword="null"/>.</param>
+        /// <exception cref="ArgumentNullException"><paramref name="taskQueue"/> cannot be null.</exception>
+        public Worker (
+            TaskQueue taskQueue,
+            bool disposeTaskQueue,
+            bool isBackground,
+            IProfiler profiler = null,
+            EventHandler<TaskExceptionEventArgs> exceptionEventHandler = null)
         {
             tasks = taskQueue ?? throw new ArgumentNullException (nameof (taskQueue), $"{nameof (taskQueue)} cannot be null.");
             disposeTasks = disposeTaskQueue;

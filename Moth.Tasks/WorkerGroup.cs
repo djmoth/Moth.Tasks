@@ -9,10 +9,16 @@
     /// <summary>
     /// A group of <see cref="Worker"/>s, executing tasks from a shared <see cref="TaskQueue"/>.
     /// </summary>
+    /// <remarks>
+    /// This class is thread-safe.
+    /// </remarks>
     public class WorkerGroup : IDisposable
     {
-        private readonly Worker[] workers;
         private readonly bool disposeTasks;
+        private readonly bool isBackground;
+        private readonly EventHandler<TaskExceptionEventArgs> exceptionEventHandler;
+        private readonly ProfilerProvider profilerProvider;
+        private Worker[] workers;
         private bool disposed;
 
         /// <summary>
@@ -21,12 +27,12 @@
         /// <param name="workerCount">Number of workers. Must be greater than zero.</param>
         /// <param name="taskQueue">The <see cref="TaskQueue"/> of which the workers will be executing tasks from.</param>
         /// <param name="disposeTaskQueue">Determines whether the <see cref="TaskQueue"/> supplied with <paramref name="taskQueue"/> is disposed when <see cref="Dispose ()"/> is called.</param>
-        /// <param name="isBackground">Defines the <see cref="Thread.IsBackground"/> property of the internal thread of each worker.</param>
+        /// <param name="isBackground">Defines the <see cref="Thread.IsBackground"/> property of the internal thread of each <see cref="Worker"/>.</param>
         /// <param name="exceptionEventHandler">Method invoked if a task throws an exception. May be <see langword="null"/>.</param>
-        /// <param name="profiler"><see cref="IProfiler"/> used to profile tasks. May be <see langword="null"/>.</param>
+        /// <param name="profilerProvider">A <see cref="ProfilerProvider"/> which may provide an <see cref="IProfiler"/> each <see cref="Worker"/>. May be <see langword="null"/>.</param>
         /// <exception cref="ArgumentOutOfRangeException"><paramref name="workerCount"/> must be greater than zero.</exception>
         /// <exception cref="ArgumentNullException"><paramref name="taskQueue"/> cannot be null.</exception>
-        public WorkerGroup (int workerCount, TaskQueue taskQueue, bool disposeTaskQueue = false, bool isBackground = true, EventHandler<TaskExceptionEventArgs> exceptionEventHandler = null, IProfiler profiler = null)
+        public WorkerGroup (int workerCount, TaskQueue taskQueue, bool disposeTaskQueue = false, bool isBackground = true, EventHandler<TaskExceptionEventArgs> exceptionEventHandler = null, ProfilerProvider profilerProvider = null)
         {
             Requires.Range (workerCount > 0, nameof (workerCount), $"{nameof (workerCount)} must be greater than zero.");
 
@@ -40,9 +46,12 @@
 
             for (int i = 0; i < workerCount; i++)
             {
-                workers[i] = new Worker (taskQueue, false, isBackground, exceptionEventHandler, profiler);
+                workers[i] = new Worker (taskQueue, false, isBackground, profilerProvider, exceptionEventHandler);
                 GC.SuppressFinalize (workers[i]);
             }
+
+            this.isBackground = isBackground;
+            this.profilerProvider = profilerProvider;
         }
 
         /// <summary>
@@ -54,6 +63,51 @@
         /// The <see cref="TaskQueue"/> of which the workers are executing tasks from.
         /// </summary>
         public TaskQueue Tasks { get; }
+
+        /// <summary>
+        /// Get or set the number of <see cref="Worker"/>s in this <see cref="WorkerGroup"/>. Must be greater than zero.
+        /// </summary>
+        /// <remarks>
+        /// The <see cref="ProfilerProvider"/> and <see cref="EventHandler{TaskExceptionEventArgs}"/> provided in the <see cref="WorkerGroup"/> constructor will be used to initialize any new <see cref="Worker"/>s.
+        /// </remarks>
+        public int WorkerCount
+        {
+            get
+            {
+                lock (workers)
+                    return workers.Length;
+            }
+
+            set
+            {
+                lock (workers)
+                {
+                    if (disposed)
+                        throw new ObjectDisposedException (nameof (WorkerGroup));
+
+                    if (value == workers.Length)
+                        return;
+
+                    Requires.Range (value > 0, nameof (value), $"{nameof (value)} must be greater than zero.");
+
+                    int oldWorkerCount = workers.Length;
+
+                    Array.Resize (ref workers, value);
+
+                    // Dispose of the excess workers, if new value is less than the old worker count.
+                    for (int i = value; i < oldWorkerCount; i++)
+                    {
+                        workers[i].Dispose ();
+                    }
+
+                    // Initialize new workers, if new value is greater than the old worker count
+                    for (int i = oldWorkerCount; i < value; i++)
+                    {
+                        workers[i] = new Worker (Tasks, false, isBackground, profilerProvider, exceptionEventHandler);
+                    }
+                }
+            }
+        }
 
         /// <summary>
         /// Signals all workers to shutdown. Also disposes of <see cref="Tasks"/> if specified in <see cref="WorkerGroup"/> constructor.

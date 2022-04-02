@@ -7,6 +7,7 @@ items:
   - Moth.Tasks.Tests.TaskInfoTests
   - Moth.Tasks.Tests.TaskQueueTests
   - Moth.Tasks.Tests.TestUtilities
+  - Moth.Tasks.Tests.WorkerGroupTests
   - Moth.Tasks.Tests.WorkerTests
   langs:
   - csharp
@@ -34,6 +35,11 @@ references:
   name: TestUtilities
   nameWithType: TestUtilities
   fullName: Moth.Tasks.Tests.TestUtilities
+- uid: Moth.Tasks.Tests.WorkerGroupTests
+  commentId: T:Moth.Tasks.Tests.WorkerGroupTests
+  name: WorkerGroupTests
+  nameWithType: WorkerGroupTests
+  fullName: Moth.Tasks.Tests.WorkerGroupTests
 - uid: Moth.Tasks.Tests.WorkerTests
   commentId: T:Moth.Tasks.Tests.WorkerTests
   name: WorkerTests

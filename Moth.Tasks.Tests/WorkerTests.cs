@@ -18,7 +18,7 @@ namespace Moth.Tasks.Tests
             AutoResetEvent waitEvent = new AutoResetEvent (false);
             queue.Enqueue ((AutoResetEvent e) => e.Set (), waitEvent);
 
-            using (Worker worker = new Worker (queue, disposeTaskQueue: true))
+            using (Worker worker = new Worker (queue, true, true))
             {
                 // The worker must execute the enqueued task for the test to continue and pass. Note MaxTime (100) attribute of method.
                 waitEvent.WaitOne (); 
@@ -30,7 +30,7 @@ namespace Moth.Tasks.Tests
         {
             TaskQueue queue = new TaskQueue ();
 
-            using (Worker worker = new Worker (queue, disposeTaskQueue: true)) // Pass true for disposeTaskQueue
+            using (Worker worker = new Worker (queue, true, true)) // Pass true for disposeTaskQueue
             {
                 
             }
