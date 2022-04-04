@@ -5,11 +5,12 @@ items:
   id: WorkerGroup
   parent: Moth.Tasks
   children:
-  - Moth.Tasks.WorkerGroup.#ctor(System.Int32,Moth.Tasks.TaskQueue,System.Boolean,System.Boolean,System.EventHandler{Moth.Tasks.TaskExceptionEventArgs},Moth.Tasks.IProfiler)
+  - Moth.Tasks.WorkerGroup.#ctor(System.Int32,Moth.Tasks.TaskQueue,System.Boolean,System.Boolean,System.EventHandler{Moth.Tasks.TaskExceptionEventArgs},Moth.Tasks.ProfilerProvider)
   - Moth.Tasks.WorkerGroup.Dispose
   - Moth.Tasks.WorkerGroup.Dispose(System.Boolean)
   - Moth.Tasks.WorkerGroup.Finalize
   - Moth.Tasks.WorkerGroup.Tasks
+  - Moth.Tasks.WorkerGroup.WorkerCount
   langs:
   - csharp
   - vb
@@ -24,11 +25,12 @@ items:
       repo: https://github.com/djmoth/Moth.Tasks
     id: WorkerGroup
     path: WorkerGroup.cs
-    startLine: 11
+    startLine: 14
   assemblies:
   - Moth.Tasks
   namespace: Moth.Tasks
   summary: "\nA group of <xref href=\"Moth.Tasks.Worker\" data-throw-if-not-resolved=\"false\"></xref>s, executing tasks from a shared <xref href=\"Moth.Tasks.TaskQueue\" data-throw-if-not-resolved=\"false\"></xref>.\n"
+  remarks: "\nThis class is thread-safe.\n"
   example: []
   syntax:
     content: 'public class WorkerGroup : IDisposable'
@@ -55,16 +57,16 @@ items:
   modifiers.vb:
   - Public
   - Class
-- uid: Moth.Tasks.WorkerGroup.#ctor(System.Int32,Moth.Tasks.TaskQueue,System.Boolean,System.Boolean,System.EventHandler{Moth.Tasks.TaskExceptionEventArgs},Moth.Tasks.IProfiler)
-  commentId: M:Moth.Tasks.WorkerGroup.#ctor(System.Int32,Moth.Tasks.TaskQueue,System.Boolean,System.Boolean,System.EventHandler{Moth.Tasks.TaskExceptionEventArgs},Moth.Tasks.IProfiler)
-  id: '#ctor(System.Int32,Moth.Tasks.TaskQueue,System.Boolean,System.Boolean,System.EventHandler{Moth.Tasks.TaskExceptionEventArgs},Moth.Tasks.IProfiler)'
+- uid: Moth.Tasks.WorkerGroup.#ctor(System.Int32,Moth.Tasks.TaskQueue,System.Boolean,System.Boolean,System.EventHandler{Moth.Tasks.TaskExceptionEventArgs},Moth.Tasks.ProfilerProvider)
+  commentId: M:Moth.Tasks.WorkerGroup.#ctor(System.Int32,Moth.Tasks.TaskQueue,System.Boolean,System.Boolean,System.EventHandler{Moth.Tasks.TaskExceptionEventArgs},Moth.Tasks.ProfilerProvider)
+  id: '#ctor(System.Int32,Moth.Tasks.TaskQueue,System.Boolean,System.Boolean,System.EventHandler{Moth.Tasks.TaskExceptionEventArgs},Moth.Tasks.ProfilerProvider)'
   parent: Moth.Tasks.WorkerGroup
   langs:
   - csharp
   - vb
-  name: WorkerGroup(Int32, TaskQueue, Boolean, Boolean, EventHandler<TaskExceptionEventArgs>, IProfiler)
-  nameWithType: WorkerGroup.WorkerGroup(Int32, TaskQueue, Boolean, Boolean, EventHandler<TaskExceptionEventArgs>, IProfiler)
-  fullName: Moth.Tasks.WorkerGroup.WorkerGroup(System.Int32, Moth.Tasks.TaskQueue, System.Boolean, System.Boolean, System.EventHandler<Moth.Tasks.TaskExceptionEventArgs>, Moth.Tasks.IProfiler)
+  name: WorkerGroup(Int32, TaskQueue, Boolean, Boolean, EventHandler<TaskExceptionEventArgs>, ProfilerProvider)
+  nameWithType: WorkerGroup.WorkerGroup(Int32, TaskQueue, Boolean, Boolean, EventHandler<TaskExceptionEventArgs>, ProfilerProvider)
+  fullName: Moth.Tasks.WorkerGroup.WorkerGroup(System.Int32, Moth.Tasks.TaskQueue, System.Boolean, System.Boolean, System.EventHandler<Moth.Tasks.TaskExceptionEventArgs>, Moth.Tasks.ProfilerProvider)
   type: Constructor
   source:
     remote:
@@ -73,14 +75,14 @@ items:
       repo: https://github.com/djmoth/Moth.Tasks
     id: .ctor
     path: WorkerGroup.cs
-    startLine: 28
+    startLine: 34
   assemblies:
   - Moth.Tasks
   namespace: Moth.Tasks
   summary: "\nInitializes a new instance of the <xref href=\"Moth.Tasks.WorkerGroup\" data-throw-if-not-resolved=\"false\"></xref> class.\n"
   example: []
   syntax:
-    content: public WorkerGroup(int workerCount, TaskQueue taskQueue, bool disposeTaskQueue = false, bool isBackground = true, EventHandler<TaskExceptionEventArgs> exceptionEventHandler = null, IProfiler profiler = null)
+    content: public WorkerGroup(int workerCount, TaskQueue taskQueue, bool disposeTaskQueue = true, bool isBackground = true, EventHandler<TaskExceptionEventArgs> exceptionEventHandler = null, ProfilerProvider profilerProvider = null)
     parameters:
     - id: workerCount
       type: System.Int32
@@ -93,14 +95,14 @@ items:
       description: Determines whether the <xref href="Moth.Tasks.TaskQueue" data-throw-if-not-resolved="false"></xref> supplied with <code data-dev-comment-type="paramref" class="paramref">taskQueue</code> is disposed when <xref href="Moth.Tasks.WorkerGroup.Dispose" data-throw-if-not-resolved="false"></xref> is called.
     - id: isBackground
       type: System.Boolean
-      description: Defines the <xref href="System.Threading.Thread.IsBackground" data-throw-if-not-resolved="false"></xref> property of the internal thread of each worker.
+      description: Defines the <xref href="System.Threading.Thread.IsBackground" data-throw-if-not-resolved="false"></xref> property of the internal thread of each <xref href="Moth.Tasks.Worker" data-throw-if-not-resolved="false"></xref>.
     - id: exceptionEventHandler
       type: System.EventHandler{Moth.Tasks.TaskExceptionEventArgs}
       description: Method invoked if a task throws an exception. May be <xref uid="langword_csharp_null" name="null" href=""></xref>.
-    - id: profiler
-      type: Moth.Tasks.IProfiler
-      description: <xref href="Moth.Tasks.IProfiler" data-throw-if-not-resolved="false"></xref> used to profile tasks. May be <xref uid="langword_csharp_null" name="null" href=""></xref>.
-    content.vb: Public Sub New(workerCount As Integer, taskQueue As TaskQueue, disposeTaskQueue As Boolean = False, isBackground As Boolean = True, exceptionEventHandler As EventHandler(Of TaskExceptionEventArgs) = Nothing, profiler As IProfiler = Nothing)
+    - id: profilerProvider
+      type: Moth.Tasks.ProfilerProvider
+      description: A <xref href="Moth.Tasks.ProfilerProvider" data-throw-if-not-resolved="false"></xref> which may provide an <xref href="Moth.Tasks.IProfiler" data-throw-if-not-resolved="false"></xref> each <xref href="Moth.Tasks.Worker" data-throw-if-not-resolved="false"></xref>. May be <xref uid="langword_csharp_null" name="null" href=""></xref>.
+    content.vb: Public Sub New(workerCount As Integer, taskQueue As TaskQueue, disposeTaskQueue As Boolean = True, isBackground As Boolean = True, exceptionEventHandler As EventHandler(Of TaskExceptionEventArgs) = Nothing, profilerProvider As ProfilerProvider = Nothing)
   overload: Moth.Tasks.WorkerGroup.#ctor*
   exceptions:
   - type: System.ArgumentOutOfRangeException
@@ -109,13 +111,13 @@ items:
   - type: System.ArgumentNullException
     commentId: T:System.ArgumentNullException
     description: <code data-dev-comment-type="paramref" class="paramref">taskQueue</code> cannot be null.
-  nameWithType.vb: WorkerGroup.WorkerGroup(Int32, TaskQueue, Boolean, Boolean, EventHandler(Of TaskExceptionEventArgs), IProfiler)
+  nameWithType.vb: WorkerGroup.WorkerGroup(Int32, TaskQueue, Boolean, Boolean, EventHandler(Of TaskExceptionEventArgs), ProfilerProvider)
   modifiers.csharp:
   - public
   modifiers.vb:
   - Public
-  fullName.vb: Moth.Tasks.WorkerGroup.WorkerGroup(System.Int32, Moth.Tasks.TaskQueue, System.Boolean, System.Boolean, System.EventHandler(Of Moth.Tasks.TaskExceptionEventArgs), Moth.Tasks.IProfiler)
-  name.vb: WorkerGroup(Int32, TaskQueue, Boolean, Boolean, EventHandler(Of TaskExceptionEventArgs), IProfiler)
+  fullName.vb: Moth.Tasks.WorkerGroup.WorkerGroup(System.Int32, Moth.Tasks.TaskQueue, System.Boolean, System.Boolean, System.EventHandler(Of Moth.Tasks.TaskExceptionEventArgs), Moth.Tasks.ProfilerProvider)
+  name.vb: WorkerGroup(Int32, TaskQueue, Boolean, Boolean, EventHandler(Of TaskExceptionEventArgs), ProfilerProvider)
 - uid: Moth.Tasks.WorkerGroup.Finalize
   commentId: M:Moth.Tasks.WorkerGroup.Finalize
   id: Finalize
@@ -134,7 +136,7 @@ items:
       repo: https://github.com/djmoth/Moth.Tasks
     id: Finalize
     path: WorkerGroup.cs
-    startLine: 50
+    startLine: 59
   assemblies:
   - Moth.Tasks
   namespace: Moth.Tasks
@@ -166,7 +168,7 @@ items:
       repo: https://github.com/djmoth/Moth.Tasks
     id: Tasks
     path: WorkerGroup.cs
-    startLine: 55
+    startLine: 64
   assemblies:
   - Moth.Tasks
   namespace: Moth.Tasks
@@ -185,6 +187,44 @@ items:
   modifiers.vb:
   - Public
   - ReadOnly
+- uid: Moth.Tasks.WorkerGroup.WorkerCount
+  commentId: P:Moth.Tasks.WorkerGroup.WorkerCount
+  id: WorkerCount
+  parent: Moth.Tasks.WorkerGroup
+  langs:
+  - csharp
+  - vb
+  name: WorkerCount
+  nameWithType: WorkerGroup.WorkerCount
+  fullName: Moth.Tasks.WorkerGroup.WorkerCount
+  type: Property
+  source:
+    remote:
+      path: Moth.Tasks/WorkerGroup.cs
+      branch: workers
+      repo: https://github.com/djmoth/Moth.Tasks
+    id: WorkerCount
+    path: WorkerGroup.cs
+    startLine: 72
+  assemblies:
+  - Moth.Tasks
+  namespace: Moth.Tasks
+  summary: "\nGet or set the number of <xref href=\"Moth.Tasks.Worker\" data-throw-if-not-resolved=\"false\"></xref>s in this <xref href=\"Moth.Tasks.WorkerGroup\" data-throw-if-not-resolved=\"false\"></xref>. Must be greater than zero.\n"
+  remarks: "\nThe <xref href=\"Moth.Tasks.ProfilerProvider\" data-throw-if-not-resolved=\"false\"></xref> and <xref href=\"System.EventHandler%601\" data-throw-if-not-resolved=\"false\"></xref> provided in the <xref href=\"Moth.Tasks.WorkerGroup\" data-throw-if-not-resolved=\"false\"></xref> constructor will be used to initialize any new <xref href=\"Moth.Tasks.Worker\" data-throw-if-not-resolved=\"false\"></xref>s.\n"
+  example: []
+  syntax:
+    content: public int WorkerCount { get; set; }
+    parameters: []
+    return:
+      type: System.Int32
+    content.vb: Public Property WorkerCount As Integer
+  overload: Moth.Tasks.WorkerGroup.WorkerCount*
+  modifiers.csharp:
+  - public
+  - get
+  - set
+  modifiers.vb:
+  - Public
 - uid: Moth.Tasks.WorkerGroup.Dispose
   commentId: M:Moth.Tasks.WorkerGroup.Dispose
   id: Dispose
@@ -203,7 +243,7 @@ items:
       repo: https://github.com/djmoth/Moth.Tasks
     id: Dispose
     path: WorkerGroup.cs
-    startLine: 60
+    startLine: 114
   assemblies:
   - Moth.Tasks
   namespace: Moth.Tasks
@@ -237,7 +277,7 @@ items:
       repo: https://github.com/djmoth/Moth.Tasks
     id: Dispose
     path: WorkerGroup.cs
-    startLine: 73
+    startLine: 127
   assemblies:
   - Moth.Tasks
   namespace: Moth.Tasks
@@ -260,6 +300,7 @@ items:
 references:
 - uid: Moth.Tasks.Worker
   commentId: T:Moth.Tasks.Worker
+  parent: Moth.Tasks
   name: Worker
   nameWithType: Worker
   fullName: Moth.Tasks.Worker
@@ -694,6 +735,12 @@ references:
 - uid: System.Threading.Thread.IsBackground
   commentId: P:System.Threading.Thread.IsBackground
   isExternal: true
+- uid: Moth.Tasks.ProfilerProvider
+  commentId: T:Moth.Tasks.ProfilerProvider
+  parent: Moth.Tasks
+  name: ProfilerProvider
+  nameWithType: ProfilerProvider
+  fullName: Moth.Tasks.ProfilerProvider
 - uid: Moth.Tasks.IProfiler
   commentId: T:Moth.Tasks.IProfiler
   parent: Moth.Tasks
@@ -816,6 +863,11 @@ references:
   name: Tasks
   nameWithType: WorkerGroup.Tasks
   fullName: Moth.Tasks.WorkerGroup.Tasks
+- uid: Moth.Tasks.WorkerGroup.WorkerCount*
+  commentId: Overload:Moth.Tasks.WorkerGroup.WorkerCount
+  name: WorkerCount
+  nameWithType: WorkerGroup.WorkerCount
+  fullName: Moth.Tasks.WorkerGroup.WorkerCount
 - uid: Moth.Tasks.WorkerGroup.Tasks
   commentId: P:Moth.Tasks.WorkerGroup.Tasks
   isExternal: true

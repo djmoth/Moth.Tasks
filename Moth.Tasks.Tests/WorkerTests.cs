@@ -9,7 +9,7 @@ namespace Moth.Tasks.Tests
     public class WorkerTests
     {
         [Test]
-        [MaxTime (100)]
+        [Timeout (100)]
         public void Work ()
         {
             TaskQueue queue = new TaskQueue ();
@@ -20,7 +20,7 @@ namespace Moth.Tasks.Tests
 
             using (Worker worker = new Worker (queue, true, true))
             {
-                // The worker must execute the enqueued task for the test to continue and pass. Note MaxTime (100) attribute of method.
+                // The worker must execute the enqueued task for the test to continue and pass. Note Timeout (100) attribute of method.
                 waitEvent.WaitOne (); 
             }
         }

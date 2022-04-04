@@ -574,6 +574,16 @@
             Task code to run.
             </summary>
         </member>
+        <member name="T:Moth.Tasks.ProfilerProvider">
+            <summary>
+            Represents a method that provides an <see cref="T:Moth.Tasks.IProfiler"/> for a <see cref="T:Moth.Tasks.Worker"/>, or <see langword="null"/> if profiling is not desired.
+            </summary>
+            <param name="worker">The <see cref="T:Moth.Tasks.Worker"/>.</param>
+            <returns>An <see cref="T:Moth.Tasks.IProfiler"/> for the <paramref name="worker"/>, or <see langword="null"/> if profiling is not desired.</returns>
+            <remarks>
+            The method does not have to provide a unique <see cref="T:Moth.Tasks.IProfiler"/> for each <see cref="T:Moth.Tasks.Worker"/>, yet in that case it must be able to differentiate between <see cref="T:Moth.Tasks.Worker"/>s on its own, so as their calls to <see cref="M:Moth.Tasks.IProfiler.BeginTask(System.String)"/> and <see cref="M:Moth.Tasks.IProfiler.EndTask"/> don't interfere.
+            </remarks>
+        </member>
         <member name="T:Moth.Tasks.TaskCache">
             <summary>
             Cache of <see cref="T:Moth.Tasks.TaskInfo"/>.
@@ -1308,18 +1318,29 @@
         </member>
         <member name="T:Moth.Tasks.Worker">
             <summary>
-            Encapsulates a thread running in the background, executing tasks from a <see cref="T:Moth.Tasks.TaskQueue"/>.
+            Encapsulates a <see cref="T:System.Threading.Thread"/> running in the background, executing tasks from a <see cref="T:Moth.Tasks.TaskQueue"/>.
             </summary>
         </member>
-        <member name="M:Moth.Tasks.Worker.#ctor(Moth.Tasks.TaskQueue,System.Boolean,System.Boolean,System.EventHandler{Moth.Tasks.TaskExceptionEventArgs},Moth.Tasks.IProfiler)">
+        <member name="M:Moth.Tasks.Worker.#ctor(Moth.Tasks.TaskQueue,System.Boolean,System.Boolean,Moth.Tasks.ProfilerProvider,System.EventHandler{Moth.Tasks.TaskExceptionEventArgs})">
             <summary>
             Initializes a new instance of the <see cref="T:Moth.Tasks.Worker"/> class.
             </summary>
             <param name="taskQueue">The <see cref="T:Moth.Tasks.TaskQueue"/> that the <see cref="T:Moth.Tasks.Worker"/> will execute tasks from.</param>
             <param name="disposeTaskQueue">Determines whether the <see cref="T:Moth.Tasks.TaskQueue"/> supplied with <paramref name="taskQueue"/> is disposed when <see cref="M:Moth.Tasks.Worker.Dispose"/> is called.</param>
             <param name="isBackground">Defines the <see cref="P:System.Threading.Thread.IsBackground"/> property of the internal thread.</param>
+            <param name="profilerProvider">A <see cref="T:Moth.Tasks.ProfilerProvider"/> which may provide an <see cref="T:Moth.Tasks.IProfiler"/> for the <see cref="T:Moth.Tasks.Worker"/>. May be <see langword="null"/>.</param>
             <param name="exceptionEventHandler">Method invoked if a task throws an exception. May be <see langword="null"/>.</param>
+            <exception cref="T:System.ArgumentNullException"><paramref name="taskQueue"/> cannot be null.</exception>
+        </member>
+        <member name="M:Moth.Tasks.Worker.#ctor(Moth.Tasks.TaskQueue,System.Boolean,System.Boolean,Moth.Tasks.IProfiler,System.EventHandler{Moth.Tasks.TaskExceptionEventArgs})">
+            <summary>
+            Initializes a new instance of the <see cref="T:Moth.Tasks.Worker"/> class.
+            </summary>
+            <param name="taskQueue">The <see cref="T:Moth.Tasks.TaskQueue"/> that the <see cref="T:Moth.Tasks.Worker"/> will execute tasks from.</param>
+            <param name="disposeTaskQueue">Determines whether the <see cref="T:Moth.Tasks.TaskQueue"/> supplied with <paramref name="taskQueue"/> is disposed when <see cref="M:Moth.Tasks.Worker.Dispose"/> is called.</param>
+            <param name="isBackground">Defines the <see cref="P:System.Threading.Thread.IsBackground"/> property of the internal thread.</param>
             <param name="profiler"><see cref="T:Moth.Tasks.IProfiler"/> used to profile tasks. May be <see langword="null"/>.</param>
+            <param name="exceptionEventHandler">Method invoked if a task throws an exception. May be <see langword="null"/>.</param>
             <exception cref="T:System.ArgumentNullException"><paramref name="taskQueue"/> cannot be null.</exception>
         </member>
         <member name="M:Moth.Tasks.Worker.Finalize">
@@ -1329,8 +1350,11 @@
         </member>
         <member name="P:Moth.Tasks.Worker.IsRunning">
             <summary>
-            Is the thread still running? May be <see langword="true"/> for a short while even after <see cref="M:Moth.Tasks.Worker.Dispose"/> is called.
+            Gets a value indicating whether the thread is running.
             </summary>
+            <remarks>
+            May be <see langword="true"/> for a short while even after <see cref="M:Moth.Tasks.Worker.Dispose"/> is called.
+            </remarks>
         </member>
         <member name="P:Moth.Tasks.Worker.Tasks">
             <summary>
@@ -1352,17 +1376,20 @@
             <summary>
             A group of <see cref="T:Moth.Tasks.Worker"/>s, executing tasks from a shared <see cref="T:Moth.Tasks.TaskQueue"/>.
             </summary>
+            <remarks>
+            This class is thread-safe.
+            </remarks>
         </member>
-        <member name="M:Moth.Tasks.WorkerGroup.#ctor(System.Int32,Moth.Tasks.TaskQueue,System.Boolean,System.Boolean,System.EventHandler{Moth.Tasks.TaskExceptionEventArgs},Moth.Tasks.IProfiler)">
+        <member name="M:Moth.Tasks.WorkerGroup.#ctor(System.Int32,Moth.Tasks.TaskQueue,System.Boolean,System.Boolean,System.EventHandler{Moth.Tasks.TaskExceptionEventArgs},Moth.Tasks.ProfilerProvider)">
             <summary>
             Initializes a new instance of the <see cref="T:Moth.Tasks.WorkerGroup"/> class.
             </summary>
             <param name="workerCount">Number of workers. Must be greater than zero.</param>
             <param name="taskQueue">The <see cref="T:Moth.Tasks.TaskQueue"/> of which the workers will be executing tasks from.</param>
             <param name="disposeTaskQueue">Determines whether the <see cref="T:Moth.Tasks.TaskQueue"/> supplied with <paramref name="taskQueue"/> is disposed when <see cref="M:Moth.Tasks.WorkerGroup.Dispose"/> is called.</param>
-            <param name="isBackground">Defines the <see cref="P:System.Threading.Thread.IsBackground"/> property of the internal thread of each worker.</param>
+            <param name="isBackground">Defines the <see cref="P:System.Threading.Thread.IsBackground"/> property of the internal thread of each <see cref="T:Moth.Tasks.Worker"/>.</param>
             <param name="exceptionEventHandler">Method invoked if a task throws an exception. May be <see langword="null"/>.</param>
-            <param name="profiler"><see cref="T:Moth.Tasks.IProfiler"/> used to profile tasks. May be <see langword="null"/>.</param>
+            <param name="profilerProvider">A <see cref="T:Moth.Tasks.ProfilerProvider"/> which may provide an <see cref="T:Moth.Tasks.IProfiler"/> each <see cref="T:Moth.Tasks.Worker"/>. May be <see langword="null"/>.</param>
             <exception cref="T:System.ArgumentOutOfRangeException"><paramref name="workerCount"/> must be greater than zero.</exception>
             <exception cref="T:System.ArgumentNullException"><paramref name="taskQueue"/> cannot be null.</exception>
         </member>
@@ -1375,6 +1402,14 @@
             <summary>
             The <see cref="T:Moth.Tasks.TaskQueue"/> of which the workers are executing tasks from.
             </summary>
+        </member>
+        <member name="P:Moth.Tasks.WorkerGroup.WorkerCount">
+            <summary>
+            Get or set the number of <see cref="T:Moth.Tasks.Worker"/>s in this <see cref="T:Moth.Tasks.WorkerGroup"/>. Must be greater than zero.
+            </summary>
+            <remarks>
+            The <see cref="T:Moth.Tasks.ProfilerProvider"/> and <see cref="T:System.EventHandler`1"/> provided in the <see cref="T:Moth.Tasks.WorkerGroup"/> constructor will be used to initialize any new <see cref="T:Moth.Tasks.Worker"/>s.
+            </remarks>
         </member>
         <member name="M:Moth.Tasks.WorkerGroup.Dispose">
             <summary>

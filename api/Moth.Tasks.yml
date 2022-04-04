@@ -6,6 +6,7 @@ items:
   children:
   - Moth.Tasks.IProfiler
   - Moth.Tasks.ITask
+  - Moth.Tasks.ProfilerProvider
   - Moth.Tasks.TaskExceptionEventArgs
   - Moth.Tasks.TaskHandle
   - Moth.Tasks.TaskQueue
@@ -32,6 +33,12 @@ references:
   name: ITask
   nameWithType: ITask
   fullName: Moth.Tasks.ITask
+- uid: Moth.Tasks.ProfilerProvider
+  commentId: T:Moth.Tasks.ProfilerProvider
+  parent: Moth.Tasks
+  name: ProfilerProvider
+  nameWithType: ProfilerProvider
+  fullName: Moth.Tasks.ProfilerProvider
 - uid: Moth.Tasks.TaskExceptionEventArgs
   commentId: T:Moth.Tasks.TaskExceptionEventArgs
   name: TaskExceptionEventArgs
@@ -51,6 +58,7 @@ references:
   fullName: Moth.Tasks.TaskQueue
 - uid: Moth.Tasks.Worker
   commentId: T:Moth.Tasks.Worker
+  parent: Moth.Tasks
   name: Worker
   nameWithType: Worker
   fullName: Moth.Tasks.Worker

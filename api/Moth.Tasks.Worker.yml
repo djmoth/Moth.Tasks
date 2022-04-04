@@ -5,7 +5,8 @@ items:
   id: Worker
   parent: Moth.Tasks
   children:
-  - Moth.Tasks.Worker.#ctor(Moth.Tasks.TaskQueue,System.Boolean,System.Boolean,System.EventHandler{Moth.Tasks.TaskExceptionEventArgs},Moth.Tasks.IProfiler)
+  - Moth.Tasks.Worker.#ctor(Moth.Tasks.TaskQueue,System.Boolean,System.Boolean,Moth.Tasks.IProfiler,System.EventHandler{Moth.Tasks.TaskExceptionEventArgs})
+  - Moth.Tasks.Worker.#ctor(Moth.Tasks.TaskQueue,System.Boolean,System.Boolean,Moth.Tasks.ProfilerProvider,System.EventHandler{Moth.Tasks.TaskExceptionEventArgs})
   - Moth.Tasks.Worker.Dispose
   - Moth.Tasks.Worker.Dispose(System.Boolean)
   - Moth.Tasks.Worker.Finalize
@@ -29,7 +30,7 @@ items:
   assemblies:
   - Moth.Tasks
   namespace: Moth.Tasks
-  summary: "\nEncapsulates a thread running in the background, executing tasks from a <xref href=\"Moth.Tasks.TaskQueue\" data-throw-if-not-resolved=\"false\"></xref>.\n"
+  summary: "\nEncapsulates a <xref href=\"System.Threading.Thread\" data-throw-if-not-resolved=\"false\"></xref> running in the background, executing tasks from a <xref href=\"Moth.Tasks.TaskQueue\" data-throw-if-not-resolved=\"false\"></xref>.\n"
   example: []
   syntax:
     content: 'public class Worker : IDisposable'
@@ -56,16 +57,16 @@ items:
   modifiers.vb:
   - Public
   - Class
-- uid: Moth.Tasks.Worker.#ctor(Moth.Tasks.TaskQueue,System.Boolean,System.Boolean,System.EventHandler{Moth.Tasks.TaskExceptionEventArgs},Moth.Tasks.IProfiler)
-  commentId: M:Moth.Tasks.Worker.#ctor(Moth.Tasks.TaskQueue,System.Boolean,System.Boolean,System.EventHandler{Moth.Tasks.TaskExceptionEventArgs},Moth.Tasks.IProfiler)
-  id: '#ctor(Moth.Tasks.TaskQueue,System.Boolean,System.Boolean,System.EventHandler{Moth.Tasks.TaskExceptionEventArgs},Moth.Tasks.IProfiler)'
+- uid: Moth.Tasks.Worker.#ctor(Moth.Tasks.TaskQueue,System.Boolean,System.Boolean,Moth.Tasks.ProfilerProvider,System.EventHandler{Moth.Tasks.TaskExceptionEventArgs})
+  commentId: M:Moth.Tasks.Worker.#ctor(Moth.Tasks.TaskQueue,System.Boolean,System.Boolean,Moth.Tasks.ProfilerProvider,System.EventHandler{Moth.Tasks.TaskExceptionEventArgs})
+  id: '#ctor(Moth.Tasks.TaskQueue,System.Boolean,System.Boolean,Moth.Tasks.ProfilerProvider,System.EventHandler{Moth.Tasks.TaskExceptionEventArgs})'
   parent: Moth.Tasks.Worker
   langs:
   - csharp
   - vb
-  name: Worker(TaskQueue, Boolean, Boolean, EventHandler<TaskExceptionEventArgs>, IProfiler)
-  nameWithType: Worker.Worker(TaskQueue, Boolean, Boolean, EventHandler<TaskExceptionEventArgs>, IProfiler)
-  fullName: Moth.Tasks.Worker.Worker(Moth.Tasks.TaskQueue, System.Boolean, System.Boolean, System.EventHandler<Moth.Tasks.TaskExceptionEventArgs>, Moth.Tasks.IProfiler)
+  name: Worker(TaskQueue, Boolean, Boolean, ProfilerProvider, EventHandler<TaskExceptionEventArgs>)
+  nameWithType: Worker.Worker(TaskQueue, Boolean, Boolean, ProfilerProvider, EventHandler<TaskExceptionEventArgs>)
+  fullName: Moth.Tasks.Worker.Worker(Moth.Tasks.TaskQueue, System.Boolean, System.Boolean, Moth.Tasks.ProfilerProvider, System.EventHandler<Moth.Tasks.TaskExceptionEventArgs>)
   type: Constructor
   source:
     remote:
@@ -81,7 +82,7 @@ items:
   summary: "\nInitializes a new instance of the <xref href=\"Moth.Tasks.Worker\" data-throw-if-not-resolved=\"false\"></xref> class.\n"
   example: []
   syntax:
-    content: public Worker(TaskQueue taskQueue, bool disposeTaskQueue = false, bool isBackground = true, EventHandler<TaskExceptionEventArgs> exceptionEventHandler = null, IProfiler profiler = null)
+    content: public Worker(TaskQueue taskQueue, bool disposeTaskQueue, bool isBackground, ProfilerProvider profilerProvider, EventHandler<TaskExceptionEventArgs> exceptionEventHandler = null)
     parameters:
     - id: taskQueue
       type: Moth.Tasks.TaskQueue
@@ -92,25 +93,80 @@ items:
     - id: isBackground
       type: System.Boolean
       description: Defines the <xref href="System.Threading.Thread.IsBackground" data-throw-if-not-resolved="false"></xref> property of the internal thread.
+    - id: profilerProvider
+      type: Moth.Tasks.ProfilerProvider
+      description: A <xref href="Moth.Tasks.ProfilerProvider" data-throw-if-not-resolved="false"></xref> which may provide an <xref href="Moth.Tasks.IProfiler" data-throw-if-not-resolved="false"></xref> for the <xref href="Moth.Tasks.Worker" data-throw-if-not-resolved="false"></xref>. May be <xref uid="langword_csharp_null" name="null" href=""></xref>.
     - id: exceptionEventHandler
       type: System.EventHandler{Moth.Tasks.TaskExceptionEventArgs}
       description: Method invoked if a task throws an exception. May be <xref uid="langword_csharp_null" name="null" href=""></xref>.
-    - id: profiler
-      type: Moth.Tasks.IProfiler
-      description: <xref href="Moth.Tasks.IProfiler" data-throw-if-not-resolved="false"></xref> used to profile tasks. May be <xref uid="langword_csharp_null" name="null" href=""></xref>.
-    content.vb: Public Sub New(taskQueue As TaskQueue, disposeTaskQueue As Boolean = False, isBackground As Boolean = True, exceptionEventHandler As EventHandler(Of TaskExceptionEventArgs) = Nothing, profiler As IProfiler = Nothing)
+    content.vb: Public Sub New(taskQueue As TaskQueue, disposeTaskQueue As Boolean, isBackground As Boolean, profilerProvider As ProfilerProvider, exceptionEventHandler As EventHandler(Of TaskExceptionEventArgs) = Nothing)
   overload: Moth.Tasks.Worker.#ctor*
   exceptions:
   - type: System.ArgumentNullException
     commentId: T:System.ArgumentNullException
     description: <code data-dev-comment-type="paramref" class="paramref">taskQueue</code> cannot be null.
-  nameWithType.vb: Worker.Worker(TaskQueue, Boolean, Boolean, EventHandler(Of TaskExceptionEventArgs), IProfiler)
+  nameWithType.vb: Worker.Worker(TaskQueue, Boolean, Boolean, ProfilerProvider, EventHandler(Of TaskExceptionEventArgs))
   modifiers.csharp:
   - public
   modifiers.vb:
   - Public
-  fullName.vb: Moth.Tasks.Worker.Worker(Moth.Tasks.TaskQueue, System.Boolean, System.Boolean, System.EventHandler(Of Moth.Tasks.TaskExceptionEventArgs), Moth.Tasks.IProfiler)
-  name.vb: Worker(TaskQueue, Boolean, Boolean, EventHandler(Of TaskExceptionEventArgs), IProfiler)
+  fullName.vb: Moth.Tasks.Worker.Worker(Moth.Tasks.TaskQueue, System.Boolean, System.Boolean, Moth.Tasks.ProfilerProvider, System.EventHandler(Of Moth.Tasks.TaskExceptionEventArgs))
+  name.vb: Worker(TaskQueue, Boolean, Boolean, ProfilerProvider, EventHandler(Of TaskExceptionEventArgs))
+- uid: Moth.Tasks.Worker.#ctor(Moth.Tasks.TaskQueue,System.Boolean,System.Boolean,Moth.Tasks.IProfiler,System.EventHandler{Moth.Tasks.TaskExceptionEventArgs})
+  commentId: M:Moth.Tasks.Worker.#ctor(Moth.Tasks.TaskQueue,System.Boolean,System.Boolean,Moth.Tasks.IProfiler,System.EventHandler{Moth.Tasks.TaskExceptionEventArgs})
+  id: '#ctor(Moth.Tasks.TaskQueue,System.Boolean,System.Boolean,Moth.Tasks.IProfiler,System.EventHandler{Moth.Tasks.TaskExceptionEventArgs})'
+  parent: Moth.Tasks.Worker
+  langs:
+  - csharp
+  - vb
+  name: Worker(TaskQueue, Boolean, Boolean, IProfiler, EventHandler<TaskExceptionEventArgs>)
+  nameWithType: Worker.Worker(TaskQueue, Boolean, Boolean, IProfiler, EventHandler<TaskExceptionEventArgs>)
+  fullName: Moth.Tasks.Worker.Worker(Moth.Tasks.TaskQueue, System.Boolean, System.Boolean, Moth.Tasks.IProfiler, System.EventHandler<Moth.Tasks.TaskExceptionEventArgs>)
+  type: Constructor
+  source:
+    remote:
+      path: Moth.Tasks/Worker.cs
+      branch: workers
+      repo: https://github.com/djmoth/Moth.Tasks
+    id: .ctor
+    path: Worker.cs
+    startLine: 52
+  assemblies:
+  - Moth.Tasks
+  namespace: Moth.Tasks
+  summary: "\nInitializes a new instance of the <xref href=\"Moth.Tasks.Worker\" data-throw-if-not-resolved=\"false\"></xref> class.\n"
+  example: []
+  syntax:
+    content: public Worker(TaskQueue taskQueue, bool disposeTaskQueue, bool isBackground, IProfiler profiler = null, EventHandler<TaskExceptionEventArgs> exceptionEventHandler = null)
+    parameters:
+    - id: taskQueue
+      type: Moth.Tasks.TaskQueue
+      description: The <xref href="Moth.Tasks.TaskQueue" data-throw-if-not-resolved="false"></xref> that the <xref href="Moth.Tasks.Worker" data-throw-if-not-resolved="false"></xref> will execute tasks from.
+    - id: disposeTaskQueue
+      type: System.Boolean
+      description: Determines whether the <xref href="Moth.Tasks.TaskQueue" data-throw-if-not-resolved="false"></xref> supplied with <code data-dev-comment-type="paramref" class="paramref">taskQueue</code> is disposed when <xref href="Moth.Tasks.Worker.Dispose" data-throw-if-not-resolved="false"></xref> is called.
+    - id: isBackground
+      type: System.Boolean
+      description: Defines the <xref href="System.Threading.Thread.IsBackground" data-throw-if-not-resolved="false"></xref> property of the internal thread.
+    - id: profiler
+      type: Moth.Tasks.IProfiler
+      description: <xref href="Moth.Tasks.IProfiler" data-throw-if-not-resolved="false"></xref> used to profile tasks. May be <xref uid="langword_csharp_null" name="null" href=""></xref>.
+    - id: exceptionEventHandler
+      type: System.EventHandler{Moth.Tasks.TaskExceptionEventArgs}
+      description: Method invoked if a task throws an exception. May be <xref uid="langword_csharp_null" name="null" href=""></xref>.
+    content.vb: Public Sub New(taskQueue As TaskQueue, disposeTaskQueue As Boolean, isBackground As Boolean, profiler As IProfiler = Nothing, exceptionEventHandler As EventHandler(Of TaskExceptionEventArgs) = Nothing)
+  overload: Moth.Tasks.Worker.#ctor*
+  exceptions:
+  - type: System.ArgumentNullException
+    commentId: T:System.ArgumentNullException
+    description: <code data-dev-comment-type="paramref" class="paramref">taskQueue</code> cannot be null.
+  nameWithType.vb: Worker.Worker(TaskQueue, Boolean, Boolean, IProfiler, EventHandler(Of TaskExceptionEventArgs))
+  modifiers.csharp:
+  - public
+  modifiers.vb:
+  - Public
+  fullName.vb: Moth.Tasks.Worker.Worker(Moth.Tasks.TaskQueue, System.Boolean, System.Boolean, Moth.Tasks.IProfiler, System.EventHandler(Of Moth.Tasks.TaskExceptionEventArgs))
+  name.vb: Worker(TaskQueue, Boolean, Boolean, IProfiler, EventHandler(Of TaskExceptionEventArgs))
 - uid: Moth.Tasks.Worker.Finalize
   commentId: M:Moth.Tasks.Worker.Finalize
   id: Finalize
@@ -129,7 +185,7 @@ items:
       repo: https://github.com/djmoth/Moth.Tasks
     id: Finalize
     path: Worker.cs
-    startLine: 54
+    startLine: 80
   assemblies:
   - Moth.Tasks
   namespace: Moth.Tasks
@@ -161,11 +217,12 @@ items:
       repo: https://github.com/djmoth/Moth.Tasks
     id: IsRunning
     path: Worker.cs
-    startLine: 59
+    startLine: 88
   assemblies:
   - Moth.Tasks
   namespace: Moth.Tasks
-  summary: "\nIs the thread still running? May be <xref uid=\"langword_csharp_true\" name=\"true\" href=\"\"></xref> for a short while even after <xref href=\"Moth.Tasks.Worker.Dispose\" data-throw-if-not-resolved=\"false\"></xref> is called.\n"
+  summary: "\nGets a value indicating whether the thread is running.\n"
+  remarks: "\nMay be <xref uid=\"langword_csharp_true\" name=\"true\" href=\"\"></xref> for a short while even after <xref href=\"Moth.Tasks.Worker.Dispose\" data-throw-if-not-resolved=\"false\"></xref> is called.\n"
   example: []
   syntax:
     content: public bool IsRunning { get; protected set; }
@@ -200,7 +257,7 @@ items:
       repo: https://github.com/djmoth/Moth.Tasks
     id: Tasks
     path: Worker.cs
-    startLine: 68
+    startLine: 97
   assemblies:
   - Moth.Tasks
   namespace: Moth.Tasks
@@ -237,7 +294,7 @@ items:
       repo: https://github.com/djmoth/Moth.Tasks
     id: Dispose
     path: Worker.cs
-    startLine: 73
+    startLine: 102
   assemblies:
   - Moth.Tasks
   namespace: Moth.Tasks
@@ -271,7 +328,7 @@ items:
       repo: https://github.com/djmoth/Moth.Tasks
     id: Dispose
     path: Worker.cs
-    startLine: 83
+    startLine: 112
   assemblies:
   - Moth.Tasks
   namespace: Moth.Tasks
@@ -292,6 +349,9 @@ items:
   - Protected
   - Overridable
 references:
+- uid: System.Threading.Thread
+  commentId: T:System.Threading.Thread
+  isExternal: true
 - uid: Moth.Tasks.TaskQueue
   commentId: T:Moth.Tasks.TaskQueue
   parent: Moth.Tasks
@@ -714,6 +774,7 @@ references:
   fullName: Moth.Tasks.Tests
 - uid: Moth.Tasks.Worker
   commentId: T:Moth.Tasks.Worker
+  parent: Moth.Tasks
   name: Worker
   nameWithType: Worker
   fullName: Moth.Tasks.Worker
@@ -723,6 +784,12 @@ references:
 - uid: System.Threading.Thread.IsBackground
   commentId: P:System.Threading.Thread.IsBackground
   isExternal: true
+- uid: Moth.Tasks.ProfilerProvider
+  commentId: T:Moth.Tasks.ProfilerProvider
+  parent: Moth.Tasks
+  name: ProfilerProvider
+  nameWithType: ProfilerProvider
+  fullName: Moth.Tasks.ProfilerProvider
 - uid: Moth.Tasks.IProfiler
   commentId: T:Moth.Tasks.IProfiler
   parent: Moth.Tasks

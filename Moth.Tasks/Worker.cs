@@ -18,7 +18,7 @@
         private readonly CancellationTokenSource cancelSource;
         private readonly IProfiler profiler;
         private readonly EventHandler<TaskExceptionEventArgs> exceptionEventHandler;
-        private int isRunningState = 1;
+        private int isRunningState;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="Worker"/> class.
@@ -81,8 +81,11 @@
         ~Worker () => Dispose (false);
 
         /// <summary>
-        /// Is the thread still running? May be <see langword="true"/> for a short while even after <see cref="Dispose ()"/> is called.
+        /// Gets a value indicating whether the thread is running.
         /// </summary>
+        /// <remarks>
+        /// May be <see langword="true"/> for a short while even after <see cref="Dispose ()"/> is called.
+        /// </remarks>
         public bool IsRunning
         {
             get => Interlocked.CompareExchange (ref isRunningState, 1, 1) == 1;
@@ -117,6 +120,8 @@
 
         private void Work ()
         {
+            IsRunning = true;
+
             try
             {
                 CancellationToken cancel = cancelSource.Token;

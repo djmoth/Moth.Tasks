@@ -32,7 +32,7 @@
         /// <param name="profilerProvider">A <see cref="ProfilerProvider"/> which may provide an <see cref="IProfiler"/> each <see cref="Worker"/>. May be <see langword="null"/>.</param>
         /// <exception cref="ArgumentOutOfRangeException"><paramref name="workerCount"/> must be greater than zero.</exception>
         /// <exception cref="ArgumentNullException"><paramref name="taskQueue"/> cannot be null.</exception>
-        public WorkerGroup (int workerCount, TaskQueue taskQueue, bool disposeTaskQueue = false, bool isBackground = true, EventHandler<TaskExceptionEventArgs> exceptionEventHandler = null, ProfilerProvider profilerProvider = null)
+        public WorkerGroup (int workerCount, TaskQueue taskQueue, bool disposeTaskQueue = true, bool isBackground = true, EventHandler<TaskExceptionEventArgs> exceptionEventHandler = null, ProfilerProvider profilerProvider = null)
         {
             Requires.Range (workerCount > 0, nameof (workerCount), $"{nameof (workerCount)} must be greater than zero.");
 
@@ -92,13 +92,13 @@
 
                     int oldWorkerCount = workers.Length;
 
-                    Array.Resize (ref workers, value);
-
                     // Dispose of the excess workers, if new value is less than the old worker count.
                     for (int i = value; i < oldWorkerCount; i++)
                     {
                         workers[i].Dispose ();
                     }
+
+                    Array.Resize (ref workers, value);
 
                     // Initialize new workers, if new value is greater than the old worker count
                     for (int i = oldWorkerCount; i < value; i++)

@@ -6,6 +6,8 @@
     name: IProfiler
   - uid: Moth.Tasks.ITask
     name: ITask
+  - uid: Moth.Tasks.ProfilerProvider
+    name: ProfilerProvider
   - uid: Moth.Tasks.TaskExceptionEventArgs
     name: TaskExceptionEventArgs
   - uid: Moth.Tasks.TaskHandle
