@@ -30,3 +30,7 @@ using System.Diagnostics.CodeAnalysis;
 [assembly: SuppressMessage ("StyleCop.CSharp.ReadabilityRules", "SA1108:Block statements should not contain embedded comments", Justification = "Personal preference.")]
 
 [assembly: SuppressMessage ("Design", "CA1000:Do not declare static members on generic types", Justification = "Personal preference.")]
+
+[assembly: SuppressMessage ("StyleCop.CSharp.ReadabilityRules", "SA1128:Put constructor initializers on their own line", Justification = "Personal preference.")]
+
+[assembly: SuppressMessage ("StyleCop.CSharp.LayoutRules", "SA1503:Braces should not be omitted", Justification = "Because I want to.")]

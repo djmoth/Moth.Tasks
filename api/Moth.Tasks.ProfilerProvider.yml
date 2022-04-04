@@ -1,104 +1,68 @@
 ### YamlMime:ManagedReference
 items:
-- uid: Moth.Tasks.IProfiler
-  commentId: T:Moth.Tasks.IProfiler
-  id: IProfiler
+- uid: Moth.Tasks.ProfilerProvider
+  commentId: T:Moth.Tasks.ProfilerProvider
+  id: ProfilerProvider
   parent: Moth.Tasks
-  children:
-  - Moth.Tasks.IProfiler.BeginTask(System.String)
-  - Moth.Tasks.IProfiler.EndTask
+  children: []
   langs:
   - csharp
   - vb
-  name: IProfiler
-  nameWithType: IProfiler
-  fullName: Moth.Tasks.IProfiler
-  type: Interface
+  name: ProfilerProvider
+  nameWithType: ProfilerProvider
+  fullName: Moth.Tasks.ProfilerProvider
+  type: Delegate
   source:
     remote:
-      path: Moth.Tasks/IProfiler.cs
+      path: Moth.Tasks/ProfilerProvider.cs
       branch: workers
       repo: https://github.com/djmoth/Moth.Tasks
-    id: IProfiler
-    path: IProfiler.cs
-    startLine: 5
+    id: ProfilerProvider
+    path: ProfilerProvider.cs
+    startLine: 10
   assemblies:
   - Moth.Tasks
   namespace: Moth.Tasks
-  summary: "\nDescribes a profiler which can measure the run time of a task.\n"
+  summary: "\nRepresents a method that provides an <xref href=\"Moth.Tasks.IProfiler\" data-throw-if-not-resolved=\"false\"></xref> for a <xref href=\"Moth.Tasks.Worker\" data-throw-if-not-resolved=\"false\"></xref>, or <xref uid=\"langword_csharp_null\" name=\"null\" href=\"\"></xref> if profiling is not desired.\n"
+  remarks: "\nThe method does not have to provide a unique <xref href=\"Moth.Tasks.IProfiler\" data-throw-if-not-resolved=\"false\"></xref> for each <xref href=\"Moth.Tasks.Worker\" data-throw-if-not-resolved=\"false\"></xref>, yet in that case it must be able to differentiate between <xref href=\"Moth.Tasks.Worker\" data-throw-if-not-resolved=\"false\"></xref>s on its own, so as their calls to <xref href=\"Moth.Tasks.IProfiler.BeginTask(System.String)\" data-throw-if-not-resolved=\"false\"></xref> and <xref href=\"Moth.Tasks.IProfiler.EndTask\" data-throw-if-not-resolved=\"false\"></xref> don&apos;t interfere.\n"
   example: []
   syntax:
-    content: public interface IProfiler
-    content.vb: Public Interface IProfiler
+    content: public delegate IProfiler ProfilerProvider(Worker worker);
+    parameters:
+    - id: worker
+      type: Moth.Tasks.Worker
+      description: The <xref href="Moth.Tasks.Worker" data-throw-if-not-resolved="false"></xref>.
+    return:
+      type: Moth.Tasks.IProfiler
+      description: An <xref href="Moth.Tasks.IProfiler" data-throw-if-not-resolved="false"></xref> for the <code data-dev-comment-type="paramref" class="paramref">worker</code>, or <xref uid="langword_csharp_null" name="null" href=""></xref> if profiling is not desired.
+    content.vb: Public Delegate Function ProfilerProvider(worker As Worker) As IProfiler
   extensionMethods:
   - System.Object.Moth.Tasks.Tests.TestUtilities.GetPrivateValue``1(System.String)
   modifiers.csharp:
   - public
-  - interface
+  - delegate
   modifiers.vb:
   - Public
-  - Interface
+  - Delegate
+references:
+- uid: Moth.Tasks.IProfiler
+  commentId: T:Moth.Tasks.IProfiler
+  parent: Moth.Tasks
+  name: IProfiler
+  nameWithType: IProfiler
+  fullName: Moth.Tasks.IProfiler
+- uid: Moth.Tasks.Worker
+  commentId: T:Moth.Tasks.Worker
+  parent: Moth.Tasks
+  name: Worker
+  nameWithType: Worker
+  fullName: Moth.Tasks.Worker
 - uid: Moth.Tasks.IProfiler.BeginTask(System.String)
   commentId: M:Moth.Tasks.IProfiler.BeginTask(System.String)
-  id: BeginTask(System.String)
-  parent: Moth.Tasks.IProfiler
-  langs:
-  - csharp
-  - vb
-  name: BeginTask(String)
-  nameWithType: IProfiler.BeginTask(String)
-  fullName: Moth.Tasks.IProfiler.BeginTask(System.String)
-  type: Method
-  source:
-    remote:
-      path: Moth.Tasks/IProfiler.cs
-      branch: workers
-      repo: https://github.com/djmoth/Moth.Tasks
-    id: BeginTask
-    path: IProfiler.cs
-    startLine: 11
-  assemblies:
-  - Moth.Tasks
-  namespace: Moth.Tasks
-  summary: "\nSignals the beginning of a new task.\n"
-  example: []
-  syntax:
-    content: void BeginTask(string task)
-    parameters:
-    - id: task
-      type: System.String
-      description: Name of task type.
-    content.vb: Sub BeginTask(task As String)
-  overload: Moth.Tasks.IProfiler.BeginTask*
+  isExternal: true
 - uid: Moth.Tasks.IProfiler.EndTask
   commentId: M:Moth.Tasks.IProfiler.EndTask
-  id: EndTask
-  parent: Moth.Tasks.IProfiler
-  langs:
-  - csharp
-  - vb
-  name: EndTask()
-  nameWithType: IProfiler.EndTask()
-  fullName: Moth.Tasks.IProfiler.EndTask()
-  type: Method
-  source:
-    remote:
-      path: Moth.Tasks/IProfiler.cs
-      branch: workers
-      repo: https://github.com/djmoth/Moth.Tasks
-    id: EndTask
-    path: IProfiler.cs
-    startLine: 16
-  assemblies:
-  - Moth.Tasks
-  namespace: Moth.Tasks
-  summary: "\nSignals the completion of a task.\n"
-  example: []
-  syntax:
-    content: void EndTask()
-    content.vb: Sub
-  overload: Moth.Tasks.IProfiler.EndTask*
-references:
+  isExternal: true
 - uid: Moth.Tasks
   commentId: N:Moth.Tasks
   name: Moth.Tasks
@@ -214,26 +178,3 @@ references:
   name: Moth.Tasks.Tests
   nameWithType: Moth.Tasks.Tests
   fullName: Moth.Tasks.Tests
-- uid: Moth.Tasks.IProfiler.BeginTask*
-  commentId: Overload:Moth.Tasks.IProfiler.BeginTask
-  name: BeginTask
-  nameWithType: IProfiler.BeginTask
-  fullName: Moth.Tasks.IProfiler.BeginTask
-- uid: System.String
-  commentId: T:System.String
-  parent: System
-  isExternal: true
-  name: String
-  nameWithType: String
-  fullName: System.String
-- uid: System
-  commentId: N:System
-  isExternal: true
-  name: System
-  nameWithType: System
-  fullName: System
-- uid: Moth.Tasks.IProfiler.EndTask*
-  commentId: Overload:Moth.Tasks.IProfiler.EndTask
-  name: EndTask
-  nameWithType: IProfiler.EndTask
-  fullName: Moth.Tasks.IProfiler.EndTask

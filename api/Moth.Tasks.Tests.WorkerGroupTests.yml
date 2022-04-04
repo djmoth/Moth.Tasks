@@ -1,33 +1,36 @@
 ### YamlMime:ManagedReference
 items:
-- uid: Moth.Tasks.Tests.TaskInfoTests
-  commentId: T:Moth.Tasks.Tests.TaskInfoTests
-  id: TaskInfoTests
+- uid: Moth.Tasks.Tests.WorkerGroupTests
+  commentId: T:Moth.Tasks.Tests.WorkerGroupTests
+  id: WorkerGroupTests
   parent: Moth.Tasks.Tests
   children:
-  - Moth.Tasks.Tests.TaskInfoTests.CreateDisposableTask
-  - Moth.Tasks.Tests.TaskInfoTests.CreateTask
+  - Moth.Tasks.Tests.WorkerGroupTests.Disposable
+  - Moth.Tasks.Tests.WorkerGroupTests.Work(System.Int32)
+  - Moth.Tasks.Tests.WorkerGroupTests.WorkerCount_Get
+  - Moth.Tasks.Tests.WorkerGroupTests.WorkerCount_Set_Decrease
+  - Moth.Tasks.Tests.WorkerGroupTests.WorkerCount_Set_Increase
   langs:
   - csharp
   - vb
-  name: TaskInfoTests
-  nameWithType: TaskInfoTests
-  fullName: Moth.Tasks.Tests.TaskInfoTests
+  name: WorkerGroupTests
+  nameWithType: WorkerGroupTests
+  fullName: Moth.Tasks.Tests.WorkerGroupTests
   type: Class
   source:
     remote:
-      path: Moth.Tasks.Tests/TaskInfoTests.cs
+      path: Moth.Tasks.Tests/WorkerGroupTests.cs
       branch: workers
       repo: https://github.com/djmoth/Moth.Tasks
-    id: TaskInfoTests
-    path: ../Moth.Tasks.Tests/TaskInfoTests.cs
+    id: WorkerGroupTests
+    path: ../Moth.Tasks.Tests/WorkerGroupTests.cs
     startLine: 8
   assemblies:
   - Moth.Tasks.Tests
   namespace: Moth.Tasks.Tests
   syntax:
-    content: public class TaskInfoTests
-    content.vb: Public Class TaskInfoTests
+    content: public class WorkerGroupTests
+    content.vb: Public Class WorkerGroupTests
   inheritance:
   - System.Object
   inheritedMembers:
@@ -46,24 +49,24 @@ items:
   modifiers.vb:
   - Public
   - Class
-- uid: Moth.Tasks.Tests.TaskInfoTests.CreateTask
-  commentId: M:Moth.Tasks.Tests.TaskInfoTests.CreateTask
-  id: CreateTask
-  parent: Moth.Tasks.Tests.TaskInfoTests
+- uid: Moth.Tasks.Tests.WorkerGroupTests.Work(System.Int32)
+  commentId: M:Moth.Tasks.Tests.WorkerGroupTests.Work(System.Int32)
+  id: Work(System.Int32)
+  parent: Moth.Tasks.Tests.WorkerGroupTests
   langs:
   - csharp
   - vb
-  name: CreateTask()
-  nameWithType: TaskInfoTests.CreateTask()
-  fullName: Moth.Tasks.Tests.TaskInfoTests.CreateTask()
+  name: Work(Int32)
+  nameWithType: WorkerGroupTests.Work(Int32)
+  fullName: Moth.Tasks.Tests.WorkerGroupTests.Work(System.Int32)
   type: Method
   source:
     remote:
-      path: Moth.Tasks.Tests/TaskInfoTests.cs
+      path: Moth.Tasks.Tests/WorkerGroupTests.cs
       branch: workers
       repo: https://github.com/djmoth/Moth.Tasks
-    id: CreateTask
-    path: ../Moth.Tasks.Tests/TaskInfoTests.cs
+    id: Work
+    path: ../Moth.Tasks.Tests/WorkerGroupTests.cs
     startLine: 10
   assemblies:
   - Moth.Tasks.Tests
@@ -72,12 +75,100 @@ items:
     content: >-
       [Test]
 
-      public void CreateTask()
+      [TestCase(1)]
+
+      [TestCase(2)]
+
+      [TestCase(3)]
+
+      [TestCase(4)]
+
+      [Timeout(1000)]
+
+      public void Work(int workerCount)
+    parameters:
+    - id: workerCount
+      type: System.Int32
     content.vb: >-
       <Test>
 
-      Public Sub CreateTask
-  overload: Moth.Tasks.Tests.TaskInfoTests.CreateTask*
+      <TestCase(1)>
+
+      <TestCase(2)>
+
+      <TestCase(3)>
+
+      <TestCase(4)>
+
+      <Timeout(1000)>
+
+      Public Sub Work(workerCount As Integer)
+  overload: Moth.Tasks.Tests.WorkerGroupTests.Work*
+  attributes:
+  - type: NUnit.Framework.TestAttribute
+    ctor: NUnit.Framework.TestAttribute.#ctor
+    arguments: []
+  - type: NUnit.Framework.TestCaseAttribute
+    ctor: NUnit.Framework.TestCaseAttribute.#ctor(System.Object)
+    arguments:
+    - type: System.Int32
+      value: 1
+  - type: NUnit.Framework.TestCaseAttribute
+    ctor: NUnit.Framework.TestCaseAttribute.#ctor(System.Object)
+    arguments:
+    - type: System.Int32
+      value: 2
+  - type: NUnit.Framework.TestCaseAttribute
+    ctor: NUnit.Framework.TestCaseAttribute.#ctor(System.Object)
+    arguments:
+    - type: System.Int32
+      value: 3
+  - type: NUnit.Framework.TestCaseAttribute
+    ctor: NUnit.Framework.TestCaseAttribute.#ctor(System.Object)
+    arguments:
+    - type: System.Int32
+      value: 4
+  - type: NUnit.Framework.TimeoutAttribute
+    ctor: NUnit.Framework.TimeoutAttribute.#ctor(System.Int32)
+    arguments:
+    - type: System.Int32
+      value: 1000
+  modifiers.csharp:
+  - public
+  modifiers.vb:
+  - Public
+- uid: Moth.Tasks.Tests.WorkerGroupTests.Disposable
+  commentId: M:Moth.Tasks.Tests.WorkerGroupTests.Disposable
+  id: Disposable
+  parent: Moth.Tasks.Tests.WorkerGroupTests
+  langs:
+  - csharp
+  - vb
+  name: Disposable()
+  nameWithType: WorkerGroupTests.Disposable()
+  fullName: Moth.Tasks.Tests.WorkerGroupTests.Disposable()
+  type: Method
+  source:
+    remote:
+      path: Moth.Tasks.Tests/WorkerGroupTests.cs
+      branch: workers
+      repo: https://github.com/djmoth/Moth.Tasks
+    id: Disposable
+    path: ../Moth.Tasks.Tests/WorkerGroupTests.cs
+    startLine: 21
+  assemblies:
+  - Moth.Tasks.Tests
+  namespace: Moth.Tasks.Tests
+  syntax:
+    content: >-
+      [Test]
+
+      public void Disposable()
+    content.vb: >-
+      <Test>
+
+      Public Sub Disposable
+  overload: Moth.Tasks.Tests.WorkerGroupTests.Disposable*
   attributes:
   - type: NUnit.Framework.TestAttribute
     ctor: NUnit.Framework.TestAttribute.#ctor
@@ -86,25 +177,25 @@ items:
   - public
   modifiers.vb:
   - Public
-- uid: Moth.Tasks.Tests.TaskInfoTests.CreateDisposableTask
-  commentId: M:Moth.Tasks.Tests.TaskInfoTests.CreateDisposableTask
-  id: CreateDisposableTask
-  parent: Moth.Tasks.Tests.TaskInfoTests
+- uid: Moth.Tasks.Tests.WorkerGroupTests.WorkerCount_Get
+  commentId: M:Moth.Tasks.Tests.WorkerGroupTests.WorkerCount_Get
+  id: WorkerCount_Get
+  parent: Moth.Tasks.Tests.WorkerGroupTests
   langs:
   - csharp
   - vb
-  name: CreateDisposableTask()
-  nameWithType: TaskInfoTests.CreateDisposableTask()
-  fullName: Moth.Tasks.Tests.TaskInfoTests.CreateDisposableTask()
+  name: WorkerCount_Get()
+  nameWithType: WorkerGroupTests.WorkerCount_Get()
+  fullName: Moth.Tasks.Tests.WorkerGroupTests.WorkerCount_Get()
   type: Method
   source:
     remote:
-      path: Moth.Tasks.Tests/TaskInfoTests.cs
+      path: Moth.Tasks.Tests/WorkerGroupTests.cs
       branch: workers
       repo: https://github.com/djmoth/Moth.Tasks
-    id: CreateDisposableTask
-    path: ../Moth.Tasks.Tests/TaskInfoTests.cs
-    startLine: 16
+    id: WorkerCount_Get
+    path: ../Moth.Tasks.Tests/WorkerGroupTests.cs
+    startLine: 35
   assemblies:
   - Moth.Tasks.Tests
   namespace: Moth.Tasks.Tests
@@ -112,12 +203,92 @@ items:
     content: >-
       [Test]
 
-      public void CreateDisposableTask()
+      public void WorkerCount_Get()
     content.vb: >-
       <Test>
 
-      Public Sub CreateDisposableTask
-  overload: Moth.Tasks.Tests.TaskInfoTests.CreateDisposableTask*
+      Public Sub WorkerCount_Get
+  overload: Moth.Tasks.Tests.WorkerGroupTests.WorkerCount_Get*
+  attributes:
+  - type: NUnit.Framework.TestAttribute
+    ctor: NUnit.Framework.TestAttribute.#ctor
+    arguments: []
+  modifiers.csharp:
+  - public
+  modifiers.vb:
+  - Public
+- uid: Moth.Tasks.Tests.WorkerGroupTests.WorkerCount_Set_Increase
+  commentId: M:Moth.Tasks.Tests.WorkerGroupTests.WorkerCount_Set_Increase
+  id: WorkerCount_Set_Increase
+  parent: Moth.Tasks.Tests.WorkerGroupTests
+  langs:
+  - csharp
+  - vb
+  name: WorkerCount_Set_Increase()
+  nameWithType: WorkerGroupTests.WorkerCount_Set_Increase()
+  fullName: Moth.Tasks.Tests.WorkerGroupTests.WorkerCount_Set_Increase()
+  type: Method
+  source:
+    remote:
+      path: Moth.Tasks.Tests/WorkerGroupTests.cs
+      branch: workers
+      repo: https://github.com/djmoth/Moth.Tasks
+    id: WorkerCount_Set_Increase
+    path: ../Moth.Tasks.Tests/WorkerGroupTests.cs
+    startLine: 46
+  assemblies:
+  - Moth.Tasks.Tests
+  namespace: Moth.Tasks.Tests
+  syntax:
+    content: >-
+      [Test]
+
+      public void WorkerCount_Set_Increase()
+    content.vb: >-
+      <Test>
+
+      Public Sub WorkerCount_Set_Increase
+  overload: Moth.Tasks.Tests.WorkerGroupTests.WorkerCount_Set_Increase*
+  attributes:
+  - type: NUnit.Framework.TestAttribute
+    ctor: NUnit.Framework.TestAttribute.#ctor
+    arguments: []
+  modifiers.csharp:
+  - public
+  modifiers.vb:
+  - Public
+- uid: Moth.Tasks.Tests.WorkerGroupTests.WorkerCount_Set_Decrease
+  commentId: M:Moth.Tasks.Tests.WorkerGroupTests.WorkerCount_Set_Decrease
+  id: WorkerCount_Set_Decrease
+  parent: Moth.Tasks.Tests.WorkerGroupTests
+  langs:
+  - csharp
+  - vb
+  name: WorkerCount_Set_Decrease()
+  nameWithType: WorkerGroupTests.WorkerCount_Set_Decrease()
+  fullName: Moth.Tasks.Tests.WorkerGroupTests.WorkerCount_Set_Decrease()
+  type: Method
+  source:
+    remote:
+      path: Moth.Tasks.Tests/WorkerGroupTests.cs
+      branch: workers
+      repo: https://github.com/djmoth/Moth.Tasks
+    id: WorkerCount_Set_Decrease
+    path: ../Moth.Tasks.Tests/WorkerGroupTests.cs
+    startLine: 57
+  assemblies:
+  - Moth.Tasks.Tests
+  namespace: Moth.Tasks.Tests
+  syntax:
+    content: >-
+      [Test]
+
+      public void WorkerCount_Set_Decrease()
+    content.vb: >-
+      <Test>
+
+      Public Sub WorkerCount_Set_Decrease
+  overload: Moth.Tasks.Tests.WorkerGroupTests.WorkerCount_Set_Decrease*
   attributes:
   - type: NUnit.Framework.TestAttribute
     ctor: NUnit.Framework.TestAttribute.#ctor
@@ -529,13 +700,35 @@ references:
   name: TestUtilities
   nameWithType: TestUtilities
   fullName: Moth.Tasks.Tests.TestUtilities
-- uid: Moth.Tasks.Tests.TaskInfoTests.CreateTask*
-  commentId: Overload:Moth.Tasks.Tests.TaskInfoTests.CreateTask
-  name: CreateTask
-  nameWithType: TaskInfoTests.CreateTask
-  fullName: Moth.Tasks.Tests.TaskInfoTests.CreateTask
-- uid: Moth.Tasks.Tests.TaskInfoTests.CreateDisposableTask*
-  commentId: Overload:Moth.Tasks.Tests.TaskInfoTests.CreateDisposableTask
-  name: CreateDisposableTask
-  nameWithType: TaskInfoTests.CreateDisposableTask
-  fullName: Moth.Tasks.Tests.TaskInfoTests.CreateDisposableTask
+- uid: Moth.Tasks.Tests.WorkerGroupTests.Work*
+  commentId: Overload:Moth.Tasks.Tests.WorkerGroupTests.Work
+  name: Work
+  nameWithType: WorkerGroupTests.Work
+  fullName: Moth.Tasks.Tests.WorkerGroupTests.Work
+- uid: System.Int32
+  commentId: T:System.Int32
+  parent: System
+  isExternal: true
+  name: Int32
+  nameWithType: Int32
+  fullName: System.Int32
+- uid: Moth.Tasks.Tests.WorkerGroupTests.Disposable*
+  commentId: Overload:Moth.Tasks.Tests.WorkerGroupTests.Disposable
+  name: Disposable
+  nameWithType: WorkerGroupTests.Disposable
+  fullName: Moth.Tasks.Tests.WorkerGroupTests.Disposable
+- uid: Moth.Tasks.Tests.WorkerGroupTests.WorkerCount_Get*
+  commentId: Overload:Moth.Tasks.Tests.WorkerGroupTests.WorkerCount_Get
+  name: WorkerCount_Get
+  nameWithType: WorkerGroupTests.WorkerCount_Get
+  fullName: Moth.Tasks.Tests.WorkerGroupTests.WorkerCount_Get
+- uid: Moth.Tasks.Tests.WorkerGroupTests.WorkerCount_Set_Increase*
+  commentId: Overload:Moth.Tasks.Tests.WorkerGroupTests.WorkerCount_Set_Increase
+  name: WorkerCount_Set_Increase
+  nameWithType: WorkerGroupTests.WorkerCount_Set_Increase
+  fullName: Moth.Tasks.Tests.WorkerGroupTests.WorkerCount_Set_Increase
+- uid: Moth.Tasks.Tests.WorkerGroupTests.WorkerCount_Set_Decrease*
+  commentId: Overload:Moth.Tasks.Tests.WorkerGroupTests.WorkerCount_Set_Decrease
+  name: WorkerCount_Set_Decrease
+  nameWithType: WorkerGroupTests.WorkerCount_Set_Decrease
+  fullName: Moth.Tasks.Tests.WorkerGroupTests.WorkerCount_Set_Decrease
