@@ -1320,11 +1320,17 @@
             <summary>
             Encapsulates a <see cref="T:System.Threading.Thread"/> running in the background, executing tasks from a <see cref="T:Moth.Tasks.TaskQueue"/>.
             </summary>
+            <remarks>
+            This class is thread-safe.
+            </remarks>
         </member>
         <member name="M:Moth.Tasks.Worker.#ctor(Moth.Tasks.TaskQueue,System.Boolean,System.Boolean,Moth.Tasks.ProfilerProvider,System.EventHandler{Moth.Tasks.TaskExceptionEventArgs})">
             <summary>
             Initializes a new instance of the <see cref="T:Moth.Tasks.Worker"/> class.
             </summary>
+            <remarks>
+            The <see cref="T:Moth.Tasks.Worker"/> will start executing tasks automatically.
+            </remarks>
             <param name="taskQueue">The <see cref="T:Moth.Tasks.TaskQueue"/> that the <see cref="T:Moth.Tasks.Worker"/> will execute tasks from.</param>
             <param name="disposeTaskQueue">Determines whether the <see cref="T:Moth.Tasks.TaskQueue"/> supplied with <paramref name="taskQueue"/> is disposed when <see cref="M:Moth.Tasks.Worker.Dispose"/> is called.</param>
             <param name="isBackground">Defines the <see cref="P:System.Threading.Thread.IsBackground"/> property of the internal thread.</param>
@@ -1336,6 +1342,9 @@
             <summary>
             Initializes a new instance of the <see cref="T:Moth.Tasks.Worker"/> class.
             </summary>
+            <remarks>
+            The <see cref="T:Moth.Tasks.Worker"/> will start executing tasks automatically.
+            </remarks>
             <param name="taskQueue">The <see cref="T:Moth.Tasks.TaskQueue"/> that the <see cref="T:Moth.Tasks.Worker"/> will execute tasks from.</param>
             <param name="disposeTaskQueue">Determines whether the <see cref="T:Moth.Tasks.TaskQueue"/> supplied with <paramref name="taskQueue"/> is disposed when <see cref="M:Moth.Tasks.Worker.Dispose"/> is called.</param>
             <param name="isBackground">Defines the <see cref="P:System.Threading.Thread.IsBackground"/> property of the internal thread.</param>

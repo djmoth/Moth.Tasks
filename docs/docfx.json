@@ -4,7 +4,10 @@
       "src": [
         {
           "files": [
-            "**/Moth.Tasks/**.csproj"
+            "**/**.csproj"
+          ],
+          "exclude": [
+            "**/Moth.Tasks.Tests.csproj"
           ],
           "src": ".."
         }

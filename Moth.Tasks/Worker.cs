@@ -10,6 +10,9 @@
     /// <summary>
     /// Encapsulates a <see cref="Thread"/> running in the background, executing tasks from a <see cref="TaskQueue"/>.
     /// </summary>
+    /// <remarks>
+    /// This class is thread-safe.
+    /// </remarks>
     public class Worker : IDisposable
     {
         private readonly TaskQueue tasks;
@@ -23,6 +26,9 @@
         /// <summary>
         /// Initializes a new instance of the <see cref="Worker"/> class.
         /// </summary>
+        /// <remarks>
+        /// The <see cref="Worker"/> will start executing tasks automatically.
+        /// </remarks>
         /// <param name="taskQueue">The <see cref="TaskQueue"/> that the <see cref="Worker"/> will execute tasks from.</param>
         /// <param name="disposeTaskQueue">Determines whether the <see cref="TaskQueue"/> supplied with <paramref name="taskQueue"/> is disposed when <see cref="Dispose ()"/> is called.</param>
         /// <param name="isBackground">Defines the <see cref="Thread.IsBackground"/> property of the internal thread.</param>
@@ -44,6 +50,9 @@
         /// <summary>
         /// Initializes a new instance of the <see cref="Worker"/> class.
         /// </summary>
+        /// <remarks>
+        /// The <see cref="Worker"/> will start executing tasks automatically.
+        /// </remarks>
         /// <param name="taskQueue">The <see cref="TaskQueue"/> that the <see cref="Worker"/> will execute tasks from.</param>
         /// <param name="disposeTaskQueue">Determines whether the <see cref="TaskQueue"/> supplied with <paramref name="taskQueue"/> is disposed when <see cref="Dispose ()"/> is called.</param>
         /// <param name="isBackground">Defines the <see cref="Thread.IsBackground"/> property of the internal thread.</param>
