@@ -416,10 +416,46 @@ namespace Moth.Tasks.Tests
         }
 
         /// <summary>
+        /// Enqueues a series of alternating <see cref="Task"/> and <see cref="PutValueAndDisposeTask"/>, asserting that non-disposable tasks will not disrupt the execution of <see cref="PutValueAndDisposeTask.Dispose"/>.
+        /// </summary>
+        [Test]
+        public void Clear_Disposable ()
+        {
+            TaskQueue queue = new TaskQueue ();
+
+            TaskResult[] disposeResults = new TaskResult[10];
+
+            for (int i = 0; i < disposeResults.Length; i++)
+            {
+                queue.Enqueue (new Task ()); // Dummy task which is not disposable
+
+                disposeResults[i] = new TaskResult ();
+
+                queue.Enqueue (new PutValueAndDisposeTask (0, null, i, disposeResults[i]));
+            }
+
+            List<Exception> exceptions = new List<Exception> ();
+
+            queue.Clear (ex => exceptions.Add (ex));
+
+            Assert.AreEqual (0, queue.Count);
+
+            foreach (Exception ex in exceptions)
+            {
+                Assert.IsInstanceOf<InvalidOperationException> (ex);
+            }
+
+            for (int i = 0; i < 10; i++)
+            {
+                Assert.AreEqual (i, disposeResults[i].Value);
+            }
+        }
+
+        /// <summary>
         /// Enqueues a series of alternating <see cref="ExceptionOnDisposeTask"/> and <see cref="PutValueAndDisposeTask"/>, asserting that the exceptions thrown from <see cref="ExceptionOnDisposeTask.Dispose"/> will not disrupt the execution of <see cref="PutValueAndDisposeTask.Dispose"/>.
         /// </summary>
         [Test]
-        public void Clear ()
+        public void Clear_Exception ()
         {
             TaskQueue queue = new TaskQueue ();
 
