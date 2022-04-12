@@ -19,12 +19,11 @@ Tasks can be enqueued as a [`System.Action`](https://docs.microsoft.com/en-us/do
 TaskQueue tasks = new TaskQueue ();
 
 // Enqueue a task taking two integer parameters: a & b, as an Action<int, int>
-// 2 & 2 is supplied as arguments for both parameters
-tasks.Enqueue (2, 2, (int a, int b) =>
+tasks.Enqueue ((int a, int b) =>
 {
     int result = a + b; // Add a & b together
     Console.WriteLine ($"The result of {a} + {b} is {result}"); // Print the result to the console
-});
+}, 2, 2); // 2 & 2 is supplied as arguments for both parameters down here
 ```
 or as a struct implementing the [`ITask`](https://djmoth.github.io/Moth.Tasks/api/Moth.Tasks.ITask.html) interface:
 ```C#
