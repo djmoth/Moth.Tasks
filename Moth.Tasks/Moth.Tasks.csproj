@@ -22,10 +22,10 @@
 
   <ItemGroup>
     <None Include="..\.editorconfig" Link=".editorconfig" />
-    <None Include="TaskQueueActions.cs">
+    <None Include="TaskQueueEnqueueExtensions.cs">
       <DesignTime>True</DesignTime>
       <AutoGen>True</AutoGen>
-      <DependentUpon>TaskQueueActions.tt</DependentUpon>
+      <DependentUpon>TaskQueueEnqueueExtensions.tt</DependentUpon>
     </None>
   </ItemGroup>
 
@@ -44,9 +44,9 @@
       <Generator>TextTemplatingFileGenerator</Generator>
       <LastGenOutput>DelegateTask.cs</LastGenOutput>
     </None>
-    <None Update="TaskQueueActions.tt">
+    <None Update="TaskQueueEnqueueExtensions.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
-      <LastGenOutput>TaskQueueActions.cs</LastGenOutput>
+      <LastGenOutput>TaskQueueEnqueueExtensions.cs</LastGenOutput>
     </None>
   </ItemGroup>
 
@@ -69,6 +69,11 @@
       <DesignTime>True</DesignTime>
       <AutoGen>True</AutoGen>
       <DependentUpon>TaskQueueActions.tt</DependentUpon>
+    </Compile>
+    <Compile Update="TaskQueueEnqueueExtensions.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>TaskQueueEnqueueExtensions.tt</DependentUpon>
     </Compile>
   </ItemGroup>
 

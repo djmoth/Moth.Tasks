@@ -10,7 +10,7 @@
     /// <summary>
     /// A queue of tasks, which can be run in FIFO order.
     /// </summary>
-    public unsafe partial class TaskQueue : IDisposable
+    public unsafe class TaskQueue : IDisposable
     {
         private readonly object taskLock = new object ();
         private readonly TaskCache taskCache = new TaskCache ();
@@ -80,7 +80,7 @@
         /// </summary>
         /// <typeparam name="T">Type of task to run.</typeparam>
         /// <param name="task">Task data.</param>
-        /// <param name="handle">Handle for checking task status.</param>
+        /// <param name="handle"><see cref="TaskHandle"/> for checking task status.</param>
         /// <exception cref="ObjectDisposedException">The <see cref="TaskQueue"/> has been disposed.</exception>
         public void Enqueue<T> (in T task, out TaskHandle handle) where T : struct, ITask
         {
