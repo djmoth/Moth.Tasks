@@ -1,0 +1,3271 @@
+﻿<!DOCTYPE html>
+<!--[if IE]><![endif]-->
+<html>
+  
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <title>Class TaskQueue
+   </title>
+    <meta name="viewport" content="width=device-width">
+    <meta name="title" content="Class TaskQueue
+   ">
+    <meta name="generator" content="docfx 2.59.2.0">
+    
+    <link rel="shortcut icon" href="../favicon.ico">
+    <link rel="stylesheet" href="../styles/docfx.vendor.css">
+    <link rel="stylesheet" href="../styles/docfx.css">
+    <link rel="stylesheet" href="../styles/main.css">
+    <meta property="docfx:navrel" content="../toc.html">
+    <meta property="docfx:tocrel" content="toc.html">
+    
+    
+    
+  </head>
+  <body data-spy="scroll" data-target="#affix" data-offset="120">
+    <div id="wrapper">
+      <header>
+        
+        <nav id="autocollapse" class="navbar navbar-inverse ng-scope" role="navigation">
+          <div class="container">
+            <div class="navbar-header">
+              <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+              </button>
+              
+              <a class="navbar-brand" href="../index.html">
+                <img id="logo" class="svg" src="../logo.svg" alt="">
+              </a>
+            </div>
+            <div class="collapse navbar-collapse" id="navbar">
+              <form class="navbar-form navbar-right" role="search" id="search">
+                <div class="form-group">
+                  <input type="text" class="form-control" id="search-query" placeholder="Search" autocomplete="off">
+                </div>
+              </form>
+            </div>
+          </div>
+        </nav>
+        
+        <div class="subnav navbar navbar-default">
+          <div class="container hide-when-search" id="breadcrumb">
+            <ul class="breadcrumb">
+              <li></li>
+            </ul>
+          </div>
+        </div>
+      </header>
+      <div role="main" class="container body-content hide-when-search">
+        
+        <div class="sidenav hide-when-search">
+          <a class="btn toc-toggle collapse" data-toggle="collapse" href="#sidetoggle" aria-expanded="false" aria-controls="sidetoggle">Show / Hide Table of Contents</a>
+          <div class="sidetoggle collapse" id="sidetoggle">
+            <div id="sidetoc"></div>
+          </div>
+        </div>
+        <div class="article row grid-right">
+          <div class="col-md-10">
+            <article class="content wrap" id="_content" data-uid="Moth.Tasks.TaskQueue">
+  
+  
+  <h1 id="Moth_Tasks_TaskQueue" data-uid="Moth.Tasks.TaskQueue" class="text-break">Class TaskQueue
+  </h1>
+  <div class="markdown level0 summary"><p>A queue of tasks, which can be run in FIFO order.</p>
+</div>
+  <div class="markdown level0 conceptual"></div>
+  <div class="inheritance">
+    <h5>Inheritance</h5>
+    <div class="level0"><span class="xref">System.Object</span></div>
+    <div class="level1"><span class="xref">TaskQueue</span></div>
+  </div>
+  <div classs="implements">
+    <h5>Implements</h5>
+    <div><span class="xref">System.IDisposable</span></div>
+  </div>
+  <div class="inheritedMembers">
+    <h5>Inherited Members</h5>
+    <div>
+      <span class="xref">System.Object.Equals(System.Object)</span>
+    </div>
+    <div>
+      <span class="xref">System.Object.Equals(System.Object, System.Object)</span>
+    </div>
+    <div>
+      <span class="xref">System.Object.GetHashCode()</span>
+    </div>
+    <div>
+      <span class="xref">System.Object.GetType()</span>
+    </div>
+    <div>
+      <span class="xref">System.Object.MemberwiseClone()</span>
+    </div>
+    <div>
+      <span class="xref">System.Object.ReferenceEquals(System.Object, System.Object)</span>
+    </div>
+    <div>
+      <span class="xref">System.Object.ToString()</span>
+    </div>
+  </div>
+  <h6><strong>Namespace</strong>: <a class="xref" href="Moth.Tasks.html">Moth.Tasks</a></h6>
+  <h6><strong>Assembly</strong>: Moth.Tasks.dll</h6>
+  <h5 id="Moth_Tasks_TaskQueue_syntax">Syntax</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public class TaskQueue : IDisposable</code></pre>
+  </div>
+  <h3 id="constructors">Constructors
+  </h3>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/djmoth/Moth.Tasks/new/main/apiSpec/new?filename=Moth_Tasks_TaskQueue__ctor.md&amp;value=---%0Auid%3A%20Moth.Tasks.TaskQueue.%23ctor%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/djmoth/Moth.Tasks/blob/main/Moth.Tasks/TaskQueue.cs/#L29">View Source</a>
+  </span>
+  <a id="Moth_Tasks_TaskQueue__ctor_" data-uid="Moth.Tasks.TaskQueue.#ctor*"></a>
+  <h4 id="Moth_Tasks_TaskQueue__ctor" data-uid="Moth.Tasks.TaskQueue.#ctor">TaskQueue()</h4>
+  <div class="markdown level1 summary"><p>Initializes a new instance of the <a class="xref" href="Moth.Tasks.TaskQueue.html">TaskQueue</a> class.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public TaskQueue()</code></pre>
+  </div>
+  <h3 id="properties">Properties
+  </h3>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/djmoth/Moth.Tasks/new/main/apiSpec/new?filename=Moth_Tasks_TaskQueue_Count.md&amp;value=---%0Auid%3A%20Moth.Tasks.TaskQueue.Count%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/djmoth/Moth.Tasks/blob/main/Moth.Tasks/TaskQueue.cs/#L51">View Source</a>
+  </span>
+  <a id="Moth_Tasks_TaskQueue_Count_" data-uid="Moth.Tasks.TaskQueue.Count*"></a>
+  <h4 id="Moth_Tasks_TaskQueue_Count" data-uid="Moth.Tasks.TaskQueue.Count">Count</h4>
+  <div class="markdown level1 summary"><p>The number of tasks currently enqueued.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public int Count { get; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Int32</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h3 id="methods">Methods
+  </h3>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/djmoth/Moth.Tasks/new/main/apiSpec/new?filename=Moth_Tasks_TaskQueue_Clear_System_Action_System_Exception__.md&amp;value=---%0Auid%3A%20Moth.Tasks.TaskQueue.Clear(System.Action%7BSystem.Exception%7D)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/djmoth/Moth.Tasks/blob/main/Moth.Tasks/TaskQueue.cs/#L230">View Source</a>
+  </span>
+  <a id="Moth_Tasks_TaskQueue_Clear_" data-uid="Moth.Tasks.TaskQueue.Clear*"></a>
+  <h4 id="Moth_Tasks_TaskQueue_Clear_System_Action_System_Exception__" data-uid="Moth.Tasks.TaskQueue.Clear(System.Action{System.Exception})">Clear(Action&lt;Exception&gt;)</h4>
+  <div class="markdown level1 summary"><p>Removes all pending tasks from the queue. Also calls <span class="xref">System.IDisposable.Dispose()</span> on tasks which implement the method.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public void Clear(Action&lt;Exception&gt; exceptionHandler = null)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Action</span>&lt;<span class="xref">System.Exception</span>&gt;</td>
+        <td><span class="parametername">exceptionHandler</span></td>
+        <td><p>Method for handling an exception thrown by a task's <span class="xref">System.IDisposable.Dispose()</span>.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 id="Moth_Tasks_TaskQueue_Clear_System_Action_System_Exception___remarks">Remarks</h5>
+  <div class="markdown level1 remarks"><p>As the method iterates through all tasks in the queue and calls <span class="xref">System.IDisposable.Dispose()</span> on tasks, it can hang for an unknown amount of time. If an exception is thrown in an <span class="xref">System.IDisposable.Dispose()</span> call, the method continues on with disposing the remaining tasks.</p>
+</div>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/djmoth/Moth.Tasks/new/main/apiSpec/new?filename=Moth_Tasks_TaskQueue_Dispose.md&amp;value=---%0Auid%3A%20Moth.Tasks.TaskQueue.Dispose%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/djmoth/Moth.Tasks/blob/main/Moth.Tasks/TaskQueue.cs/#L266">View Source</a>
+  </span>
+  <a id="Moth_Tasks_TaskQueue_Dispose_" data-uid="Moth.Tasks.TaskQueue.Dispose*"></a>
+  <h4 id="Moth_Tasks_TaskQueue_Dispose" data-uid="Moth.Tasks.TaskQueue.Dispose">Dispose()</h4>
+  <div class="markdown level1 summary"><p>Disposes all tasks which implements <span class="xref">System.IDisposable</span>.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public void Dispose()</code></pre>
+  </div>
+  <h5 id="Moth_Tasks_TaskQueue_Dispose_remarks">Remarks</h5>
+  <div class="markdown level1 remarks"><p>As the method iterates through all tasks in the queue and calls <span class="xref">System.IDisposable.Dispose()</span> on tasks, it can hang for an unknown amount of time. If an exception is thrown in an <span class="xref">System.IDisposable.Dispose()</span> call, the method continues on with disposing the remaining tasks.</p>
+</div>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/djmoth/Moth.Tasks/new/main/apiSpec/new?filename=Moth_Tasks_TaskQueue_Dispose_System_Boolean_.md&amp;value=---%0Auid%3A%20Moth.Tasks.TaskQueue.Dispose(System.Boolean)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/djmoth/Moth.Tasks/blob/main/Moth.Tasks/TaskQueue.cs/#L282">View Source</a>
+  </span>
+  <a id="Moth_Tasks_TaskQueue_Dispose_" data-uid="Moth.Tasks.TaskQueue.Dispose*"></a>
+  <h4 id="Moth_Tasks_TaskQueue_Dispose_System_Boolean_" data-uid="Moth.Tasks.TaskQueue.Dispose(System.Boolean)">Dispose(Boolean)</h4>
+  <div class="markdown level1 summary"><p>Disposes all tasks which implements <span class="xref">System.IDisposable</span>.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected virtual void Dispose(bool disposing)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Boolean</span></td>
+        <td><span class="parametername">disposing</span></td>
+        <td><p><span class="xref">true</span> if called from <a class="xref" href="Moth.Tasks.TaskQueue.html#Moth_Tasks_TaskQueue_Dispose">Dispose()</a>, <span class="xref">false</span> if called from finalizer.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 id="Moth_Tasks_TaskQueue_Dispose_System_Boolean__remarks">Remarks</h5>
+  <div class="markdown level1 remarks"><p>As the method iterates through all tasks in the queue and calls <span class="xref">System.IDisposable.Dispose()</span> on tasks, it can hang for an unknown amount of time. If an exception is thrown in an <span class="xref">System.IDisposable.Dispose()</span> call, the method continues on with disposing the remaining tasks.</p>
+</div>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/djmoth/Moth.Tasks/new/main/apiSpec/new?filename=Moth_Tasks_TaskQueue_Enqueue_System_Action_.md&amp;value=---%0Auid%3A%20Moth.Tasks.TaskQueue.Enqueue(System.Action)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/djmoth/Moth.Tasks/blob/main/Moth.Tasks/TaskQueueActions.cs/#L18">View Source</a>
+  </span>
+  <a id="Moth_Tasks_TaskQueue_Enqueue_" data-uid="Moth.Tasks.TaskQueue.Enqueue*"></a>
+  <h4 id="Moth_Tasks_TaskQueue_Enqueue_System_Action_" data-uid="Moth.Tasks.TaskQueue.Enqueue(System.Action)">Enqueue(Action)</h4>
+  <div class="markdown level1 summary"><p>Enqueue an action to be run later.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public void Enqueue(Action action)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Action</span></td>
+        <td><span class="parametername">action</span></td>
+        <td><p>Action to enqueue.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="exceptions">Exceptions</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Condition</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.ArgumentNullException</span></td>
+        <td><p><code data-dev-comment-type="paramref" class="paramref">action</code> is <span class="xref">null</span>.</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">System.ObjectDisposedException</span></td>
+        <td><p>The <a class="xref" href="Moth.Tasks.TaskQueue.html">TaskQueue</a> has been disposed.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/djmoth/Moth.Tasks/new/main/apiSpec/new?filename=Moth_Tasks_TaskQueue_Enqueue__1___0__.md&amp;value=---%0Auid%3A%20Moth.Tasks.TaskQueue.Enqueue%60%601(%60%600%40)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/djmoth/Moth.Tasks/blob/main/Moth.Tasks/TaskQueue.cs/#L68">View Source</a>
+  </span>
+  <a id="Moth_Tasks_TaskQueue_Enqueue_" data-uid="Moth.Tasks.TaskQueue.Enqueue*"></a>
+  <h4 id="Moth_Tasks_TaskQueue_Enqueue__1___0__" data-uid="Moth.Tasks.TaskQueue.Enqueue``1(``0@)">Enqueue&lt;T&gt;(in T)</h4>
+  <div class="markdown level1 summary"><p>Enqueue an <a class="xref" href="Moth.Tasks.ITask.html">ITask</a> to be run later.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public void Enqueue&lt;T&gt;(in T task)
+    where T : struct, ITask</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">T</span></td>
+        <td><span class="parametername">task</span></td>
+        <td><p>Task data.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="typeParameters">Type Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="parametername">T</span></td>
+        <td><p>Type of task to run.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="exceptions">Exceptions</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Condition</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.ObjectDisposedException</span></td>
+        <td><p>The <a class="xref" href="Moth.Tasks.TaskQueue.html">TaskQueue</a> has been disposed.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/djmoth/Moth.Tasks/new/main/apiSpec/new?filename=Moth_Tasks_TaskQueue_Enqueue__1___0__Moth_Tasks_TaskHandle__.md&amp;value=---%0Auid%3A%20Moth.Tasks.TaskQueue.Enqueue%60%601(%60%600%40%2CMoth.Tasks.TaskHandle%40)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/djmoth/Moth.Tasks/blob/main/Moth.Tasks/TaskQueue.cs/#L85">View Source</a>
+  </span>
+  <a id="Moth_Tasks_TaskQueue_Enqueue_" data-uid="Moth.Tasks.TaskQueue.Enqueue*"></a>
+  <h4 id="Moth_Tasks_TaskQueue_Enqueue__1___0__Moth_Tasks_TaskHandle__" data-uid="Moth.Tasks.TaskQueue.Enqueue``1(``0@,Moth.Tasks.TaskHandle@)">Enqueue&lt;T&gt;(in T, out TaskHandle)</h4>
+  <div class="markdown level1 summary"><p>Enqueue an <a class="xref" href="Moth.Tasks.ITask.html">ITask</a> to be run later, giving out a <a class="xref" href="Moth.Tasks.TaskHandle.html">TaskHandle</a> for checking task status.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public void Enqueue&lt;T&gt;(in T task, out TaskHandle handle)
+    where T : struct, ITask</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">T</span></td>
+        <td><span class="parametername">task</span></td>
+        <td><p>Task data.</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="Moth.Tasks.TaskHandle.html">TaskHandle</a></td>
+        <td><span class="parametername">handle</span></td>
+        <td><p>Handle for checking task status.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="typeParameters">Type Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="parametername">T</span></td>
+        <td><p>Type of task to run.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="exceptions">Exceptions</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Condition</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.ObjectDisposedException</span></td>
+        <td><p>The <a class="xref" href="Moth.Tasks.TaskQueue.html">TaskQueue</a> has been disposed.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/djmoth/Moth.Tasks/new/main/apiSpec/new?filename=Moth_Tasks_TaskQueue_Enqueue__1_System_Action___0____0_.md&amp;value=---%0Auid%3A%20Moth.Tasks.TaskQueue.Enqueue%60%601(System.Action%7B%60%600%7D%2C%60%600)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/djmoth/Moth.Tasks/blob/main/Moth.Tasks/TaskQueueActions.cs/#L36">View Source</a>
+  </span>
+  <a id="Moth_Tasks_TaskQueue_Enqueue_" data-uid="Moth.Tasks.TaskQueue.Enqueue*"></a>
+  <h4 id="Moth_Tasks_TaskQueue_Enqueue__1_System_Action___0____0_" data-uid="Moth.Tasks.TaskQueue.Enqueue``1(System.Action{``0},``0)">Enqueue&lt;T1&gt;(Action&lt;T1&gt;, T1)</h4>
+  <div class="markdown level1 summary"><p>Enqueue an action to be run later with supplied arguments.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public void Enqueue&lt;T1&gt;(Action&lt;T1&gt; action, T1 arg1)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Action</span>&lt;T1&gt;</td>
+        <td><span class="parametername">action</span></td>
+        <td><p>Action to enqueue.</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">T1</span></td>
+        <td><span class="parametername">arg1</span></td>
+        <td><p>The 1st argument to run <code data-dev-comment-type="paramref" class="paramref">action</code> with.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="typeParameters">Type Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="parametername">T1</span></td>
+        <td><p>The type of the 1st parameter of <code data-dev-comment-type="paramref" class="paramref">action</code>.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="exceptions">Exceptions</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Condition</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.ArgumentNullException</span></td>
+        <td><p><code data-dev-comment-type="paramref" class="paramref">action</code> is <span class="xref">null</span>.</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">System.ObjectDisposedException</span></td>
+        <td><p>The <a class="xref" href="Moth.Tasks.TaskQueue.html">TaskQueue</a> has been disposed.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/djmoth/Moth.Tasks/new/main/apiSpec/new?filename=Moth_Tasks_TaskQueue_Enqueue__10_System_Action___0___1___2___3___4___5___6___7___8___9____0___1___2___3___4___5___6___7___8___9_.md&amp;value=---%0Auid%3A%20Moth.Tasks.TaskQueue.Enqueue%60%6010(System.Action%7B%60%600%2C%60%601%2C%60%602%2C%60%603%2C%60%604%2C%60%605%2C%60%606%2C%60%607%2C%60%608%2C%60%609%7D%2C%60%600%2C%60%601%2C%60%602%2C%60%603%2C%60%604%2C%60%605%2C%60%606%2C%60%607%2C%60%608%2C%60%609)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/djmoth/Moth.Tasks/blob/main/Moth.Tasks/TaskQueueActions.cs/#L288">View Source</a>
+  </span>
+  <a id="Moth_Tasks_TaskQueue_Enqueue_" data-uid="Moth.Tasks.TaskQueue.Enqueue*"></a>
+  <h4 id="Moth_Tasks_TaskQueue_Enqueue__10_System_Action___0___1___2___3___4___5___6___7___8___9____0___1___2___3___4___5___6___7___8___9_" data-uid="Moth.Tasks.TaskQueue.Enqueue``10(System.Action{``0,``1,``2,``3,``4,``5,``6,``7,``8,``9},``0,``1,``2,``3,``4,``5,``6,``7,``8,``9)">Enqueue&lt;T1, T2, T3, T4, T5, T6, T7, T8, T9, T10&gt;(Action&lt;T1, T2, T3, T4, T5, T6, T7, T8, T9, T10&gt;, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10)</h4>
+  <div class="markdown level1 summary"><p>Enqueue an action to be run later with supplied arguments.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public void Enqueue&lt;T1, T2, T3, T4, T5, T6, T7, T8, T9, T10&gt;(Action&lt;T1, T2, T3, T4, T5, T6, T7, T8, T9, T10&gt; action, T1 arg1, T2 arg2, T3 arg3, T4 arg4, T5 arg5, T6 arg6, T7 arg7, T8 arg8, T9 arg9, T10 arg10)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Action</span>&lt;T1, T2, T3, T4, T5, T6, T7, T8, T9, T10&gt;</td>
+        <td><span class="parametername">action</span></td>
+        <td><p>Action to enqueue.</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">T1</span></td>
+        <td><span class="parametername">arg1</span></td>
+        <td><p>The 1st argument to run <code data-dev-comment-type="paramref" class="paramref">action</code> with.</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">T2</span></td>
+        <td><span class="parametername">arg2</span></td>
+        <td><p>The 2nd argument to run <code data-dev-comment-type="paramref" class="paramref">action</code> with.</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">T3</span></td>
+        <td><span class="parametername">arg3</span></td>
+        <td><p>The 3rd argument to run <code data-dev-comment-type="paramref" class="paramref">action</code> with.</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">T4</span></td>
+        <td><span class="parametername">arg4</span></td>
+        <td><p>The 4th argument to run <code data-dev-comment-type="paramref" class="paramref">action</code> with.</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">T5</span></td>
+        <td><span class="parametername">arg5</span></td>
+        <td><p>The 5th argument to run <code data-dev-comment-type="paramref" class="paramref">action</code> with.</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">T6</span></td>
+        <td><span class="parametername">arg6</span></td>
+        <td><p>The 6th argument to run <code data-dev-comment-type="paramref" class="paramref">action</code> with.</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">T7</span></td>
+        <td><span class="parametername">arg7</span></td>
+        <td><p>The 7th argument to run <code data-dev-comment-type="paramref" class="paramref">action</code> with.</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">T8</span></td>
+        <td><span class="parametername">arg8</span></td>
+        <td><p>The 8th argument to run <code data-dev-comment-type="paramref" class="paramref">action</code> with.</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">T9</span></td>
+        <td><span class="parametername">arg9</span></td>
+        <td><p>The 9th argument to run <code data-dev-comment-type="paramref" class="paramref">action</code> with.</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">T10</span></td>
+        <td><span class="parametername">arg10</span></td>
+        <td><p>The 10th argument to run <code data-dev-comment-type="paramref" class="paramref">action</code> with.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="typeParameters">Type Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="parametername">T1</span></td>
+        <td><p>The type of the 1st parameter of <code data-dev-comment-type="paramref" class="paramref">action</code>.</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="parametername">T2</span></td>
+        <td><p>The type of the 2nd parameter of <code data-dev-comment-type="paramref" class="paramref">action</code>.</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="parametername">T3</span></td>
+        <td><p>The type of the 3rd parameter of <code data-dev-comment-type="paramref" class="paramref">action</code>.</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="parametername">T4</span></td>
+        <td><p>The type of the 4th parameter of <code data-dev-comment-type="paramref" class="paramref">action</code>.</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="parametername">T5</span></td>
+        <td><p>The type of the 5th parameter of <code data-dev-comment-type="paramref" class="paramref">action</code>.</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="parametername">T6</span></td>
+        <td><p>The type of the 6th parameter of <code data-dev-comment-type="paramref" class="paramref">action</code>.</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="parametername">T7</span></td>
+        <td><p>The type of the 7th parameter of <code data-dev-comment-type="paramref" class="paramref">action</code>.</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="parametername">T8</span></td>
+        <td><p>The type of the 8th parameter of <code data-dev-comment-type="paramref" class="paramref">action</code>.</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="parametername">T9</span></td>
+        <td><p>The type of the 9th parameter of <code data-dev-comment-type="paramref" class="paramref">action</code>.</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="parametername">T10</span></td>
+        <td><p>The type of the 10th parameter of <code data-dev-comment-type="paramref" class="paramref">action</code>.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="exceptions">Exceptions</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Condition</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.ArgumentNullException</span></td>
+        <td><p><code data-dev-comment-type="paramref" class="paramref">action</code> is <span class="xref">null</span>.</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">System.ObjectDisposedException</span></td>
+        <td><p>The <a class="xref" href="Moth.Tasks.TaskQueue.html">TaskQueue</a> has been disposed.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/djmoth/Moth.Tasks/new/main/apiSpec/new?filename=Moth_Tasks_TaskQueue_Enqueue__11_System_Action___0___1___2___3___4___5___6___7___8___9___10____0___1___2___3___4___5___6___7___8___9___10_.md&amp;value=---%0Auid%3A%20Moth.Tasks.TaskQueue.Enqueue%60%6011(System.Action%7B%60%600%2C%60%601%2C%60%602%2C%60%603%2C%60%604%2C%60%605%2C%60%606%2C%60%607%2C%60%608%2C%60%609%2C%60%6010%7D%2C%60%600%2C%60%601%2C%60%602%2C%60%603%2C%60%604%2C%60%605%2C%60%606%2C%60%607%2C%60%608%2C%60%609%2C%60%6010)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/djmoth/Moth.Tasks/blob/main/Moth.Tasks/TaskQueueActions.cs/#L326">View Source</a>
+  </span>
+  <a id="Moth_Tasks_TaskQueue_Enqueue_" data-uid="Moth.Tasks.TaskQueue.Enqueue*"></a>
+  <h4 id="Moth_Tasks_TaskQueue_Enqueue__11_System_Action___0___1___2___3___4___5___6___7___8___9___10____0___1___2___3___4___5___6___7___8___9___10_" data-uid="Moth.Tasks.TaskQueue.Enqueue``11(System.Action{``0,``1,``2,``3,``4,``5,``6,``7,``8,``9,``10},``0,``1,``2,``3,``4,``5,``6,``7,``8,``9,``10)">Enqueue&lt;T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11&gt;(Action&lt;T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11&gt;, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11)</h4>
+  <div class="markdown level1 summary"><p>Enqueue an action to be run later with supplied arguments.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public void Enqueue&lt;T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11&gt;(Action&lt;T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11&gt; action, T1 arg1, T2 arg2, T3 arg3, T4 arg4, T5 arg5, T6 arg6, T7 arg7, T8 arg8, T9 arg9, T10 arg10, T11 arg11)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Action</span>&lt;T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11&gt;</td>
+        <td><span class="parametername">action</span></td>
+        <td><p>Action to enqueue.</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">T1</span></td>
+        <td><span class="parametername">arg1</span></td>
+        <td><p>The 1st argument to run <code data-dev-comment-type="paramref" class="paramref">action</code> with.</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">T2</span></td>
+        <td><span class="parametername">arg2</span></td>
+        <td><p>The 2nd argument to run <code data-dev-comment-type="paramref" class="paramref">action</code> with.</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">T3</span></td>
+        <td><span class="parametername">arg3</span></td>
+        <td><p>The 3rd argument to run <code data-dev-comment-type="paramref" class="paramref">action</code> with.</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">T4</span></td>
+        <td><span class="parametername">arg4</span></td>
+        <td><p>The 4th argument to run <code data-dev-comment-type="paramref" class="paramref">action</code> with.</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">T5</span></td>
+        <td><span class="parametername">arg5</span></td>
+        <td><p>The 5th argument to run <code data-dev-comment-type="paramref" class="paramref">action</code> with.</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">T6</span></td>
+        <td><span class="parametername">arg6</span></td>
+        <td><p>The 6th argument to run <code data-dev-comment-type="paramref" class="paramref">action</code> with.</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">T7</span></td>
+        <td><span class="parametername">arg7</span></td>
+        <td><p>The 7th argument to run <code data-dev-comment-type="paramref" class="paramref">action</code> with.</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">T8</span></td>
+        <td><span class="parametername">arg8</span></td>
+        <td><p>The 8th argument to run <code data-dev-comment-type="paramref" class="paramref">action</code> with.</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">T9</span></td>
+        <td><span class="parametername">arg9</span></td>
+        <td><p>The 9th argument to run <code data-dev-comment-type="paramref" class="paramref">action</code> with.</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">T10</span></td>
+        <td><span class="parametername">arg10</span></td>
+        <td><p>The 10th argument to run <code data-dev-comment-type="paramref" class="paramref">action</code> with.</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">T11</span></td>
+        <td><span class="parametername">arg11</span></td>
+        <td><p>The 11th argument to run <code data-dev-comment-type="paramref" class="paramref">action</code> with.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="typeParameters">Type Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="parametername">T1</span></td>
+        <td><p>The type of the 1st parameter of <code data-dev-comment-type="paramref" class="paramref">action</code>.</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="parametername">T2</span></td>
+        <td><p>The type of the 2nd parameter of <code data-dev-comment-type="paramref" class="paramref">action</code>.</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="parametername">T3</span></td>
+        <td><p>The type of the 3rd parameter of <code data-dev-comment-type="paramref" class="paramref">action</code>.</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="parametername">T4</span></td>
+        <td><p>The type of the 4th parameter of <code data-dev-comment-type="paramref" class="paramref">action</code>.</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="parametername">T5</span></td>
+        <td><p>The type of the 5th parameter of <code data-dev-comment-type="paramref" class="paramref">action</code>.</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="parametername">T6</span></td>
+        <td><p>The type of the 6th parameter of <code data-dev-comment-type="paramref" class="paramref">action</code>.</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="parametername">T7</span></td>
+        <td><p>The type of the 7th parameter of <code data-dev-comment-type="paramref" class="paramref">action</code>.</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="parametername">T8</span></td>
+        <td><p>The type of the 8th parameter of <code data-dev-comment-type="paramref" class="paramref">action</code>.</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="parametername">T9</span></td>
+        <td><p>The type of the 9th parameter of <code data-dev-comment-type="paramref" class="paramref">action</code>.</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="parametername">T10</span></td>
+        <td><p>The type of the 10th parameter of <code data-dev-comment-type="paramref" class="paramref">action</code>.</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="parametername">T11</span></td>
+        <td><p>The type of the 11th parameter of <code data-dev-comment-type="paramref" class="paramref">action</code>.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="exceptions">Exceptions</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Condition</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.ArgumentNullException</span></td>
+        <td><p><code data-dev-comment-type="paramref" class="paramref">action</code> is <span class="xref">null</span>.</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">System.ObjectDisposedException</span></td>
+        <td><p>The <a class="xref" href="Moth.Tasks.TaskQueue.html">TaskQueue</a> has been disposed.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/djmoth/Moth.Tasks/new/main/apiSpec/new?filename=Moth_Tasks_TaskQueue_Enqueue__12_System_Action___0___1___2___3___4___5___6___7___8___9___10___11____0___1___2___3___4___5___6___7___8___9___10___11_.md&amp;value=---%0Auid%3A%20Moth.Tasks.TaskQueue.Enqueue%60%6012(System.Action%7B%60%600%2C%60%601%2C%60%602%2C%60%603%2C%60%604%2C%60%605%2C%60%606%2C%60%607%2C%60%608%2C%60%609%2C%60%6010%2C%60%6011%7D%2C%60%600%2C%60%601%2C%60%602%2C%60%603%2C%60%604%2C%60%605%2C%60%606%2C%60%607%2C%60%608%2C%60%609%2C%60%6010%2C%60%6011)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/djmoth/Moth.Tasks/blob/main/Moth.Tasks/TaskQueueActions.cs/#L366">View Source</a>
+  </span>
+  <a id="Moth_Tasks_TaskQueue_Enqueue_" data-uid="Moth.Tasks.TaskQueue.Enqueue*"></a>
+  <h4 id="Moth_Tasks_TaskQueue_Enqueue__12_System_Action___0___1___2___3___4___5___6___7___8___9___10___11____0___1___2___3___4___5___6___7___8___9___10___11_" data-uid="Moth.Tasks.TaskQueue.Enqueue``12(System.Action{``0,``1,``2,``3,``4,``5,``6,``7,``8,``9,``10,``11},``0,``1,``2,``3,``4,``5,``6,``7,``8,``9,``10,``11)">Enqueue&lt;T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12&gt;(Action&lt;T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12&gt;, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12)</h4>
+  <div class="markdown level1 summary"><p>Enqueue an action to be run later with supplied arguments.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public void Enqueue&lt;T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12&gt;(Action&lt;T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12&gt; action, T1 arg1, T2 arg2, T3 arg3, T4 arg4, T5 arg5, T6 arg6, T7 arg7, T8 arg8, T9 arg9, T10 arg10, T11 arg11, T12 arg12)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Action</span>&lt;T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12&gt;</td>
+        <td><span class="parametername">action</span></td>
+        <td><p>Action to enqueue.</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">T1</span></td>
+        <td><span class="parametername">arg1</span></td>
+        <td><p>The 1st argument to run <code data-dev-comment-type="paramref" class="paramref">action</code> with.</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">T2</span></td>
+        <td><span class="parametername">arg2</span></td>
+        <td><p>The 2nd argument to run <code data-dev-comment-type="paramref" class="paramref">action</code> with.</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">T3</span></td>
+        <td><span class="parametername">arg3</span></td>
+        <td><p>The 3rd argument to run <code data-dev-comment-type="paramref" class="paramref">action</code> with.</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">T4</span></td>
+        <td><span class="parametername">arg4</span></td>
+        <td><p>The 4th argument to run <code data-dev-comment-type="paramref" class="paramref">action</code> with.</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">T5</span></td>
+        <td><span class="parametername">arg5</span></td>
+        <td><p>The 5th argument to run <code data-dev-comment-type="paramref" class="paramref">action</code> with.</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">T6</span></td>
+        <td><span class="parametername">arg6</span></td>
+        <td><p>The 6th argument to run <code data-dev-comment-type="paramref" class="paramref">action</code> with.</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">T7</span></td>
+        <td><span class="parametername">arg7</span></td>
+        <td><p>The 7th argument to run <code data-dev-comment-type="paramref" class="paramref">action</code> with.</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">T8</span></td>
+        <td><span class="parametername">arg8</span></td>
+        <td><p>The 8th argument to run <code data-dev-comment-type="paramref" class="paramref">action</code> with.</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">T9</span></td>
+        <td><span class="parametername">arg9</span></td>
+        <td><p>The 9th argument to run <code data-dev-comment-type="paramref" class="paramref">action</code> with.</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">T10</span></td>
+        <td><span class="parametername">arg10</span></td>
+        <td><p>The 10th argument to run <code data-dev-comment-type="paramref" class="paramref">action</code> with.</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">T11</span></td>
+        <td><span class="parametername">arg11</span></td>
+        <td><p>The 11th argument to run <code data-dev-comment-type="paramref" class="paramref">action</code> with.</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">T12</span></td>
+        <td><span class="parametername">arg12</span></td>
+        <td><p>The 12th argument to run <code data-dev-comment-type="paramref" class="paramref">action</code> with.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="typeParameters">Type Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="parametername">T1</span></td>
+        <td><p>The type of the 1st parameter of <code data-dev-comment-type="paramref" class="paramref">action</code>.</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="parametername">T2</span></td>
+        <td><p>The type of the 2nd parameter of <code data-dev-comment-type="paramref" class="paramref">action</code>.</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="parametername">T3</span></td>
+        <td><p>The type of the 3rd parameter of <code data-dev-comment-type="paramref" class="paramref">action</code>.</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="parametername">T4</span></td>
+        <td><p>The type of the 4th parameter of <code data-dev-comment-type="paramref" class="paramref">action</code>.</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="parametername">T5</span></td>
+        <td><p>The type of the 5th parameter of <code data-dev-comment-type="paramref" class="paramref">action</code>.</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="parametername">T6</span></td>
+        <td><p>The type of the 6th parameter of <code data-dev-comment-type="paramref" class="paramref">action</code>.</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="parametername">T7</span></td>
+        <td><p>The type of the 7th parameter of <code data-dev-comment-type="paramref" class="paramref">action</code>.</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="parametername">T8</span></td>
+        <td><p>The type of the 8th parameter of <code data-dev-comment-type="paramref" class="paramref">action</code>.</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="parametername">T9</span></td>
+        <td><p>The type of the 9th parameter of <code data-dev-comment-type="paramref" class="paramref">action</code>.</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="parametername">T10</span></td>
+        <td><p>The type of the 10th parameter of <code data-dev-comment-type="paramref" class="paramref">action</code>.</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="parametername">T11</span></td>
+        <td><p>The type of the 11th parameter of <code data-dev-comment-type="paramref" class="paramref">action</code>.</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="parametername">T12</span></td>
+        <td><p>The type of the 12th parameter of <code data-dev-comment-type="paramref" class="paramref">action</code>.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="exceptions">Exceptions</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Condition</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.ArgumentNullException</span></td>
+        <td><p><code data-dev-comment-type="paramref" class="paramref">action</code> is <span class="xref">null</span>.</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">System.ObjectDisposedException</span></td>
+        <td><p>The <a class="xref" href="Moth.Tasks.TaskQueue.html">TaskQueue</a> has been disposed.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/djmoth/Moth.Tasks/new/main/apiSpec/new?filename=Moth_Tasks_TaskQueue_Enqueue__13_System_Action___0___1___2___3___4___5___6___7___8___9___10___11___12____0___1___2___3___4___5___6___7___8___9___10___11___12_.md&amp;value=---%0Auid%3A%20Moth.Tasks.TaskQueue.Enqueue%60%6013(System.Action%7B%60%600%2C%60%601%2C%60%602%2C%60%603%2C%60%604%2C%60%605%2C%60%606%2C%60%607%2C%60%608%2C%60%609%2C%60%6010%2C%60%6011%2C%60%6012%7D%2C%60%600%2C%60%601%2C%60%602%2C%60%603%2C%60%604%2C%60%605%2C%60%606%2C%60%607%2C%60%608%2C%60%609%2C%60%6010%2C%60%6011%2C%60%6012)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/djmoth/Moth.Tasks/blob/main/Moth.Tasks/TaskQueueActions.cs/#L408">View Source</a>
+  </span>
+  <a id="Moth_Tasks_TaskQueue_Enqueue_" data-uid="Moth.Tasks.TaskQueue.Enqueue*"></a>
+  <h4 id="Moth_Tasks_TaskQueue_Enqueue__13_System_Action___0___1___2___3___4___5___6___7___8___9___10___11___12____0___1___2___3___4___5___6___7___8___9___10___11___12_" data-uid="Moth.Tasks.TaskQueue.Enqueue``13(System.Action{``0,``1,``2,``3,``4,``5,``6,``7,``8,``9,``10,``11,``12},``0,``1,``2,``3,``4,``5,``6,``7,``8,``9,``10,``11,``12)">Enqueue&lt;T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13&gt;(Action&lt;T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13&gt;, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13)</h4>
+  <div class="markdown level1 summary"><p>Enqueue an action to be run later with supplied arguments.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public void Enqueue&lt;T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13&gt;(Action&lt;T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13&gt; action, T1 arg1, T2 arg2, T3 arg3, T4 arg4, T5 arg5, T6 arg6, T7 arg7, T8 arg8, T9 arg9, T10 arg10, T11 arg11, T12 arg12, T13 arg13)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Action</span>&lt;T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13&gt;</td>
+        <td><span class="parametername">action</span></td>
+        <td><p>Action to enqueue.</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">T1</span></td>
+        <td><span class="parametername">arg1</span></td>
+        <td><p>The 1st argument to run <code data-dev-comment-type="paramref" class="paramref">action</code> with.</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">T2</span></td>
+        <td><span class="parametername">arg2</span></td>
+        <td><p>The 2nd argument to run <code data-dev-comment-type="paramref" class="paramref">action</code> with.</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">T3</span></td>
+        <td><span class="parametername">arg3</span></td>
+        <td><p>The 3rd argument to run <code data-dev-comment-type="paramref" class="paramref">action</code> with.</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">T4</span></td>
+        <td><span class="parametername">arg4</span></td>
+        <td><p>The 4th argument to run <code data-dev-comment-type="paramref" class="paramref">action</code> with.</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">T5</span></td>
+        <td><span class="parametername">arg5</span></td>
+        <td><p>The 5th argument to run <code data-dev-comment-type="paramref" class="paramref">action</code> with.</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">T6</span></td>
+        <td><span class="parametername">arg6</span></td>
+        <td><p>The 6th argument to run <code data-dev-comment-type="paramref" class="paramref">action</code> with.</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">T7</span></td>
+        <td><span class="parametername">arg7</span></td>
+        <td><p>The 7th argument to run <code data-dev-comment-type="paramref" class="paramref">action</code> with.</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">T8</span></td>
+        <td><span class="parametername">arg8</span></td>
+        <td><p>The 8th argument to run <code data-dev-comment-type="paramref" class="paramref">action</code> with.</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">T9</span></td>
+        <td><span class="parametername">arg9</span></td>
+        <td><p>The 9th argument to run <code data-dev-comment-type="paramref" class="paramref">action</code> with.</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">T10</span></td>
+        <td><span class="parametername">arg10</span></td>
+        <td><p>The 10th argument to run <code data-dev-comment-type="paramref" class="paramref">action</code> with.</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">T11</span></td>
+        <td><span class="parametername">arg11</span></td>
+        <td><p>The 11th argument to run <code data-dev-comment-type="paramref" class="paramref">action</code> with.</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">T12</span></td>
+        <td><span class="parametername">arg12</span></td>
+        <td><p>The 12th argument to run <code data-dev-comment-type="paramref" class="paramref">action</code> with.</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">T13</span></td>
+        <td><span class="parametername">arg13</span></td>
+        <td><p>The 13th argument to run <code data-dev-comment-type="paramref" class="paramref">action</code> with.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="typeParameters">Type Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="parametername">T1</span></td>
+        <td><p>The type of the 1st parameter of <code data-dev-comment-type="paramref" class="paramref">action</code>.</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="parametername">T2</span></td>
+        <td><p>The type of the 2nd parameter of <code data-dev-comment-type="paramref" class="paramref">action</code>.</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="parametername">T3</span></td>
+        <td><p>The type of the 3rd parameter of <code data-dev-comment-type="paramref" class="paramref">action</code>.</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="parametername">T4</span></td>
+        <td><p>The type of the 4th parameter of <code data-dev-comment-type="paramref" class="paramref">action</code>.</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="parametername">T5</span></td>
+        <td><p>The type of the 5th parameter of <code data-dev-comment-type="paramref" class="paramref">action</code>.</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="parametername">T6</span></td>
+        <td><p>The type of the 6th parameter of <code data-dev-comment-type="paramref" class="paramref">action</code>.</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="parametername">T7</span></td>
+        <td><p>The type of the 7th parameter of <code data-dev-comment-type="paramref" class="paramref">action</code>.</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="parametername">T8</span></td>
+        <td><p>The type of the 8th parameter of <code data-dev-comment-type="paramref" class="paramref">action</code>.</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="parametername">T9</span></td>
+        <td><p>The type of the 9th parameter of <code data-dev-comment-type="paramref" class="paramref">action</code>.</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="parametername">T10</span></td>
+        <td><p>The type of the 10th parameter of <code data-dev-comment-type="paramref" class="paramref">action</code>.</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="parametername">T11</span></td>
+        <td><p>The type of the 11th parameter of <code data-dev-comment-type="paramref" class="paramref">action</code>.</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="parametername">T12</span></td>
+        <td><p>The type of the 12th parameter of <code data-dev-comment-type="paramref" class="paramref">action</code>.</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="parametername">T13</span></td>
+        <td><p>The type of the 13th parameter of <code data-dev-comment-type="paramref" class="paramref">action</code>.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="exceptions">Exceptions</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Condition</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.ArgumentNullException</span></td>
+        <td><p><code data-dev-comment-type="paramref" class="paramref">action</code> is <span class="xref">null</span>.</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">System.ObjectDisposedException</span></td>
+        <td><p>The <a class="xref" href="Moth.Tasks.TaskQueue.html">TaskQueue</a> has been disposed.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/djmoth/Moth.Tasks/new/main/apiSpec/new?filename=Moth_Tasks_TaskQueue_Enqueue__14_System_Action___0___1___2___3___4___5___6___7___8___9___10___11___12___13____0___1___2___3___4___5___6___7___8___9___10___11___12___13_.md&amp;value=---%0Auid%3A%20Moth.Tasks.TaskQueue.Enqueue%60%6014(System.Action%7B%60%600%2C%60%601%2C%60%602%2C%60%603%2C%60%604%2C%60%605%2C%60%606%2C%60%607%2C%60%608%2C%60%609%2C%60%6010%2C%60%6011%2C%60%6012%2C%60%6013%7D%2C%60%600%2C%60%601%2C%60%602%2C%60%603%2C%60%604%2C%60%605%2C%60%606%2C%60%607%2C%60%608%2C%60%609%2C%60%6010%2C%60%6011%2C%60%6012%2C%60%6013)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/djmoth/Moth.Tasks/blob/main/Moth.Tasks/TaskQueueActions.cs/#L452">View Source</a>
+  </span>
+  <a id="Moth_Tasks_TaskQueue_Enqueue_" data-uid="Moth.Tasks.TaskQueue.Enqueue*"></a>
+  <h4 id="Moth_Tasks_TaskQueue_Enqueue__14_System_Action___0___1___2___3___4___5___6___7___8___9___10___11___12___13____0___1___2___3___4___5___6___7___8___9___10___11___12___13_" data-uid="Moth.Tasks.TaskQueue.Enqueue``14(System.Action{``0,``1,``2,``3,``4,``5,``6,``7,``8,``9,``10,``11,``12,``13},``0,``1,``2,``3,``4,``5,``6,``7,``8,``9,``10,``11,``12,``13)">Enqueue&lt;T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14&gt;(Action&lt;T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14&gt;, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14)</h4>
+  <div class="markdown level1 summary"><p>Enqueue an action to be run later with supplied arguments.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public void Enqueue&lt;T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14&gt;(Action&lt;T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14&gt; action, T1 arg1, T2 arg2, T3 arg3, T4 arg4, T5 arg5, T6 arg6, T7 arg7, T8 arg8, T9 arg9, T10 arg10, T11 arg11, T12 arg12, T13 arg13, T14 arg14)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Action</span>&lt;T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14&gt;</td>
+        <td><span class="parametername">action</span></td>
+        <td><p>Action to enqueue.</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">T1</span></td>
+        <td><span class="parametername">arg1</span></td>
+        <td><p>The 1st argument to run <code data-dev-comment-type="paramref" class="paramref">action</code> with.</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">T2</span></td>
+        <td><span class="parametername">arg2</span></td>
+        <td><p>The 2nd argument to run <code data-dev-comment-type="paramref" class="paramref">action</code> with.</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">T3</span></td>
+        <td><span class="parametername">arg3</span></td>
+        <td><p>The 3rd argument to run <code data-dev-comment-type="paramref" class="paramref">action</code> with.</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">T4</span></td>
+        <td><span class="parametername">arg4</span></td>
+        <td><p>The 4th argument to run <code data-dev-comment-type="paramref" class="paramref">action</code> with.</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">T5</span></td>
+        <td><span class="parametername">arg5</span></td>
+        <td><p>The 5th argument to run <code data-dev-comment-type="paramref" class="paramref">action</code> with.</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">T6</span></td>
+        <td><span class="parametername">arg6</span></td>
+        <td><p>The 6th argument to run <code data-dev-comment-type="paramref" class="paramref">action</code> with.</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">T7</span></td>
+        <td><span class="parametername">arg7</span></td>
+        <td><p>The 7th argument to run <code data-dev-comment-type="paramref" class="paramref">action</code> with.</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">T8</span></td>
+        <td><span class="parametername">arg8</span></td>
+        <td><p>The 8th argument to run <code data-dev-comment-type="paramref" class="paramref">action</code> with.</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">T9</span></td>
+        <td><span class="parametername">arg9</span></td>
+        <td><p>The 9th argument to run <code data-dev-comment-type="paramref" class="paramref">action</code> with.</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">T10</span></td>
+        <td><span class="parametername">arg10</span></td>
+        <td><p>The 10th argument to run <code data-dev-comment-type="paramref" class="paramref">action</code> with.</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">T11</span></td>
+        <td><span class="parametername">arg11</span></td>
+        <td><p>The 11th argument to run <code data-dev-comment-type="paramref" class="paramref">action</code> with.</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">T12</span></td>
+        <td><span class="parametername">arg12</span></td>
+        <td><p>The 12th argument to run <code data-dev-comment-type="paramref" class="paramref">action</code> with.</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">T13</span></td>
+        <td><span class="parametername">arg13</span></td>
+        <td><p>The 13th argument to run <code data-dev-comment-type="paramref" class="paramref">action</code> with.</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">T14</span></td>
+        <td><span class="parametername">arg14</span></td>
+        <td><p>The 14th argument to run <code data-dev-comment-type="paramref" class="paramref">action</code> with.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="typeParameters">Type Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="parametername">T1</span></td>
+        <td><p>The type of the 1st parameter of <code data-dev-comment-type="paramref" class="paramref">action</code>.</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="parametername">T2</span></td>
+        <td><p>The type of the 2nd parameter of <code data-dev-comment-type="paramref" class="paramref">action</code>.</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="parametername">T3</span></td>
+        <td><p>The type of the 3rd parameter of <code data-dev-comment-type="paramref" class="paramref">action</code>.</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="parametername">T4</span></td>
+        <td><p>The type of the 4th parameter of <code data-dev-comment-type="paramref" class="paramref">action</code>.</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="parametername">T5</span></td>
+        <td><p>The type of the 5th parameter of <code data-dev-comment-type="paramref" class="paramref">action</code>.</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="parametername">T6</span></td>
+        <td><p>The type of the 6th parameter of <code data-dev-comment-type="paramref" class="paramref">action</code>.</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="parametername">T7</span></td>
+        <td><p>The type of the 7th parameter of <code data-dev-comment-type="paramref" class="paramref">action</code>.</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="parametername">T8</span></td>
+        <td><p>The type of the 8th parameter of <code data-dev-comment-type="paramref" class="paramref">action</code>.</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="parametername">T9</span></td>
+        <td><p>The type of the 9th parameter of <code data-dev-comment-type="paramref" class="paramref">action</code>.</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="parametername">T10</span></td>
+        <td><p>The type of the 10th parameter of <code data-dev-comment-type="paramref" class="paramref">action</code>.</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="parametername">T11</span></td>
+        <td><p>The type of the 11th parameter of <code data-dev-comment-type="paramref" class="paramref">action</code>.</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="parametername">T12</span></td>
+        <td><p>The type of the 12th parameter of <code data-dev-comment-type="paramref" class="paramref">action</code>.</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="parametername">T13</span></td>
+        <td><p>The type of the 13th parameter of <code data-dev-comment-type="paramref" class="paramref">action</code>.</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="parametername">T14</span></td>
+        <td><p>The type of the 14th parameter of <code data-dev-comment-type="paramref" class="paramref">action</code>.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="exceptions">Exceptions</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Condition</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.ArgumentNullException</span></td>
+        <td><p><code data-dev-comment-type="paramref" class="paramref">action</code> is <span class="xref">null</span>.</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">System.ObjectDisposedException</span></td>
+        <td><p>The <a class="xref" href="Moth.Tasks.TaskQueue.html">TaskQueue</a> has been disposed.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/djmoth/Moth.Tasks/new/main/apiSpec/new?filename=Moth_Tasks_TaskQueue_Enqueue__15_System_Action___0___1___2___3___4___5___6___7___8___9___10___11___12___13___14____0___1___2___3___4___5___6___7___8___9___10___11___12___13___14_.md&amp;value=---%0Auid%3A%20Moth.Tasks.TaskQueue.Enqueue%60%6015(System.Action%7B%60%600%2C%60%601%2C%60%602%2C%60%603%2C%60%604%2C%60%605%2C%60%606%2C%60%607%2C%60%608%2C%60%609%2C%60%6010%2C%60%6011%2C%60%6012%2C%60%6013%2C%60%6014%7D%2C%60%600%2C%60%601%2C%60%602%2C%60%603%2C%60%604%2C%60%605%2C%60%606%2C%60%607%2C%60%608%2C%60%609%2C%60%6010%2C%60%6011%2C%60%6012%2C%60%6013%2C%60%6014)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/djmoth/Moth.Tasks/blob/main/Moth.Tasks/TaskQueueActions.cs/#L498">View Source</a>
+  </span>
+  <a id="Moth_Tasks_TaskQueue_Enqueue_" data-uid="Moth.Tasks.TaskQueue.Enqueue*"></a>
+  <h4 id="Moth_Tasks_TaskQueue_Enqueue__15_System_Action___0___1___2___3___4___5___6___7___8___9___10___11___12___13___14____0___1___2___3___4___5___6___7___8___9___10___11___12___13___14_" data-uid="Moth.Tasks.TaskQueue.Enqueue``15(System.Action{``0,``1,``2,``3,``4,``5,``6,``7,``8,``9,``10,``11,``12,``13,``14},``0,``1,``2,``3,``4,``5,``6,``7,``8,``9,``10,``11,``12,``13,``14)">Enqueue&lt;T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15&gt;(Action&lt;T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15&gt;, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15)</h4>
+  <div class="markdown level1 summary"><p>Enqueue an action to be run later with supplied arguments.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public void Enqueue&lt;T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15&gt;(Action&lt;T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15&gt; action, T1 arg1, T2 arg2, T3 arg3, T4 arg4, T5 arg5, T6 arg6, T7 arg7, T8 arg8, T9 arg9, T10 arg10, T11 arg11, T12 arg12, T13 arg13, T14 arg14, T15 arg15)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Action</span>&lt;T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15&gt;</td>
+        <td><span class="parametername">action</span></td>
+        <td><p>Action to enqueue.</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">T1</span></td>
+        <td><span class="parametername">arg1</span></td>
+        <td><p>The 1st argument to run <code data-dev-comment-type="paramref" class="paramref">action</code> with.</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">T2</span></td>
+        <td><span class="parametername">arg2</span></td>
+        <td><p>The 2nd argument to run <code data-dev-comment-type="paramref" class="paramref">action</code> with.</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">T3</span></td>
+        <td><span class="parametername">arg3</span></td>
+        <td><p>The 3rd argument to run <code data-dev-comment-type="paramref" class="paramref">action</code> with.</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">T4</span></td>
+        <td><span class="parametername">arg4</span></td>
+        <td><p>The 4th argument to run <code data-dev-comment-type="paramref" class="paramref">action</code> with.</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">T5</span></td>
+        <td><span class="parametername">arg5</span></td>
+        <td><p>The 5th argument to run <code data-dev-comment-type="paramref" class="paramref">action</code> with.</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">T6</span></td>
+        <td><span class="parametername">arg6</span></td>
+        <td><p>The 6th argument to run <code data-dev-comment-type="paramref" class="paramref">action</code> with.</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">T7</span></td>
+        <td><span class="parametername">arg7</span></td>
+        <td><p>The 7th argument to run <code data-dev-comment-type="paramref" class="paramref">action</code> with.</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">T8</span></td>
+        <td><span class="parametername">arg8</span></td>
+        <td><p>The 8th argument to run <code data-dev-comment-type="paramref" class="paramref">action</code> with.</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">T9</span></td>
+        <td><span class="parametername">arg9</span></td>
+        <td><p>The 9th argument to run <code data-dev-comment-type="paramref" class="paramref">action</code> with.</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">T10</span></td>
+        <td><span class="parametername">arg10</span></td>
+        <td><p>The 10th argument to run <code data-dev-comment-type="paramref" class="paramref">action</code> with.</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">T11</span></td>
+        <td><span class="parametername">arg11</span></td>
+        <td><p>The 11th argument to run <code data-dev-comment-type="paramref" class="paramref">action</code> with.</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">T12</span></td>
+        <td><span class="parametername">arg12</span></td>
+        <td><p>The 12th argument to run <code data-dev-comment-type="paramref" class="paramref">action</code> with.</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">T13</span></td>
+        <td><span class="parametername">arg13</span></td>
+        <td><p>The 13th argument to run <code data-dev-comment-type="paramref" class="paramref">action</code> with.</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">T14</span></td>
+        <td><span class="parametername">arg14</span></td>
+        <td><p>The 14th argument to run <code data-dev-comment-type="paramref" class="paramref">action</code> with.</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">T15</span></td>
+        <td><span class="parametername">arg15</span></td>
+        <td><p>The 15th argument to run <code data-dev-comment-type="paramref" class="paramref">action</code> with.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="typeParameters">Type Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="parametername">T1</span></td>
+        <td><p>The type of the 1st parameter of <code data-dev-comment-type="paramref" class="paramref">action</code>.</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="parametername">T2</span></td>
+        <td><p>The type of the 2nd parameter of <code data-dev-comment-type="paramref" class="paramref">action</code>.</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="parametername">T3</span></td>
+        <td><p>The type of the 3rd parameter of <code data-dev-comment-type="paramref" class="paramref">action</code>.</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="parametername">T4</span></td>
+        <td><p>The type of the 4th parameter of <code data-dev-comment-type="paramref" class="paramref">action</code>.</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="parametername">T5</span></td>
+        <td><p>The type of the 5th parameter of <code data-dev-comment-type="paramref" class="paramref">action</code>.</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="parametername">T6</span></td>
+        <td><p>The type of the 6th parameter of <code data-dev-comment-type="paramref" class="paramref">action</code>.</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="parametername">T7</span></td>
+        <td><p>The type of the 7th parameter of <code data-dev-comment-type="paramref" class="paramref">action</code>.</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="parametername">T8</span></td>
+        <td><p>The type of the 8th parameter of <code data-dev-comment-type="paramref" class="paramref">action</code>.</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="parametername">T9</span></td>
+        <td><p>The type of the 9th parameter of <code data-dev-comment-type="paramref" class="paramref">action</code>.</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="parametername">T10</span></td>
+        <td><p>The type of the 10th parameter of <code data-dev-comment-type="paramref" class="paramref">action</code>.</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="parametername">T11</span></td>
+        <td><p>The type of the 11th parameter of <code data-dev-comment-type="paramref" class="paramref">action</code>.</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="parametername">T12</span></td>
+        <td><p>The type of the 12th parameter of <code data-dev-comment-type="paramref" class="paramref">action</code>.</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="parametername">T13</span></td>
+        <td><p>The type of the 13th parameter of <code data-dev-comment-type="paramref" class="paramref">action</code>.</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="parametername">T14</span></td>
+        <td><p>The type of the 14th parameter of <code data-dev-comment-type="paramref" class="paramref">action</code>.</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="parametername">T15</span></td>
+        <td><p>The type of the 15th parameter of <code data-dev-comment-type="paramref" class="paramref">action</code>.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="exceptions">Exceptions</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Condition</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.ArgumentNullException</span></td>
+        <td><p><code data-dev-comment-type="paramref" class="paramref">action</code> is <span class="xref">null</span>.</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">System.ObjectDisposedException</span></td>
+        <td><p>The <a class="xref" href="Moth.Tasks.TaskQueue.html">TaskQueue</a> has been disposed.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/djmoth/Moth.Tasks/new/main/apiSpec/new?filename=Moth_Tasks_TaskQueue_Enqueue__16_System_Action___0___1___2___3___4___5___6___7___8___9___10___11___12___13___14___15____0___1___2___3___4___5___6___7___8___9___10___11___12___13___14___15_.md&amp;value=---%0Auid%3A%20Moth.Tasks.TaskQueue.Enqueue%60%6016(System.Action%7B%60%600%2C%60%601%2C%60%602%2C%60%603%2C%60%604%2C%60%605%2C%60%606%2C%60%607%2C%60%608%2C%60%609%2C%60%6010%2C%60%6011%2C%60%6012%2C%60%6013%2C%60%6014%2C%60%6015%7D%2C%60%600%2C%60%601%2C%60%602%2C%60%603%2C%60%604%2C%60%605%2C%60%606%2C%60%607%2C%60%608%2C%60%609%2C%60%6010%2C%60%6011%2C%60%6012%2C%60%6013%2C%60%6014%2C%60%6015)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/djmoth/Moth.Tasks/blob/main/Moth.Tasks/TaskQueueActions.cs/#L546">View Source</a>
+  </span>
+  <a id="Moth_Tasks_TaskQueue_Enqueue_" data-uid="Moth.Tasks.TaskQueue.Enqueue*"></a>
+  <h4 id="Moth_Tasks_TaskQueue_Enqueue__16_System_Action___0___1___2___3___4___5___6___7___8___9___10___11___12___13___14___15____0___1___2___3___4___5___6___7___8___9___10___11___12___13___14___15_" data-uid="Moth.Tasks.TaskQueue.Enqueue``16(System.Action{``0,``1,``2,``3,``4,``5,``6,``7,``8,``9,``10,``11,``12,``13,``14,``15},``0,``1,``2,``3,``4,``5,``6,``7,``8,``9,``10,``11,``12,``13,``14,``15)">Enqueue&lt;T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, T16&gt;(Action&lt;T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, T16&gt;, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, T16)</h4>
+  <div class="markdown level1 summary"><p>Enqueue an action to be run later with supplied arguments.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public void Enqueue&lt;T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, T16&gt;(Action&lt;T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, T16&gt; action, T1 arg1, T2 arg2, T3 arg3, T4 arg4, T5 arg5, T6 arg6, T7 arg7, T8 arg8, T9 arg9, T10 arg10, T11 arg11, T12 arg12, T13 arg13, T14 arg14, T15 arg15, T16 arg16)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Action</span>&lt;T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, T16&gt;</td>
+        <td><span class="parametername">action</span></td>
+        <td><p>Action to enqueue.</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">T1</span></td>
+        <td><span class="parametername">arg1</span></td>
+        <td><p>The 1st argument to run <code data-dev-comment-type="paramref" class="paramref">action</code> with.</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">T2</span></td>
+        <td><span class="parametername">arg2</span></td>
+        <td><p>The 2nd argument to run <code data-dev-comment-type="paramref" class="paramref">action</code> with.</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">T3</span></td>
+        <td><span class="parametername">arg3</span></td>
+        <td><p>The 3rd argument to run <code data-dev-comment-type="paramref" class="paramref">action</code> with.</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">T4</span></td>
+        <td><span class="parametername">arg4</span></td>
+        <td><p>The 4th argument to run <code data-dev-comment-type="paramref" class="paramref">action</code> with.</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">T5</span></td>
+        <td><span class="parametername">arg5</span></td>
+        <td><p>The 5th argument to run <code data-dev-comment-type="paramref" class="paramref">action</code> with.</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">T6</span></td>
+        <td><span class="parametername">arg6</span></td>
+        <td><p>The 6th argument to run <code data-dev-comment-type="paramref" class="paramref">action</code> with.</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">T7</span></td>
+        <td><span class="parametername">arg7</span></td>
+        <td><p>The 7th argument to run <code data-dev-comment-type="paramref" class="paramref">action</code> with.</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">T8</span></td>
+        <td><span class="parametername">arg8</span></td>
+        <td><p>The 8th argument to run <code data-dev-comment-type="paramref" class="paramref">action</code> with.</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">T9</span></td>
+        <td><span class="parametername">arg9</span></td>
+        <td><p>The 9th argument to run <code data-dev-comment-type="paramref" class="paramref">action</code> with.</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">T10</span></td>
+        <td><span class="parametername">arg10</span></td>
+        <td><p>The 10th argument to run <code data-dev-comment-type="paramref" class="paramref">action</code> with.</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">T11</span></td>
+        <td><span class="parametername">arg11</span></td>
+        <td><p>The 11th argument to run <code data-dev-comment-type="paramref" class="paramref">action</code> with.</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">T12</span></td>
+        <td><span class="parametername">arg12</span></td>
+        <td><p>The 12th argument to run <code data-dev-comment-type="paramref" class="paramref">action</code> with.</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">T13</span></td>
+        <td><span class="parametername">arg13</span></td>
+        <td><p>The 13th argument to run <code data-dev-comment-type="paramref" class="paramref">action</code> with.</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">T14</span></td>
+        <td><span class="parametername">arg14</span></td>
+        <td><p>The 14th argument to run <code data-dev-comment-type="paramref" class="paramref">action</code> with.</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">T15</span></td>
+        <td><span class="parametername">arg15</span></td>
+        <td><p>The 15th argument to run <code data-dev-comment-type="paramref" class="paramref">action</code> with.</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">T16</span></td>
+        <td><span class="parametername">arg16</span></td>
+        <td><p>The 16th argument to run <code data-dev-comment-type="paramref" class="paramref">action</code> with.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="typeParameters">Type Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="parametername">T1</span></td>
+        <td><p>The type of the 1st parameter of <code data-dev-comment-type="paramref" class="paramref">action</code>.</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="parametername">T2</span></td>
+        <td><p>The type of the 2nd parameter of <code data-dev-comment-type="paramref" class="paramref">action</code>.</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="parametername">T3</span></td>
+        <td><p>The type of the 3rd parameter of <code data-dev-comment-type="paramref" class="paramref">action</code>.</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="parametername">T4</span></td>
+        <td><p>The type of the 4th parameter of <code data-dev-comment-type="paramref" class="paramref">action</code>.</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="parametername">T5</span></td>
+        <td><p>The type of the 5th parameter of <code data-dev-comment-type="paramref" class="paramref">action</code>.</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="parametername">T6</span></td>
+        <td><p>The type of the 6th parameter of <code data-dev-comment-type="paramref" class="paramref">action</code>.</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="parametername">T7</span></td>
+        <td><p>The type of the 7th parameter of <code data-dev-comment-type="paramref" class="paramref">action</code>.</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="parametername">T8</span></td>
+        <td><p>The type of the 8th parameter of <code data-dev-comment-type="paramref" class="paramref">action</code>.</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="parametername">T9</span></td>
+        <td><p>The type of the 9th parameter of <code data-dev-comment-type="paramref" class="paramref">action</code>.</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="parametername">T10</span></td>
+        <td><p>The type of the 10th parameter of <code data-dev-comment-type="paramref" class="paramref">action</code>.</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="parametername">T11</span></td>
+        <td><p>The type of the 11th parameter of <code data-dev-comment-type="paramref" class="paramref">action</code>.</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="parametername">T12</span></td>
+        <td><p>The type of the 12th parameter of <code data-dev-comment-type="paramref" class="paramref">action</code>.</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="parametername">T13</span></td>
+        <td><p>The type of the 13th parameter of <code data-dev-comment-type="paramref" class="paramref">action</code>.</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="parametername">T14</span></td>
+        <td><p>The type of the 14th parameter of <code data-dev-comment-type="paramref" class="paramref">action</code>.</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="parametername">T15</span></td>
+        <td><p>The type of the 15th parameter of <code data-dev-comment-type="paramref" class="paramref">action</code>.</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="parametername">T16</span></td>
+        <td><p>The type of the 16th parameter of <code data-dev-comment-type="paramref" class="paramref">action</code>.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="exceptions">Exceptions</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Condition</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.ArgumentNullException</span></td>
+        <td><p><code data-dev-comment-type="paramref" class="paramref">action</code> is <span class="xref">null</span>.</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">System.ObjectDisposedException</span></td>
+        <td><p>The <a class="xref" href="Moth.Tasks.TaskQueue.html">TaskQueue</a> has been disposed.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/djmoth/Moth.Tasks/new/main/apiSpec/new?filename=Moth_Tasks_TaskQueue_Enqueue__2_System_Action___0___1____0___1_.md&amp;value=---%0Auid%3A%20Moth.Tasks.TaskQueue.Enqueue%60%602(System.Action%7B%60%600%2C%60%601%7D%2C%60%600%2C%60%601)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/djmoth/Moth.Tasks/blob/main/Moth.Tasks/TaskQueueActions.cs/#L56">View Source</a>
+  </span>
+  <a id="Moth_Tasks_TaskQueue_Enqueue_" data-uid="Moth.Tasks.TaskQueue.Enqueue*"></a>
+  <h4 id="Moth_Tasks_TaskQueue_Enqueue__2_System_Action___0___1____0___1_" data-uid="Moth.Tasks.TaskQueue.Enqueue``2(System.Action{``0,``1},``0,``1)">Enqueue&lt;T1, T2&gt;(Action&lt;T1, T2&gt;, T1, T2)</h4>
+  <div class="markdown level1 summary"><p>Enqueue an action to be run later with supplied arguments.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public void Enqueue&lt;T1, T2&gt;(Action&lt;T1, T2&gt; action, T1 arg1, T2 arg2)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Action</span>&lt;T1, T2&gt;</td>
+        <td><span class="parametername">action</span></td>
+        <td><p>Action to enqueue.</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">T1</span></td>
+        <td><span class="parametername">arg1</span></td>
+        <td><p>The 1st argument to run <code data-dev-comment-type="paramref" class="paramref">action</code> with.</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">T2</span></td>
+        <td><span class="parametername">arg2</span></td>
+        <td><p>The 2nd argument to run <code data-dev-comment-type="paramref" class="paramref">action</code> with.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="typeParameters">Type Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="parametername">T1</span></td>
+        <td><p>The type of the 1st parameter of <code data-dev-comment-type="paramref" class="paramref">action</code>.</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="parametername">T2</span></td>
+        <td><p>The type of the 2nd parameter of <code data-dev-comment-type="paramref" class="paramref">action</code>.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="exceptions">Exceptions</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Condition</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.ArgumentNullException</span></td>
+        <td><p><code data-dev-comment-type="paramref" class="paramref">action</code> is <span class="xref">null</span>.</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">System.ObjectDisposedException</span></td>
+        <td><p>The <a class="xref" href="Moth.Tasks.TaskQueue.html">TaskQueue</a> has been disposed.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/djmoth/Moth.Tasks/new/main/apiSpec/new?filename=Moth_Tasks_TaskQueue_Enqueue__3_System_Action___0___1___2____0___1___2_.md&amp;value=---%0Auid%3A%20Moth.Tasks.TaskQueue.Enqueue%60%603(System.Action%7B%60%600%2C%60%601%2C%60%602%7D%2C%60%600%2C%60%601%2C%60%602)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/djmoth/Moth.Tasks/blob/main/Moth.Tasks/TaskQueueActions.cs/#L78">View Source</a>
+  </span>
+  <a id="Moth_Tasks_TaskQueue_Enqueue_" data-uid="Moth.Tasks.TaskQueue.Enqueue*"></a>
+  <h4 id="Moth_Tasks_TaskQueue_Enqueue__3_System_Action___0___1___2____0___1___2_" data-uid="Moth.Tasks.TaskQueue.Enqueue``3(System.Action{``0,``1,``2},``0,``1,``2)">Enqueue&lt;T1, T2, T3&gt;(Action&lt;T1, T2, T3&gt;, T1, T2, T3)</h4>
+  <div class="markdown level1 summary"><p>Enqueue an action to be run later with supplied arguments.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public void Enqueue&lt;T1, T2, T3&gt;(Action&lt;T1, T2, T3&gt; action, T1 arg1, T2 arg2, T3 arg3)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Action</span>&lt;T1, T2, T3&gt;</td>
+        <td><span class="parametername">action</span></td>
+        <td><p>Action to enqueue.</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">T1</span></td>
+        <td><span class="parametername">arg1</span></td>
+        <td><p>The 1st argument to run <code data-dev-comment-type="paramref" class="paramref">action</code> with.</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">T2</span></td>
+        <td><span class="parametername">arg2</span></td>
+        <td><p>The 2nd argument to run <code data-dev-comment-type="paramref" class="paramref">action</code> with.</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">T3</span></td>
+        <td><span class="parametername">arg3</span></td>
+        <td><p>The 3rd argument to run <code data-dev-comment-type="paramref" class="paramref">action</code> with.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="typeParameters">Type Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="parametername">T1</span></td>
+        <td><p>The type of the 1st parameter of <code data-dev-comment-type="paramref" class="paramref">action</code>.</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="parametername">T2</span></td>
+        <td><p>The type of the 2nd parameter of <code data-dev-comment-type="paramref" class="paramref">action</code>.</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="parametername">T3</span></td>
+        <td><p>The type of the 3rd parameter of <code data-dev-comment-type="paramref" class="paramref">action</code>.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="exceptions">Exceptions</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Condition</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.ArgumentNullException</span></td>
+        <td><p><code data-dev-comment-type="paramref" class="paramref">action</code> is <span class="xref">null</span>.</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">System.ObjectDisposedException</span></td>
+        <td><p>The <a class="xref" href="Moth.Tasks.TaskQueue.html">TaskQueue</a> has been disposed.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/djmoth/Moth.Tasks/new/main/apiSpec/new?filename=Moth_Tasks_TaskQueue_Enqueue__4_System_Action___0___1___2___3____0___1___2___3_.md&amp;value=---%0Auid%3A%20Moth.Tasks.TaskQueue.Enqueue%60%604(System.Action%7B%60%600%2C%60%601%2C%60%602%2C%60%603%7D%2C%60%600%2C%60%601%2C%60%602%2C%60%603)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/djmoth/Moth.Tasks/blob/main/Moth.Tasks/TaskQueueActions.cs/#L102">View Source</a>
+  </span>
+  <a id="Moth_Tasks_TaskQueue_Enqueue_" data-uid="Moth.Tasks.TaskQueue.Enqueue*"></a>
+  <h4 id="Moth_Tasks_TaskQueue_Enqueue__4_System_Action___0___1___2___3____0___1___2___3_" data-uid="Moth.Tasks.TaskQueue.Enqueue``4(System.Action{``0,``1,``2,``3},``0,``1,``2,``3)">Enqueue&lt;T1, T2, T3, T4&gt;(Action&lt;T1, T2, T3, T4&gt;, T1, T2, T3, T4)</h4>
+  <div class="markdown level1 summary"><p>Enqueue an action to be run later with supplied arguments.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public void Enqueue&lt;T1, T2, T3, T4&gt;(Action&lt;T1, T2, T3, T4&gt; action, T1 arg1, T2 arg2, T3 arg3, T4 arg4)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Action</span>&lt;T1, T2, T3, T4&gt;</td>
+        <td><span class="parametername">action</span></td>
+        <td><p>Action to enqueue.</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">T1</span></td>
+        <td><span class="parametername">arg1</span></td>
+        <td><p>The 1st argument to run <code data-dev-comment-type="paramref" class="paramref">action</code> with.</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">T2</span></td>
+        <td><span class="parametername">arg2</span></td>
+        <td><p>The 2nd argument to run <code data-dev-comment-type="paramref" class="paramref">action</code> with.</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">T3</span></td>
+        <td><span class="parametername">arg3</span></td>
+        <td><p>The 3rd argument to run <code data-dev-comment-type="paramref" class="paramref">action</code> with.</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">T4</span></td>
+        <td><span class="parametername">arg4</span></td>
+        <td><p>The 4th argument to run <code data-dev-comment-type="paramref" class="paramref">action</code> with.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="typeParameters">Type Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="parametername">T1</span></td>
+        <td><p>The type of the 1st parameter of <code data-dev-comment-type="paramref" class="paramref">action</code>.</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="parametername">T2</span></td>
+        <td><p>The type of the 2nd parameter of <code data-dev-comment-type="paramref" class="paramref">action</code>.</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="parametername">T3</span></td>
+        <td><p>The type of the 3rd parameter of <code data-dev-comment-type="paramref" class="paramref">action</code>.</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="parametername">T4</span></td>
+        <td><p>The type of the 4th parameter of <code data-dev-comment-type="paramref" class="paramref">action</code>.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="exceptions">Exceptions</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Condition</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.ArgumentNullException</span></td>
+        <td><p><code data-dev-comment-type="paramref" class="paramref">action</code> is <span class="xref">null</span>.</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">System.ObjectDisposedException</span></td>
+        <td><p>The <a class="xref" href="Moth.Tasks.TaskQueue.html">TaskQueue</a> has been disposed.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/djmoth/Moth.Tasks/new/main/apiSpec/new?filename=Moth_Tasks_TaskQueue_Enqueue__5_System_Action___0___1___2___3___4____0___1___2___3___4_.md&amp;value=---%0Auid%3A%20Moth.Tasks.TaskQueue.Enqueue%60%605(System.Action%7B%60%600%2C%60%601%2C%60%602%2C%60%603%2C%60%604%7D%2C%60%600%2C%60%601%2C%60%602%2C%60%603%2C%60%604)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/djmoth/Moth.Tasks/blob/main/Moth.Tasks/TaskQueueActions.cs/#L128">View Source</a>
+  </span>
+  <a id="Moth_Tasks_TaskQueue_Enqueue_" data-uid="Moth.Tasks.TaskQueue.Enqueue*"></a>
+  <h4 id="Moth_Tasks_TaskQueue_Enqueue__5_System_Action___0___1___2___3___4____0___1___2___3___4_" data-uid="Moth.Tasks.TaskQueue.Enqueue``5(System.Action{``0,``1,``2,``3,``4},``0,``1,``2,``3,``4)">Enqueue&lt;T1, T2, T3, T4, T5&gt;(Action&lt;T1, T2, T3, T4, T5&gt;, T1, T2, T3, T4, T5)</h4>
+  <div class="markdown level1 summary"><p>Enqueue an action to be run later with supplied arguments.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public void Enqueue&lt;T1, T2, T3, T4, T5&gt;(Action&lt;T1, T2, T3, T4, T5&gt; action, T1 arg1, T2 arg2, T3 arg3, T4 arg4, T5 arg5)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Action</span>&lt;T1, T2, T3, T4, T5&gt;</td>
+        <td><span class="parametername">action</span></td>
+        <td><p>Action to enqueue.</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">T1</span></td>
+        <td><span class="parametername">arg1</span></td>
+        <td><p>The 1st argument to run <code data-dev-comment-type="paramref" class="paramref">action</code> with.</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">T2</span></td>
+        <td><span class="parametername">arg2</span></td>
+        <td><p>The 2nd argument to run <code data-dev-comment-type="paramref" class="paramref">action</code> with.</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">T3</span></td>
+        <td><span class="parametername">arg3</span></td>
+        <td><p>The 3rd argument to run <code data-dev-comment-type="paramref" class="paramref">action</code> with.</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">T4</span></td>
+        <td><span class="parametername">arg4</span></td>
+        <td><p>The 4th argument to run <code data-dev-comment-type="paramref" class="paramref">action</code> with.</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">T5</span></td>
+        <td><span class="parametername">arg5</span></td>
+        <td><p>The 5th argument to run <code data-dev-comment-type="paramref" class="paramref">action</code> with.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="typeParameters">Type Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="parametername">T1</span></td>
+        <td><p>The type of the 1st parameter of <code data-dev-comment-type="paramref" class="paramref">action</code>.</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="parametername">T2</span></td>
+        <td><p>The type of the 2nd parameter of <code data-dev-comment-type="paramref" class="paramref">action</code>.</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="parametername">T3</span></td>
+        <td><p>The type of the 3rd parameter of <code data-dev-comment-type="paramref" class="paramref">action</code>.</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="parametername">T4</span></td>
+        <td><p>The type of the 4th parameter of <code data-dev-comment-type="paramref" class="paramref">action</code>.</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="parametername">T5</span></td>
+        <td><p>The type of the 5th parameter of <code data-dev-comment-type="paramref" class="paramref">action</code>.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="exceptions">Exceptions</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Condition</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.ArgumentNullException</span></td>
+        <td><p><code data-dev-comment-type="paramref" class="paramref">action</code> is <span class="xref">null</span>.</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">System.ObjectDisposedException</span></td>
+        <td><p>The <a class="xref" href="Moth.Tasks.TaskQueue.html">TaskQueue</a> has been disposed.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/djmoth/Moth.Tasks/new/main/apiSpec/new?filename=Moth_Tasks_TaskQueue_Enqueue__6_System_Action___0___1___2___3___4___5____0___1___2___3___4___5_.md&amp;value=---%0Auid%3A%20Moth.Tasks.TaskQueue.Enqueue%60%606(System.Action%7B%60%600%2C%60%601%2C%60%602%2C%60%603%2C%60%604%2C%60%605%7D%2C%60%600%2C%60%601%2C%60%602%2C%60%603%2C%60%604%2C%60%605)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/djmoth/Moth.Tasks/blob/main/Moth.Tasks/TaskQueueActions.cs/#L156">View Source</a>
+  </span>
+  <a id="Moth_Tasks_TaskQueue_Enqueue_" data-uid="Moth.Tasks.TaskQueue.Enqueue*"></a>
+  <h4 id="Moth_Tasks_TaskQueue_Enqueue__6_System_Action___0___1___2___3___4___5____0___1___2___3___4___5_" data-uid="Moth.Tasks.TaskQueue.Enqueue``6(System.Action{``0,``1,``2,``3,``4,``5},``0,``1,``2,``3,``4,``5)">Enqueue&lt;T1, T2, T3, T4, T5, T6&gt;(Action&lt;T1, T2, T3, T4, T5, T6&gt;, T1, T2, T3, T4, T5, T6)</h4>
+  <div class="markdown level1 summary"><p>Enqueue an action to be run later with supplied arguments.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public void Enqueue&lt;T1, T2, T3, T4, T5, T6&gt;(Action&lt;T1, T2, T3, T4, T5, T6&gt; action, T1 arg1, T2 arg2, T3 arg3, T4 arg4, T5 arg5, T6 arg6)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Action</span>&lt;T1, T2, T3, T4, T5, T6&gt;</td>
+        <td><span class="parametername">action</span></td>
+        <td><p>Action to enqueue.</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">T1</span></td>
+        <td><span class="parametername">arg1</span></td>
+        <td><p>The 1st argument to run <code data-dev-comment-type="paramref" class="paramref">action</code> with.</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">T2</span></td>
+        <td><span class="parametername">arg2</span></td>
+        <td><p>The 2nd argument to run <code data-dev-comment-type="paramref" class="paramref">action</code> with.</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">T3</span></td>
+        <td><span class="parametername">arg3</span></td>
+        <td><p>The 3rd argument to run <code data-dev-comment-type="paramref" class="paramref">action</code> with.</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">T4</span></td>
+        <td><span class="parametername">arg4</span></td>
+        <td><p>The 4th argument to run <code data-dev-comment-type="paramref" class="paramref">action</code> with.</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">T5</span></td>
+        <td><span class="parametername">arg5</span></td>
+        <td><p>The 5th argument to run <code data-dev-comment-type="paramref" class="paramref">action</code> with.</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">T6</span></td>
+        <td><span class="parametername">arg6</span></td>
+        <td><p>The 6th argument to run <code data-dev-comment-type="paramref" class="paramref">action</code> with.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="typeParameters">Type Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="parametername">T1</span></td>
+        <td><p>The type of the 1st parameter of <code data-dev-comment-type="paramref" class="paramref">action</code>.</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="parametername">T2</span></td>
+        <td><p>The type of the 2nd parameter of <code data-dev-comment-type="paramref" class="paramref">action</code>.</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="parametername">T3</span></td>
+        <td><p>The type of the 3rd parameter of <code data-dev-comment-type="paramref" class="paramref">action</code>.</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="parametername">T4</span></td>
+        <td><p>The type of the 4th parameter of <code data-dev-comment-type="paramref" class="paramref">action</code>.</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="parametername">T5</span></td>
+        <td><p>The type of the 5th parameter of <code data-dev-comment-type="paramref" class="paramref">action</code>.</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="parametername">T6</span></td>
+        <td><p>The type of the 6th parameter of <code data-dev-comment-type="paramref" class="paramref">action</code>.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="exceptions">Exceptions</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Condition</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.ArgumentNullException</span></td>
+        <td><p><code data-dev-comment-type="paramref" class="paramref">action</code> is <span class="xref">null</span>.</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">System.ObjectDisposedException</span></td>
+        <td><p>The <a class="xref" href="Moth.Tasks.TaskQueue.html">TaskQueue</a> has been disposed.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/djmoth/Moth.Tasks/new/main/apiSpec/new?filename=Moth_Tasks_TaskQueue_Enqueue__7_System_Action___0___1___2___3___4___5___6____0___1___2___3___4___5___6_.md&amp;value=---%0Auid%3A%20Moth.Tasks.TaskQueue.Enqueue%60%607(System.Action%7B%60%600%2C%60%601%2C%60%602%2C%60%603%2C%60%604%2C%60%605%2C%60%606%7D%2C%60%600%2C%60%601%2C%60%602%2C%60%603%2C%60%604%2C%60%605%2C%60%606)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/djmoth/Moth.Tasks/blob/main/Moth.Tasks/TaskQueueActions.cs/#L186">View Source</a>
+  </span>
+  <a id="Moth_Tasks_TaskQueue_Enqueue_" data-uid="Moth.Tasks.TaskQueue.Enqueue*"></a>
+  <h4 id="Moth_Tasks_TaskQueue_Enqueue__7_System_Action___0___1___2___3___4___5___6____0___1___2___3___4___5___6_" data-uid="Moth.Tasks.TaskQueue.Enqueue``7(System.Action{``0,``1,``2,``3,``4,``5,``6},``0,``1,``2,``3,``4,``5,``6)">Enqueue&lt;T1, T2, T3, T4, T5, T6, T7&gt;(Action&lt;T1, T2, T3, T4, T5, T6, T7&gt;, T1, T2, T3, T4, T5, T6, T7)</h4>
+  <div class="markdown level1 summary"><p>Enqueue an action to be run later with supplied arguments.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public void Enqueue&lt;T1, T2, T3, T4, T5, T6, T7&gt;(Action&lt;T1, T2, T3, T4, T5, T6, T7&gt; action, T1 arg1, T2 arg2, T3 arg3, T4 arg4, T5 arg5, T6 arg6, T7 arg7)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Action</span>&lt;T1, T2, T3, T4, T5, T6, T7&gt;</td>
+        <td><span class="parametername">action</span></td>
+        <td><p>Action to enqueue.</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">T1</span></td>
+        <td><span class="parametername">arg1</span></td>
+        <td><p>The 1st argument to run <code data-dev-comment-type="paramref" class="paramref">action</code> with.</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">T2</span></td>
+        <td><span class="parametername">arg2</span></td>
+        <td><p>The 2nd argument to run <code data-dev-comment-type="paramref" class="paramref">action</code> with.</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">T3</span></td>
+        <td><span class="parametername">arg3</span></td>
+        <td><p>The 3rd argument to run <code data-dev-comment-type="paramref" class="paramref">action</code> with.</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">T4</span></td>
+        <td><span class="parametername">arg4</span></td>
+        <td><p>The 4th argument to run <code data-dev-comment-type="paramref" class="paramref">action</code> with.</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">T5</span></td>
+        <td><span class="parametername">arg5</span></td>
+        <td><p>The 5th argument to run <code data-dev-comment-type="paramref" class="paramref">action</code> with.</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">T6</span></td>
+        <td><span class="parametername">arg6</span></td>
+        <td><p>The 6th argument to run <code data-dev-comment-type="paramref" class="paramref">action</code> with.</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">T7</span></td>
+        <td><span class="parametername">arg7</span></td>
+        <td><p>The 7th argument to run <code data-dev-comment-type="paramref" class="paramref">action</code> with.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="typeParameters">Type Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="parametername">T1</span></td>
+        <td><p>The type of the 1st parameter of <code data-dev-comment-type="paramref" class="paramref">action</code>.</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="parametername">T2</span></td>
+        <td><p>The type of the 2nd parameter of <code data-dev-comment-type="paramref" class="paramref">action</code>.</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="parametername">T3</span></td>
+        <td><p>The type of the 3rd parameter of <code data-dev-comment-type="paramref" class="paramref">action</code>.</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="parametername">T4</span></td>
+        <td><p>The type of the 4th parameter of <code data-dev-comment-type="paramref" class="paramref">action</code>.</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="parametername">T5</span></td>
+        <td><p>The type of the 5th parameter of <code data-dev-comment-type="paramref" class="paramref">action</code>.</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="parametername">T6</span></td>
+        <td><p>The type of the 6th parameter of <code data-dev-comment-type="paramref" class="paramref">action</code>.</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="parametername">T7</span></td>
+        <td><p>The type of the 7th parameter of <code data-dev-comment-type="paramref" class="paramref">action</code>.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="exceptions">Exceptions</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Condition</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.ArgumentNullException</span></td>
+        <td><p><code data-dev-comment-type="paramref" class="paramref">action</code> is <span class="xref">null</span>.</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">System.ObjectDisposedException</span></td>
+        <td><p>The <a class="xref" href="Moth.Tasks.TaskQueue.html">TaskQueue</a> has been disposed.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/djmoth/Moth.Tasks/new/main/apiSpec/new?filename=Moth_Tasks_TaskQueue_Enqueue__8_System_Action___0___1___2___3___4___5___6___7____0___1___2___3___4___5___6___7_.md&amp;value=---%0Auid%3A%20Moth.Tasks.TaskQueue.Enqueue%60%608(System.Action%7B%60%600%2C%60%601%2C%60%602%2C%60%603%2C%60%604%2C%60%605%2C%60%606%2C%60%607%7D%2C%60%600%2C%60%601%2C%60%602%2C%60%603%2C%60%604%2C%60%605%2C%60%606%2C%60%607)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/djmoth/Moth.Tasks/blob/main/Moth.Tasks/TaskQueueActions.cs/#L218">View Source</a>
+  </span>
+  <a id="Moth_Tasks_TaskQueue_Enqueue_" data-uid="Moth.Tasks.TaskQueue.Enqueue*"></a>
+  <h4 id="Moth_Tasks_TaskQueue_Enqueue__8_System_Action___0___1___2___3___4___5___6___7____0___1___2___3___4___5___6___7_" data-uid="Moth.Tasks.TaskQueue.Enqueue``8(System.Action{``0,``1,``2,``3,``4,``5,``6,``7},``0,``1,``2,``3,``4,``5,``6,``7)">Enqueue&lt;T1, T2, T3, T4, T5, T6, T7, T8&gt;(Action&lt;T1, T2, T3, T4, T5, T6, T7, T8&gt;, T1, T2, T3, T4, T5, T6, T7, T8)</h4>
+  <div class="markdown level1 summary"><p>Enqueue an action to be run later with supplied arguments.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public void Enqueue&lt;T1, T2, T3, T4, T5, T6, T7, T8&gt;(Action&lt;T1, T2, T3, T4, T5, T6, T7, T8&gt; action, T1 arg1, T2 arg2, T3 arg3, T4 arg4, T5 arg5, T6 arg6, T7 arg7, T8 arg8)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Action</span>&lt;T1, T2, T3, T4, T5, T6, T7, T8&gt;</td>
+        <td><span class="parametername">action</span></td>
+        <td><p>Action to enqueue.</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">T1</span></td>
+        <td><span class="parametername">arg1</span></td>
+        <td><p>The 1st argument to run <code data-dev-comment-type="paramref" class="paramref">action</code> with.</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">T2</span></td>
+        <td><span class="parametername">arg2</span></td>
+        <td><p>The 2nd argument to run <code data-dev-comment-type="paramref" class="paramref">action</code> with.</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">T3</span></td>
+        <td><span class="parametername">arg3</span></td>
+        <td><p>The 3rd argument to run <code data-dev-comment-type="paramref" class="paramref">action</code> with.</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">T4</span></td>
+        <td><span class="parametername">arg4</span></td>
+        <td><p>The 4th argument to run <code data-dev-comment-type="paramref" class="paramref">action</code> with.</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">T5</span></td>
+        <td><span class="parametername">arg5</span></td>
+        <td><p>The 5th argument to run <code data-dev-comment-type="paramref" class="paramref">action</code> with.</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">T6</span></td>
+        <td><span class="parametername">arg6</span></td>
+        <td><p>The 6th argument to run <code data-dev-comment-type="paramref" class="paramref">action</code> with.</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">T7</span></td>
+        <td><span class="parametername">arg7</span></td>
+        <td><p>The 7th argument to run <code data-dev-comment-type="paramref" class="paramref">action</code> with.</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">T8</span></td>
+        <td><span class="parametername">arg8</span></td>
+        <td><p>The 8th argument to run <code data-dev-comment-type="paramref" class="paramref">action</code> with.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="typeParameters">Type Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="parametername">T1</span></td>
+        <td><p>The type of the 1st parameter of <code data-dev-comment-type="paramref" class="paramref">action</code>.</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="parametername">T2</span></td>
+        <td><p>The type of the 2nd parameter of <code data-dev-comment-type="paramref" class="paramref">action</code>.</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="parametername">T3</span></td>
+        <td><p>The type of the 3rd parameter of <code data-dev-comment-type="paramref" class="paramref">action</code>.</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="parametername">T4</span></td>
+        <td><p>The type of the 4th parameter of <code data-dev-comment-type="paramref" class="paramref">action</code>.</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="parametername">T5</span></td>
+        <td><p>The type of the 5th parameter of <code data-dev-comment-type="paramref" class="paramref">action</code>.</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="parametername">T6</span></td>
+        <td><p>The type of the 6th parameter of <code data-dev-comment-type="paramref" class="paramref">action</code>.</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="parametername">T7</span></td>
+        <td><p>The type of the 7th parameter of <code data-dev-comment-type="paramref" class="paramref">action</code>.</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="parametername">T8</span></td>
+        <td><p>The type of the 8th parameter of <code data-dev-comment-type="paramref" class="paramref">action</code>.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="exceptions">Exceptions</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Condition</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.ArgumentNullException</span></td>
+        <td><p><code data-dev-comment-type="paramref" class="paramref">action</code> is <span class="xref">null</span>.</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">System.ObjectDisposedException</span></td>
+        <td><p>The <a class="xref" href="Moth.Tasks.TaskQueue.html">TaskQueue</a> has been disposed.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/djmoth/Moth.Tasks/new/main/apiSpec/new?filename=Moth_Tasks_TaskQueue_Enqueue__9_System_Action___0___1___2___3___4___5___6___7___8____0___1___2___3___4___5___6___7___8_.md&amp;value=---%0Auid%3A%20Moth.Tasks.TaskQueue.Enqueue%60%609(System.Action%7B%60%600%2C%60%601%2C%60%602%2C%60%603%2C%60%604%2C%60%605%2C%60%606%2C%60%607%2C%60%608%7D%2C%60%600%2C%60%601%2C%60%602%2C%60%603%2C%60%604%2C%60%605%2C%60%606%2C%60%607%2C%60%608)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/djmoth/Moth.Tasks/blob/main/Moth.Tasks/TaskQueueActions.cs/#L252">View Source</a>
+  </span>
+  <a id="Moth_Tasks_TaskQueue_Enqueue_" data-uid="Moth.Tasks.TaskQueue.Enqueue*"></a>
+  <h4 id="Moth_Tasks_TaskQueue_Enqueue__9_System_Action___0___1___2___3___4___5___6___7___8____0___1___2___3___4___5___6___7___8_" data-uid="Moth.Tasks.TaskQueue.Enqueue``9(System.Action{``0,``1,``2,``3,``4,``5,``6,``7,``8},``0,``1,``2,``3,``4,``5,``6,``7,``8)">Enqueue&lt;T1, T2, T3, T4, T5, T6, T7, T8, T9&gt;(Action&lt;T1, T2, T3, T4, T5, T6, T7, T8, T9&gt;, T1, T2, T3, T4, T5, T6, T7, T8, T9)</h4>
+  <div class="markdown level1 summary"><p>Enqueue an action to be run later with supplied arguments.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public void Enqueue&lt;T1, T2, T3, T4, T5, T6, T7, T8, T9&gt;(Action&lt;T1, T2, T3, T4, T5, T6, T7, T8, T9&gt; action, T1 arg1, T2 arg2, T3 arg3, T4 arg4, T5 arg5, T6 arg6, T7 arg7, T8 arg8, T9 arg9)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Action</span>&lt;T1, T2, T3, T4, T5, T6, T7, T8, T9&gt;</td>
+        <td><span class="parametername">action</span></td>
+        <td><p>Action to enqueue.</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">T1</span></td>
+        <td><span class="parametername">arg1</span></td>
+        <td><p>The 1st argument to run <code data-dev-comment-type="paramref" class="paramref">action</code> with.</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">T2</span></td>
+        <td><span class="parametername">arg2</span></td>
+        <td><p>The 2nd argument to run <code data-dev-comment-type="paramref" class="paramref">action</code> with.</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">T3</span></td>
+        <td><span class="parametername">arg3</span></td>
+        <td><p>The 3rd argument to run <code data-dev-comment-type="paramref" class="paramref">action</code> with.</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">T4</span></td>
+        <td><span class="parametername">arg4</span></td>
+        <td><p>The 4th argument to run <code data-dev-comment-type="paramref" class="paramref">action</code> with.</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">T5</span></td>
+        <td><span class="parametername">arg5</span></td>
+        <td><p>The 5th argument to run <code data-dev-comment-type="paramref" class="paramref">action</code> with.</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">T6</span></td>
+        <td><span class="parametername">arg6</span></td>
+        <td><p>The 6th argument to run <code data-dev-comment-type="paramref" class="paramref">action</code> with.</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">T7</span></td>
+        <td><span class="parametername">arg7</span></td>
+        <td><p>The 7th argument to run <code data-dev-comment-type="paramref" class="paramref">action</code> with.</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">T8</span></td>
+        <td><span class="parametername">arg8</span></td>
+        <td><p>The 8th argument to run <code data-dev-comment-type="paramref" class="paramref">action</code> with.</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">T9</span></td>
+        <td><span class="parametername">arg9</span></td>
+        <td><p>The 9th argument to run <code data-dev-comment-type="paramref" class="paramref">action</code> with.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="typeParameters">Type Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="parametername">T1</span></td>
+        <td><p>The type of the 1st parameter of <code data-dev-comment-type="paramref" class="paramref">action</code>.</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="parametername">T2</span></td>
+        <td><p>The type of the 2nd parameter of <code data-dev-comment-type="paramref" class="paramref">action</code>.</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="parametername">T3</span></td>
+        <td><p>The type of the 3rd parameter of <code data-dev-comment-type="paramref" class="paramref">action</code>.</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="parametername">T4</span></td>
+        <td><p>The type of the 4th parameter of <code data-dev-comment-type="paramref" class="paramref">action</code>.</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="parametername">T5</span></td>
+        <td><p>The type of the 5th parameter of <code data-dev-comment-type="paramref" class="paramref">action</code>.</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="parametername">T6</span></td>
+        <td><p>The type of the 6th parameter of <code data-dev-comment-type="paramref" class="paramref">action</code>.</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="parametername">T7</span></td>
+        <td><p>The type of the 7th parameter of <code data-dev-comment-type="paramref" class="paramref">action</code>.</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="parametername">T8</span></td>
+        <td><p>The type of the 8th parameter of <code data-dev-comment-type="paramref" class="paramref">action</code>.</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="parametername">T9</span></td>
+        <td><p>The type of the 9th parameter of <code data-dev-comment-type="paramref" class="paramref">action</code>.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="exceptions">Exceptions</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Condition</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.ArgumentNullException</span></td>
+        <td><p><code data-dev-comment-type="paramref" class="paramref">action</code> is <span class="xref">null</span>.</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">System.ObjectDisposedException</span></td>
+        <td><p>The <a class="xref" href="Moth.Tasks.TaskQueue.html">TaskQueue</a> has been disposed.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/djmoth/Moth.Tasks/new/main/apiSpec/new?filename=Moth_Tasks_TaskQueue_Finalize.md&amp;value=---%0Auid%3A%20Moth.Tasks.TaskQueue.Finalize%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/djmoth/Moth.Tasks/blob/main/Moth.Tasks/TaskQueue.cs/#L46">View Source</a>
+  </span>
+  <a id="Moth_Tasks_TaskQueue_Finalize_" data-uid="Moth.Tasks.TaskQueue.Finalize*"></a>
+  <h4 id="Moth_Tasks_TaskQueue_Finalize" data-uid="Moth.Tasks.TaskQueue.Finalize">Finalize()</h4>
+  <div class="markdown level1 summary"><p>Finalizes an instance of the <a class="xref" href="Moth.Tasks.TaskQueue.html">TaskQueue</a> class. Also disposes of tasks implementing <span class="xref">System.IDisposable.Dispose()</span>.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected void Finalize()</code></pre>
+  </div>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/djmoth/Moth.Tasks/new/main/apiSpec/new?filename=Moth_Tasks_TaskQueue_RunNextTask_Moth_Tasks_IProfiler_System_Threading_CancellationToken_.md&amp;value=---%0Auid%3A%20Moth.Tasks.TaskQueue.RunNextTask(Moth.Tasks.IProfiler%2CSystem.Threading.CancellationToken)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/djmoth/Moth.Tasks/blob/main/Moth.Tasks/TaskQueue.cs/#L117">View Source</a>
+  </span>
+  <a id="Moth_Tasks_TaskQueue_RunNextTask_" data-uid="Moth.Tasks.TaskQueue.RunNextTask*"></a>
+  <h4 id="Moth_Tasks_TaskQueue_RunNextTask_Moth_Tasks_IProfiler_System_Threading_CancellationToken_" data-uid="Moth.Tasks.TaskQueue.RunNextTask(Moth.Tasks.IProfiler,System.Threading.CancellationToken)">RunNextTask(IProfiler, CancellationToken)</h4>
+  <div class="markdown level1 summary"><p>Blocks until a task is ready in the queue, then runs it.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public void RunNextTask(IProfiler profiler = null, CancellationToken token = default(CancellationToken))</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Moth.Tasks.IProfiler.html">IProfiler</a></td>
+        <td><span class="parametername">profiler</span></td>
+        <td><p><a class="xref" href="Moth.Tasks.IProfiler.html">IProfiler</a> to profile the run-time of the task.</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">System.Threading.CancellationToken</span></td>
+        <td><span class="parametername">token</span></td>
+        <td><p>A <span class="xref">System.Threading.CancellationToken</span> to observe when waiting for a task. Does not cancel actual task execution.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/djmoth/Moth.Tasks/new/main/apiSpec/new?filename=Moth_Tasks_TaskQueue_RunNextTask_System_Exception__Moth_Tasks_IProfiler_System_Threading_CancellationToken_.md&amp;value=---%0Auid%3A%20Moth.Tasks.TaskQueue.RunNextTask(System.Exception%40%2CMoth.Tasks.IProfiler%2CSystem.Threading.CancellationToken)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/djmoth/Moth.Tasks/blob/main/Moth.Tasks/TaskQueue.cs/#L125">View Source</a>
+  </span>
+  <a id="Moth_Tasks_TaskQueue_RunNextTask_" data-uid="Moth.Tasks.TaskQueue.RunNextTask*"></a>
+  <h4 id="Moth_Tasks_TaskQueue_RunNextTask_System_Exception__Moth_Tasks_IProfiler_System_Threading_CancellationToken_" data-uid="Moth.Tasks.TaskQueue.RunNextTask(System.Exception@,Moth.Tasks.IProfiler,System.Threading.CancellationToken)">RunNextTask(out Exception, IProfiler, CancellationToken)</h4>
+  <div class="markdown level1 summary"><p>Blocks until a task is ready in the queue, then runs it.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public void RunNextTask(out Exception exception, IProfiler profiler = null, CancellationToken token = default(CancellationToken))</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Exception</span></td>
+        <td><span class="parametername">exception</span></td>
+        <td><p><span class="xref">System.Exception</span> thrown if task failed. Is <span class="xref">null</span> if task was run successfully.</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="Moth.Tasks.IProfiler.html">IProfiler</a></td>
+        <td><span class="parametername">profiler</span></td>
+        <td><p><a class="xref" href="Moth.Tasks.IProfiler.html">IProfiler</a> to profile the run-time of the task.</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">System.Threading.CancellationToken</span></td>
+        <td><span class="parametername">token</span></td>
+        <td><p>A <span class="xref">System.Threading.CancellationToken</span> to observe when waiting for a task. Does not cancel actual task execution.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/djmoth/Moth.Tasks/new/main/apiSpec/new?filename=Moth_Tasks_TaskQueue_TryRunNextTask_Moth_Tasks_IProfiler_.md&amp;value=---%0Auid%3A%20Moth.Tasks.TaskQueue.TryRunNextTask(Moth.Tasks.IProfiler)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/djmoth/Moth.Tasks/blob/main/Moth.Tasks/TaskQueue.cs/#L146">View Source</a>
+  </span>
+  <a id="Moth_Tasks_TaskQueue_TryRunNextTask_" data-uid="Moth.Tasks.TaskQueue.TryRunNextTask*"></a>
+  <h4 id="Moth_Tasks_TaskQueue_TryRunNextTask_Moth_Tasks_IProfiler_" data-uid="Moth.Tasks.TaskQueue.TryRunNextTask(Moth.Tasks.IProfiler)">TryRunNextTask(IProfiler)</h4>
+  <div class="markdown level1 summary"><p>Tries to run the next task in the queue, if present. May also perform profiling on the task through an <a class="xref" href="Moth.Tasks.IProfiler.html">IProfiler</a>.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public bool TryRunNextTask(IProfiler profiler = null)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Moth.Tasks.IProfiler.html">IProfiler</a></td>
+        <td><span class="parametername">profiler</span></td>
+        <td><p><a class="xref" href="Moth.Tasks.IProfiler.html">IProfiler</a> to profile the run-time of the task.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Boolean</span></td>
+        <td><p><span class="xref">true</span> if a task was run, <span class="xref">false</span> if the <a class="xref" href="Moth.Tasks.TaskQueue.html">TaskQueue</a> is empty.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 id="Moth_Tasks_TaskQueue_TryRunNextTask_Moth_Tasks_IProfiler__remarks">Remarks</h5>
+  <div class="markdown level1 remarks"><p>Please note that the return value does not indicate if a task was successful. The method will return <span class="xref">true</span> if a task was ready in the queue, regardless of whether an exception occured.</p>
+</div>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/djmoth/Moth.Tasks/new/main/apiSpec/new?filename=Moth_Tasks_TaskQueue_TryRunNextTask_System_Exception__Moth_Tasks_IProfiler_.md&amp;value=---%0Auid%3A%20Moth.Tasks.TaskQueue.TryRunNextTask(System.Exception%40%2CMoth.Tasks.IProfiler)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/djmoth/Moth.Tasks/blob/main/Moth.Tasks/TaskQueue.cs/#L157">View Source</a>
+  </span>
+  <a id="Moth_Tasks_TaskQueue_TryRunNextTask_" data-uid="Moth.Tasks.TaskQueue.TryRunNextTask*"></a>
+  <h4 id="Moth_Tasks_TaskQueue_TryRunNextTask_System_Exception__Moth_Tasks_IProfiler_" data-uid="Moth.Tasks.TaskQueue.TryRunNextTask(System.Exception@,Moth.Tasks.IProfiler)">TryRunNextTask(out Exception, IProfiler)</h4>
+  <div class="markdown level1 summary"><p>Tries to run the next task in the queue, if present. Provides an <span class="xref">System.Exception</span> thrown by the task, in case it fails. May also perform profiling on the task through an <a class="xref" href="Moth.Tasks.IProfiler.html">IProfiler</a>.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public bool TryRunNextTask(out Exception exception, IProfiler profiler = null)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Exception</span></td>
+        <td><span class="parametername">exception</span></td>
+        <td><p><span class="xref">System.Exception</span> thrown if task failed. Is <span class="xref">null</span> if task was run successfully.</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="Moth.Tasks.IProfiler.html">IProfiler</a></td>
+        <td><span class="parametername">profiler</span></td>
+        <td><p><a class="xref" href="Moth.Tasks.IProfiler.html">IProfiler</a> to profile the run-time of the task.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Boolean</span></td>
+        <td><p><span class="xref">true</span> if a task was run, <span class="xref">false</span> if the <a class="xref" href="Moth.Tasks.TaskQueue.html">TaskQueue</a> is empty.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 id="Moth_Tasks_TaskQueue_TryRunNextTask_System_Exception__Moth_Tasks_IProfiler__remarks">Remarks</h5>
+  <div class="markdown level1 remarks"><p>Please note that the return value does not indicate if a task was successful. The method will return <span class="xref">true</span> if a task was ready in the queue, regardless of whether an exception occured.</p>
+</div>
+  <h3 id="implements">Implements</h3>
+  <div>
+      <span class="xref">System.IDisposable</span>
+  </div>
+</article>
+          </div>
+          
+          <div class="hidden-sm col-md-2" role="complementary">
+            <div class="sideaffix">
+              <div class="contribution">
+                <ul class="nav">
+                  <li>
+                    <a href="https://github.com/djmoth/Moth.Tasks/new/main/apiSpec/new?filename=Moth_Tasks_TaskQueue.md&amp;value=---%0Auid%3A%20Moth.Tasks.TaskQueue%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A" class="contribution-link">Improve this Doc</a>
+                  </li>
+                  <li>
+                    <a href="https://github.com/djmoth/Moth.Tasks/blob/main/Moth.Tasks/TaskQueueActions.cs/#L10" class="contribution-link">View Source</a>
+                  </li>
+                </ul>
+              </div>
+              <nav class="bs-docs-sidebar hidden-print hidden-xs hidden-sm affix" id="affix">
+                <h5>In This Article</h5>
+                <div></div>
+              </nav>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <footer>
+        <div class="grad-bottom"></div>
+        <div class="footer">
+          <div class="container">
+            <span class="pull-right">
+              <a href="#top">Back to top</a>
+            </span>
+            
+            <span>Generated by <strong>DocFX</strong></span>
+          </div>
+        </div>
+      </footer>
+    </div>
+    
+    <script type="text/javascript" src="../styles/docfx.vendor.js"></script>
+    <script type="text/javascript" src="../styles/docfx.js"></script>
+    <script type="text/javascript" src="../styles/main.js"></script>
+  </body>
+</html>

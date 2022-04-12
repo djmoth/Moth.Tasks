@@ -1,0 +1,604 @@
+### YamlMime:XRefMap
+sorted: true
+references:
+- uid: Moth.Tasks
+  name: Moth.Tasks
+  href: api/Moth.Tasks.html
+  commentId: N:Moth.Tasks
+  fullName: Moth.Tasks
+  nameWithType: Moth.Tasks
+- uid: Moth.Tasks.IProfiler
+  name: IProfiler
+  href: api/Moth.Tasks.IProfiler.html
+  commentId: T:Moth.Tasks.IProfiler
+  fullName: Moth.Tasks.IProfiler
+  nameWithType: IProfiler
+- uid: Moth.Tasks.IProfiler.BeginTask(System.String)
+  name: BeginTask(String)
+  href: api/Moth.Tasks.IProfiler.html#Moth_Tasks_IProfiler_BeginTask_System_String_
+  commentId: M:Moth.Tasks.IProfiler.BeginTask(System.String)
+  fullName: Moth.Tasks.IProfiler.BeginTask(System.String)
+  nameWithType: IProfiler.BeginTask(String)
+- uid: Moth.Tasks.IProfiler.BeginTask*
+  name: BeginTask
+  href: api/Moth.Tasks.IProfiler.html#Moth_Tasks_IProfiler_BeginTask_
+  commentId: Overload:Moth.Tasks.IProfiler.BeginTask
+  isSpec: "True"
+  fullName: Moth.Tasks.IProfiler.BeginTask
+  nameWithType: IProfiler.BeginTask
+- uid: Moth.Tasks.IProfiler.EndTask
+  name: EndTask()
+  href: api/Moth.Tasks.IProfiler.html#Moth_Tasks_IProfiler_EndTask
+  commentId: M:Moth.Tasks.IProfiler.EndTask
+  fullName: Moth.Tasks.IProfiler.EndTask()
+  nameWithType: IProfiler.EndTask()
+- uid: Moth.Tasks.IProfiler.EndTask*
+  name: EndTask
+  href: api/Moth.Tasks.IProfiler.html#Moth_Tasks_IProfiler_EndTask_
+  commentId: Overload:Moth.Tasks.IProfiler.EndTask
+  isSpec: "True"
+  fullName: Moth.Tasks.IProfiler.EndTask
+  nameWithType: IProfiler.EndTask
+- uid: Moth.Tasks.ITask
+  name: ITask
+  href: api/Moth.Tasks.ITask.html
+  commentId: T:Moth.Tasks.ITask
+  fullName: Moth.Tasks.ITask
+  nameWithType: ITask
+- uid: Moth.Tasks.ITask.Run
+  name: Run()
+  href: api/Moth.Tasks.ITask.html#Moth_Tasks_ITask_Run
+  commentId: M:Moth.Tasks.ITask.Run
+  fullName: Moth.Tasks.ITask.Run()
+  nameWithType: ITask.Run()
+- uid: Moth.Tasks.ITask.Run*
+  name: Run
+  href: api/Moth.Tasks.ITask.html#Moth_Tasks_ITask_Run_
+  commentId: Overload:Moth.Tasks.ITask.Run
+  isSpec: "True"
+  fullName: Moth.Tasks.ITask.Run
+  nameWithType: ITask.Run
+- uid: Moth.Tasks.ProfilerProvider
+  name: ProfilerProvider
+  href: api/Moth.Tasks.ProfilerProvider.html
+  commentId: T:Moth.Tasks.ProfilerProvider
+  fullName: Moth.Tasks.ProfilerProvider
+  nameWithType: ProfilerProvider
+- uid: Moth.Tasks.TaskExceptionEventArgs
+  name: TaskExceptionEventArgs
+  href: api/Moth.Tasks.TaskExceptionEventArgs.html
+  commentId: T:Moth.Tasks.TaskExceptionEventArgs
+  fullName: Moth.Tasks.TaskExceptionEventArgs
+  nameWithType: TaskExceptionEventArgs
+- uid: Moth.Tasks.TaskExceptionEventArgs.#ctor(System.Exception)
+  name: TaskExceptionEventArgs(Exception)
+  href: api/Moth.Tasks.TaskExceptionEventArgs.html#Moth_Tasks_TaskExceptionEventArgs__ctor_System_Exception_
+  commentId: M:Moth.Tasks.TaskExceptionEventArgs.#ctor(System.Exception)
+  fullName: Moth.Tasks.TaskExceptionEventArgs.TaskExceptionEventArgs(System.Exception)
+  nameWithType: TaskExceptionEventArgs.TaskExceptionEventArgs(Exception)
+- uid: Moth.Tasks.TaskExceptionEventArgs.#ctor*
+  name: TaskExceptionEventArgs
+  href: api/Moth.Tasks.TaskExceptionEventArgs.html#Moth_Tasks_TaskExceptionEventArgs__ctor_
+  commentId: Overload:Moth.Tasks.TaskExceptionEventArgs.#ctor
+  isSpec: "True"
+  fullName: Moth.Tasks.TaskExceptionEventArgs.TaskExceptionEventArgs
+  nameWithType: TaskExceptionEventArgs.TaskExceptionEventArgs
+- uid: Moth.Tasks.TaskExceptionEventArgs.Exception
+  name: Exception
+  href: api/Moth.Tasks.TaskExceptionEventArgs.html#Moth_Tasks_TaskExceptionEventArgs_Exception
+  commentId: P:Moth.Tasks.TaskExceptionEventArgs.Exception
+  fullName: Moth.Tasks.TaskExceptionEventArgs.Exception
+  nameWithType: TaskExceptionEventArgs.Exception
+- uid: Moth.Tasks.TaskExceptionEventArgs.Exception*
+  name: Exception
+  href: api/Moth.Tasks.TaskExceptionEventArgs.html#Moth_Tasks_TaskExceptionEventArgs_Exception_
+  commentId: Overload:Moth.Tasks.TaskExceptionEventArgs.Exception
+  isSpec: "True"
+  fullName: Moth.Tasks.TaskExceptionEventArgs.Exception
+  nameWithType: TaskExceptionEventArgs.Exception
+- uid: Moth.Tasks.TaskHandle
+  name: TaskHandle
+  href: api/Moth.Tasks.TaskHandle.html
+  commentId: T:Moth.Tasks.TaskHandle
+  fullName: Moth.Tasks.TaskHandle
+  nameWithType: TaskHandle
+- uid: Moth.Tasks.TaskHandle.IsComplete
+  name: IsComplete
+  href: api/Moth.Tasks.TaskHandle.html#Moth_Tasks_TaskHandle_IsComplete
+  commentId: P:Moth.Tasks.TaskHandle.IsComplete
+  fullName: Moth.Tasks.TaskHandle.IsComplete
+  nameWithType: TaskHandle.IsComplete
+- uid: Moth.Tasks.TaskHandle.IsComplete*
+  name: IsComplete
+  href: api/Moth.Tasks.TaskHandle.html#Moth_Tasks_TaskHandle_IsComplete_
+  commentId: Overload:Moth.Tasks.TaskHandle.IsComplete
+  isSpec: "True"
+  fullName: Moth.Tasks.TaskHandle.IsComplete
+  nameWithType: TaskHandle.IsComplete
+- uid: Moth.Tasks.TaskHandle.WaitForCompletion
+  name: WaitForCompletion()
+  href: api/Moth.Tasks.TaskHandle.html#Moth_Tasks_TaskHandle_WaitForCompletion
+  commentId: M:Moth.Tasks.TaskHandle.WaitForCompletion
+  fullName: Moth.Tasks.TaskHandle.WaitForCompletion()
+  nameWithType: TaskHandle.WaitForCompletion()
+- uid: Moth.Tasks.TaskHandle.WaitForCompletion(System.Int32)
+  name: WaitForCompletion(Int32)
+  href: api/Moth.Tasks.TaskHandle.html#Moth_Tasks_TaskHandle_WaitForCompletion_System_Int32_
+  commentId: M:Moth.Tasks.TaskHandle.WaitForCompletion(System.Int32)
+  fullName: Moth.Tasks.TaskHandle.WaitForCompletion(System.Int32)
+  nameWithType: TaskHandle.WaitForCompletion(Int32)
+- uid: Moth.Tasks.TaskHandle.WaitForCompletion*
+  name: WaitForCompletion
+  href: api/Moth.Tasks.TaskHandle.html#Moth_Tasks_TaskHandle_WaitForCompletion_
+  commentId: Overload:Moth.Tasks.TaskHandle.WaitForCompletion
+  isSpec: "True"
+  fullName: Moth.Tasks.TaskHandle.WaitForCompletion
+  nameWithType: TaskHandle.WaitForCompletion
+- uid: Moth.Tasks.TaskQueue
+  name: TaskQueue
+  href: api/Moth.Tasks.TaskQueue.html
+  commentId: T:Moth.Tasks.TaskQueue
+  fullName: Moth.Tasks.TaskQueue
+  nameWithType: TaskQueue
+- uid: Moth.Tasks.TaskQueue.#ctor
+  name: TaskQueue()
+  href: api/Moth.Tasks.TaskQueue.html#Moth_Tasks_TaskQueue__ctor
+  commentId: M:Moth.Tasks.TaskQueue.#ctor
+  fullName: Moth.Tasks.TaskQueue.TaskQueue()
+  nameWithType: TaskQueue.TaskQueue()
+- uid: Moth.Tasks.TaskQueue.#ctor*
+  name: TaskQueue
+  href: api/Moth.Tasks.TaskQueue.html#Moth_Tasks_TaskQueue__ctor_
+  commentId: Overload:Moth.Tasks.TaskQueue.#ctor
+  isSpec: "True"
+  fullName: Moth.Tasks.TaskQueue.TaskQueue
+  nameWithType: TaskQueue.TaskQueue
+- uid: Moth.Tasks.TaskQueue.Clear(System.Action{System.Exception})
+  name: Clear(Action<Exception>)
+  href: api/Moth.Tasks.TaskQueue.html#Moth_Tasks_TaskQueue_Clear_System_Action_System_Exception__
+  commentId: M:Moth.Tasks.TaskQueue.Clear(System.Action{System.Exception})
+  name.vb: Clear(Action(Of Exception))
+  fullName: Moth.Tasks.TaskQueue.Clear(System.Action<System.Exception>)
+  fullName.vb: Moth.Tasks.TaskQueue.Clear(System.Action(Of System.Exception))
+  nameWithType: TaskQueue.Clear(Action<Exception>)
+  nameWithType.vb: TaskQueue.Clear(Action(Of Exception))
+- uid: Moth.Tasks.TaskQueue.Clear*
+  name: Clear
+  href: api/Moth.Tasks.TaskQueue.html#Moth_Tasks_TaskQueue_Clear_
+  commentId: Overload:Moth.Tasks.TaskQueue.Clear
+  isSpec: "True"
+  fullName: Moth.Tasks.TaskQueue.Clear
+  nameWithType: TaskQueue.Clear
+- uid: Moth.Tasks.TaskQueue.Count
+  name: Count
+  href: api/Moth.Tasks.TaskQueue.html#Moth_Tasks_TaskQueue_Count
+  commentId: P:Moth.Tasks.TaskQueue.Count
+  fullName: Moth.Tasks.TaskQueue.Count
+  nameWithType: TaskQueue.Count
+- uid: Moth.Tasks.TaskQueue.Count*
+  name: Count
+  href: api/Moth.Tasks.TaskQueue.html#Moth_Tasks_TaskQueue_Count_
+  commentId: Overload:Moth.Tasks.TaskQueue.Count
+  isSpec: "True"
+  fullName: Moth.Tasks.TaskQueue.Count
+  nameWithType: TaskQueue.Count
+- uid: Moth.Tasks.TaskQueue.Dispose
+  name: Dispose()
+  href: api/Moth.Tasks.TaskQueue.html#Moth_Tasks_TaskQueue_Dispose
+  commentId: M:Moth.Tasks.TaskQueue.Dispose
+  fullName: Moth.Tasks.TaskQueue.Dispose()
+  nameWithType: TaskQueue.Dispose()
+- uid: Moth.Tasks.TaskQueue.Dispose(System.Boolean)
+  name: Dispose(Boolean)
+  href: api/Moth.Tasks.TaskQueue.html#Moth_Tasks_TaskQueue_Dispose_System_Boolean_
+  commentId: M:Moth.Tasks.TaskQueue.Dispose(System.Boolean)
+  fullName: Moth.Tasks.TaskQueue.Dispose(System.Boolean)
+  nameWithType: TaskQueue.Dispose(Boolean)
+- uid: Moth.Tasks.TaskQueue.Dispose*
+  name: Dispose
+  href: api/Moth.Tasks.TaskQueue.html#Moth_Tasks_TaskQueue_Dispose_
+  commentId: Overload:Moth.Tasks.TaskQueue.Dispose
+  isSpec: "True"
+  fullName: Moth.Tasks.TaskQueue.Dispose
+  nameWithType: TaskQueue.Dispose
+- uid: Moth.Tasks.TaskQueue.Enqueue(System.Action)
+  name: Enqueue(Action)
+  href: api/Moth.Tasks.TaskQueue.html#Moth_Tasks_TaskQueue_Enqueue_System_Action_
+  commentId: M:Moth.Tasks.TaskQueue.Enqueue(System.Action)
+  fullName: Moth.Tasks.TaskQueue.Enqueue(System.Action)
+  nameWithType: TaskQueue.Enqueue(Action)
+- uid: Moth.Tasks.TaskQueue.Enqueue*
+  name: Enqueue
+  href: api/Moth.Tasks.TaskQueue.html#Moth_Tasks_TaskQueue_Enqueue_
+  commentId: Overload:Moth.Tasks.TaskQueue.Enqueue
+  isSpec: "True"
+  fullName: Moth.Tasks.TaskQueue.Enqueue
+  nameWithType: TaskQueue.Enqueue
+- uid: Moth.Tasks.TaskQueue.Enqueue``1(``0@)
+  name: Enqueue<T>(in T)
+  href: api/Moth.Tasks.TaskQueue.html#Moth_Tasks_TaskQueue_Enqueue__1___0__
+  commentId: M:Moth.Tasks.TaskQueue.Enqueue``1(``0@)
+  name.vb: Enqueue(Of T)(ByRef T)
+  fullName: Moth.Tasks.TaskQueue.Enqueue<T>(in T)
+  fullName.vb: Moth.Tasks.TaskQueue.Enqueue(Of T)(ByRef T)
+  nameWithType: TaskQueue.Enqueue<T>(in T)
+  nameWithType.vb: TaskQueue.Enqueue(Of T)(ByRef T)
+- uid: Moth.Tasks.TaskQueue.Enqueue``1(``0@,Moth.Tasks.TaskHandle@)
+  name: Enqueue<T>(in T, out TaskHandle)
+  href: api/Moth.Tasks.TaskQueue.html#Moth_Tasks_TaskQueue_Enqueue__1___0__Moth_Tasks_TaskHandle__
+  commentId: M:Moth.Tasks.TaskQueue.Enqueue``1(``0@,Moth.Tasks.TaskHandle@)
+  name.vb: Enqueue(Of T)(ByRef T, ByRef TaskHandle)
+  fullName: Moth.Tasks.TaskQueue.Enqueue<T>(in T, out Moth.Tasks.TaskHandle)
+  fullName.vb: Moth.Tasks.TaskQueue.Enqueue(Of T)(ByRef T, ByRef Moth.Tasks.TaskHandle)
+  nameWithType: TaskQueue.Enqueue<T>(in T, out TaskHandle)
+  nameWithType.vb: TaskQueue.Enqueue(Of T)(ByRef T, ByRef TaskHandle)
+- uid: Moth.Tasks.TaskQueue.Enqueue``1(System.Action{``0},``0)
+  name: Enqueue<T1>(Action<T1>, T1)
+  href: api/Moth.Tasks.TaskQueue.html#Moth_Tasks_TaskQueue_Enqueue__1_System_Action___0____0_
+  commentId: M:Moth.Tasks.TaskQueue.Enqueue``1(System.Action{``0},``0)
+  name.vb: Enqueue(Of T1)(Action(Of T1), T1)
+  fullName: Moth.Tasks.TaskQueue.Enqueue<T1>(System.Action<T1>, T1)
+  fullName.vb: Moth.Tasks.TaskQueue.Enqueue(Of T1)(System.Action(Of T1), T1)
+  nameWithType: TaskQueue.Enqueue<T1>(Action<T1>, T1)
+  nameWithType.vb: TaskQueue.Enqueue(Of T1)(Action(Of T1), T1)
+- uid: Moth.Tasks.TaskQueue.Enqueue``10(System.Action{``0,``1,``2,``3,``4,``5,``6,``7,``8,``9},``0,``1,``2,``3,``4,``5,``6,``7,``8,``9)
+  name: Enqueue<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10>(Action<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10>, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10)
+  href: api/Moth.Tasks.TaskQueue.html#Moth_Tasks_TaskQueue_Enqueue__10_System_Action___0___1___2___3___4___5___6___7___8___9____0___1___2___3___4___5___6___7___8___9_
+  commentId: M:Moth.Tasks.TaskQueue.Enqueue``10(System.Action{``0,``1,``2,``3,``4,``5,``6,``7,``8,``9},``0,``1,``2,``3,``4,``5,``6,``7,``8,``9)
+  name.vb: Enqueue(Of T1, T2, T3, T4, T5, T6, T7, T8, T9, T10)(Action(Of T1, T2, T3, T4, T5, T6, T7, T8, T9, T10), T1, T2, T3, T4, T5, T6, T7, T8, T9, T10)
+  fullName: Moth.Tasks.TaskQueue.Enqueue<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10>(System.Action<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10>, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10)
+  fullName.vb: Moth.Tasks.TaskQueue.Enqueue(Of T1, T2, T3, T4, T5, T6, T7, T8, T9, T10)(System.Action(Of T1, T2, T3, T4, T5, T6, T7, T8, T9, T10), T1, T2, T3, T4, T5, T6, T7, T8, T9, T10)
+  nameWithType: TaskQueue.Enqueue<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10>(Action<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10>, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10)
+  nameWithType.vb: TaskQueue.Enqueue(Of T1, T2, T3, T4, T5, T6, T7, T8, T9, T10)(Action(Of T1, T2, T3, T4, T5, T6, T7, T8, T9, T10), T1, T2, T3, T4, T5, T6, T7, T8, T9, T10)
+- uid: Moth.Tasks.TaskQueue.Enqueue``11(System.Action{``0,``1,``2,``3,``4,``5,``6,``7,``8,``9,``10},``0,``1,``2,``3,``4,``5,``6,``7,``8,``9,``10)
+  name: Enqueue<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11>(Action<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11>, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11)
+  href: api/Moth.Tasks.TaskQueue.html#Moth_Tasks_TaskQueue_Enqueue__11_System_Action___0___1___2___3___4___5___6___7___8___9___10____0___1___2___3___4___5___6___7___8___9___10_
+  commentId: M:Moth.Tasks.TaskQueue.Enqueue``11(System.Action{``0,``1,``2,``3,``4,``5,``6,``7,``8,``9,``10},``0,``1,``2,``3,``4,``5,``6,``7,``8,``9,``10)
+  name.vb: Enqueue(Of T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11)(Action(Of T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11), T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11)
+  fullName: Moth.Tasks.TaskQueue.Enqueue<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11>(System.Action<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11>, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11)
+  fullName.vb: Moth.Tasks.TaskQueue.Enqueue(Of T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11)(System.Action(Of T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11), T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11)
+  nameWithType: TaskQueue.Enqueue<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11>(Action<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11>, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11)
+  nameWithType.vb: TaskQueue.Enqueue(Of T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11)(Action(Of T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11), T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11)
+- uid: Moth.Tasks.TaskQueue.Enqueue``12(System.Action{``0,``1,``2,``3,``4,``5,``6,``7,``8,``9,``10,``11},``0,``1,``2,``3,``4,``5,``6,``7,``8,``9,``10,``11)
+  name: Enqueue<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12>(Action<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12>, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12)
+  href: api/Moth.Tasks.TaskQueue.html#Moth_Tasks_TaskQueue_Enqueue__12_System_Action___0___1___2___3___4___5___6___7___8___9___10___11____0___1___2___3___4___5___6___7___8___9___10___11_
+  commentId: M:Moth.Tasks.TaskQueue.Enqueue``12(System.Action{``0,``1,``2,``3,``4,``5,``6,``7,``8,``9,``10,``11},``0,``1,``2,``3,``4,``5,``6,``7,``8,``9,``10,``11)
+  name.vb: Enqueue(Of T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12)(Action(Of T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12), T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12)
+  fullName: Moth.Tasks.TaskQueue.Enqueue<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12>(System.Action<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12>, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12)
+  fullName.vb: Moth.Tasks.TaskQueue.Enqueue(Of T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12)(System.Action(Of T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12), T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12)
+  nameWithType: TaskQueue.Enqueue<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12>(Action<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12>, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12)
+  nameWithType.vb: TaskQueue.Enqueue(Of T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12)(Action(Of T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12), T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12)
+- uid: Moth.Tasks.TaskQueue.Enqueue``13(System.Action{``0,``1,``2,``3,``4,``5,``6,``7,``8,``9,``10,``11,``12},``0,``1,``2,``3,``4,``5,``6,``7,``8,``9,``10,``11,``12)
+  name: Enqueue<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13>(Action<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13>, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13)
+  href: api/Moth.Tasks.TaskQueue.html#Moth_Tasks_TaskQueue_Enqueue__13_System_Action___0___1___2___3___4___5___6___7___8___9___10___11___12____0___1___2___3___4___5___6___7___8___9___10___11___12_
+  commentId: M:Moth.Tasks.TaskQueue.Enqueue``13(System.Action{``0,``1,``2,``3,``4,``5,``6,``7,``8,``9,``10,``11,``12},``0,``1,``2,``3,``4,``5,``6,``7,``8,``9,``10,``11,``12)
+  name.vb: Enqueue(Of T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13)(Action(Of T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13), T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13)
+  fullName: Moth.Tasks.TaskQueue.Enqueue<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13>(System.Action<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13>, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13)
+  fullName.vb: Moth.Tasks.TaskQueue.Enqueue(Of T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13)(System.Action(Of T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13), T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13)
+  nameWithType: TaskQueue.Enqueue<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13>(Action<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13>, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13)
+  nameWithType.vb: TaskQueue.Enqueue(Of T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13)(Action(Of T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13), T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13)
+- uid: Moth.Tasks.TaskQueue.Enqueue``14(System.Action{``0,``1,``2,``3,``4,``5,``6,``7,``8,``9,``10,``11,``12,``13},``0,``1,``2,``3,``4,``5,``6,``7,``8,``9,``10,``11,``12,``13)
+  name: Enqueue<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14>(Action<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14>, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14)
+  href: api/Moth.Tasks.TaskQueue.html#Moth_Tasks_TaskQueue_Enqueue__14_System_Action___0___1___2___3___4___5___6___7___8___9___10___11___12___13____0___1___2___3___4___5___6___7___8___9___10___11___12___13_
+  commentId: M:Moth.Tasks.TaskQueue.Enqueue``14(System.Action{``0,``1,``2,``3,``4,``5,``6,``7,``8,``9,``10,``11,``12,``13},``0,``1,``2,``3,``4,``5,``6,``7,``8,``9,``10,``11,``12,``13)
+  name.vb: Enqueue(Of T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14)(Action(Of T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14), T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14)
+  fullName: Moth.Tasks.TaskQueue.Enqueue<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14>(System.Action<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14>, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14)
+  fullName.vb: Moth.Tasks.TaskQueue.Enqueue(Of T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14)(System.Action(Of T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14), T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14)
+  nameWithType: TaskQueue.Enqueue<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14>(Action<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14>, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14)
+  nameWithType.vb: TaskQueue.Enqueue(Of T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14)(Action(Of T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14), T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14)
+- uid: Moth.Tasks.TaskQueue.Enqueue``15(System.Action{``0,``1,``2,``3,``4,``5,``6,``7,``8,``9,``10,``11,``12,``13,``14},``0,``1,``2,``3,``4,``5,``6,``7,``8,``9,``10,``11,``12,``13,``14)
+  name: Enqueue<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15>(Action<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15>, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15)
+  href: api/Moth.Tasks.TaskQueue.html#Moth_Tasks_TaskQueue_Enqueue__15_System_Action___0___1___2___3___4___5___6___7___8___9___10___11___12___13___14____0___1___2___3___4___5___6___7___8___9___10___11___12___13___14_
+  commentId: M:Moth.Tasks.TaskQueue.Enqueue``15(System.Action{``0,``1,``2,``3,``4,``5,``6,``7,``8,``9,``10,``11,``12,``13,``14},``0,``1,``2,``3,``4,``5,``6,``7,``8,``9,``10,``11,``12,``13,``14)
+  name.vb: Enqueue(Of T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15)(Action(Of T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15), T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15)
+  fullName: Moth.Tasks.TaskQueue.Enqueue<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15>(System.Action<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15>, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15)
+  fullName.vb: Moth.Tasks.TaskQueue.Enqueue(Of T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15)(System.Action(Of T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15), T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15)
+  nameWithType: TaskQueue.Enqueue<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15>(Action<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15>, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15)
+  nameWithType.vb: TaskQueue.Enqueue(Of T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15)(Action(Of T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15), T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15)
+- uid: Moth.Tasks.TaskQueue.Enqueue``16(System.Action{``0,``1,``2,``3,``4,``5,``6,``7,``8,``9,``10,``11,``12,``13,``14,``15},``0,``1,``2,``3,``4,``5,``6,``7,``8,``9,``10,``11,``12,``13,``14,``15)
+  name: Enqueue<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, T16>(Action<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, T16>, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, T16)
+  href: api/Moth.Tasks.TaskQueue.html#Moth_Tasks_TaskQueue_Enqueue__16_System_Action___0___1___2___3___4___5___6___7___8___9___10___11___12___13___14___15____0___1___2___3___4___5___6___7___8___9___10___11___12___13___14___15_
+  commentId: M:Moth.Tasks.TaskQueue.Enqueue``16(System.Action{``0,``1,``2,``3,``4,``5,``6,``7,``8,``9,``10,``11,``12,``13,``14,``15},``0,``1,``2,``3,``4,``5,``6,``7,``8,``9,``10,``11,``12,``13,``14,``15)
+  name.vb: Enqueue(Of T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, T16)(Action(Of T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, T16), T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, T16)
+  fullName: Moth.Tasks.TaskQueue.Enqueue<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, T16>(System.Action<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, T16>, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, T16)
+  fullName.vb: Moth.Tasks.TaskQueue.Enqueue(Of T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, T16)(System.Action(Of T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, T16), T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, T16)
+  nameWithType: TaskQueue.Enqueue<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, T16>(Action<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, T16>, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, T16)
+  nameWithType.vb: TaskQueue.Enqueue(Of T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, T16)(Action(Of T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, T16), T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, T16)
+- uid: Moth.Tasks.TaskQueue.Enqueue``2(System.Action{``0,``1},``0,``1)
+  name: Enqueue<T1, T2>(Action<T1, T2>, T1, T2)
+  href: api/Moth.Tasks.TaskQueue.html#Moth_Tasks_TaskQueue_Enqueue__2_System_Action___0___1____0___1_
+  commentId: M:Moth.Tasks.TaskQueue.Enqueue``2(System.Action{``0,``1},``0,``1)
+  name.vb: Enqueue(Of T1, T2)(Action(Of T1, T2), T1, T2)
+  fullName: Moth.Tasks.TaskQueue.Enqueue<T1, T2>(System.Action<T1, T2>, T1, T2)
+  fullName.vb: Moth.Tasks.TaskQueue.Enqueue(Of T1, T2)(System.Action(Of T1, T2), T1, T2)
+  nameWithType: TaskQueue.Enqueue<T1, T2>(Action<T1, T2>, T1, T2)
+  nameWithType.vb: TaskQueue.Enqueue(Of T1, T2)(Action(Of T1, T2), T1, T2)
+- uid: Moth.Tasks.TaskQueue.Enqueue``3(System.Action{``0,``1,``2},``0,``1,``2)
+  name: Enqueue<T1, T2, T3>(Action<T1, T2, T3>, T1, T2, T3)
+  href: api/Moth.Tasks.TaskQueue.html#Moth_Tasks_TaskQueue_Enqueue__3_System_Action___0___1___2____0___1___2_
+  commentId: M:Moth.Tasks.TaskQueue.Enqueue``3(System.Action{``0,``1,``2},``0,``1,``2)
+  name.vb: Enqueue(Of T1, T2, T3)(Action(Of T1, T2, T3), T1, T2, T3)
+  fullName: Moth.Tasks.TaskQueue.Enqueue<T1, T2, T3>(System.Action<T1, T2, T3>, T1, T2, T3)
+  fullName.vb: Moth.Tasks.TaskQueue.Enqueue(Of T1, T2, T3)(System.Action(Of T1, T2, T3), T1, T2, T3)
+  nameWithType: TaskQueue.Enqueue<T1, T2, T3>(Action<T1, T2, T3>, T1, T2, T3)
+  nameWithType.vb: TaskQueue.Enqueue(Of T1, T2, T3)(Action(Of T1, T2, T3), T1, T2, T3)
+- uid: Moth.Tasks.TaskQueue.Enqueue``4(System.Action{``0,``1,``2,``3},``0,``1,``2,``3)
+  name: Enqueue<T1, T2, T3, T4>(Action<T1, T2, T3, T4>, T1, T2, T3, T4)
+  href: api/Moth.Tasks.TaskQueue.html#Moth_Tasks_TaskQueue_Enqueue__4_System_Action___0___1___2___3____0___1___2___3_
+  commentId: M:Moth.Tasks.TaskQueue.Enqueue``4(System.Action{``0,``1,``2,``3},``0,``1,``2,``3)
+  name.vb: Enqueue(Of T1, T2, T3, T4)(Action(Of T1, T2, T3, T4), T1, T2, T3, T4)
+  fullName: Moth.Tasks.TaskQueue.Enqueue<T1, T2, T3, T4>(System.Action<T1, T2, T3, T4>, T1, T2, T3, T4)
+  fullName.vb: Moth.Tasks.TaskQueue.Enqueue(Of T1, T2, T3, T4)(System.Action(Of T1, T2, T3, T4), T1, T2, T3, T4)
+  nameWithType: TaskQueue.Enqueue<T1, T2, T3, T4>(Action<T1, T2, T3, T4>, T1, T2, T3, T4)
+  nameWithType.vb: TaskQueue.Enqueue(Of T1, T2, T3, T4)(Action(Of T1, T2, T3, T4), T1, T2, T3, T4)
+- uid: Moth.Tasks.TaskQueue.Enqueue``5(System.Action{``0,``1,``2,``3,``4},``0,``1,``2,``3,``4)
+  name: Enqueue<T1, T2, T3, T4, T5>(Action<T1, T2, T3, T4, T5>, T1, T2, T3, T4, T5)
+  href: api/Moth.Tasks.TaskQueue.html#Moth_Tasks_TaskQueue_Enqueue__5_System_Action___0___1___2___3___4____0___1___2___3___4_
+  commentId: M:Moth.Tasks.TaskQueue.Enqueue``5(System.Action{``0,``1,``2,``3,``4},``0,``1,``2,``3,``4)
+  name.vb: Enqueue(Of T1, T2, T3, T4, T5)(Action(Of T1, T2, T3, T4, T5), T1, T2, T3, T4, T5)
+  fullName: Moth.Tasks.TaskQueue.Enqueue<T1, T2, T3, T4, T5>(System.Action<T1, T2, T3, T4, T5>, T1, T2, T3, T4, T5)
+  fullName.vb: Moth.Tasks.TaskQueue.Enqueue(Of T1, T2, T3, T4, T5)(System.Action(Of T1, T2, T3, T4, T5), T1, T2, T3, T4, T5)
+  nameWithType: TaskQueue.Enqueue<T1, T2, T3, T4, T5>(Action<T1, T2, T3, T4, T5>, T1, T2, T3, T4, T5)
+  nameWithType.vb: TaskQueue.Enqueue(Of T1, T2, T3, T4, T5)(Action(Of T1, T2, T3, T4, T5), T1, T2, T3, T4, T5)
+- uid: Moth.Tasks.TaskQueue.Enqueue``6(System.Action{``0,``1,``2,``3,``4,``5},``0,``1,``2,``3,``4,``5)
+  name: Enqueue<T1, T2, T3, T4, T5, T6>(Action<T1, T2, T3, T4, T5, T6>, T1, T2, T3, T4, T5, T6)
+  href: api/Moth.Tasks.TaskQueue.html#Moth_Tasks_TaskQueue_Enqueue__6_System_Action___0___1___2___3___4___5____0___1___2___3___4___5_
+  commentId: M:Moth.Tasks.TaskQueue.Enqueue``6(System.Action{``0,``1,``2,``3,``4,``5},``0,``1,``2,``3,``4,``5)
+  name.vb: Enqueue(Of T1, T2, T3, T4, T5, T6)(Action(Of T1, T2, T3, T4, T5, T6), T1, T2, T3, T4, T5, T6)
+  fullName: Moth.Tasks.TaskQueue.Enqueue<T1, T2, T3, T4, T5, T6>(System.Action<T1, T2, T3, T4, T5, T6>, T1, T2, T3, T4, T5, T6)
+  fullName.vb: Moth.Tasks.TaskQueue.Enqueue(Of T1, T2, T3, T4, T5, T6)(System.Action(Of T1, T2, T3, T4, T5, T6), T1, T2, T3, T4, T5, T6)
+  nameWithType: TaskQueue.Enqueue<T1, T2, T3, T4, T5, T6>(Action<T1, T2, T3, T4, T5, T6>, T1, T2, T3, T4, T5, T6)
+  nameWithType.vb: TaskQueue.Enqueue(Of T1, T2, T3, T4, T5, T6)(Action(Of T1, T2, T3, T4, T5, T6), T1, T2, T3, T4, T5, T6)
+- uid: Moth.Tasks.TaskQueue.Enqueue``7(System.Action{``0,``1,``2,``3,``4,``5,``6},``0,``1,``2,``3,``4,``5,``6)
+  name: Enqueue<T1, T2, T3, T4, T5, T6, T7>(Action<T1, T2, T3, T4, T5, T6, T7>, T1, T2, T3, T4, T5, T6, T7)
+  href: api/Moth.Tasks.TaskQueue.html#Moth_Tasks_TaskQueue_Enqueue__7_System_Action___0___1___2___3___4___5___6____0___1___2___3___4___5___6_
+  commentId: M:Moth.Tasks.TaskQueue.Enqueue``7(System.Action{``0,``1,``2,``3,``4,``5,``6},``0,``1,``2,``3,``4,``5,``6)
+  name.vb: Enqueue(Of T1, T2, T3, T4, T5, T6, T7)(Action(Of T1, T2, T3, T4, T5, T6, T7), T1, T2, T3, T4, T5, T6, T7)
+  fullName: Moth.Tasks.TaskQueue.Enqueue<T1, T2, T3, T4, T5, T6, T7>(System.Action<T1, T2, T3, T4, T5, T6, T7>, T1, T2, T3, T4, T5, T6, T7)
+  fullName.vb: Moth.Tasks.TaskQueue.Enqueue(Of T1, T2, T3, T4, T5, T6, T7)(System.Action(Of T1, T2, T3, T4, T5, T6, T7), T1, T2, T3, T4, T5, T6, T7)
+  nameWithType: TaskQueue.Enqueue<T1, T2, T3, T4, T5, T6, T7>(Action<T1, T2, T3, T4, T5, T6, T7>, T1, T2, T3, T4, T5, T6, T7)
+  nameWithType.vb: TaskQueue.Enqueue(Of T1, T2, T3, T4, T5, T6, T7)(Action(Of T1, T2, T3, T4, T5, T6, T7), T1, T2, T3, T4, T5, T6, T7)
+- uid: Moth.Tasks.TaskQueue.Enqueue``8(System.Action{``0,``1,``2,``3,``4,``5,``6,``7},``0,``1,``2,``3,``4,``5,``6,``7)
+  name: Enqueue<T1, T2, T3, T4, T5, T6, T7, T8>(Action<T1, T2, T3, T4, T5, T6, T7, T8>, T1, T2, T3, T4, T5, T6, T7, T8)
+  href: api/Moth.Tasks.TaskQueue.html#Moth_Tasks_TaskQueue_Enqueue__8_System_Action___0___1___2___3___4___5___6___7____0___1___2___3___4___5___6___7_
+  commentId: M:Moth.Tasks.TaskQueue.Enqueue``8(System.Action{``0,``1,``2,``3,``4,``5,``6,``7},``0,``1,``2,``3,``4,``5,``6,``7)
+  name.vb: Enqueue(Of T1, T2, T3, T4, T5, T6, T7, T8)(Action(Of T1, T2, T3, T4, T5, T6, T7, T8), T1, T2, T3, T4, T5, T6, T7, T8)
+  fullName: Moth.Tasks.TaskQueue.Enqueue<T1, T2, T3, T4, T5, T6, T7, T8>(System.Action<T1, T2, T3, T4, T5, T6, T7, T8>, T1, T2, T3, T4, T5, T6, T7, T8)
+  fullName.vb: Moth.Tasks.TaskQueue.Enqueue(Of T1, T2, T3, T4, T5, T6, T7, T8)(System.Action(Of T1, T2, T3, T4, T5, T6, T7, T8), T1, T2, T3, T4, T5, T6, T7, T8)
+  nameWithType: TaskQueue.Enqueue<T1, T2, T3, T4, T5, T6, T7, T8>(Action<T1, T2, T3, T4, T5, T6, T7, T8>, T1, T2, T3, T4, T5, T6, T7, T8)
+  nameWithType.vb: TaskQueue.Enqueue(Of T1, T2, T3, T4, T5, T6, T7, T8)(Action(Of T1, T2, T3, T4, T5, T6, T7, T8), T1, T2, T3, T4, T5, T6, T7, T8)
+- uid: Moth.Tasks.TaskQueue.Enqueue``9(System.Action{``0,``1,``2,``3,``4,``5,``6,``7,``8},``0,``1,``2,``3,``4,``5,``6,``7,``8)
+  name: Enqueue<T1, T2, T3, T4, T5, T6, T7, T8, T9>(Action<T1, T2, T3, T4, T5, T6, T7, T8, T9>, T1, T2, T3, T4, T5, T6, T7, T8, T9)
+  href: api/Moth.Tasks.TaskQueue.html#Moth_Tasks_TaskQueue_Enqueue__9_System_Action___0___1___2___3___4___5___6___7___8____0___1___2___3___4___5___6___7___8_
+  commentId: M:Moth.Tasks.TaskQueue.Enqueue``9(System.Action{``0,``1,``2,``3,``4,``5,``6,``7,``8},``0,``1,``2,``3,``4,``5,``6,``7,``8)
+  name.vb: Enqueue(Of T1, T2, T3, T4, T5, T6, T7, T8, T9)(Action(Of T1, T2, T3, T4, T5, T6, T7, T8, T9), T1, T2, T3, T4, T5, T6, T7, T8, T9)
+  fullName: Moth.Tasks.TaskQueue.Enqueue<T1, T2, T3, T4, T5, T6, T7, T8, T9>(System.Action<T1, T2, T3, T4, T5, T6, T7, T8, T9>, T1, T2, T3, T4, T5, T6, T7, T8, T9)
+  fullName.vb: Moth.Tasks.TaskQueue.Enqueue(Of T1, T2, T3, T4, T5, T6, T7, T8, T9)(System.Action(Of T1, T2, T3, T4, T5, T6, T7, T8, T9), T1, T2, T3, T4, T5, T6, T7, T8, T9)
+  nameWithType: TaskQueue.Enqueue<T1, T2, T3, T4, T5, T6, T7, T8, T9>(Action<T1, T2, T3, T4, T5, T6, T7, T8, T9>, T1, T2, T3, T4, T5, T6, T7, T8, T9)
+  nameWithType.vb: TaskQueue.Enqueue(Of T1, T2, T3, T4, T5, T6, T7, T8, T9)(Action(Of T1, T2, T3, T4, T5, T6, T7, T8, T9), T1, T2, T3, T4, T5, T6, T7, T8, T9)
+- uid: Moth.Tasks.TaskQueue.Finalize
+  name: Finalize()
+  href: api/Moth.Tasks.TaskQueue.html#Moth_Tasks_TaskQueue_Finalize
+  commentId: M:Moth.Tasks.TaskQueue.Finalize
+  fullName: Moth.Tasks.TaskQueue.Finalize()
+  nameWithType: TaskQueue.Finalize()
+- uid: Moth.Tasks.TaskQueue.Finalize*
+  name: Finalize
+  href: api/Moth.Tasks.TaskQueue.html#Moth_Tasks_TaskQueue_Finalize_
+  commentId: Overload:Moth.Tasks.TaskQueue.Finalize
+  isSpec: "True"
+  fullName: Moth.Tasks.TaskQueue.Finalize
+  nameWithType: TaskQueue.Finalize
+- uid: Moth.Tasks.TaskQueue.RunNextTask(Moth.Tasks.IProfiler,System.Threading.CancellationToken)
+  name: RunNextTask(IProfiler, CancellationToken)
+  href: api/Moth.Tasks.TaskQueue.html#Moth_Tasks_TaskQueue_RunNextTask_Moth_Tasks_IProfiler_System_Threading_CancellationToken_
+  commentId: M:Moth.Tasks.TaskQueue.RunNextTask(Moth.Tasks.IProfiler,System.Threading.CancellationToken)
+  fullName: Moth.Tasks.TaskQueue.RunNextTask(Moth.Tasks.IProfiler, System.Threading.CancellationToken)
+  nameWithType: TaskQueue.RunNextTask(IProfiler, CancellationToken)
+- uid: Moth.Tasks.TaskQueue.RunNextTask(System.Exception@,Moth.Tasks.IProfiler,System.Threading.CancellationToken)
+  name: RunNextTask(out Exception, IProfiler, CancellationToken)
+  href: api/Moth.Tasks.TaskQueue.html#Moth_Tasks_TaskQueue_RunNextTask_System_Exception__Moth_Tasks_IProfiler_System_Threading_CancellationToken_
+  commentId: M:Moth.Tasks.TaskQueue.RunNextTask(System.Exception@,Moth.Tasks.IProfiler,System.Threading.CancellationToken)
+  name.vb: RunNextTask(ByRef Exception, IProfiler, CancellationToken)
+  fullName: Moth.Tasks.TaskQueue.RunNextTask(out System.Exception, Moth.Tasks.IProfiler, System.Threading.CancellationToken)
+  fullName.vb: Moth.Tasks.TaskQueue.RunNextTask(ByRef System.Exception, Moth.Tasks.IProfiler, System.Threading.CancellationToken)
+  nameWithType: TaskQueue.RunNextTask(out Exception, IProfiler, CancellationToken)
+  nameWithType.vb: TaskQueue.RunNextTask(ByRef Exception, IProfiler, CancellationToken)
+- uid: Moth.Tasks.TaskQueue.RunNextTask*
+  name: RunNextTask
+  href: api/Moth.Tasks.TaskQueue.html#Moth_Tasks_TaskQueue_RunNextTask_
+  commentId: Overload:Moth.Tasks.TaskQueue.RunNextTask
+  isSpec: "True"
+  fullName: Moth.Tasks.TaskQueue.RunNextTask
+  nameWithType: TaskQueue.RunNextTask
+- uid: Moth.Tasks.TaskQueue.TryRunNextTask(Moth.Tasks.IProfiler)
+  name: TryRunNextTask(IProfiler)
+  href: api/Moth.Tasks.TaskQueue.html#Moth_Tasks_TaskQueue_TryRunNextTask_Moth_Tasks_IProfiler_
+  commentId: M:Moth.Tasks.TaskQueue.TryRunNextTask(Moth.Tasks.IProfiler)
+  fullName: Moth.Tasks.TaskQueue.TryRunNextTask(Moth.Tasks.IProfiler)
+  nameWithType: TaskQueue.TryRunNextTask(IProfiler)
+- uid: Moth.Tasks.TaskQueue.TryRunNextTask(System.Exception@,Moth.Tasks.IProfiler)
+  name: TryRunNextTask(out Exception, IProfiler)
+  href: api/Moth.Tasks.TaskQueue.html#Moth_Tasks_TaskQueue_TryRunNextTask_System_Exception__Moth_Tasks_IProfiler_
+  commentId: M:Moth.Tasks.TaskQueue.TryRunNextTask(System.Exception@,Moth.Tasks.IProfiler)
+  name.vb: TryRunNextTask(ByRef Exception, IProfiler)
+  fullName: Moth.Tasks.TaskQueue.TryRunNextTask(out System.Exception, Moth.Tasks.IProfiler)
+  fullName.vb: Moth.Tasks.TaskQueue.TryRunNextTask(ByRef System.Exception, Moth.Tasks.IProfiler)
+  nameWithType: TaskQueue.TryRunNextTask(out Exception, IProfiler)
+  nameWithType.vb: TaskQueue.TryRunNextTask(ByRef Exception, IProfiler)
+- uid: Moth.Tasks.TaskQueue.TryRunNextTask*
+  name: TryRunNextTask
+  href: api/Moth.Tasks.TaskQueue.html#Moth_Tasks_TaskQueue_TryRunNextTask_
+  commentId: Overload:Moth.Tasks.TaskQueue.TryRunNextTask
+  isSpec: "True"
+  fullName: Moth.Tasks.TaskQueue.TryRunNextTask
+  nameWithType: TaskQueue.TryRunNextTask
+- uid: Moth.Tasks.Worker
+  name: Worker
+  href: api/Moth.Tasks.Worker.html
+  commentId: T:Moth.Tasks.Worker
+  fullName: Moth.Tasks.Worker
+  nameWithType: Worker
+- uid: Moth.Tasks.Worker.#ctor(Moth.Tasks.TaskQueue,System.Boolean,System.Boolean,Moth.Tasks.IProfiler,System.EventHandler{Moth.Tasks.TaskExceptionEventArgs})
+  name: Worker(TaskQueue, Boolean, Boolean, IProfiler, EventHandler<TaskExceptionEventArgs>)
+  href: api/Moth.Tasks.Worker.html#Moth_Tasks_Worker__ctor_Moth_Tasks_TaskQueue_System_Boolean_System_Boolean_Moth_Tasks_IProfiler_System_EventHandler_Moth_Tasks_TaskExceptionEventArgs__
+  commentId: M:Moth.Tasks.Worker.#ctor(Moth.Tasks.TaskQueue,System.Boolean,System.Boolean,Moth.Tasks.IProfiler,System.EventHandler{Moth.Tasks.TaskExceptionEventArgs})
+  name.vb: Worker(TaskQueue, Boolean, Boolean, IProfiler, EventHandler(Of TaskExceptionEventArgs))
+  fullName: Moth.Tasks.Worker.Worker(Moth.Tasks.TaskQueue, System.Boolean, System.Boolean, Moth.Tasks.IProfiler, System.EventHandler<Moth.Tasks.TaskExceptionEventArgs>)
+  fullName.vb: Moth.Tasks.Worker.Worker(Moth.Tasks.TaskQueue, System.Boolean, System.Boolean, Moth.Tasks.IProfiler, System.EventHandler(Of Moth.Tasks.TaskExceptionEventArgs))
+  nameWithType: Worker.Worker(TaskQueue, Boolean, Boolean, IProfiler, EventHandler<TaskExceptionEventArgs>)
+  nameWithType.vb: Worker.Worker(TaskQueue, Boolean, Boolean, IProfiler, EventHandler(Of TaskExceptionEventArgs))
+- uid: Moth.Tasks.Worker.#ctor(Moth.Tasks.TaskQueue,System.Boolean,System.Boolean,Moth.Tasks.ProfilerProvider,System.EventHandler{Moth.Tasks.TaskExceptionEventArgs})
+  name: Worker(TaskQueue, Boolean, Boolean, ProfilerProvider, EventHandler<TaskExceptionEventArgs>)
+  href: api/Moth.Tasks.Worker.html#Moth_Tasks_Worker__ctor_Moth_Tasks_TaskQueue_System_Boolean_System_Boolean_Moth_Tasks_ProfilerProvider_System_EventHandler_Moth_Tasks_TaskExceptionEventArgs__
+  commentId: M:Moth.Tasks.Worker.#ctor(Moth.Tasks.TaskQueue,System.Boolean,System.Boolean,Moth.Tasks.ProfilerProvider,System.EventHandler{Moth.Tasks.TaskExceptionEventArgs})
+  name.vb: Worker(TaskQueue, Boolean, Boolean, ProfilerProvider, EventHandler(Of TaskExceptionEventArgs))
+  fullName: Moth.Tasks.Worker.Worker(Moth.Tasks.TaskQueue, System.Boolean, System.Boolean, Moth.Tasks.ProfilerProvider, System.EventHandler<Moth.Tasks.TaskExceptionEventArgs>)
+  fullName.vb: Moth.Tasks.Worker.Worker(Moth.Tasks.TaskQueue, System.Boolean, System.Boolean, Moth.Tasks.ProfilerProvider, System.EventHandler(Of Moth.Tasks.TaskExceptionEventArgs))
+  nameWithType: Worker.Worker(TaskQueue, Boolean, Boolean, ProfilerProvider, EventHandler<TaskExceptionEventArgs>)
+  nameWithType.vb: Worker.Worker(TaskQueue, Boolean, Boolean, ProfilerProvider, EventHandler(Of TaskExceptionEventArgs))
+- uid: Moth.Tasks.Worker.#ctor*
+  name: Worker
+  href: api/Moth.Tasks.Worker.html#Moth_Tasks_Worker__ctor_
+  commentId: Overload:Moth.Tasks.Worker.#ctor
+  isSpec: "True"
+  fullName: Moth.Tasks.Worker.Worker
+  nameWithType: Worker.Worker
+- uid: Moth.Tasks.Worker.Dispose
+  name: Dispose()
+  href: api/Moth.Tasks.Worker.html#Moth_Tasks_Worker_Dispose
+  commentId: M:Moth.Tasks.Worker.Dispose
+  fullName: Moth.Tasks.Worker.Dispose()
+  nameWithType: Worker.Dispose()
+- uid: Moth.Tasks.Worker.Dispose(System.Boolean)
+  name: Dispose(Boolean)
+  href: api/Moth.Tasks.Worker.html#Moth_Tasks_Worker_Dispose_System_Boolean_
+  commentId: M:Moth.Tasks.Worker.Dispose(System.Boolean)
+  fullName: Moth.Tasks.Worker.Dispose(System.Boolean)
+  nameWithType: Worker.Dispose(Boolean)
+- uid: Moth.Tasks.Worker.Dispose*
+  name: Dispose
+  href: api/Moth.Tasks.Worker.html#Moth_Tasks_Worker_Dispose_
+  commentId: Overload:Moth.Tasks.Worker.Dispose
+  isSpec: "True"
+  fullName: Moth.Tasks.Worker.Dispose
+  nameWithType: Worker.Dispose
+- uid: Moth.Tasks.Worker.Finalize
+  name: Finalize()
+  href: api/Moth.Tasks.Worker.html#Moth_Tasks_Worker_Finalize
+  commentId: M:Moth.Tasks.Worker.Finalize
+  fullName: Moth.Tasks.Worker.Finalize()
+  nameWithType: Worker.Finalize()
+- uid: Moth.Tasks.Worker.Finalize*
+  name: Finalize
+  href: api/Moth.Tasks.Worker.html#Moth_Tasks_Worker_Finalize_
+  commentId: Overload:Moth.Tasks.Worker.Finalize
+  isSpec: "True"
+  fullName: Moth.Tasks.Worker.Finalize
+  nameWithType: Worker.Finalize
+- uid: Moth.Tasks.Worker.IsRunning
+  name: IsRunning
+  href: api/Moth.Tasks.Worker.html#Moth_Tasks_Worker_IsRunning
+  commentId: P:Moth.Tasks.Worker.IsRunning
+  fullName: Moth.Tasks.Worker.IsRunning
+  nameWithType: Worker.IsRunning
+- uid: Moth.Tasks.Worker.IsRunning*
+  name: IsRunning
+  href: api/Moth.Tasks.Worker.html#Moth_Tasks_Worker_IsRunning_
+  commentId: Overload:Moth.Tasks.Worker.IsRunning
+  isSpec: "True"
+  fullName: Moth.Tasks.Worker.IsRunning
+  nameWithType: Worker.IsRunning
+- uid: Moth.Tasks.Worker.Tasks
+  name: Tasks
+  href: api/Moth.Tasks.Worker.html#Moth_Tasks_Worker_Tasks
+  commentId: P:Moth.Tasks.Worker.Tasks
+  fullName: Moth.Tasks.Worker.Tasks
+  nameWithType: Worker.Tasks
+- uid: Moth.Tasks.Worker.Tasks*
+  name: Tasks
+  href: api/Moth.Tasks.Worker.html#Moth_Tasks_Worker_Tasks_
+  commentId: Overload:Moth.Tasks.Worker.Tasks
+  isSpec: "True"
+  fullName: Moth.Tasks.Worker.Tasks
+  nameWithType: Worker.Tasks
+- uid: Moth.Tasks.WorkerGroup
+  name: WorkerGroup
+  href: api/Moth.Tasks.WorkerGroup.html
+  commentId: T:Moth.Tasks.WorkerGroup
+  fullName: Moth.Tasks.WorkerGroup
+  nameWithType: WorkerGroup
+- uid: Moth.Tasks.WorkerGroup.#ctor(System.Int32,Moth.Tasks.TaskQueue,System.Boolean,System.Boolean,System.EventHandler{Moth.Tasks.TaskExceptionEventArgs},Moth.Tasks.ProfilerProvider)
+  name: WorkerGroup(Int32, TaskQueue, Boolean, Boolean, EventHandler<TaskExceptionEventArgs>, ProfilerProvider)
+  href: api/Moth.Tasks.WorkerGroup.html#Moth_Tasks_WorkerGroup__ctor_System_Int32_Moth_Tasks_TaskQueue_System_Boolean_System_Boolean_System_EventHandler_Moth_Tasks_TaskExceptionEventArgs__Moth_Tasks_ProfilerProvider_
+  commentId: M:Moth.Tasks.WorkerGroup.#ctor(System.Int32,Moth.Tasks.TaskQueue,System.Boolean,System.Boolean,System.EventHandler{Moth.Tasks.TaskExceptionEventArgs},Moth.Tasks.ProfilerProvider)
+  name.vb: WorkerGroup(Int32, TaskQueue, Boolean, Boolean, EventHandler(Of TaskExceptionEventArgs), ProfilerProvider)
+  fullName: Moth.Tasks.WorkerGroup.WorkerGroup(System.Int32, Moth.Tasks.TaskQueue, System.Boolean, System.Boolean, System.EventHandler<Moth.Tasks.TaskExceptionEventArgs>, Moth.Tasks.ProfilerProvider)
+  fullName.vb: Moth.Tasks.WorkerGroup.WorkerGroup(System.Int32, Moth.Tasks.TaskQueue, System.Boolean, System.Boolean, System.EventHandler(Of Moth.Tasks.TaskExceptionEventArgs), Moth.Tasks.ProfilerProvider)
+  nameWithType: WorkerGroup.WorkerGroup(Int32, TaskQueue, Boolean, Boolean, EventHandler<TaskExceptionEventArgs>, ProfilerProvider)
+  nameWithType.vb: WorkerGroup.WorkerGroup(Int32, TaskQueue, Boolean, Boolean, EventHandler(Of TaskExceptionEventArgs), ProfilerProvider)
+- uid: Moth.Tasks.WorkerGroup.#ctor*
+  name: WorkerGroup
+  href: api/Moth.Tasks.WorkerGroup.html#Moth_Tasks_WorkerGroup__ctor_
+  commentId: Overload:Moth.Tasks.WorkerGroup.#ctor
+  isSpec: "True"
+  fullName: Moth.Tasks.WorkerGroup.WorkerGroup
+  nameWithType: WorkerGroup.WorkerGroup
+- uid: Moth.Tasks.WorkerGroup.Dispose
+  name: Dispose()
+  href: api/Moth.Tasks.WorkerGroup.html#Moth_Tasks_WorkerGroup_Dispose
+  commentId: M:Moth.Tasks.WorkerGroup.Dispose
+  fullName: Moth.Tasks.WorkerGroup.Dispose()
+  nameWithType: WorkerGroup.Dispose()
+- uid: Moth.Tasks.WorkerGroup.Dispose(System.Boolean)
+  name: Dispose(Boolean)
+  href: api/Moth.Tasks.WorkerGroup.html#Moth_Tasks_WorkerGroup_Dispose_System_Boolean_
+  commentId: M:Moth.Tasks.WorkerGroup.Dispose(System.Boolean)
+  fullName: Moth.Tasks.WorkerGroup.Dispose(System.Boolean)
+  nameWithType: WorkerGroup.Dispose(Boolean)
+- uid: Moth.Tasks.WorkerGroup.Dispose*
+  name: Dispose
+  href: api/Moth.Tasks.WorkerGroup.html#Moth_Tasks_WorkerGroup_Dispose_
+  commentId: Overload:Moth.Tasks.WorkerGroup.Dispose
+  isSpec: "True"
+  fullName: Moth.Tasks.WorkerGroup.Dispose
+  nameWithType: WorkerGroup.Dispose
+- uid: Moth.Tasks.WorkerGroup.Finalize
+  name: Finalize()
+  href: api/Moth.Tasks.WorkerGroup.html#Moth_Tasks_WorkerGroup_Finalize
+  commentId: M:Moth.Tasks.WorkerGroup.Finalize
+  fullName: Moth.Tasks.WorkerGroup.Finalize()
+  nameWithType: WorkerGroup.Finalize()
+- uid: Moth.Tasks.WorkerGroup.Finalize*
+  name: Finalize
+  href: api/Moth.Tasks.WorkerGroup.html#Moth_Tasks_WorkerGroup_Finalize_
+  commentId: Overload:Moth.Tasks.WorkerGroup.Finalize
+  isSpec: "True"
+  fullName: Moth.Tasks.WorkerGroup.Finalize
+  nameWithType: WorkerGroup.Finalize
+- uid: Moth.Tasks.WorkerGroup.Tasks
+  name: Tasks
+  href: api/Moth.Tasks.WorkerGroup.html#Moth_Tasks_WorkerGroup_Tasks
+  commentId: P:Moth.Tasks.WorkerGroup.Tasks
+  fullName: Moth.Tasks.WorkerGroup.Tasks
+  nameWithType: WorkerGroup.Tasks
+- uid: Moth.Tasks.WorkerGroup.Tasks*
+  name: Tasks
+  href: api/Moth.Tasks.WorkerGroup.html#Moth_Tasks_WorkerGroup_Tasks_
+  commentId: Overload:Moth.Tasks.WorkerGroup.Tasks
+  isSpec: "True"
+  fullName: Moth.Tasks.WorkerGroup.Tasks
+  nameWithType: WorkerGroup.Tasks
+- uid: Moth.Tasks.WorkerGroup.WorkerCount
+  name: WorkerCount
+  href: api/Moth.Tasks.WorkerGroup.html#Moth_Tasks_WorkerGroup_WorkerCount
+  commentId: P:Moth.Tasks.WorkerGroup.WorkerCount
+  fullName: Moth.Tasks.WorkerGroup.WorkerCount
+  nameWithType: WorkerGroup.WorkerCount
+- uid: Moth.Tasks.WorkerGroup.WorkerCount*
+  name: WorkerCount
+  href: api/Moth.Tasks.WorkerGroup.html#Moth_Tasks_WorkerGroup_WorkerCount_
+  commentId: Overload:Moth.Tasks.WorkerGroup.WorkerCount
+  isSpec: "True"
+  fullName: Moth.Tasks.WorkerGroup.WorkerCount
+  nameWithType: WorkerGroup.WorkerCount
