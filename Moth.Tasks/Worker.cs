@@ -107,6 +107,15 @@
         public TaskQueue Tasks => tasks;
 
         /// <summary>
+        /// Blocks the calling thread until the <see cref="Worker"/> terminates.
+        /// </summary>
+        public void DisposeAndJoin ()
+        {
+            Dispose ();
+            thread.Join ();
+        }
+
+        /// <summary>
         /// Sends a signal to shutdown the thread. Also disposes of <see cref="Tasks"/> if specified in <see cref="Worker"/> constructor.
         /// </summary>
         public void Dispose ()
