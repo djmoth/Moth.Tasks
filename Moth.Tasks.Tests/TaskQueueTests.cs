@@ -509,6 +509,29 @@ namespace Moth.Tasks.Tests
             T GetPrivateValue<T> (string fieldName) => (T)typeof (TaskQueue).GetField (fieldName, BindingFlags.NonPublic | BindingFlags.Instance).GetValue (queue);
         }
 
+        [Test]
+        public void Dispose_GC ()
+        {
+            TaskQueue queue = new TaskQueue ();
+
+            object obj = new object ();
+
+            queue.Enqueue ((object obj) => obj.ToString (), obj);
+
+            WeakReference objRef = new WeakReference (obj);
+            obj = null;
+
+            GC.Collect (GC.MaxGeneration, GCCollectionMode.Forced, true);
+
+            Assert.IsTrue (objRef.IsAlive);
+
+            queue.RunNextTask ();
+
+            GC.Collect (GC.MaxGeneration, GCCollectionMode.Forced, true);
+
+            Assert.IsFalse (objRef.IsAlive);
+        }
+
         /// <summary>
         /// Object for storing the result of a <see cref="PutValueTask"/> or <see cref="PutValueAndDisposeTask"/>.
         /// </summary>
