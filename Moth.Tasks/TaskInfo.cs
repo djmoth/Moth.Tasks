@@ -1,43 +1,49 @@
 ﻿namespace Moth.Tasks
 {
     using System;
+    using System.Collections;
+    using System.Collections.Generic;
+    using System.Diagnostics;
     using System.Reflection;
     using System.Runtime.CompilerServices;
+    using System.Runtime.InteropServices;
+    using Validation;
 
     /// <summary>
     /// Representation of a task in a <see cref="TaskCache"/>.
     /// </summary>
     internal abstract class TaskInfo
     {
-        private TaskInfo (int id, Type type, int dataSize)
+        
+
+        protected TaskInfo (int id, Type type)
         {
             ID = id;
             Type = type;
-
-            DataSize = dataSize;
-
-            DataIndices = GetDataIndexSize (dataSize);
         }
 
         /// <summary>
-        /// ID of task.
+        /// Gets the ID of the task.
         /// </summary>
         public int ID { get; }
 
         /// <summary>
-        /// Type of task.
+        /// Gets the runtime <see cref="System.Type"/> of the task.
         /// </summary>
         public Type Type { get; }
 
         /// <summary>
-        /// Size of task data in bytes.
+        /// Gets the size of unmanaged task data in bytes.
         /// </summary>
-        public int DataSize { get; }
+        /// <remarks>
+        /// The unmanaged size is the size of the task data excluding fields of reference types.
+        /// </remarks>
+        public int UnmanagedSize { get; protected set; }
 
         /// <summary>
-        /// Size of task in indices of <see cref="TaskQueue.taskData"/>.
+        /// Gets whether the task contains reference types.
         /// </summary>
-        public int DataIndices { get; }
+        public bool IsManaged { get; protected set; }
 
         /// <summary>
         /// Gets a value indicating whether the task type implements <see cref="IDisposable"/>.
@@ -56,21 +62,14 @@
 
             if (typeof (IDisposable).IsAssignableFrom (type)) // If T implements IDisposable
             {
-                Type disposableImplementationOfT = typeof (DisposableImplementation<>).MakeGenericType (type);
+                Type disposableImplementationOfT = typeof (DisposableTaskInfo<>).MakeGenericType (type);
 
                 return (TaskInfo)Activator.CreateInstance (disposableImplementationOfT, id);
             } else
             {
-                return new Implementation<T> (id);
+                return new TaskInfo<T> (id);
             }
         }
-
-        /// <summary>
-        /// Calculates how many indices of <see cref="TaskQueue.taskData"/> it will take to store a struct of <paramref name="dataSize"/> bytes.
-        /// </summary>
-        /// <param name="dataSize">Raw size of struct.</param>
-        /// <returns>Number of indices.</returns>
-        public static int GetDataIndexSize (int dataSize) => (dataSize + IntPtr.Size - 1) / IntPtr.Size;
 
         /// <summary>
         /// Call the <see cref="ITask.Run"/> method of the task, with <see cref="TaskQueue.TaskDataAccess"/> for getting task data. Also calls <see cref="IDisposable.Dispose"/>, if implemented.
@@ -85,50 +84,79 @@
         /// <param name="access">Access to data from <see cref="TaskQueue"/>.</param>
         [MethodImpl (MethodImplOptions.AggressiveInlining)]
         public virtual void Dispose (in TaskQueue.TaskDataAccess access) { }
+    }
 
-        private class Implementation<T> : TaskInfo where T : struct, ITask
+    internal class TaskInfo<T> : TaskInfo where T : struct, ITask
+    {
+        private readonly Write write;
+        private readonly Read read;
+
+        public TaskInfo (int id)
+            : base (id, typeof (T))
         {
-            public Implementation (int id)
-                : base (id, typeof (T), Unsafe.SizeOf<T> ()) { }
+            UnmanagedSize = 0;
+        }
 
-            public override bool Disposable => false;
+        public delegate void Write (in T task, ref byte destination, Queue<object> references);
 
-            public override void RunAndDispose (ref TaskQueue.TaskDataAccess access)
+        public delegate void Read (out T task, in byte source, Queue<object> references);
+
+        public override bool Disposable => false;
+
+        public void Serialize (in T task, Span<byte> destination, Queue<object> references)
+        {
+            Debug.Assert (destination.Length >= UnmanagedSize, "destination.Length was less than TaskInfo.UnmanagedSize");
+
+            ref byte destinationRef = ref MemoryMarshal.GetReference (destination);
+
+            write (task, ref destinationRef, references);
+        }
+
+        public void Deserialize (out T task, ReadOnlySpan<byte> source, Queue<object> references)
+        {
+            Debug.Assert (source.Length >= UnmanagedSize, "source.Length was less than TaskInfo.UnmanagedSize");
+
+            ref byte sourceRef = ref MemoryMarshal.GetReference (source);
+
+            read (out task, sourceRef, references);
+        }
+
+        public override void RunAndDispose (ref TaskQueue.TaskDataAccess access)
+        {
+            T data = access.GetTaskData<T> (this);
+            access.Dispose ();
+
+            data.Run ();
+        }
+    }
+
+    internal class DisposableTaskInfo<T> : TaskInfo<T> where T : struct, ITask, IDisposable
+    {
+        public DisposableTaskInfo (int id)
+                : base (id) { }
+
+        public override bool Disposable => true;
+
+        public override void RunAndDispose (ref TaskQueue.TaskDataAccess access)
+        {
+            T data = access.GetTaskData<T> (this);
+            access.Dispose ();
+
+            try
             {
-                T data = access.GetTaskData<T> (this);
-                access.Dispose ();
-
                 data.Run ();
+            }
+            finally
+            {
+                data.Dispose ();
             }
         }
 
-        private class DisposableImplementation<T> : TaskInfo where T : struct, ITask, IDisposable
+        public override void Dispose (in TaskQueue.TaskDataAccess access)
         {
-            public DisposableImplementation (int id)
-                : base (id, typeof (T), Unsafe.SizeOf<T> ()) { }
+            T data = access.GetTaskData<T> (this);
 
-            public override bool Disposable => true;
-
-            public override void RunAndDispose (ref TaskQueue.TaskDataAccess access)
-            {
-                T data = access.GetTaskData<T> (this);
-                access.Dispose ();
-
-                try
-                {
-                    data.Run ();
-                } finally
-                {
-                    data.Dispose ();
-                }
-            }
-
-            public override void Dispose (in TaskQueue.TaskDataAccess access)
-            {
-                T data = access.GetTaskData<T> (this);
-
-                data.Dispose ();
-            }
+            data.Dispose ();
         }
     }
 }

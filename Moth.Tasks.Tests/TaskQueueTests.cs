@@ -93,7 +93,7 @@ namespace Moth.Tasks.Tests
 
             int nextTaskResult = 1;
 
-            int putValueTaskDataIndices = TaskInfo.GetDataIndexSize (Unsafe.SizeOf<PutValueTask> ());
+            int putValueTaskDataSize = Unsafe.SizeOf<PutValueTask> ();
 
             EnqueueTask ();
             EnqueueTask ();
@@ -102,7 +102,7 @@ namespace Moth.Tasks.Tests
             AssertNextTaskResult ();
 
             // queue.firstTask should now be equal putValueTaskDataIndices, pointing to the second task enqueued
-            AssertTestFirstTaskIndex (putValueTaskDataIndices);
+            AssertTestFirstTaskIndex (putValueTaskDataSize);
 
             // Enqueue another task, the contents of queue.taskData should now be moved to the front to make space
             EnqueueTask ();

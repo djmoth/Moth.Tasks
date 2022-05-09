@@ -17,7 +17,8 @@
         private readonly Dictionary<int, ManualResetEventSlim> taskHandles = new Dictionary<int, ManualResetEventSlim> ();
         private readonly Queue<int> tasks;
         private readonly ManualResetEventSlim tasksEnqueuedEvent = new ManualResetEventSlim (); // Must be explicitly set by callers of EnqueueImpl
-        private object[] taskData;
+        private readonly Queue<object> taskReferenceStore = new Queue<object> ();
+        private byte[] taskData;
         private int firstTask;
         private int lastTaskEnd;
         private bool disposed;
@@ -27,7 +28,7 @@
         /// Initializes a new instance of the <see cref="TaskQueue"/> class.
         /// </summary>
         public TaskQueue ()
-            : this (16, 256) { }
+            : this (16, 1024) { }
 
         /// <summary>
         /// Initializes a new instance of the <see cref="TaskQueue"/> class.
@@ -37,7 +38,7 @@
         internal TaskQueue (int taskCapacity, int dataCapacity)
         {
             tasks = new Queue<int> (taskCapacity);
-            taskData = new object[dataCapacity];
+            taskData = new byte[dataCapacity];
         }
 
         /// <summary>
@@ -363,7 +364,7 @@
             tasks.Enqueue (taskInfo.ID); // Add task ID to the queue
 
             // Only write task data if present
-            if (taskInfo.DataIndices > 0)
+            if (taskInfo.DataSize > 0)
             {
                 // If new task data will overflow the taskData array
                 if (lastTaskEnd + taskInfo.DataIndices > taskData.Length)
@@ -400,12 +401,12 @@
 
         private T GetNextTask<T> (TaskInfo task) where T : struct, ITask
         {
-            ref T dataRef = ref Unsafe.As<object, T> (ref taskData[firstTask]);
+            ref T dataRef = ref Unsafe.As<byte, T> (ref taskData[firstTask]);
             T data = dataRef;
 
             dataRef = default; // Clear stored data, as to not leave references hanging
 
-            firstTask += task.DataIndices;
+            firstTask += task.DataSize;
 
             if (firstTask == lastTaskEnd) // If firstTask is now equal to lastTaskEnd, then this was the last task in the queue
             {
