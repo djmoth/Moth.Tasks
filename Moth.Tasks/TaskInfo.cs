@@ -40,6 +40,8 @@
         /// </remarks>
         public int UnmanagedSize { get; protected set; }
 
+        public int ReferenceFieldCount { get; protected set; }
+
         /// <summary>
         /// Gets whether the task contains reference types.
         /// </summary>
@@ -97,7 +99,7 @@
             UnmanagedSize = 0;
         }
 
-        public delegate void Write (in T task, ref byte destination, Queue<object> references);
+        public delegate void Write (in T task, out byte destination, Queue<object> references);
 
         public delegate void Read (out T task, in byte source, Queue<object> references);
 
@@ -109,7 +111,7 @@
 
             ref byte destinationRef = ref MemoryMarshal.GetReference (destination);
 
-            write (task, ref destinationRef, references);
+            write (task, out destinationRef, references);
         }
 
         public void Deserialize (out T task, ReadOnlySpan<byte> source, Queue<object> references)
