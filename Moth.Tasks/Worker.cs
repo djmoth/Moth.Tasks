@@ -15,12 +15,11 @@
     /// </remarks>
     public class Worker : IDisposable
     {
-        private readonly TaskQueue tasks;
         private readonly bool disposeTasks;
-        private readonly Thread thread;
-        private readonly CancellationTokenSource cancelSource;
         private readonly IProfiler profiler;
         private readonly EventHandler<TaskExceptionEventArgs> exceptionEventHandler;
+        private readonly Thread thread;
+        private readonly CancellationTokenSource cancelSource = new CancellationTokenSource ();
         private int isRunningState;
 
         /// <summary>
@@ -66,13 +65,11 @@
             IProfiler profiler = null,
             EventHandler<TaskExceptionEventArgs> exceptionEventHandler = null)
         {
-            tasks = taskQueue ?? throw new ArgumentNullException (nameof (taskQueue), $"{nameof (taskQueue)} cannot be null.");
+            Tasks = taskQueue ?? throw new ArgumentNullException (nameof (taskQueue), $"{nameof (taskQueue)} cannot be null.");
             disposeTasks = disposeTaskQueue;
 
             if (disposeTasks)
-                GC.SuppressFinalize (tasks);
-
-            cancelSource = new CancellationTokenSource ();
+                GC.SuppressFinalize (Tasks);
 
             this.exceptionEventHandler = exceptionEventHandler;
             this.profiler = profiler;
@@ -102,9 +99,41 @@
         }
 
         /// <summary>
-        /// The <see cref="TaskQueue"/> of which the worker is executing tasks from.
+        /// Gets the <see cref="TaskQueue"/> of which the worker is executing tasks from.
         /// </summary>
-        public TaskQueue Tasks => tasks;
+        public TaskQueue Tasks { get; }
+
+        /// <summary>
+        /// Gets the <see cref="System.Threading.CancellationToken"/> associated with this worker.
+        /// </summary>
+        /// <remarks>
+        /// Can be passed to a task enqueued on <see cref="Tasks"/>, allowing it to exit early if <see cref="Dispose"/> is called.
+        /// </remarks>
+        public CancellationToken CancellationToken => cancelSource.Token;
+
+        /// <summary>
+        /// Calls <see cref="Dispose"/> and blocks the calling thread until the <see cref="Worker"/> terminates.
+        /// </summary>
+        public void DisposeAndJoin ()
+        {
+            Dispose ();
+            thread.Join ();
+        }
+
+        /// <summary>
+        /// Blocks the calling thread until the <see cref="Worker"/> terminates.
+        /// </summary>
+        /// <remarks>
+        /// <see cref="Dispose"/> must be called beforehand.
+        /// </remarks>
+        /// <exception cref="InvalidOperationException">The <see cref="Worker>"/> is not disposed.</exception>
+        public void Join ()
+        {
+            if (!cancelSource.IsCancellationRequested)
+                throw new InvalidOperationException ("Join may only be called after the Worker is disposed.");
+
+            thread.Join ();
+        }
 
         /// <summary>
         /// Sends a signal to shutdown the thread. Also disposes of <see cref="Tasks"/> if specified in <see cref="Worker"/> constructor.
@@ -124,7 +153,7 @@
             cancelSource.Cancel ();
 
             if (disposeTasks)
-                tasks.Dispose ();
+                Tasks.Dispose ();
         }
 
         private void Work ()
@@ -137,7 +166,7 @@
 
                 while (!cancel.IsCancellationRequested)
                 {
-                    tasks.RunNextTask (out Exception exception, profiler, cancel);
+                    Tasks.RunNextTask (out Exception exception, profiler, cancel);
 
                     if (exception != null)
                     {

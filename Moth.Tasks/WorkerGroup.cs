@@ -32,7 +32,7 @@
         /// <param name="profilerProvider">A <see cref="ProfilerProvider"/> which may provide an <see cref="IProfiler"/> each <see cref="Worker"/>. May be <see langword="null"/>.</param>
         /// <exception cref="ArgumentOutOfRangeException"><paramref name="workerCount"/> must be greater than zero.</exception>
         /// <exception cref="ArgumentNullException"><paramref name="taskQueue"/> cannot be null.</exception>
-        public WorkerGroup (int workerCount, TaskQueue taskQueue, bool disposeTaskQueue = true, bool isBackground = true, EventHandler<TaskExceptionEventArgs> exceptionEventHandler = null, ProfilerProvider profilerProvider = null)
+        public WorkerGroup (int workerCount, TaskQueue taskQueue, bool disposeTaskQueue, bool isBackground, EventHandler<TaskExceptionEventArgs> exceptionEventHandler = null, ProfilerProvider profilerProvider = null)
         {
             Requires.Range (workerCount > 0, nameof (workerCount), $"{nameof (workerCount)} must be greater than zero.");
 
@@ -51,6 +51,7 @@
             }
 
             this.isBackground = isBackground;
+            this.exceptionEventHandler = exceptionEventHandler;
             this.profilerProvider = profilerProvider;
         }
 
@@ -105,6 +106,40 @@
                     {
                         workers[i] = new Worker (Tasks, false, isBackground, profilerProvider, exceptionEventHandler);
                     }
+                }
+            }
+        }
+
+        /// <summary>
+        /// Calls <see cref="Dispose"/> and blocks the calling thread until all <see cref="Worker"/>s terminate.
+        /// </summary>
+        public void DisposeAndJoin ()
+        {
+            lock (workers)
+            {
+                Dispose ();
+
+                Join ();
+            }
+        }
+
+        /// <summary>
+        /// Blocks the calling thread until all <see cref="Worker"/>s terminate.
+        /// </summary>
+        /// <remarks>
+        /// <see cref="Dispose"/> must be called beforehand.
+        /// </remarks>
+        /// <exception cref="InvalidOperationException">The <see cref="WorkerGroup"/> is not disposed.</exception>
+        public void Join ()
+        {
+            lock (workers)
+            {
+                if (!disposed)
+                    throw new InvalidOperationException ("Join may only be called after the WorkerGroup is disposed.");
+
+                foreach (Worker worker in workers)
+                {
+                    worker.Join ();
                 }
             }
         }
