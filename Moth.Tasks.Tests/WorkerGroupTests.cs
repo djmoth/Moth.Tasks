@@ -13,7 +13,7 @@ namespace Moth.Tasks.Tests
         [Timeout (1000)]
         public void Work (int workerCount)
         {
-            using (WorkerGroup workers = new WorkerGroup (workerCount, new TaskQueue ()))
+            using (WorkerGroup workers = new WorkerGroup (workerCount, new TaskQueue (), true, true))
             {
                 EngageAllWorkers (workers);
             }
@@ -24,7 +24,7 @@ namespace Moth.Tasks.Tests
         {
             TaskQueue queue = new TaskQueue ();
 
-            using (WorkerGroup worker = new WorkerGroup (1, queue, disposeTaskQueue: true)) // Pass true for disposeTaskQueue
+            using (WorkerGroup worker = new WorkerGroup (1, queue, true, true)) // Pass true for disposeTaskQueue
             {
 
             }
@@ -38,7 +38,7 @@ namespace Moth.Tasks.Tests
         {
             int workerCount = 1;
 
-            using (WorkerGroup workers = new WorkerGroup (workerCount, new TaskQueue ()))
+            using (WorkerGroup workers = new WorkerGroup (workerCount, new TaskQueue (), true, true))
             {
                 Assert.AreEqual (workerCount, workers.WorkerCount);
             }
@@ -49,7 +49,7 @@ namespace Moth.Tasks.Tests
         {
             int workerCount = 1;
 
-            using (WorkerGroup workers = new WorkerGroup (workerCount, new TaskQueue ()))
+            using (WorkerGroup workers = new WorkerGroup (workerCount, new TaskQueue (), true, true))
             {
                 workerCount++;
                 workers.WorkerCount = workerCount;
@@ -66,7 +66,7 @@ namespace Moth.Tasks.Tests
         {
             int workerCount = 2;
 
-            using (WorkerGroup workers = new WorkerGroup (workerCount, new TaskQueue ()))
+            using (WorkerGroup workers = new WorkerGroup (workerCount, new TaskQueue (), true, true))
             {
                 workerCount--;
                 workers.WorkerCount = workerCount;
