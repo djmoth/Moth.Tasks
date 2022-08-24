@@ -658,22 +658,25 @@
         </member>
         <member name="P:Moth.Tasks.TaskInfo.ID">
             <summary>
-            ID of task.
+            Gets the ID of the task.
             </summary>
         </member>
         <member name="P:Moth.Tasks.TaskInfo.Type">
             <summary>
-            Type of task.
+            Gets the runtime <see cref="T:System.Type"/> of the task.
             </summary>
         </member>
-        <member name="P:Moth.Tasks.TaskInfo.DataSize">
+        <member name="P:Moth.Tasks.TaskInfo.UnmanagedSize">
             <summary>
-            Size of task data in bytes.
+            Gets the size of unmanaged task data in bytes.
             </summary>
+            <remarks>
+            The unmanaged size is the size of the task data excluding fields of reference types.
+            </remarks>
         </member>
-        <member name="P:Moth.Tasks.TaskInfo.DataIndices">
+        <member name="P:Moth.Tasks.TaskInfo.IsManaged">
             <summary>
-            Size of task in indices of <see cref="F:Moth.Tasks.TaskQueue.taskData"/>.
+            Gets whether the task contains reference types.
             </summary>
         </member>
         <member name="P:Moth.Tasks.TaskInfo.Disposable">
@@ -688,13 +691,6 @@
             <typeparam name="T">Type of task.</typeparam>
             <param name="id">ID of task.</param>
             <returns>A new TaskInfo representing the task <typeparamref name="T"/>.</returns>
-        </member>
-        <member name="M:Moth.Tasks.TaskInfo.GetDataIndexSize(System.Int32)">
-            <summary>
-            Calculates how many indices of <see cref="F:Moth.Tasks.TaskQueue.taskData"/> it will take to store a struct of <paramref name="dataSize"/> bytes.
-            </summary>
-            <param name="dataSize">Raw size of struct.</param>
-            <returns>Number of indices.</returns>
         </member>
         <member name="M:Moth.Tasks.TaskInfo.RunAndDispose(Moth.Tasks.TaskQueue.TaskDataAccess@)">
             <summary>
@@ -851,7 +847,7 @@
             Gets a value indicating whether the lock is still held.
             </summary>
         </member>
-        <member name="M:Moth.Tasks.TaskQueue.TaskDataAccess.GetTaskData``1(Moth.Tasks.TaskInfo)">
+        <member name="M:Moth.Tasks.TaskQueue.TaskDataAccess.GetTaskData``1(Moth.Tasks.TaskInfo{``0})">
             <summary>
             Fetches next data of a task.
             </summary>

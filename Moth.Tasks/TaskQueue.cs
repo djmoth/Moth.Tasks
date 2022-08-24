@@ -2,9 +2,7 @@
 {
     using System;
     using System.Collections.Generic;
-    using System.Diagnostics;
     using System.Runtime.CompilerServices;
-    using System.Runtime.InteropServices;
     using System.Threading;
 
     /// <summary>
@@ -15,9 +13,9 @@
         private readonly object taskLock = new object ();
         private readonly TaskCache taskCache = new TaskCache ();
         private readonly Dictionary<int, ManualResetEventSlim> taskHandles = new Dictionary<int, ManualResetEventSlim> ();
-        private readonly Queue<int> tasks;
         private readonly ManualResetEventSlim tasksEnqueuedEvent = new ManualResetEventSlim (); // Must be explicitly set by callers of EnqueueImpl
-        private readonly Queue<object> taskReferenceStore = new Queue<object> ();
+        private readonly Queue<int> tasks;
+        private readonly TaskReferenceStore taskReferenceStore = new TaskReferenceStore ();
         private byte[] taskData;
         private int firstTask;
         private int lastTaskEnd;
@@ -247,12 +245,13 @@
                     }
                 } else
                 {
-                    firstTask += task.DataIndices; // Skip task data
+                    firstTask += task.UnmanagedSize; // Skip task data
                 }
             }
 
             tasks.Clear ();
             taskHandles.Clear ();
+            taskReferenceStore.Clear ();
 
             firstTask = 0;
             lastTaskEnd = 0;
@@ -359,23 +358,23 @@
                 throw new ObjectDisposedException (nameof (TaskQueue), "New tasks may not be enqueued after TaskQueue has been disposed.");
             }
 
-            TaskInfo taskInfo = taskCache.GetTask<T> ();
+            TaskInfo<T> taskInfo = taskCache.GetTask<T> ();
 
             tasks.Enqueue (taskInfo.ID); // Add task ID to the queue
 
             // Only write task data if present
-            if (taskInfo.DataSize > 0)
+            if (taskInfo.UnmanagedSize > 0 || taskInfo.IsManaged)
             {
                 // If new task data will overflow the taskData array
-                if (lastTaskEnd + taskInfo.DataIndices > taskData.Length)
+                if (lastTaskEnd + taskInfo.UnmanagedSize > taskData.Length)
                 {
                     int totalTaskDataLength = lastTaskEnd - firstTask;
 
                     // If there is not enough total space in taskData array to hold new task, then resize taskData
-                    if (totalTaskDataLength + taskInfo.DataIndices > taskData.Length)
+                    if (totalTaskDataLength + taskInfo.UnmanagedSize > taskData.Length)
                     {
                         // If taskInfo.DataIndices is abnormally large, doubling the size might not always be enough
-                        int newSize = Math.Max (taskData.Length * 2, totalTaskDataLength + taskInfo.DataIndices);
+                        int newSize = Math.Max (taskData.Length * 2, totalTaskDataLength + taskInfo.UnmanagedSize);
                         Array.Resize (ref taskData, newSize);
                     }
 
@@ -388,10 +387,9 @@
                     }
                 }
 
-                ref T newTask = ref Unsafe.As<object, T> (ref taskData[lastTaskEnd]);
-                newTask = task; // Write task data
+                taskInfo.Serialize (task, taskData.AsSpan (lastTaskEnd), taskReferenceStore);
 
-                lastTaskEnd += taskInfo.DataIndices;
+                lastTaskEnd += taskInfo.UnmanagedSize;
             }
 
             /* tasksEnqueuedEvent.Set () could be called here as this is the shared Enqueue implementation, but taskLock is still locked at this point:
@@ -399,14 +397,11 @@
              */
         }
 
-        private T GetNextTask<T> (TaskInfo task) where T : struct, ITask
+        private T GetNextTask<T> (TaskInfo<T> taskInfo) where T : struct, ITask
         {
-            ref T dataRef = ref Unsafe.As<byte, T> (ref taskData[firstTask]);
-            T data = dataRef;
+            taskInfo.Deserialize (out T task, taskData.AsSpan (firstTask), taskReferenceStore);
 
-            dataRef = default; // Clear stored data, as to not leave references hanging
-
-            firstTask += task.DataSize;
+            firstTask += taskInfo.UnmanagedSize;
 
             if (firstTask == lastTaskEnd) // If firstTask is now equal to lastTaskEnd, then this was the last task in the queue
             {
@@ -414,7 +409,7 @@
                 lastTaskEnd = 0;
             }
 
-            return data;
+            return task;
         }
 
         /// <summary>
@@ -446,7 +441,7 @@
             /// <param name="task">TaskInfo of task.</param>
             /// <returns>Task data.</returns>
             [MethodImpl (MethodImplOptions.AggressiveInlining)]
-            public readonly T GetTaskData<T> (TaskInfo task) where T : struct, ITask => queue.GetNextTask<T> (task);
+            public readonly T GetTaskData<T> (TaskInfo<T> task) where T : struct, ITask => queue.GetNextTask (task);
 
             /// <summary>
             /// Exits the lock.

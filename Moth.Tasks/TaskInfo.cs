@@ -1,5 +1,6 @@
 ﻿namespace Moth.Tasks
 {
+    using Moth.IO.Serialization;
     using System;
     using System.Collections;
     using System.Collections.Generic;
@@ -38,9 +39,7 @@
         /// <remarks>
         /// The unmanaged size is the size of the task data excluding fields of reference types.
         /// </remarks>
-        public int UnmanagedSize { get; protected set; }
-
-        public int ReferenceFieldCount { get; protected set; }
+        public abstract int UnmanagedSize { get; }
 
         /// <summary>
         /// Gets whether the task contains reference types.
@@ -58,7 +57,7 @@
         /// <typeparam name="T">Type of task.</typeparam>
         /// <param name="id">ID of task.</param>
         /// <returns>A new TaskInfo representing the task <typeparamref name="T"/>.</returns>
-        public static unsafe TaskInfo Create<T> (int id) where T : struct, ITask
+        public static unsafe TaskInfo<T> Create<T> (int id) where T : struct, ITask
         {
             Type type = typeof (T);
 
@@ -66,7 +65,7 @@
             {
                 Type disposableImplementationOfT = typeof (DisposableTaskInfo<>).MakeGenericType (type);
 
-                return (TaskInfo)Activator.CreateInstance (disposableImplementationOfT, id);
+                return (TaskInfo<T>)Activator.CreateInstance (disposableImplementationOfT, id);
             } else
             {
                 return new TaskInfo<T> (id);
@@ -90,42 +89,37 @@
 
     internal class TaskInfo<T> : TaskInfo where T : struct, ITask
     {
-        private readonly Write write;
-        private readonly Read read;
+        private Format<T> taskFormat;
 
         public TaskInfo (int id)
             : base (id, typeof (T))
         {
-            UnmanagedSize = 0;
+            taskFormat = (Format<T>)Formats.Get<T> ();
+
+            IsManaged = taskFormat is VariableFormat<T>;
         }
 
-        public delegate void Write (in T task, out byte destination, Queue<object> references);
-
-        public delegate void Read (out T task, in byte source, Queue<object> references);
+        public override int UnmanagedSize => taskFormat.MinSize;
 
         public override bool Disposable => false;
 
-        public void Serialize (in T task, Span<byte> destination, Queue<object> references)
+        public void Serialize (in T task, Span<byte> destination, TaskReferenceStore references)
         {
             Debug.Assert (destination.Length >= UnmanagedSize, "destination.Length was less than TaskInfo.UnmanagedSize");
 
-            ref byte destinationRef = ref MemoryMarshal.GetReference (destination);
-
-            write (task, out destinationRef, references);
+            taskFormat.Serialize (task, destination, references.Write);
         }
 
-        public void Deserialize (out T task, ReadOnlySpan<byte> source, Queue<object> references)
+        public void Deserialize (out T task, ReadOnlySpan<byte> source, TaskReferenceStore references)
         {
             Debug.Assert (source.Length >= UnmanagedSize, "source.Length was less than TaskInfo.UnmanagedSize");
 
-            ref byte sourceRef = ref MemoryMarshal.GetReference (source);
-
-            read (out task, sourceRef, references);
+            taskFormat.Deserialize (out task, source, references.Read);
         }
 
         public override void RunAndDispose (ref TaskQueue.TaskDataAccess access)
         {
-            T data = access.GetTaskData<T> (this);
+            T data = access.GetTaskData (this);
             access.Dispose ();
 
             data.Run ();
@@ -135,7 +129,7 @@
     internal class DisposableTaskInfo<T> : TaskInfo<T> where T : struct, ITask, IDisposable
     {
         public DisposableTaskInfo (int id)
-                : base (id) { }
+            : base (id) { }
 
         public override bool Disposable => true;
 
