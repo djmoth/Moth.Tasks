@@ -11,27 +11,33 @@ namespace Moth.Tasks.Tests
         [Test]
         public void CreateTask ()
         {
-            AssertTaskInfo<Task> (false);
+            AssertTaskInfo<Task> (false, false);
+        }
+
+        [Test]
+        public void CreateTaskWithRef ()
+        {
+            AssertTaskInfo<TaskWithRef> (false, true);
         }
 
         [Test]
         public void CreateDisposableTask ()
         {
-            AssertTaskInfo<DisposableTask> (true);
+            AssertTaskInfo<DisposableTask> (true, false);
         }
 
-        void AssertTaskInfo<T> (bool disposable) where T : struct, ITask
+        void AssertTaskInfo<T> (bool disposable, bool isManaged) where T : struct, ITask
         {
             int taskID = 1; // Mock ID, set by a TaskCache in reality
-            TaskInfo taskInfo = TaskInfo.Create<T> (1);
+            TaskInfo<T> taskInfo = TaskInfo.Create<T> (1);
 
             Assert.AreEqual (taskID, taskInfo.ID);
 
             Assert.AreEqual (typeof (T), taskInfo.Type);
 
-            Assert.AreEqual (IntPtr.Size, taskInfo.DataSize); // Task contains one field of IntPtr, size should match IntPtr.Size then
+            Assert.AreEqual (IntPtr.Size, taskInfo.UnmanagedSize); // Task contains one field of IntPtr, size should match IntPtr.Size then
 
-            Assert.AreEqual (1, taskInfo.DataIndices); // A "Data Index" refers to an index in the internal TaskQueue.taskData object array
+            Assert.AreEqual (isManaged, taskInfo.IsManaged);
 
             Assert.AreEqual (disposable, taskInfo.Disposable); // Task does not implement IDisposable
         }
@@ -39,6 +45,17 @@ namespace Moth.Tasks.Tests
         struct Task : ITask
         {
             public IntPtr MockData;
+
+            public void Run ()
+            {
+
+            }
+        }
+
+        struct TaskWithRef : ITask
+        {
+            public IntPtr MockData;
+            public object Ref;
 
             public void Run ()
             {

@@ -42,34 +42,35 @@ namespace Moth.Tasks.Tests
         [Test]
         public void EnqueueTask_ExpandTaskData ()
         {
-            TaskQueue queue = new TaskQueue (1, 1);
+            const int startDataCapacity = 8;
+            TaskQueue queue = new TaskQueue (1, startDataCapacity);
 
-            AssertTaskDataLength (1);
-
-            queue.Enqueue (new Task ());
-
-            AssertTaskDataLength (1);
+            AssertTaskDataLength (startDataCapacity);
 
             queue.Enqueue (new Task ());
 
-            AssertTaskDataLength (2);
+            AssertTaskDataLength (startDataCapacity);
+
+            queue.Enqueue (new Task ());
+
+            AssertTaskDataLength (startDataCapacity * 2);
 
             queue.TryRunNextTask ();
 
-            AssertFirstTaskIndex (1);
+            AssertFirstTaskIndex (startDataCapacity);
 
             queue.Enqueue (new Task ());
 
             AssertFirstTaskIndex (0);
-            AssertTaskDataLength (2);
+            AssertTaskDataLength (startDataCapacity * 2);
 
             queue.Enqueue (new Task ());
 
-            AssertTaskDataLength (4);
+            AssertTaskDataLength (startDataCapacity * 4);
 
             void AssertTaskDataLength (int expectedValue)
             {
-                int queue_taskData_Length = queue.GetPrivateValue<object[]> ("taskData").Length;
+                int queue_taskData_Length = queue.GetPrivateValue<byte[]> ("taskData").Length;
                 Assert.AreEqual (expectedValue, queue_taskData_Length);
             }
 
@@ -86,14 +87,14 @@ namespace Moth.Tasks.Tests
         [Test]
         public void EnqueueAndTryRun_AssertValidData ()
         {
-            TaskQueue queue = new TaskQueue (2, 2);
+            TaskQueue queue = new TaskQueue (2, 8);
 
             Queue<TaskResult> results = new Queue<TaskResult> ();
             int nextTaskIndex = 1;
 
             int nextTaskResult = 1;
 
-            int putValueTaskDataIndices = TaskInfo.GetDataIndexSize (Unsafe.SizeOf<PutValueTask> ());
+            int putValueUnmanagedDataSize = sizeof (int); // Should be sizeof (int), as PutValue contains an int and a reference.
 
             EnqueueTask ();
             EnqueueTask ();
@@ -102,7 +103,7 @@ namespace Moth.Tasks.Tests
             AssertNextTaskResult ();
 
             // queue.firstTask should now be equal putValueTaskDataIndices, pointing to the second task enqueued
-            AssertTestFirstTaskIndex (putValueTaskDataIndices);
+            AssertTestFirstTaskIndex (putValueUnmanagedDataSize);
 
             // Enqueue another task, the contents of queue.taskData should now be moved to the front to make space
             EnqueueTask ();
@@ -507,6 +508,34 @@ namespace Moth.Tasks.Tests
             Assert.Throws<ObjectDisposedException> (() => queue.Enqueue (new Task (), out _));
 
             T GetPrivateValue<T> (string fieldName) => (T)typeof (TaskQueue).GetField (fieldName, BindingFlags.NonPublic | BindingFlags.Instance).GetValue (queue);
+        }
+
+        [Test]
+        public void Dispose_GC ()
+        {
+            TaskQueue queue = new TaskQueue ();
+
+            TrackedObject obj = new TrackedObject ();
+
+            queue.Enqueue ((object obj) => obj.ToString (), obj);
+
+            WeakReference objRef = new WeakReference (obj);
+            obj = null;
+
+            GC.Collect (GC.MaxGeneration, GCCollectionMode.Forced, true);
+
+            Assert.IsTrue (objRef.IsAlive);
+
+            queue.RunNextTask ();
+
+            GC.Collect (GC.MaxGeneration, GCCollectionMode.Forced, true);
+
+            Assert.IsFalse (objRef.IsAlive);
+        }
+
+        class TrackedObject
+        {
+
         }
 
         /// <summary>

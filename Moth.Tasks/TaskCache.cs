@@ -17,15 +17,15 @@
         /// </summary>
         /// <typeparam name="T">Type of task.</typeparam>
         /// <returns><see cref="TaskInfo"/> for <typeparamref name="T"/>.</returns>
-        public TaskInfo GetTask<T> () where T : struct, ITask
+        public TaskInfo<T> GetTask<T> () where T : struct, ITask
         {
             if (!idCache.TryGetValue (typeof (T), out int id))
             {
-                TaskInfo task = AddTask<T> ();
+                TaskInfo<T> task = AddTask<T> ();
                 return task;
             }
 
-            return taskCache[id];
+            return (TaskInfo<T>)taskCache[id];
         }
 
         /// <summary>
@@ -38,14 +38,14 @@
             return taskCache[id];
         }
 
-        private TaskInfo AddTask<T> () where T : struct, ITask
+        private TaskInfo<T> AddTask<T> () where T : struct, ITask
         {
             int id = nextID;
             nextID++;
 
             idCache.Add (typeof (T), id);
 
-            TaskInfo task = TaskInfo.Create<T> (id);
+            TaskInfo<T> task = TaskInfo.Create<T> (id);
 
             if (id >= taskCache.Length)
             {
