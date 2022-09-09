@@ -11,7 +11,7 @@
     /// <summary>
     /// Task encapsulating an <see cref="Action"/> with no parameters.
     /// </summary>
-    internal readonly struct DelegateTask : ITask
+    public readonly struct DelegateTask : ITask
     {
         private readonly Action action;
 
@@ -32,7 +32,7 @@
     /// </summary>
     /// <typeparam name="T1">Type of parameter 1.</typeparam>
     [StructLayout (LayoutKind.Auto)]
-    internal struct DelegateTask<T1> : ITask
+    public readonly struct DelegateTask<T1> : ITask
     {
         private readonly Action<T1> action;
         private readonly T1 arg1;
@@ -49,7 +49,7 @@
         }
 
         /// <summary>
-        /// Invokes the encapsulated <see cref="Action{T1}"/> with the provided argument.
+        /// Invokes the encapsulated <see cref="Action{T1}"/> with the provided arguments.
         /// </summary>
         public void Run () => action (arg1);
     }
@@ -60,7 +60,7 @@
     /// <typeparam name="T1">Type of parameter 1.</typeparam>
     /// <typeparam name="T2">Type of parameter 2.</typeparam>
     [StructLayout (LayoutKind.Auto)]
-    internal struct DelegateTask<T1, T2> : ITask
+    public readonly struct DelegateTask<T1, T2> : ITask
     {
         private readonly Action<T1, T2> action;
         private readonly T1 arg1;
@@ -80,7 +80,7 @@
         }
 
         /// <summary>
-        /// Invokes the encapsulated <see cref="Action{T1, T2}"/> with the provided argument.
+        /// Invokes the encapsulated <see cref="Action{T1, T2}"/> with the provided arguments.
         /// </summary>
         public void Run () => action (arg1, arg2);
     }
@@ -92,7 +92,7 @@
     /// <typeparam name="T2">Type of parameter 2.</typeparam>
     /// <typeparam name="T3">Type of parameter 3.</typeparam>
     [StructLayout (LayoutKind.Auto)]
-    internal struct DelegateTask<T1, T2, T3> : ITask
+    public readonly struct DelegateTask<T1, T2, T3> : ITask
     {
         private readonly Action<T1, T2, T3> action;
         private readonly T1 arg1;
@@ -115,7 +115,7 @@
         }
 
         /// <summary>
-        /// Invokes the encapsulated <see cref="Action{T1, T2, T3}"/> with the provided argument.
+        /// Invokes the encapsulated <see cref="Action{T1, T2, T3}"/> with the provided arguments.
         /// </summary>
         public void Run () => action (arg1, arg2, arg3);
     }
@@ -128,7 +128,7 @@
     /// <typeparam name="T3">Type of parameter 3.</typeparam>
     /// <typeparam name="T4">Type of parameter 4.</typeparam>
     [StructLayout (LayoutKind.Auto)]
-    internal struct DelegateTask<T1, T2, T3, T4> : ITask
+    public readonly struct DelegateTask<T1, T2, T3, T4> : ITask
     {
         private readonly Action<T1, T2, T3, T4> action;
         private readonly T1 arg1;
@@ -154,7 +154,7 @@
         }
 
         /// <summary>
-        /// Invokes the encapsulated <see cref="Action{T1, T2, T3, T4}"/> with the provided argument.
+        /// Invokes the encapsulated <see cref="Action{T1, T2, T3, T4}"/> with the provided arguments.
         /// </summary>
         public void Run () => action (arg1, arg2, arg3, arg4);
     }
@@ -168,7 +168,7 @@
     /// <typeparam name="T4">Type of parameter 4.</typeparam>
     /// <typeparam name="T5">Type of parameter 5.</typeparam>
     [StructLayout (LayoutKind.Auto)]
-    internal struct DelegateTask<T1, T2, T3, T4, T5> : ITask
+    public readonly struct DelegateTask<T1, T2, T3, T4, T5> : ITask
     {
         private readonly Action<T1, T2, T3, T4, T5> action;
         private readonly T1 arg1;
@@ -197,7 +197,7 @@
         }
 
         /// <summary>
-        /// Invokes the encapsulated <see cref="Action{T1, T2, T3, T4, T5}"/> with the provided argument.
+        /// Invokes the encapsulated <see cref="Action{T1, T2, T3, T4, T5}"/> with the provided arguments.
         /// </summary>
         public void Run () => action (arg1, arg2, arg3, arg4, arg5);
     }
@@ -212,7 +212,7 @@
     /// <typeparam name="T5">Type of parameter 5.</typeparam>
     /// <typeparam name="T6">Type of parameter 6.</typeparam>
     [StructLayout (LayoutKind.Auto)]
-    internal struct DelegateTask<T1, T2, T3, T4, T5, T6> : ITask
+    public readonly struct DelegateTask<T1, T2, T3, T4, T5, T6> : ITask
     {
         private readonly Action<T1, T2, T3, T4, T5, T6> action;
         private readonly T1 arg1;
@@ -244,7 +244,7 @@
         }
 
         /// <summary>
-        /// Invokes the encapsulated <see cref="Action{T1, T2, T3, T4, T5, T6}"/> with the provided argument.
+        /// Invokes the encapsulated <see cref="Action{T1, T2, T3, T4, T5, T6}"/> with the provided arguments.
         /// </summary>
         public void Run () => action (arg1, arg2, arg3, arg4, arg5, arg6);
     }
@@ -260,7 +260,7 @@
     /// <typeparam name="T6">Type of parameter 6.</typeparam>
     /// <typeparam name="T7">Type of parameter 7.</typeparam>
     [StructLayout (LayoutKind.Auto)]
-    internal struct DelegateTask<T1, T2, T3, T4, T5, T6, T7> : ITask
+    public readonly struct DelegateTask<T1, T2, T3, T4, T5, T6, T7> : ITask
     {
         private readonly Action<T1, T2, T3, T4, T5, T6, T7> action;
         private readonly T1 arg1;
@@ -295,7 +295,7 @@
         }
 
         /// <summary>
-        /// Invokes the encapsulated <see cref="Action{T1, T2, T3, T4, T5, T6, T7}"/> with the provided argument.
+        /// Invokes the encapsulated <see cref="Action{T1, T2, T3, T4, T5, T6, T7}"/> with the provided arguments.
         /// </summary>
         public void Run () => action (arg1, arg2, arg3, arg4, arg5, arg6, arg7);
     }
@@ -312,7 +312,7 @@
     /// <typeparam name="T7">Type of parameter 7.</typeparam>
     /// <typeparam name="T8">Type of parameter 8.</typeparam>
     [StructLayout (LayoutKind.Auto)]
-    internal struct DelegateTask<T1, T2, T3, T4, T5, T6, T7, T8> : ITask
+    public readonly struct DelegateTask<T1, T2, T3, T4, T5, T6, T7, T8> : ITask
     {
         private readonly Action<T1, T2, T3, T4, T5, T6, T7, T8> action;
         private readonly T1 arg1;
@@ -350,7 +350,7 @@
         }
 
         /// <summary>
-        /// Invokes the encapsulated <see cref="Action{T1, T2, T3, T4, T5, T6, T7, T8}"/> with the provided argument.
+        /// Invokes the encapsulated <see cref="Action{T1, T2, T3, T4, T5, T6, T7, T8}"/> with the provided arguments.
         /// </summary>
         public void Run () => action (arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8);
     }
@@ -368,7 +368,7 @@
     /// <typeparam name="T8">Type of parameter 8.</typeparam>
     /// <typeparam name="T9">Type of parameter 9.</typeparam>
     [StructLayout (LayoutKind.Auto)]
-    internal struct DelegateTask<T1, T2, T3, T4, T5, T6, T7, T8, T9> : ITask
+    public readonly struct DelegateTask<T1, T2, T3, T4, T5, T6, T7, T8, T9> : ITask
     {
         private readonly Action<T1, T2, T3, T4, T5, T6, T7, T8, T9> action;
         private readonly T1 arg1;
@@ -409,7 +409,7 @@
         }
 
         /// <summary>
-        /// Invokes the encapsulated <see cref="Action{T1, T2, T3, T4, T5, T6, T7, T8, T9}"/> with the provided argument.
+        /// Invokes the encapsulated <see cref="Action{T1, T2, T3, T4, T5, T6, T7, T8, T9}"/> with the provided arguments.
         /// </summary>
         public void Run () => action (arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8, arg9);
     }
@@ -428,7 +428,7 @@
     /// <typeparam name="T9">Type of parameter 9.</typeparam>
     /// <typeparam name="T10">Type of parameter 10.</typeparam>
     [StructLayout (LayoutKind.Auto)]
-    internal struct DelegateTask<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10> : ITask
+    public readonly struct DelegateTask<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10> : ITask
     {
         private readonly Action<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10> action;
         private readonly T1 arg1;
@@ -472,7 +472,7 @@
         }
 
         /// <summary>
-        /// Invokes the encapsulated <see cref="Action{T1, T2, T3, T4, T5, T6, T7, T8, T9, T10}"/> with the provided argument.
+        /// Invokes the encapsulated <see cref="Action{T1, T2, T3, T4, T5, T6, T7, T8, T9, T10}"/> with the provided arguments.
         /// </summary>
         public void Run () => action (arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8, arg9, arg10);
     }
@@ -492,7 +492,7 @@
     /// <typeparam name="T10">Type of parameter 10.</typeparam>
     /// <typeparam name="T11">Type of parameter 11.</typeparam>
     [StructLayout (LayoutKind.Auto)]
-    internal struct DelegateTask<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11> : ITask
+    public readonly struct DelegateTask<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11> : ITask
     {
         private readonly Action<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11> action;
         private readonly T1 arg1;
@@ -539,7 +539,7 @@
         }
 
         /// <summary>
-        /// Invokes the encapsulated <see cref="Action{T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11}"/> with the provided argument.
+        /// Invokes the encapsulated <see cref="Action{T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11}"/> with the provided arguments.
         /// </summary>
         public void Run () => action (arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8, arg9, arg10, arg11);
     }
@@ -560,7 +560,7 @@
     /// <typeparam name="T11">Type of parameter 11.</typeparam>
     /// <typeparam name="T12">Type of parameter 12.</typeparam>
     [StructLayout (LayoutKind.Auto)]
-    internal struct DelegateTask<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12> : ITask
+    public readonly struct DelegateTask<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12> : ITask
     {
         private readonly Action<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12> action;
         private readonly T1 arg1;
@@ -610,7 +610,7 @@
         }
 
         /// <summary>
-        /// Invokes the encapsulated <see cref="Action{T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12}"/> with the provided argument.
+        /// Invokes the encapsulated <see cref="Action{T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12}"/> with the provided arguments.
         /// </summary>
         public void Run () => action (arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8, arg9, arg10, arg11, arg12);
     }
@@ -632,7 +632,7 @@
     /// <typeparam name="T12">Type of parameter 12.</typeparam>
     /// <typeparam name="T13">Type of parameter 13.</typeparam>
     [StructLayout (LayoutKind.Auto)]
-    internal struct DelegateTask<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13> : ITask
+    public readonly struct DelegateTask<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13> : ITask
     {
         private readonly Action<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13> action;
         private readonly T1 arg1;
@@ -685,7 +685,7 @@
         }
 
         /// <summary>
-        /// Invokes the encapsulated <see cref="Action{T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13}"/> with the provided argument.
+        /// Invokes the encapsulated <see cref="Action{T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13}"/> with the provided arguments.
         /// </summary>
         public void Run () => action (arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8, arg9, arg10, arg11, arg12, arg13);
     }
@@ -708,7 +708,7 @@
     /// <typeparam name="T13">Type of parameter 13.</typeparam>
     /// <typeparam name="T14">Type of parameter 14.</typeparam>
     [StructLayout (LayoutKind.Auto)]
-    internal struct DelegateTask<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14> : ITask
+    public readonly struct DelegateTask<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14> : ITask
     {
         private readonly Action<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14> action;
         private readonly T1 arg1;
@@ -764,7 +764,7 @@
         }
 
         /// <summary>
-        /// Invokes the encapsulated <see cref="Action{T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14}"/> with the provided argument.
+        /// Invokes the encapsulated <see cref="Action{T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14}"/> with the provided arguments.
         /// </summary>
         public void Run () => action (arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8, arg9, arg10, arg11, arg12, arg13, arg14);
     }
@@ -788,7 +788,7 @@
     /// <typeparam name="T14">Type of parameter 14.</typeparam>
     /// <typeparam name="T15">Type of parameter 15.</typeparam>
     [StructLayout (LayoutKind.Auto)]
-    internal struct DelegateTask<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15> : ITask
+    public readonly struct DelegateTask<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15> : ITask
     {
         private readonly Action<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15> action;
         private readonly T1 arg1;
@@ -847,7 +847,7 @@
         }
 
         /// <summary>
-        /// Invokes the encapsulated <see cref="Action{T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15}"/> with the provided argument.
+        /// Invokes the encapsulated <see cref="Action{T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15}"/> with the provided arguments.
         /// </summary>
         public void Run () => action (arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8, arg9, arg10, arg11, arg12, arg13, arg14, arg15);
     }
@@ -872,7 +872,7 @@
     /// <typeparam name="T15">Type of parameter 15.</typeparam>
     /// <typeparam name="T16">Type of parameter 16.</typeparam>
     [StructLayout (LayoutKind.Auto)]
-    internal struct DelegateTask<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, T16> : ITask
+    public readonly struct DelegateTask<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, T16> : ITask
     {
         private readonly Action<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, T16> action;
         private readonly T1 arg1;
@@ -934,7 +934,7 @@
         }
 
         /// <summary>
-        /// Invokes the encapsulated <see cref="Action{T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, T16}"/> with the provided argument.
+        /// Invokes the encapsulated <see cref="Action{T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, T16}"/> with the provided arguments.
         /// </summary>
         public void Run () => action (arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8, arg9, arg10, arg11, arg12, arg13, arg14, arg15, arg16);
     }

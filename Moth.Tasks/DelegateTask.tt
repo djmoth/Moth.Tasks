@@ -17,7 +17,7 @@ namespace Moth.Tasks
     /// <summary>
     /// Task encapsulating an <see cref="Action"/> with no parameters.
     /// </summary>
-    internal readonly struct DelegateTask : ITask
+    public readonly struct DelegateTask : ITask
     {
         private readonly Action action;
 
@@ -46,7 +46,7 @@ for (int i = 1; i <= maxParameterCount; i++)
     /// </summary>
 <# for (int t = 1; t <= i; t++) WriteLine ($"    /// <typeparam name=\"T{t}\">Type of parameter {t}.</typeparam>");#>
     [StructLayout (LayoutKind.Auto)]
-    internal struct DelegateTask<<#=typeParameters#>> : ITask
+    public readonly struct DelegateTask<<#=typeParameters#>> : ITask
     {
         private readonly Action<<#=typeParameters#>> action;
 <# for (int t = 1; t <= i; t++) WriteLine ($"        private readonly T{t} arg{t};");#>
@@ -68,7 +68,7 @@ for (int t = 1; t <= i; t++)
         }
 
         /// <summary>
-        /// Invokes the encapsulated <see cref="Action{<#=typeParameters#>}"/> with the provided argument.
+        /// Invokes the encapsulated <see cref="Action{<#=typeParameters#>}"/> with the provided arguments.
         /// </summary>
 <# string argList = "arg1";
 for (int t = 2; t <= i; t++)

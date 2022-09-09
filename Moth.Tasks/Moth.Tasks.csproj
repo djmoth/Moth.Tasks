@@ -50,6 +50,10 @@
       <Generator>TextTemplatingFileGenerator</Generator>
       <LastGenOutput>DelegateTask.cs</LastGenOutput>
     </None>
+    <None Update="TaskFromExtensions.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>TaskFromExtensions.cs</LastGenOutput>
+    </None>
     <None Update="TaskQueueEnqueueExtensions.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
       <LastGenOutput>TaskQueueEnqueueExtensions.cs</LastGenOutput>
@@ -65,6 +69,11 @@
       <DesignTime>True</DesignTime>
       <AutoGen>True</AutoGen>
       <DependentUpon>DelegateTask.tt</DependentUpon>
+    </Compile>
+    <Compile Update="TaskFromExtensions.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>TaskFromExtensions.tt</DependentUpon>
     </Compile>
     <Compile Update="TaskQueue.g.cs">
       <DesignTime>True</DesignTime>
