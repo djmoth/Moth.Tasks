@@ -6,7 +6,9 @@
 
     internal class TaskReferenceStore
     {
-        private readonly Queue<object> references = new Queue<object> ();
+        private object[] references;
+        private int head;
+        private int tail
 
         public TaskReferenceStore ()
         {
