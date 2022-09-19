@@ -41,6 +41,8 @@
         /// </remarks>
         public abstract int UnmanagedSize { get; }
 
+        public int ReferenceCount { get; protected set; }
+
         /// <summary>
         /// Gets whether the task contains reference types.
         /// </summary>
@@ -96,7 +98,13 @@
         {
             taskFormat = (Format<T>)Formats.Get<T> ();
 
-            IsManaged = taskFormat is VariableFormat<T>;
+            IsManaged = taskFormat is VariableFormat<T> varFormat;
+
+            if (IsManaged)
+            {
+                Span<byte> tmpTaskData = stackalloc byte[varFormat.MinSize];
+                varFormat.Serialize (default, tmpTaskData, (in object obj) => ReferenceCount++);
+            }
         }
 
         public override int UnmanagedSize => taskFormat.MinSize;

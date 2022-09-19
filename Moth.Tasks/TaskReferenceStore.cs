@@ -7,31 +7,116 @@
     internal class TaskReferenceStore
     {
         private object[] references;
-        private int head;
-        private int tail
+        private int start;
+        private int end;
+        private int insertIndex = -1;
+
+        private ObjectWriter write;
+        private ObjectWriter insert;
 
         public TaskReferenceStore ()
         {
-            Write = WriteImpl;
+            write = WriteImpl;
+            insert = InsertImpl;
+
             Read = ReadImpl;
         }
 
-        public ObjectWriter Write { get; }
+        public ObjectWriter Write => insertIndex == -1 ? write : insert;
 
         public ObjectReader Read { get; }
 
+        public InsertContext EnterInsertContext (int insertIndex, int refCount)
+        {
+            CheckCapacity (refCount);
+
+            int countAboveInsertIndex = end - insertIndex;
+
+            Array.Copy (references, insertIndex, references, insertIndex + refCount, countAboveInsertIndex); // Move elements above insert area
+
+            this.insertIndex = insertIndex;
+
+            return new InsertContext (this);
+        }
+
+        public void Clear ()
+        {
+            for (int i = start; i < end; i++)
+            {
+                references[i] = null;
+            }
+
+            start = 0;
+            end = 0;
+        }
+
         private int WriteImpl (in object obj, Span<byte> destination)
         {
-            references.Enqueue (obj);
+            CheckCapacity (1);
+
+            references[end] = obj;
+            end++;
+
+            return 0;
+        }
+
+        private int InsertImpl (in object obj, Span<byte> destination)
+        {
+            references[insertIndex] = obj;
+            insertIndex++;
+
             return 0;
         }
 
         private int ReadImpl (out object obj, Type type, ReadOnlySpan<byte> source)
         {
-            obj = references.Dequeue ();
+            obj = references[start];
+            start++;
+
+            if (start == end)
+            {
+                start = 0;
+                end = 0;
+            }
+
             return 0;
         }
 
-        public void Clear () => references.Clear ();
+        private void CheckCapacity (int refCount)
+        {
+            if (end + refCount > references.Length)
+            {
+                int count = end - start;
+
+                if (count + refCount > references.Length)
+                {
+                    int newSize = Math.Max (count * 2, count + refCount);
+                    Array.Resize (ref references, newSize);
+                }
+
+                if (start != 0)
+                {
+                    Array.Copy (references, start, references, 0, count);
+
+                    end = count;
+                    start = 0;
+                }
+            }
+        }
+
+        public ref struct InsertContext
+        {
+            private TaskReferenceStore store;
+
+            internal InsertContext (TaskReferenceStore store)
+            {
+                this.store = store;
+            }
+
+            public void Dispose ()
+            {
+                store.insertIndex = -1;
+            }
+        }
     }
 }

@@ -45,7 +45,10 @@ namespace Moth.Tasks
 
             Unsafe.CopyBlockUnaligned (ref taskData[copyDestination], ref taskData[copySource], (uint)byteCount);
 
-            taskInfo.Serialize (task, taskData.AsSpan (dataIndex), );
+            using (var insertContext = taskReferenceStore.EnterInsertContext (refIndex, taskInfo.ReferenceCount))
+            {
+                taskInfo.Serialize (task, taskData.AsSpan (dataIndex), taskReferenceStore);
+            }
 
             lastTaskEnd += taskInfo.UnmanagedSize;
         }
