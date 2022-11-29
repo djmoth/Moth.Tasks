@@ -15,8 +15,6 @@
     /// </summary>
     internal abstract class TaskInfo
     {
-        
-
         protected TaskInfo (int id, Type type)
         {
             ID = id;
@@ -98,12 +96,13 @@
         {
             taskFormat = (Format<T>)Formats.Get<T> ();
 
-            IsManaged = taskFormat is VariableFormat<T> varFormat;
-
-            if (IsManaged)
+            if (taskFormat is VariableFormat<T> varFormat)
             {
+                // Count all references in format
                 Span<byte> tmpTaskData = stackalloc byte[varFormat.MinSize];
-                varFormat.Serialize (default, tmpTaskData, (in object obj) => ReferenceCount++);
+                varFormat.Serialize (default, tmpTaskData, (in object obj, Span<byte> destination) => { ReferenceCount++; return 0; } );
+
+                IsManaged = true;
             }
         }
 

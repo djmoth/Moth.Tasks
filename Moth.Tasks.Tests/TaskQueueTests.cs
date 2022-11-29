@@ -70,13 +70,13 @@ namespace Moth.Tasks.Tests
 
             void AssertTaskDataLength (int expectedValue)
             {
-                int queue_taskData_Length = queue.GetPrivateValue<byte[]> ("taskData").Length;
+                int queue_taskData_Length = queue.GetPrivateValue<TaskDataStore> ("taskData").GetPrivateValue<byte[]> ("taskData").Length;
                 Assert.AreEqual (expectedValue, queue_taskData_Length);
             }
 
             void AssertFirstTaskIndex (int expectedValue)
             {
-                int queue_firstTask = queue.GetPrivateValue<int> ("firstTask");
+                int queue_firstTask = queue.GetPrivateValue<TaskDataStore> ("taskData").GetPrivateValue<int> ("firstTask");
                 Assert.AreEqual (expectedValue, queue_firstTask);
             }
         }
@@ -132,7 +132,7 @@ namespace Moth.Tasks.Tests
 
             void AssertTestFirstTaskIndex (int expectedValue)
             {
-                int queue_firstTask = queue.GetPrivateValue<int> ("firstTask");
+                int queue_firstTask = queue.GetPrivateValue<TaskDataStore> ("taskData").GetPrivateValue<int> ("firstTask");
                 Assert.AreEqual (expectedValue, queue_firstTask);
             }
         }
@@ -515,27 +515,33 @@ namespace Moth.Tasks.Tests
         {
             TaskQueue queue = new TaskQueue ();
 
-            TrackedObject obj = new TrackedObject ();
+            WeakReference objRef = new WeakReference (null);
 
-            queue.Enqueue ((object obj) => obj.ToString (), obj);
+            queue.Enqueue ((TaskQueue queue, WeakReference objRef) =>
+            {
+                object obj = new object ();
+                objRef.Target = obj;
+                queue.Enqueue ((object obj) => obj.ToString (), obj);
+            }, queue, objRef);
 
-            WeakReference objRef = new WeakReference (obj);
-            obj = null;
+            queue.RunNextTask ();
 
             GC.Collect (GC.MaxGeneration, GCCollectionMode.Forced, true);
+            GC.WaitForPendingFinalizers ();
 
             Assert.IsTrue (objRef.IsAlive);
 
             queue.RunNextTask ();
 
             GC.Collect (GC.MaxGeneration, GCCollectionMode.Forced, true);
+            GC.WaitForPendingFinalizers ();
 
             Assert.IsFalse (objRef.IsAlive);
         }
 
         class TrackedObject
         {
-
+            public object Obj;
         }
 
         /// <summary>

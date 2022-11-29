@@ -10,6 +10,11 @@ namespace Moth.Tasks
         private int firstTask;
         private int lastTaskEnd;
 
+        public TaskDataStore (int dataCapacity)
+        {
+            taskData = new byte[dataCapacity];
+        }
+
         public void Enqueue<T> (T task, TaskInfo<T> taskInfo) where T : struct, ITask
         {
             // If new task data will overflow the taskData array
@@ -35,6 +40,20 @@ namespace Moth.Tasks
             return task;
         }
 
+        public void Skip (TaskInfo taskInfo)
+        {
+            firstTask += taskInfo.UnmanagedSize;
+
+            if (firstTask == lastTaskEnd)
+            {
+                firstTask = 0;
+                lastTaskEnd = 0;
+            }
+
+            if (taskInfo.IsManaged)
+                taskReferenceStore.Skip (taskInfo.ReferenceCount);
+        }
+
         public void Insert<T> (int dataIndex, int refIndex, T task, TaskInfo<T> taskInfo) where T : struct, ITask
         {
             CheckCapacity (taskInfo.UnmanagedSize);
@@ -51,6 +70,14 @@ namespace Moth.Tasks
             }
 
             lastTaskEnd += taskInfo.UnmanagedSize;
+        }
+
+        public void Clear ()
+        {
+            firstTask = 0;
+            lastTaskEnd = 0;
+
+            taskReferenceStore.Clear ();
         }
 
         private void CheckCapacity (int unmanagedSize)

@@ -126,7 +126,7 @@
         /// <remarks>
         /// <see cref="Dispose"/> must be called beforehand.
         /// </remarks>
-        /// <exception cref="InvalidOperationException">The <see cref="Worker>"/> is not disposed.</exception>
+        /// <exception cref="InvalidOperationException">The <see cref="Worker"/> is not disposed.</exception>
         public void Join ()
         {
             if (!cancelSource.IsCancellationRequested)

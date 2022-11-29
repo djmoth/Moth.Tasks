@@ -15,10 +15,7 @@
         private readonly Dictionary<int, ManualResetEventSlim> taskHandles = new Dictionary<int, ManualResetEventSlim> ();
         private readonly ManualResetEventSlim tasksEnqueuedEvent = new ManualResetEventSlim (); // Must be explicitly set by callers of EnqueueImpl
         private readonly Queue<int> tasks;
-        private readonly TaskReferenceStore taskReferenceStore = new TaskReferenceStore ();
-        private byte[] taskData;
-        private int firstTask;
-        private int lastTaskEnd;
+        private readonly TaskDataStore taskData;
         private bool disposed;
         private int nextTaskHandle = 1;
 
@@ -36,7 +33,7 @@
         internal TaskQueue (int taskCapacity, int dataCapacity)
         {
             tasks = new Queue<int> (taskCapacity);
-            taskData = new byte[dataCapacity];
+            taskData = new TaskDataStore (dataCapacity);
         }
 
         /// <summary>
@@ -245,16 +242,13 @@
                     }
                 } else
                 {
-                    firstTask += task.UnmanagedSize; // Skip task data
+                    taskData.Skip (task);
                 }
             }
 
             tasks.Clear ();
             taskHandles.Clear ();
-            taskReferenceStore.Clear ();
-
-            firstTask = 0;
-            lastTaskEnd = 0;
+            taskData.Clear ();
         }
 
         /// <summary>
@@ -365,31 +359,7 @@
             // Only write task data if present
             if (taskInfo.UnmanagedSize > 0 || taskInfo.IsManaged)
             {
-                // If new task data will overflow the taskData array
-                if (lastTaskEnd + taskInfo.UnmanagedSize > taskData.Length)
-                {
-                    int totalTaskDataLength = lastTaskEnd - firstTask;
-
-                    // If there is not enough total space in taskData array to hold new task, then resize taskData
-                    if (totalTaskDataLength + taskInfo.UnmanagedSize > taskData.Length)
-                    {
-                        // If taskInfo.DataIndices is abnormally large, doubling the size might not always be enough
-                        int newSize = Math.Max (taskData.Length * 2, totalTaskDataLength + taskInfo.UnmanagedSize);
-                        Array.Resize (ref taskData, newSize);
-                    }
-
-                    if (firstTask != 0)
-                    {
-                        Array.Copy (taskData, firstTask, taskData, 0, totalTaskDataLength); // Move tasks to the beginning of taskData, to eliminate wasted space
-
-                        lastTaskEnd = totalTaskDataLength;
-                        firstTask = 0;
-                    }
-                }
-
-                taskInfo.Serialize (task, taskData.AsSpan (lastTaskEnd), taskReferenceStore);
-
-                lastTaskEnd += taskInfo.UnmanagedSize;
+                taskData.Enqueue (task, taskInfo);
             }
 
             /* tasksEnqueuedEvent.Set () could be called here as this is the shared Enqueue implementation, but taskLock is still locked at this point:
@@ -397,20 +367,7 @@
              */
         }
 
-        private T GetNextTask<T> (TaskInfo<T> taskInfo) where T : struct, ITask
-        {
-            taskInfo.Deserialize (out T task, taskData.AsSpan (firstTask), taskReferenceStore);
-
-            firstTask += taskInfo.UnmanagedSize;
-
-            if (firstTask == lastTaskEnd) // If firstTask is now equal to lastTaskEnd, then this was the last task in the queue
-            {
-                firstTask = 0;
-                lastTaskEnd = 0;
-            }
-
-            return task;
-        }
+        private T GetNextTask<T> (TaskInfo<T> taskInfo) where T : struct, ITask => taskData.Dequeue (taskInfo);
 
         /// <summary>
         /// Provides a way for a task to access its data while locking the <see cref="TaskQueue"/>.

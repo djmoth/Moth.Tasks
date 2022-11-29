@@ -6,7 +6,7 @@
 
     internal class TaskReferenceStore
     {
-        private object[] references;
+        private object[] references = new object[32];
         private int start;
         private int end;
         private int insertIndex = -1;
@@ -50,6 +50,23 @@
             end = 0;
         }
 
+        public void Skip (int refCount)
+        {
+            // Clear references
+            for (int i = 0; i < refCount; i++)
+            {
+                references[start + i] = null;
+            }
+
+            start += refCount;
+
+            if (start == end)
+            {
+                start = 0;
+                end = 0;
+            }
+        }
+
         private int WriteImpl (in object obj, Span<byte> destination)
         {
             CheckCapacity (1);
@@ -71,6 +88,8 @@
         private int ReadImpl (out object obj, Type type, ReadOnlySpan<byte> source)
         {
             obj = references[start];
+            references[start] = null; // Clear stored reference
+
             start++;
 
             if (start == end)
