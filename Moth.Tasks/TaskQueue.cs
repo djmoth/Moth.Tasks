@@ -170,7 +170,7 @@
 
                 if (tasks.Count == 0)
                 {
-                    tasksEnqueuedEvent.Reset (); // All tasks have fetched, and as so the event can be reset.
+                    tasksEnqueuedEvent.Reset (); // All tasks have been fetched, and as such the event can be reset.
                 }
 
                 task = taskCache.GetTask (id);

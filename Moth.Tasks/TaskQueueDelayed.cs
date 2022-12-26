@@ -6,9 +6,10 @@
 
     public class TaskQueueDelayed
     {
-        
+        private readonly object tasklock = new object ();
+        private readonly TaskCache taskCache = new TaskCache ();
 
-        public void Enqueue<T> (T task) where T : ITask
+        public void Enqueue<T> (T task, int millisecondDelay) where T : ITask
         {
             
         }

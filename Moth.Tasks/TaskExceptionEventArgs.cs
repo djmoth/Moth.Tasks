@@ -17,7 +17,7 @@
         }
 
         /// <summary>
-        /// <see cref="System.Exception"/> thrown.
+        /// Gets the <see cref="System.Exception"/> that was thrown.
         /// </summary>
         public Exception Exception { get; }
     }
