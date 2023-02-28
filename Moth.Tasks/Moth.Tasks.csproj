@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <TargetFramework>netstandard2.1</TargetFramework>
@@ -22,6 +22,11 @@
 
   <ItemGroup>
     <None Include="..\.editorconfig" Link=".editorconfig" />
+    <None Include="FunctionPointerTask.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>FunctionPointerTask.tt</DependentUpon>
+    </None>
     <None Include="TaskQueueEnqueueExtensions.cs">
       <DesignTime>True</DesignTime>
       <AutoGen>True</AutoGen>
@@ -50,6 +55,10 @@
       <Generator>TextTemplatingFileGenerator</Generator>
       <LastGenOutput>DelegateTask.cs</LastGenOutput>
     </None>
+    <None Update="FunctionPointerTask.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>FunctionPointerTask.cs</LastGenOutput>
+    </None>
     <None Update="TaskFromExtensions.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
       <LastGenOutput>TaskFromExtensions.cs</LastGenOutput>
@@ -69,6 +78,11 @@
       <DesignTime>True</DesignTime>
       <AutoGen>True</AutoGen>
       <DependentUpon>DelegateTask.tt</DependentUpon>
+    </Compile>
+    <Compile Update="FunctionPointerTask.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>FunctionPointerTask.tt</DependentUpon>
     </Compile>
     <Compile Update="TaskFromExtensions.cs">
       <DesignTime>True</DesignTime>

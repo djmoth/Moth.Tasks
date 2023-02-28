@@ -1,7 +1,9 @@
 ﻿namespace Moth.Tasks
 {
     using System;
+    using System.Runtime.InteropServices;
 
+    [StructLayout (LayoutKind.Auto)]
     public struct ChainedTask<T1, T2> : ITask
         where T1 : struct, ITask
         where T2 : struct, ITask

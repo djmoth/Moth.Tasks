@@ -10,4 +10,9 @@
         /// </summary>
         void Run ();
     }
+
+    public interface ITask<TArg>
+    {
+        void Run (TArg arg);
+    }
 }
