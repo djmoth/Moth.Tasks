@@ -16,7 +16,5 @@
 
             return new ChainedTask<T1, T2> (task, secondTask);
         }
-
-        
     }
 }

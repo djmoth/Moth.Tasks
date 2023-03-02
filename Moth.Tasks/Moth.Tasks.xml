@@ -548,6 +548,546 @@
             Invokes the encapsulated <see cref="T:System.Action`16"/> with the provided arguments.
             </summary>
         </member>
+        <!-- Badly formed XML comment ignored for member "T:Moth.Tasks.FunctionPointerTask" -->
+        <member name="M:Moth.Tasks.FunctionPointerTask.#ctor()">
+            <summary>
+            Initializes a new instance of the <see cref="T:Moth.Tasks.FunctionPointerTask"/> struct.
+            </summary>
+            The <param name="function"><see cref="!:delegate*&lt;void&gt;"/> to invoke on <see cref="M:Moth.Tasks.FunctionPointerTask.Run"/>.</param>
+        </member>
+        <member name="M:Moth.Tasks.FunctionPointerTask.Run">
+            <summary>
+            Invokes the encapsulated <see cref="!:delegate*&lt;void&gt;"/>.
+            </summary>
+        </member>
+        <member name="T:Moth.Tasks.FunctionPointerTask`1">
+            <summary>
+            Task encapsulating an <see cref="!:delegate*&lt;void&gt;"/> with 1 parameters.
+            </summary>
+            <typeparam name="T1">Type of parameter 1.</typeparam>
+        </member>
+        <member name="M:Moth.Tasks.FunctionPointerTask`1.#ctor(,`0)">
+            <summary>
+            Initializes a new instance of the <see cref="T:Moth.Tasks.FunctionPointerTask`1"/> struct.
+            </summary>
+            <param name="action"><see cref="!:delegate*&lt;T1, void&gt;"/> to invoke on <see cref="M:Moth.Tasks.FunctionPointerTask`1.Run"/>.</param>
+            <param name="arg1">Argument 1 to invoke <paramref name="action"/> with.</param>
+        </member>
+        <member name="M:Moth.Tasks.FunctionPointerTask`1.Run">
+            <summary>
+            Invokes the encapsulated <see cref="!:delegate*&lt;T1, void&gt;"/> with the provided arguments.
+            </summary>
+        </member>
+        <member name="T:Moth.Tasks.FunctionPointerTask`2">
+            <summary>
+            Task encapsulating an <see cref="!:delegate*&lt;void&gt;"/> with 2 parameters.
+            </summary>
+            <typeparam name="T1">Type of parameter 1.</typeparam>
+            <typeparam name="T2">Type of parameter 2.</typeparam>
+        </member>
+        <member name="M:Moth.Tasks.FunctionPointerTask`2.#ctor(,`0,`1)">
+            <summary>
+            Initializes a new instance of the <see cref="T:Moth.Tasks.FunctionPointerTask`2"/> struct.
+            </summary>
+            <param name="action"><see cref="!:delegate*&lt;T1, T2, void&gt;"/> to invoke on <see cref="M:Moth.Tasks.FunctionPointerTask`2.Run"/>.</param>
+            <param name="arg1">Argument 1 to invoke <paramref name="action"/> with.</param>
+            <param name="arg2">Argument 2 to invoke <paramref name="action"/> with.</param>
+        </member>
+        <member name="M:Moth.Tasks.FunctionPointerTask`2.Run">
+            <summary>
+            Invokes the encapsulated <see cref="!:delegate*&lt;T1, T2, void&gt;"/> with the provided arguments.
+            </summary>
+        </member>
+        <member name="T:Moth.Tasks.FunctionPointerTask`3">
+            <summary>
+            Task encapsulating an <see cref="!:delegate*&lt;void&gt;"/> with 3 parameters.
+            </summary>
+            <typeparam name="T1">Type of parameter 1.</typeparam>
+            <typeparam name="T2">Type of parameter 2.</typeparam>
+            <typeparam name="T3">Type of parameter 3.</typeparam>
+        </member>
+        <member name="M:Moth.Tasks.FunctionPointerTask`3.#ctor(,`0,`1,`2)">
+            <summary>
+            Initializes a new instance of the <see cref="T:Moth.Tasks.FunctionPointerTask`3"/> struct.
+            </summary>
+            <param name="action"><see cref="!:delegate*&lt;T1, T2, T3, void&gt;"/> to invoke on <see cref="M:Moth.Tasks.FunctionPointerTask`3.Run"/>.</param>
+            <param name="arg1">Argument 1 to invoke <paramref name="action"/> with.</param>
+            <param name="arg2">Argument 2 to invoke <paramref name="action"/> with.</param>
+            <param name="arg3">Argument 3 to invoke <paramref name="action"/> with.</param>
+        </member>
+        <member name="M:Moth.Tasks.FunctionPointerTask`3.Run">
+            <summary>
+            Invokes the encapsulated <see cref="!:delegate*&lt;T1, T2, T3, void&gt;"/> with the provided arguments.
+            </summary>
+        </member>
+        <member name="T:Moth.Tasks.FunctionPointerTask`4">
+            <summary>
+            Task encapsulating an <see cref="!:delegate*&lt;void&gt;"/> with 4 parameters.
+            </summary>
+            <typeparam name="T1">Type of parameter 1.</typeparam>
+            <typeparam name="T2">Type of parameter 2.</typeparam>
+            <typeparam name="T3">Type of parameter 3.</typeparam>
+            <typeparam name="T4">Type of parameter 4.</typeparam>
+        </member>
+        <member name="M:Moth.Tasks.FunctionPointerTask`4.#ctor(,`0,`1,`2,`3)">
+            <summary>
+            Initializes a new instance of the <see cref="T:Moth.Tasks.FunctionPointerTask`4"/> struct.
+            </summary>
+            <param name="action"><see cref="!:delegate*&lt;T1, T2, T3, T4, void&gt;"/> to invoke on <see cref="M:Moth.Tasks.FunctionPointerTask`4.Run"/>.</param>
+            <param name="arg1">Argument 1 to invoke <paramref name="action"/> with.</param>
+            <param name="arg2">Argument 2 to invoke <paramref name="action"/> with.</param>
+            <param name="arg3">Argument 3 to invoke <paramref name="action"/> with.</param>
+            <param name="arg4">Argument 4 to invoke <paramref name="action"/> with.</param>
+        </member>
+        <member name="M:Moth.Tasks.FunctionPointerTask`4.Run">
+            <summary>
+            Invokes the encapsulated <see cref="!:delegate*&lt;T1, T2, T3, T4, void&gt;"/> with the provided arguments.
+            </summary>
+        </member>
+        <member name="T:Moth.Tasks.FunctionPointerTask`5">
+            <summary>
+            Task encapsulating an <see cref="!:delegate*&lt;void&gt;"/> with 5 parameters.
+            </summary>
+            <typeparam name="T1">Type of parameter 1.</typeparam>
+            <typeparam name="T2">Type of parameter 2.</typeparam>
+            <typeparam name="T3">Type of parameter 3.</typeparam>
+            <typeparam name="T4">Type of parameter 4.</typeparam>
+            <typeparam name="T5">Type of parameter 5.</typeparam>
+        </member>
+        <member name="M:Moth.Tasks.FunctionPointerTask`5.#ctor(,`0,`1,`2,`3,`4)">
+            <summary>
+            Initializes a new instance of the <see cref="T:Moth.Tasks.FunctionPointerTask`5"/> struct.
+            </summary>
+            <param name="action"><see cref="!:delegate*&lt;T1, T2, T3, T4, T5, void&gt;"/> to invoke on <see cref="M:Moth.Tasks.FunctionPointerTask`5.Run"/>.</param>
+            <param name="arg1">Argument 1 to invoke <paramref name="action"/> with.</param>
+            <param name="arg2">Argument 2 to invoke <paramref name="action"/> with.</param>
+            <param name="arg3">Argument 3 to invoke <paramref name="action"/> with.</param>
+            <param name="arg4">Argument 4 to invoke <paramref name="action"/> with.</param>
+            <param name="arg5">Argument 5 to invoke <paramref name="action"/> with.</param>
+        </member>
+        <member name="M:Moth.Tasks.FunctionPointerTask`5.Run">
+            <summary>
+            Invokes the encapsulated <see cref="!:delegate*&lt;T1, T2, T3, T4, T5, void&gt;"/> with the provided arguments.
+            </summary>
+        </member>
+        <member name="T:Moth.Tasks.FunctionPointerTask`6">
+            <summary>
+            Task encapsulating an <see cref="!:delegate*&lt;void&gt;"/> with 6 parameters.
+            </summary>
+            <typeparam name="T1">Type of parameter 1.</typeparam>
+            <typeparam name="T2">Type of parameter 2.</typeparam>
+            <typeparam name="T3">Type of parameter 3.</typeparam>
+            <typeparam name="T4">Type of parameter 4.</typeparam>
+            <typeparam name="T5">Type of parameter 5.</typeparam>
+            <typeparam name="T6">Type of parameter 6.</typeparam>
+        </member>
+        <member name="M:Moth.Tasks.FunctionPointerTask`6.#ctor(,`0,`1,`2,`3,`4,`5)">
+            <summary>
+            Initializes a new instance of the <see cref="T:Moth.Tasks.FunctionPointerTask`6"/> struct.
+            </summary>
+            <param name="action"><see cref="!:delegate*&lt;T1, T2, T3, T4, T5, T6, void&gt;"/> to invoke on <see cref="M:Moth.Tasks.FunctionPointerTask`6.Run"/>.</param>
+            <param name="arg1">Argument 1 to invoke <paramref name="action"/> with.</param>
+            <param name="arg2">Argument 2 to invoke <paramref name="action"/> with.</param>
+            <param name="arg3">Argument 3 to invoke <paramref name="action"/> with.</param>
+            <param name="arg4">Argument 4 to invoke <paramref name="action"/> with.</param>
+            <param name="arg5">Argument 5 to invoke <paramref name="action"/> with.</param>
+            <param name="arg6">Argument 6 to invoke <paramref name="action"/> with.</param>
+        </member>
+        <member name="M:Moth.Tasks.FunctionPointerTask`6.Run">
+            <summary>
+            Invokes the encapsulated <see cref="!:delegate*&lt;T1, T2, T3, T4, T5, T6, void&gt;"/> with the provided arguments.
+            </summary>
+        </member>
+        <member name="T:Moth.Tasks.FunctionPointerTask`7">
+            <summary>
+            Task encapsulating an <see cref="!:delegate*&lt;void&gt;"/> with 7 parameters.
+            </summary>
+            <typeparam name="T1">Type of parameter 1.</typeparam>
+            <typeparam name="T2">Type of parameter 2.</typeparam>
+            <typeparam name="T3">Type of parameter 3.</typeparam>
+            <typeparam name="T4">Type of parameter 4.</typeparam>
+            <typeparam name="T5">Type of parameter 5.</typeparam>
+            <typeparam name="T6">Type of parameter 6.</typeparam>
+            <typeparam name="T7">Type of parameter 7.</typeparam>
+        </member>
+        <member name="M:Moth.Tasks.FunctionPointerTask`7.#ctor(,`0,`1,`2,`3,`4,`5,`6)">
+            <summary>
+            Initializes a new instance of the <see cref="T:Moth.Tasks.FunctionPointerTask`7"/> struct.
+            </summary>
+            <param name="action"><see cref="!:delegate*&lt;T1, T2, T3, T4, T5, T6, T7, void&gt;"/> to invoke on <see cref="M:Moth.Tasks.FunctionPointerTask`7.Run"/>.</param>
+            <param name="arg1">Argument 1 to invoke <paramref name="action"/> with.</param>
+            <param name="arg2">Argument 2 to invoke <paramref name="action"/> with.</param>
+            <param name="arg3">Argument 3 to invoke <paramref name="action"/> with.</param>
+            <param name="arg4">Argument 4 to invoke <paramref name="action"/> with.</param>
+            <param name="arg5">Argument 5 to invoke <paramref name="action"/> with.</param>
+            <param name="arg6">Argument 6 to invoke <paramref name="action"/> with.</param>
+            <param name="arg7">Argument 7 to invoke <paramref name="action"/> with.</param>
+        </member>
+        <member name="M:Moth.Tasks.FunctionPointerTask`7.Run">
+            <summary>
+            Invokes the encapsulated <see cref="!:delegate*&lt;T1, T2, T3, T4, T5, T6, T7, void&gt;"/> with the provided arguments.
+            </summary>
+        </member>
+        <member name="T:Moth.Tasks.FunctionPointerTask`8">
+            <summary>
+            Task encapsulating an <see cref="!:delegate*&lt;void&gt;"/> with 8 parameters.
+            </summary>
+            <typeparam name="T1">Type of parameter 1.</typeparam>
+            <typeparam name="T2">Type of parameter 2.</typeparam>
+            <typeparam name="T3">Type of parameter 3.</typeparam>
+            <typeparam name="T4">Type of parameter 4.</typeparam>
+            <typeparam name="T5">Type of parameter 5.</typeparam>
+            <typeparam name="T6">Type of parameter 6.</typeparam>
+            <typeparam name="T7">Type of parameter 7.</typeparam>
+            <typeparam name="T8">Type of parameter 8.</typeparam>
+        </member>
+        <member name="M:Moth.Tasks.FunctionPointerTask`8.#ctor(,`0,`1,`2,`3,`4,`5,`6,`7)">
+            <summary>
+            Initializes a new instance of the <see cref="T:Moth.Tasks.FunctionPointerTask`8"/> struct.
+            </summary>
+            <param name="action"><see cref="!:delegate*&lt;T1, T2, T3, T4, T5, T6, T7, T8, void&gt;"/> to invoke on <see cref="M:Moth.Tasks.FunctionPointerTask`8.Run"/>.</param>
+            <param name="arg1">Argument 1 to invoke <paramref name="action"/> with.</param>
+            <param name="arg2">Argument 2 to invoke <paramref name="action"/> with.</param>
+            <param name="arg3">Argument 3 to invoke <paramref name="action"/> with.</param>
+            <param name="arg4">Argument 4 to invoke <paramref name="action"/> with.</param>
+            <param name="arg5">Argument 5 to invoke <paramref name="action"/> with.</param>
+            <param name="arg6">Argument 6 to invoke <paramref name="action"/> with.</param>
+            <param name="arg7">Argument 7 to invoke <paramref name="action"/> with.</param>
+            <param name="arg8">Argument 8 to invoke <paramref name="action"/> with.</param>
+        </member>
+        <member name="M:Moth.Tasks.FunctionPointerTask`8.Run">
+            <summary>
+            Invokes the encapsulated <see cref="!:delegate*&lt;T1, T2, T3, T4, T5, T6, T7, T8, void&gt;"/> with the provided arguments.
+            </summary>
+        </member>
+        <member name="T:Moth.Tasks.FunctionPointerTask`9">
+            <summary>
+            Task encapsulating an <see cref="!:delegate*&lt;void&gt;"/> with 9 parameters.
+            </summary>
+            <typeparam name="T1">Type of parameter 1.</typeparam>
+            <typeparam name="T2">Type of parameter 2.</typeparam>
+            <typeparam name="T3">Type of parameter 3.</typeparam>
+            <typeparam name="T4">Type of parameter 4.</typeparam>
+            <typeparam name="T5">Type of parameter 5.</typeparam>
+            <typeparam name="T6">Type of parameter 6.</typeparam>
+            <typeparam name="T7">Type of parameter 7.</typeparam>
+            <typeparam name="T8">Type of parameter 8.</typeparam>
+            <typeparam name="T9">Type of parameter 9.</typeparam>
+        </member>
+        <member name="M:Moth.Tasks.FunctionPointerTask`9.#ctor(,`0,`1,`2,`3,`4,`5,`6,`7,`8)">
+            <summary>
+            Initializes a new instance of the <see cref="T:Moth.Tasks.FunctionPointerTask`9"/> struct.
+            </summary>
+            <param name="action"><see cref="!:delegate*&lt;T1, T2, T3, T4, T5, T6, T7, T8, T9, void&gt;"/> to invoke on <see cref="M:Moth.Tasks.FunctionPointerTask`9.Run"/>.</param>
+            <param name="arg1">Argument 1 to invoke <paramref name="action"/> with.</param>
+            <param name="arg2">Argument 2 to invoke <paramref name="action"/> with.</param>
+            <param name="arg3">Argument 3 to invoke <paramref name="action"/> with.</param>
+            <param name="arg4">Argument 4 to invoke <paramref name="action"/> with.</param>
+            <param name="arg5">Argument 5 to invoke <paramref name="action"/> with.</param>
+            <param name="arg6">Argument 6 to invoke <paramref name="action"/> with.</param>
+            <param name="arg7">Argument 7 to invoke <paramref name="action"/> with.</param>
+            <param name="arg8">Argument 8 to invoke <paramref name="action"/> with.</param>
+            <param name="arg9">Argument 9 to invoke <paramref name="action"/> with.</param>
+        </member>
+        <member name="M:Moth.Tasks.FunctionPointerTask`9.Run">
+            <summary>
+            Invokes the encapsulated <see cref="!:delegate*&lt;T1, T2, T3, T4, T5, T6, T7, T8, T9, void&gt;"/> with the provided arguments.
+            </summary>
+        </member>
+        <member name="T:Moth.Tasks.FunctionPointerTask`10">
+            <summary>
+            Task encapsulating an <see cref="!:delegate*&lt;void&gt;"/> with 10 parameters.
+            </summary>
+            <typeparam name="T1">Type of parameter 1.</typeparam>
+            <typeparam name="T2">Type of parameter 2.</typeparam>
+            <typeparam name="T3">Type of parameter 3.</typeparam>
+            <typeparam name="T4">Type of parameter 4.</typeparam>
+            <typeparam name="T5">Type of parameter 5.</typeparam>
+            <typeparam name="T6">Type of parameter 6.</typeparam>
+            <typeparam name="T7">Type of parameter 7.</typeparam>
+            <typeparam name="T8">Type of parameter 8.</typeparam>
+            <typeparam name="T9">Type of parameter 9.</typeparam>
+            <typeparam name="T10">Type of parameter 10.</typeparam>
+        </member>
+        <member name="M:Moth.Tasks.FunctionPointerTask`10.#ctor(,`0,`1,`2,`3,`4,`5,`6,`7,`8,`9)">
+            <summary>
+            Initializes a new instance of the <see cref="T:Moth.Tasks.FunctionPointerTask`10"/> struct.
+            </summary>
+            <param name="action"><see cref="!:delegate*&lt;T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, void&gt;"/> to invoke on <see cref="M:Moth.Tasks.FunctionPointerTask`10.Run"/>.</param>
+            <param name="arg1">Argument 1 to invoke <paramref name="action"/> with.</param>
+            <param name="arg2">Argument 2 to invoke <paramref name="action"/> with.</param>
+            <param name="arg3">Argument 3 to invoke <paramref name="action"/> with.</param>
+            <param name="arg4">Argument 4 to invoke <paramref name="action"/> with.</param>
+            <param name="arg5">Argument 5 to invoke <paramref name="action"/> with.</param>
+            <param name="arg6">Argument 6 to invoke <paramref name="action"/> with.</param>
+            <param name="arg7">Argument 7 to invoke <paramref name="action"/> with.</param>
+            <param name="arg8">Argument 8 to invoke <paramref name="action"/> with.</param>
+            <param name="arg9">Argument 9 to invoke <paramref name="action"/> with.</param>
+            <param name="arg10">Argument 10 to invoke <paramref name="action"/> with.</param>
+        </member>
+        <member name="M:Moth.Tasks.FunctionPointerTask`10.Run">
+            <summary>
+            Invokes the encapsulated <see cref="!:delegate*&lt;T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, void&gt;"/> with the provided arguments.
+            </summary>
+        </member>
+        <member name="T:Moth.Tasks.FunctionPointerTask`11">
+            <summary>
+            Task encapsulating an <see cref="!:delegate*&lt;void&gt;"/> with 11 parameters.
+            </summary>
+            <typeparam name="T1">Type of parameter 1.</typeparam>
+            <typeparam name="T2">Type of parameter 2.</typeparam>
+            <typeparam name="T3">Type of parameter 3.</typeparam>
+            <typeparam name="T4">Type of parameter 4.</typeparam>
+            <typeparam name="T5">Type of parameter 5.</typeparam>
+            <typeparam name="T6">Type of parameter 6.</typeparam>
+            <typeparam name="T7">Type of parameter 7.</typeparam>
+            <typeparam name="T8">Type of parameter 8.</typeparam>
+            <typeparam name="T9">Type of parameter 9.</typeparam>
+            <typeparam name="T10">Type of parameter 10.</typeparam>
+            <typeparam name="T11">Type of parameter 11.</typeparam>
+        </member>
+        <member name="M:Moth.Tasks.FunctionPointerTask`11.#ctor(,`0,`1,`2,`3,`4,`5,`6,`7,`8,`9,`10)">
+            <summary>
+            Initializes a new instance of the <see cref="T:Moth.Tasks.FunctionPointerTask`11"/> struct.
+            </summary>
+            <param name="action"><see cref="!:delegate*&lt;T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, void&gt;"/> to invoke on <see cref="M:Moth.Tasks.FunctionPointerTask`11.Run"/>.</param>
+            <param name="arg1">Argument 1 to invoke <paramref name="action"/> with.</param>
+            <param name="arg2">Argument 2 to invoke <paramref name="action"/> with.</param>
+            <param name="arg3">Argument 3 to invoke <paramref name="action"/> with.</param>
+            <param name="arg4">Argument 4 to invoke <paramref name="action"/> with.</param>
+            <param name="arg5">Argument 5 to invoke <paramref name="action"/> with.</param>
+            <param name="arg6">Argument 6 to invoke <paramref name="action"/> with.</param>
+            <param name="arg7">Argument 7 to invoke <paramref name="action"/> with.</param>
+            <param name="arg8">Argument 8 to invoke <paramref name="action"/> with.</param>
+            <param name="arg9">Argument 9 to invoke <paramref name="action"/> with.</param>
+            <param name="arg10">Argument 10 to invoke <paramref name="action"/> with.</param>
+            <param name="arg11">Argument 11 to invoke <paramref name="action"/> with.</param>
+        </member>
+        <member name="M:Moth.Tasks.FunctionPointerTask`11.Run">
+            <summary>
+            Invokes the encapsulated <see cref="!:delegate*&lt;T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, void&gt;"/> with the provided arguments.
+            </summary>
+        </member>
+        <member name="T:Moth.Tasks.FunctionPointerTask`12">
+            <summary>
+            Task encapsulating an <see cref="!:delegate*&lt;void&gt;"/> with 12 parameters.
+            </summary>
+            <typeparam name="T1">Type of parameter 1.</typeparam>
+            <typeparam name="T2">Type of parameter 2.</typeparam>
+            <typeparam name="T3">Type of parameter 3.</typeparam>
+            <typeparam name="T4">Type of parameter 4.</typeparam>
+            <typeparam name="T5">Type of parameter 5.</typeparam>
+            <typeparam name="T6">Type of parameter 6.</typeparam>
+            <typeparam name="T7">Type of parameter 7.</typeparam>
+            <typeparam name="T8">Type of parameter 8.</typeparam>
+            <typeparam name="T9">Type of parameter 9.</typeparam>
+            <typeparam name="T10">Type of parameter 10.</typeparam>
+            <typeparam name="T11">Type of parameter 11.</typeparam>
+            <typeparam name="T12">Type of parameter 12.</typeparam>
+        </member>
+        <member name="M:Moth.Tasks.FunctionPointerTask`12.#ctor(,`0,`1,`2,`3,`4,`5,`6,`7,`8,`9,`10,`11)">
+            <summary>
+            Initializes a new instance of the <see cref="T:Moth.Tasks.FunctionPointerTask`12"/> struct.
+            </summary>
+            <param name="action"><see cref="!:delegate*&lt;T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, void&gt;"/> to invoke on <see cref="M:Moth.Tasks.FunctionPointerTask`12.Run"/>.</param>
+            <param name="arg1">Argument 1 to invoke <paramref name="action"/> with.</param>
+            <param name="arg2">Argument 2 to invoke <paramref name="action"/> with.</param>
+            <param name="arg3">Argument 3 to invoke <paramref name="action"/> with.</param>
+            <param name="arg4">Argument 4 to invoke <paramref name="action"/> with.</param>
+            <param name="arg5">Argument 5 to invoke <paramref name="action"/> with.</param>
+            <param name="arg6">Argument 6 to invoke <paramref name="action"/> with.</param>
+            <param name="arg7">Argument 7 to invoke <paramref name="action"/> with.</param>
+            <param name="arg8">Argument 8 to invoke <paramref name="action"/> with.</param>
+            <param name="arg9">Argument 9 to invoke <paramref name="action"/> with.</param>
+            <param name="arg10">Argument 10 to invoke <paramref name="action"/> with.</param>
+            <param name="arg11">Argument 11 to invoke <paramref name="action"/> with.</param>
+            <param name="arg12">Argument 12 to invoke <paramref name="action"/> with.</param>
+        </member>
+        <member name="M:Moth.Tasks.FunctionPointerTask`12.Run">
+            <summary>
+            Invokes the encapsulated <see cref="!:delegate*&lt;T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, void&gt;"/> with the provided arguments.
+            </summary>
+        </member>
+        <member name="T:Moth.Tasks.FunctionPointerTask`13">
+            <summary>
+            Task encapsulating an <see cref="!:delegate*&lt;void&gt;"/> with 13 parameters.
+            </summary>
+            <typeparam name="T1">Type of parameter 1.</typeparam>
+            <typeparam name="T2">Type of parameter 2.</typeparam>
+            <typeparam name="T3">Type of parameter 3.</typeparam>
+            <typeparam name="T4">Type of parameter 4.</typeparam>
+            <typeparam name="T5">Type of parameter 5.</typeparam>
+            <typeparam name="T6">Type of parameter 6.</typeparam>
+            <typeparam name="T7">Type of parameter 7.</typeparam>
+            <typeparam name="T8">Type of parameter 8.</typeparam>
+            <typeparam name="T9">Type of parameter 9.</typeparam>
+            <typeparam name="T10">Type of parameter 10.</typeparam>
+            <typeparam name="T11">Type of parameter 11.</typeparam>
+            <typeparam name="T12">Type of parameter 12.</typeparam>
+            <typeparam name="T13">Type of parameter 13.</typeparam>
+        </member>
+        <member name="M:Moth.Tasks.FunctionPointerTask`13.#ctor(,`0,`1,`2,`3,`4,`5,`6,`7,`8,`9,`10,`11,`12)">
+            <summary>
+            Initializes a new instance of the <see cref="T:Moth.Tasks.FunctionPointerTask`13"/> struct.
+            </summary>
+            <param name="action"><see cref="!:delegate*&lt;T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, void&gt;"/> to invoke on <see cref="M:Moth.Tasks.FunctionPointerTask`13.Run"/>.</param>
+            <param name="arg1">Argument 1 to invoke <paramref name="action"/> with.</param>
+            <param name="arg2">Argument 2 to invoke <paramref name="action"/> with.</param>
+            <param name="arg3">Argument 3 to invoke <paramref name="action"/> with.</param>
+            <param name="arg4">Argument 4 to invoke <paramref name="action"/> with.</param>
+            <param name="arg5">Argument 5 to invoke <paramref name="action"/> with.</param>
+            <param name="arg6">Argument 6 to invoke <paramref name="action"/> with.</param>
+            <param name="arg7">Argument 7 to invoke <paramref name="action"/> with.</param>
+            <param name="arg8">Argument 8 to invoke <paramref name="action"/> with.</param>
+            <param name="arg9">Argument 9 to invoke <paramref name="action"/> with.</param>
+            <param name="arg10">Argument 10 to invoke <paramref name="action"/> with.</param>
+            <param name="arg11">Argument 11 to invoke <paramref name="action"/> with.</param>
+            <param name="arg12">Argument 12 to invoke <paramref name="action"/> with.</param>
+            <param name="arg13">Argument 13 to invoke <paramref name="action"/> with.</param>
+        </member>
+        <member name="M:Moth.Tasks.FunctionPointerTask`13.Run">
+            <summary>
+            Invokes the encapsulated <see cref="!:delegate*&lt;T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, void&gt;"/> with the provided arguments.
+            </summary>
+        </member>
+        <member name="T:Moth.Tasks.FunctionPointerTask`14">
+            <summary>
+            Task encapsulating an <see cref="!:delegate*&lt;void&gt;"/> with 14 parameters.
+            </summary>
+            <typeparam name="T1">Type of parameter 1.</typeparam>
+            <typeparam name="T2">Type of parameter 2.</typeparam>
+            <typeparam name="T3">Type of parameter 3.</typeparam>
+            <typeparam name="T4">Type of parameter 4.</typeparam>
+            <typeparam name="T5">Type of parameter 5.</typeparam>
+            <typeparam name="T6">Type of parameter 6.</typeparam>
+            <typeparam name="T7">Type of parameter 7.</typeparam>
+            <typeparam name="T8">Type of parameter 8.</typeparam>
+            <typeparam name="T9">Type of parameter 9.</typeparam>
+            <typeparam name="T10">Type of parameter 10.</typeparam>
+            <typeparam name="T11">Type of parameter 11.</typeparam>
+            <typeparam name="T12">Type of parameter 12.</typeparam>
+            <typeparam name="T13">Type of parameter 13.</typeparam>
+            <typeparam name="T14">Type of parameter 14.</typeparam>
+        </member>
+        <member name="M:Moth.Tasks.FunctionPointerTask`14.#ctor(,`0,`1,`2,`3,`4,`5,`6,`7,`8,`9,`10,`11,`12,`13)">
+            <summary>
+            Initializes a new instance of the <see cref="T:Moth.Tasks.FunctionPointerTask`14"/> struct.
+            </summary>
+            <param name="action"><see cref="!:delegate*&lt;T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, void&gt;"/> to invoke on <see cref="M:Moth.Tasks.FunctionPointerTask`14.Run"/>.</param>
+            <param name="arg1">Argument 1 to invoke <paramref name="action"/> with.</param>
+            <param name="arg2">Argument 2 to invoke <paramref name="action"/> with.</param>
+            <param name="arg3">Argument 3 to invoke <paramref name="action"/> with.</param>
+            <param name="arg4">Argument 4 to invoke <paramref name="action"/> with.</param>
+            <param name="arg5">Argument 5 to invoke <paramref name="action"/> with.</param>
+            <param name="arg6">Argument 6 to invoke <paramref name="action"/> with.</param>
+            <param name="arg7">Argument 7 to invoke <paramref name="action"/> with.</param>
+            <param name="arg8">Argument 8 to invoke <paramref name="action"/> with.</param>
+            <param name="arg9">Argument 9 to invoke <paramref name="action"/> with.</param>
+            <param name="arg10">Argument 10 to invoke <paramref name="action"/> with.</param>
+            <param name="arg11">Argument 11 to invoke <paramref name="action"/> with.</param>
+            <param name="arg12">Argument 12 to invoke <paramref name="action"/> with.</param>
+            <param name="arg13">Argument 13 to invoke <paramref name="action"/> with.</param>
+            <param name="arg14">Argument 14 to invoke <paramref name="action"/> with.</param>
+        </member>
+        <member name="M:Moth.Tasks.FunctionPointerTask`14.Run">
+            <summary>
+            Invokes the encapsulated <see cref="!:delegate*&lt;T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, void&gt;"/> with the provided arguments.
+            </summary>
+        </member>
+        <member name="T:Moth.Tasks.FunctionPointerTask`15">
+            <summary>
+            Task encapsulating an <see cref="!:delegate*&lt;void&gt;"/> with 15 parameters.
+            </summary>
+            <typeparam name="T1">Type of parameter 1.</typeparam>
+            <typeparam name="T2">Type of parameter 2.</typeparam>
+            <typeparam name="T3">Type of parameter 3.</typeparam>
+            <typeparam name="T4">Type of parameter 4.</typeparam>
+            <typeparam name="T5">Type of parameter 5.</typeparam>
+            <typeparam name="T6">Type of parameter 6.</typeparam>
+            <typeparam name="T7">Type of parameter 7.</typeparam>
+            <typeparam name="T8">Type of parameter 8.</typeparam>
+            <typeparam name="T9">Type of parameter 9.</typeparam>
+            <typeparam name="T10">Type of parameter 10.</typeparam>
+            <typeparam name="T11">Type of parameter 11.</typeparam>
+            <typeparam name="T12">Type of parameter 12.</typeparam>
+            <typeparam name="T13">Type of parameter 13.</typeparam>
+            <typeparam name="T14">Type of parameter 14.</typeparam>
+            <typeparam name="T15">Type of parameter 15.</typeparam>
+        </member>
+        <member name="M:Moth.Tasks.FunctionPointerTask`15.#ctor(,`0,`1,`2,`3,`4,`5,`6,`7,`8,`9,`10,`11,`12,`13,`14)">
+            <summary>
+            Initializes a new instance of the <see cref="T:Moth.Tasks.FunctionPointerTask`15"/> struct.
+            </summary>
+            <param name="action"><see cref="!:delegate*&lt;T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, void&gt;"/> to invoke on <see cref="M:Moth.Tasks.FunctionPointerTask`15.Run"/>.</param>
+            <param name="arg1">Argument 1 to invoke <paramref name="action"/> with.</param>
+            <param name="arg2">Argument 2 to invoke <paramref name="action"/> with.</param>
+            <param name="arg3">Argument 3 to invoke <paramref name="action"/> with.</param>
+            <param name="arg4">Argument 4 to invoke <paramref name="action"/> with.</param>
+            <param name="arg5">Argument 5 to invoke <paramref name="action"/> with.</param>
+            <param name="arg6">Argument 6 to invoke <paramref name="action"/> with.</param>
+            <param name="arg7">Argument 7 to invoke <paramref name="action"/> with.</param>
+            <param name="arg8">Argument 8 to invoke <paramref name="action"/> with.</param>
+            <param name="arg9">Argument 9 to invoke <paramref name="action"/> with.</param>
+            <param name="arg10">Argument 10 to invoke <paramref name="action"/> with.</param>
+            <param name="arg11">Argument 11 to invoke <paramref name="action"/> with.</param>
+            <param name="arg12">Argument 12 to invoke <paramref name="action"/> with.</param>
+            <param name="arg13">Argument 13 to invoke <paramref name="action"/> with.</param>
+            <param name="arg14">Argument 14 to invoke <paramref name="action"/> with.</param>
+            <param name="arg15">Argument 15 to invoke <paramref name="action"/> with.</param>
+        </member>
+        <member name="M:Moth.Tasks.FunctionPointerTask`15.Run">
+            <summary>
+            Invokes the encapsulated <see cref="!:delegate*&lt;T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, void&gt;"/> with the provided arguments.
+            </summary>
+        </member>
+        <member name="T:Moth.Tasks.FunctionPointerTask`16">
+            <summary>
+            Task encapsulating an <see cref="!:delegate*&lt;void&gt;"/> with 16 parameters.
+            </summary>
+            <typeparam name="T1">Type of parameter 1.</typeparam>
+            <typeparam name="T2">Type of parameter 2.</typeparam>
+            <typeparam name="T3">Type of parameter 3.</typeparam>
+            <typeparam name="T4">Type of parameter 4.</typeparam>
+            <typeparam name="T5">Type of parameter 5.</typeparam>
+            <typeparam name="T6">Type of parameter 6.</typeparam>
+            <typeparam name="T7">Type of parameter 7.</typeparam>
+            <typeparam name="T8">Type of parameter 8.</typeparam>
+            <typeparam name="T9">Type of parameter 9.</typeparam>
+            <typeparam name="T10">Type of parameter 10.</typeparam>
+            <typeparam name="T11">Type of parameter 11.</typeparam>
+            <typeparam name="T12">Type of parameter 12.</typeparam>
+            <typeparam name="T13">Type of parameter 13.</typeparam>
+            <typeparam name="T14">Type of parameter 14.</typeparam>
+            <typeparam name="T15">Type of parameter 15.</typeparam>
+            <typeparam name="T16">Type of parameter 16.</typeparam>
+        </member>
+        <member name="M:Moth.Tasks.FunctionPointerTask`16.#ctor(,`0,`1,`2,`3,`4,`5,`6,`7,`8,`9,`10,`11,`12,`13,`14,`15)">
+            <summary>
+            Initializes a new instance of the <see cref="T:Moth.Tasks.FunctionPointerTask`16"/> struct.
+            </summary>
+            <param name="action"><see cref="!:delegate*&lt;T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, T16, void&gt;"/> to invoke on <see cref="M:Moth.Tasks.FunctionPointerTask`16.Run"/>.</param>
+            <param name="arg1">Argument 1 to invoke <paramref name="action"/> with.</param>
+            <param name="arg2">Argument 2 to invoke <paramref name="action"/> with.</param>
+            <param name="arg3">Argument 3 to invoke <paramref name="action"/> with.</param>
+            <param name="arg4">Argument 4 to invoke <paramref name="action"/> with.</param>
+            <param name="arg5">Argument 5 to invoke <paramref name="action"/> with.</param>
+            <param name="arg6">Argument 6 to invoke <paramref name="action"/> with.</param>
+            <param name="arg7">Argument 7 to invoke <paramref name="action"/> with.</param>
+            <param name="arg8">Argument 8 to invoke <paramref name="action"/> with.</param>
+            <param name="arg9">Argument 9 to invoke <paramref name="action"/> with.</param>
+            <param name="arg10">Argument 10 to invoke <paramref name="action"/> with.</param>
+            <param name="arg11">Argument 11 to invoke <paramref name="action"/> with.</param>
+            <param name="arg12">Argument 12 to invoke <paramref name="action"/> with.</param>
+            <param name="arg13">Argument 13 to invoke <paramref name="action"/> with.</param>
+            <param name="arg14">Argument 14 to invoke <paramref name="action"/> with.</param>
+            <param name="arg15">Argument 15 to invoke <paramref name="action"/> with.</param>
+            <param name="arg16">Argument 16 to invoke <paramref name="action"/> with.</param>
+        </member>
+        <member name="M:Moth.Tasks.FunctionPointerTask`16.Run">
+            <summary>
+            Invokes the encapsulated <see cref="!:delegate*&lt;T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, T16, void&gt;"/> with the provided arguments.
+            </summary>
+        </member>
         <member name="T:Moth.Tasks.IProfiler">
             <summary>
             Describes a profiler which can measure the run time of a task.
@@ -601,7 +1141,6 @@
             <param name="arg1">The 1st argument to run <paramref name="action"/> with.</param>
             <typeparam name="T1">The type of the 1st parameter of <paramref name="action"/>.</typeparam>
             <exception cref="T:System.ArgumentNullException"><paramref name="action"/> is <see langword="null"/>.</exception>
-            <exception cref="T:System.ObjectDisposedException">The <see cref="T:Moth.Tasks.TaskQueue"/> has been disposed.</exception>
         </member>
         <member name="M:Moth.Tasks.Task.From``2(System.Action{``0,``1},``0,``1)">
             <summary>
@@ -614,7 +1153,6 @@
             <typeparam name="T1">The type of the 1st parameter of <paramref name="action"/>.</typeparam>
             <typeparam name="T2">The type of the 2nd parameter of <paramref name="action"/>.</typeparam>
             <exception cref="T:System.ArgumentNullException"><paramref name="action"/> is <see langword="null"/>.</exception>
-            <exception cref="T:System.ObjectDisposedException">The <see cref="T:Moth.Tasks.TaskQueue"/> has been disposed.</exception>
         </member>
         <member name="M:Moth.Tasks.Task.From``3(System.Action{``0,``1,``2},``0,``1,``2)">
             <summary>
@@ -629,7 +1167,6 @@
             <typeparam name="T2">The type of the 2nd parameter of <paramref name="action"/>.</typeparam>
             <typeparam name="T3">The type of the 3rd parameter of <paramref name="action"/>.</typeparam>
             <exception cref="T:System.ArgumentNullException"><paramref name="action"/> is <see langword="null"/>.</exception>
-            <exception cref="T:System.ObjectDisposedException">The <see cref="T:Moth.Tasks.TaskQueue"/> has been disposed.</exception>
         </member>
         <member name="M:Moth.Tasks.Task.From``4(System.Action{``0,``1,``2,``3},``0,``1,``2,``3)">
             <summary>
@@ -646,7 +1183,6 @@
             <typeparam name="T3">The type of the 3rd parameter of <paramref name="action"/>.</typeparam>
             <typeparam name="T4">The type of the 4th parameter of <paramref name="action"/>.</typeparam>
             <exception cref="T:System.ArgumentNullException"><paramref name="action"/> is <see langword="null"/>.</exception>
-            <exception cref="T:System.ObjectDisposedException">The <see cref="T:Moth.Tasks.TaskQueue"/> has been disposed.</exception>
         </member>
         <member name="M:Moth.Tasks.Task.From``5(System.Action{``0,``1,``2,``3,``4},``0,``1,``2,``3,``4)">
             <summary>
@@ -665,7 +1201,6 @@
             <typeparam name="T4">The type of the 4th parameter of <paramref name="action"/>.</typeparam>
             <typeparam name="T5">The type of the 5th parameter of <paramref name="action"/>.</typeparam>
             <exception cref="T:System.ArgumentNullException"><paramref name="action"/> is <see langword="null"/>.</exception>
-            <exception cref="T:System.ObjectDisposedException">The <see cref="T:Moth.Tasks.TaskQueue"/> has been disposed.</exception>
         </member>
         <member name="M:Moth.Tasks.Task.From``6(System.Action{``0,``1,``2,``3,``4,``5},``0,``1,``2,``3,``4,``5)">
             <summary>
@@ -686,7 +1221,6 @@
             <typeparam name="T5">The type of the 5th parameter of <paramref name="action"/>.</typeparam>
             <typeparam name="T6">The type of the 6th parameter of <paramref name="action"/>.</typeparam>
             <exception cref="T:System.ArgumentNullException"><paramref name="action"/> is <see langword="null"/>.</exception>
-            <exception cref="T:System.ObjectDisposedException">The <see cref="T:Moth.Tasks.TaskQueue"/> has been disposed.</exception>
         </member>
         <member name="M:Moth.Tasks.Task.From``7(System.Action{``0,``1,``2,``3,``4,``5,``6},``0,``1,``2,``3,``4,``5,``6)">
             <summary>
@@ -709,7 +1243,6 @@
             <typeparam name="T6">The type of the 6th parameter of <paramref name="action"/>.</typeparam>
             <typeparam name="T7">The type of the 7th parameter of <paramref name="action"/>.</typeparam>
             <exception cref="T:System.ArgumentNullException"><paramref name="action"/> is <see langword="null"/>.</exception>
-            <exception cref="T:System.ObjectDisposedException">The <see cref="T:Moth.Tasks.TaskQueue"/> has been disposed.</exception>
         </member>
         <member name="M:Moth.Tasks.Task.From``8(System.Action{``0,``1,``2,``3,``4,``5,``6,``7},``0,``1,``2,``3,``4,``5,``6,``7)">
             <summary>
@@ -734,7 +1267,6 @@
             <typeparam name="T7">The type of the 7th parameter of <paramref name="action"/>.</typeparam>
             <typeparam name="T8">The type of the 8th parameter of <paramref name="action"/>.</typeparam>
             <exception cref="T:System.ArgumentNullException"><paramref name="action"/> is <see langword="null"/>.</exception>
-            <exception cref="T:System.ObjectDisposedException">The <see cref="T:Moth.Tasks.TaskQueue"/> has been disposed.</exception>
         </member>
         <member name="M:Moth.Tasks.Task.From``9(System.Action{``0,``1,``2,``3,``4,``5,``6,``7,``8},``0,``1,``2,``3,``4,``5,``6,``7,``8)">
             <summary>
@@ -761,7 +1293,6 @@
             <typeparam name="T8">The type of the 8th parameter of <paramref name="action"/>.</typeparam>
             <typeparam name="T9">The type of the 9th parameter of <paramref name="action"/>.</typeparam>
             <exception cref="T:System.ArgumentNullException"><paramref name="action"/> is <see langword="null"/>.</exception>
-            <exception cref="T:System.ObjectDisposedException">The <see cref="T:Moth.Tasks.TaskQueue"/> has been disposed.</exception>
         </member>
         <member name="M:Moth.Tasks.Task.From``10(System.Action{``0,``1,``2,``3,``4,``5,``6,``7,``8,``9},``0,``1,``2,``3,``4,``5,``6,``7,``8,``9)">
             <summary>
@@ -790,7 +1321,6 @@
             <typeparam name="T9">The type of the 9th parameter of <paramref name="action"/>.</typeparam>
             <typeparam name="T10">The type of the 10th parameter of <paramref name="action"/>.</typeparam>
             <exception cref="T:System.ArgumentNullException"><paramref name="action"/> is <see langword="null"/>.</exception>
-            <exception cref="T:System.ObjectDisposedException">The <see cref="T:Moth.Tasks.TaskQueue"/> has been disposed.</exception>
         </member>
         <member name="M:Moth.Tasks.Task.From``11(System.Action{``0,``1,``2,``3,``4,``5,``6,``7,``8,``9,``10},``0,``1,``2,``3,``4,``5,``6,``7,``8,``9,``10)">
             <summary>
@@ -821,7 +1351,6 @@
             <typeparam name="T10">The type of the 10th parameter of <paramref name="action"/>.</typeparam>
             <typeparam name="T11">The type of the 11th parameter of <paramref name="action"/>.</typeparam>
             <exception cref="T:System.ArgumentNullException"><paramref name="action"/> is <see langword="null"/>.</exception>
-            <exception cref="T:System.ObjectDisposedException">The <see cref="T:Moth.Tasks.TaskQueue"/> has been disposed.</exception>
         </member>
         <member name="M:Moth.Tasks.Task.From``12(System.Action{``0,``1,``2,``3,``4,``5,``6,``7,``8,``9,``10,``11},``0,``1,``2,``3,``4,``5,``6,``7,``8,``9,``10,``11)">
             <summary>
@@ -854,7 +1383,6 @@
             <typeparam name="T11">The type of the 11th parameter of <paramref name="action"/>.</typeparam>
             <typeparam name="T12">The type of the 12th parameter of <paramref name="action"/>.</typeparam>
             <exception cref="T:System.ArgumentNullException"><paramref name="action"/> is <see langword="null"/>.</exception>
-            <exception cref="T:System.ObjectDisposedException">The <see cref="T:Moth.Tasks.TaskQueue"/> has been disposed.</exception>
         </member>
         <member name="M:Moth.Tasks.Task.From``13(System.Action{``0,``1,``2,``3,``4,``5,``6,``7,``8,``9,``10,``11,``12},``0,``1,``2,``3,``4,``5,``6,``7,``8,``9,``10,``11,``12)">
             <summary>
@@ -889,7 +1417,6 @@
             <typeparam name="T12">The type of the 12th parameter of <paramref name="action"/>.</typeparam>
             <typeparam name="T13">The type of the 13th parameter of <paramref name="action"/>.</typeparam>
             <exception cref="T:System.ArgumentNullException"><paramref name="action"/> is <see langword="null"/>.</exception>
-            <exception cref="T:System.ObjectDisposedException">The <see cref="T:Moth.Tasks.TaskQueue"/> has been disposed.</exception>
         </member>
         <member name="M:Moth.Tasks.Task.From``14(System.Action{``0,``1,``2,``3,``4,``5,``6,``7,``8,``9,``10,``11,``12,``13},``0,``1,``2,``3,``4,``5,``6,``7,``8,``9,``10,``11,``12,``13)">
             <summary>
@@ -926,7 +1453,6 @@
             <typeparam name="T13">The type of the 13th parameter of <paramref name="action"/>.</typeparam>
             <typeparam name="T14">The type of the 14th parameter of <paramref name="action"/>.</typeparam>
             <exception cref="T:System.ArgumentNullException"><paramref name="action"/> is <see langword="null"/>.</exception>
-            <exception cref="T:System.ObjectDisposedException">The <see cref="T:Moth.Tasks.TaskQueue"/> has been disposed.</exception>
         </member>
         <member name="M:Moth.Tasks.Task.From``15(System.Action{``0,``1,``2,``3,``4,``5,``6,``7,``8,``9,``10,``11,``12,``13,``14},``0,``1,``2,``3,``4,``5,``6,``7,``8,``9,``10,``11,``12,``13,``14)">
             <summary>
@@ -965,7 +1491,6 @@
             <typeparam name="T14">The type of the 14th parameter of <paramref name="action"/>.</typeparam>
             <typeparam name="T15">The type of the 15th parameter of <paramref name="action"/>.</typeparam>
             <exception cref="T:System.ArgumentNullException"><paramref name="action"/> is <see langword="null"/>.</exception>
-            <exception cref="T:System.ObjectDisposedException">The <see cref="T:Moth.Tasks.TaskQueue"/> has been disposed.</exception>
         </member>
         <member name="M:Moth.Tasks.Task.From``16(System.Action{``0,``1,``2,``3,``4,``5,``6,``7,``8,``9,``10,``11,``12,``13,``14,``15},``0,``1,``2,``3,``4,``5,``6,``7,``8,``9,``10,``11,``12,``13,``14,``15)">
             <summary>
@@ -1006,7 +1531,407 @@
             <typeparam name="T15">The type of the 15th parameter of <paramref name="action"/>.</typeparam>
             <typeparam name="T16">The type of the 16th parameter of <paramref name="action"/>.</typeparam>
             <exception cref="T:System.ArgumentNullException"><paramref name="action"/> is <see langword="null"/>.</exception>
-            <exception cref="T:System.ObjectDisposedException">The <see cref="T:Moth.Tasks.TaskQueue"/> has been disposed.</exception>
+        </member>
+        <!-- Badly formed XML comment ignored for member "M:Moth.Tasks.Task.From()" -->
+        <member name="M:Moth.Tasks.Task.From``1(,``0)">
+            <summary>
+            Create a <see cref="T:Moth.Tasks.FunctionPointerTask`1"/> that encapsulates an action.
+            </summary>
+            <returns>A new <see cref="!:&lt;T1&gt;"/> that will invoke the action when run with the supplied arguments.</returns>
+            <param name="action">Function pointer to enqueue.</param>
+            <param name="arg1">The 1st argument to run <paramref name="action"/> with.</param>
+            <typeparam name="T1">The type of the 1st parameter of <paramref name="action"/>.</typeparam>
+            <exception cref="T:System.ArgumentNullException"><paramref name="action"/> is <see langword="null"/>.</exception>
+        </member>
+        <member name="M:Moth.Tasks.Task.From``2(,``0,``1)">
+            <summary>
+            Create a <see cref="T:Moth.Tasks.FunctionPointerTask`2"/> that encapsulates an action.
+            </summary>
+            <returns>A new <see cref="!:&lt;T1, T2&gt;"/> that will invoke the action when run with the supplied arguments.</returns>
+            <param name="action">Function pointer to enqueue.</param>
+            <param name="arg1">The 1st argument to run <paramref name="action"/> with.</param>
+            <param name="arg2">The 2nd argument to run <paramref name="action"/> with.</param>
+            <typeparam name="T1">The type of the 1st parameter of <paramref name="action"/>.</typeparam>
+            <typeparam name="T2">The type of the 2nd parameter of <paramref name="action"/>.</typeparam>
+            <exception cref="T:System.ArgumentNullException"><paramref name="action"/> is <see langword="null"/>.</exception>
+        </member>
+        <member name="M:Moth.Tasks.Task.From``3(,``0,``1,``2)">
+            <summary>
+            Create a <see cref="T:Moth.Tasks.FunctionPointerTask`3"/> that encapsulates an action.
+            </summary>
+            <returns>A new <see cref="!:&lt;T1, T2, T3&gt;"/> that will invoke the action when run with the supplied arguments.</returns>
+            <param name="action">Function pointer to enqueue.</param>
+            <param name="arg1">The 1st argument to run <paramref name="action"/> with.</param>
+            <param name="arg2">The 2nd argument to run <paramref name="action"/> with.</param>
+            <param name="arg3">The 3rd argument to run <paramref name="action"/> with.</param>
+            <typeparam name="T1">The type of the 1st parameter of <paramref name="action"/>.</typeparam>
+            <typeparam name="T2">The type of the 2nd parameter of <paramref name="action"/>.</typeparam>
+            <typeparam name="T3">The type of the 3rd parameter of <paramref name="action"/>.</typeparam>
+            <exception cref="T:System.ArgumentNullException"><paramref name="action"/> is <see langword="null"/>.</exception>
+        </member>
+        <member name="M:Moth.Tasks.Task.From``4(,``0,``1,``2,``3)">
+            <summary>
+            Create a <see cref="T:Moth.Tasks.FunctionPointerTask`4"/> that encapsulates an action.
+            </summary>
+            <returns>A new <see cref="!:&lt;T1, T2, T3, T4&gt;"/> that will invoke the action when run with the supplied arguments.</returns>
+            <param name="action">Function pointer to enqueue.</param>
+            <param name="arg1">The 1st argument to run <paramref name="action"/> with.</param>
+            <param name="arg2">The 2nd argument to run <paramref name="action"/> with.</param>
+            <param name="arg3">The 3rd argument to run <paramref name="action"/> with.</param>
+            <param name="arg4">The 4th argument to run <paramref name="action"/> with.</param>
+            <typeparam name="T1">The type of the 1st parameter of <paramref name="action"/>.</typeparam>
+            <typeparam name="T2">The type of the 2nd parameter of <paramref name="action"/>.</typeparam>
+            <typeparam name="T3">The type of the 3rd parameter of <paramref name="action"/>.</typeparam>
+            <typeparam name="T4">The type of the 4th parameter of <paramref name="action"/>.</typeparam>
+            <exception cref="T:System.ArgumentNullException"><paramref name="action"/> is <see langword="null"/>.</exception>
+        </member>
+        <member name="M:Moth.Tasks.Task.From``5(,``0,``1,``2,``3,``4)">
+            <summary>
+            Create a <see cref="T:Moth.Tasks.FunctionPointerTask`5"/> that encapsulates an action.
+            </summary>
+            <returns>A new <see cref="!:&lt;T1, T2, T3, T4, T5&gt;"/> that will invoke the action when run with the supplied arguments.</returns>
+            <param name="action">Function pointer to enqueue.</param>
+            <param name="arg1">The 1st argument to run <paramref name="action"/> with.</param>
+            <param name="arg2">The 2nd argument to run <paramref name="action"/> with.</param>
+            <param name="arg3">The 3rd argument to run <paramref name="action"/> with.</param>
+            <param name="arg4">The 4th argument to run <paramref name="action"/> with.</param>
+            <param name="arg5">The 5th argument to run <paramref name="action"/> with.</param>
+            <typeparam name="T1">The type of the 1st parameter of <paramref name="action"/>.</typeparam>
+            <typeparam name="T2">The type of the 2nd parameter of <paramref name="action"/>.</typeparam>
+            <typeparam name="T3">The type of the 3rd parameter of <paramref name="action"/>.</typeparam>
+            <typeparam name="T4">The type of the 4th parameter of <paramref name="action"/>.</typeparam>
+            <typeparam name="T5">The type of the 5th parameter of <paramref name="action"/>.</typeparam>
+            <exception cref="T:System.ArgumentNullException"><paramref name="action"/> is <see langword="null"/>.</exception>
+        </member>
+        <member name="M:Moth.Tasks.Task.From``6(,``0,``1,``2,``3,``4,``5)">
+            <summary>
+            Create a <see cref="T:Moth.Tasks.FunctionPointerTask`6"/> that encapsulates an action.
+            </summary>
+            <returns>A new <see cref="!:&lt;T1, T2, T3, T4, T5, T6&gt;"/> that will invoke the action when run with the supplied arguments.</returns>
+            <param name="action">Function pointer to enqueue.</param>
+            <param name="arg1">The 1st argument to run <paramref name="action"/> with.</param>
+            <param name="arg2">The 2nd argument to run <paramref name="action"/> with.</param>
+            <param name="arg3">The 3rd argument to run <paramref name="action"/> with.</param>
+            <param name="arg4">The 4th argument to run <paramref name="action"/> with.</param>
+            <param name="arg5">The 5th argument to run <paramref name="action"/> with.</param>
+            <param name="arg6">The 6th argument to run <paramref name="action"/> with.</param>
+            <typeparam name="T1">The type of the 1st parameter of <paramref name="action"/>.</typeparam>
+            <typeparam name="T2">The type of the 2nd parameter of <paramref name="action"/>.</typeparam>
+            <typeparam name="T3">The type of the 3rd parameter of <paramref name="action"/>.</typeparam>
+            <typeparam name="T4">The type of the 4th parameter of <paramref name="action"/>.</typeparam>
+            <typeparam name="T5">The type of the 5th parameter of <paramref name="action"/>.</typeparam>
+            <typeparam name="T6">The type of the 6th parameter of <paramref name="action"/>.</typeparam>
+            <exception cref="T:System.ArgumentNullException"><paramref name="action"/> is <see langword="null"/>.</exception>
+        </member>
+        <member name="M:Moth.Tasks.Task.From``7(,``0,``1,``2,``3,``4,``5,``6)">
+            <summary>
+            Create a <see cref="T:Moth.Tasks.FunctionPointerTask`7"/> that encapsulates an action.
+            </summary>
+            <returns>A new <see cref="!:&lt;T1, T2, T3, T4, T5, T6, T7&gt;"/> that will invoke the action when run with the supplied arguments.</returns>
+            <param name="action">Function pointer to enqueue.</param>
+            <param name="arg1">The 1st argument to run <paramref name="action"/> with.</param>
+            <param name="arg2">The 2nd argument to run <paramref name="action"/> with.</param>
+            <param name="arg3">The 3rd argument to run <paramref name="action"/> with.</param>
+            <param name="arg4">The 4th argument to run <paramref name="action"/> with.</param>
+            <param name="arg5">The 5th argument to run <paramref name="action"/> with.</param>
+            <param name="arg6">The 6th argument to run <paramref name="action"/> with.</param>
+            <param name="arg7">The 7th argument to run <paramref name="action"/> with.</param>
+            <typeparam name="T1">The type of the 1st parameter of <paramref name="action"/>.</typeparam>
+            <typeparam name="T2">The type of the 2nd parameter of <paramref name="action"/>.</typeparam>
+            <typeparam name="T3">The type of the 3rd parameter of <paramref name="action"/>.</typeparam>
+            <typeparam name="T4">The type of the 4th parameter of <paramref name="action"/>.</typeparam>
+            <typeparam name="T5">The type of the 5th parameter of <paramref name="action"/>.</typeparam>
+            <typeparam name="T6">The type of the 6th parameter of <paramref name="action"/>.</typeparam>
+            <typeparam name="T7">The type of the 7th parameter of <paramref name="action"/>.</typeparam>
+            <exception cref="T:System.ArgumentNullException"><paramref name="action"/> is <see langword="null"/>.</exception>
+        </member>
+        <member name="M:Moth.Tasks.Task.From``8(,``0,``1,``2,``3,``4,``5,``6,``7)">
+            <summary>
+            Create a <see cref="T:Moth.Tasks.FunctionPointerTask`8"/> that encapsulates an action.
+            </summary>
+            <returns>A new <see cref="!:&lt;T1, T2, T3, T4, T5, T6, T7, T8&gt;"/> that will invoke the action when run with the supplied arguments.</returns>
+            <param name="action">Function pointer to enqueue.</param>
+            <param name="arg1">The 1st argument to run <paramref name="action"/> with.</param>
+            <param name="arg2">The 2nd argument to run <paramref name="action"/> with.</param>
+            <param name="arg3">The 3rd argument to run <paramref name="action"/> with.</param>
+            <param name="arg4">The 4th argument to run <paramref name="action"/> with.</param>
+            <param name="arg5">The 5th argument to run <paramref name="action"/> with.</param>
+            <param name="arg6">The 6th argument to run <paramref name="action"/> with.</param>
+            <param name="arg7">The 7th argument to run <paramref name="action"/> with.</param>
+            <param name="arg8">The 8th argument to run <paramref name="action"/> with.</param>
+            <typeparam name="T1">The type of the 1st parameter of <paramref name="action"/>.</typeparam>
+            <typeparam name="T2">The type of the 2nd parameter of <paramref name="action"/>.</typeparam>
+            <typeparam name="T3">The type of the 3rd parameter of <paramref name="action"/>.</typeparam>
+            <typeparam name="T4">The type of the 4th parameter of <paramref name="action"/>.</typeparam>
+            <typeparam name="T5">The type of the 5th parameter of <paramref name="action"/>.</typeparam>
+            <typeparam name="T6">The type of the 6th parameter of <paramref name="action"/>.</typeparam>
+            <typeparam name="T7">The type of the 7th parameter of <paramref name="action"/>.</typeparam>
+            <typeparam name="T8">The type of the 8th parameter of <paramref name="action"/>.</typeparam>
+            <exception cref="T:System.ArgumentNullException"><paramref name="action"/> is <see langword="null"/>.</exception>
+        </member>
+        <member name="M:Moth.Tasks.Task.From``9(,``0,``1,``2,``3,``4,``5,``6,``7,``8)">
+            <summary>
+            Create a <see cref="T:Moth.Tasks.FunctionPointerTask`9"/> that encapsulates an action.
+            </summary>
+            <returns>A new <see cref="!:&lt;T1, T2, T3, T4, T5, T6, T7, T8, T9&gt;"/> that will invoke the action when run with the supplied arguments.</returns>
+            <param name="action">Function pointer to enqueue.</param>
+            <param name="arg1">The 1st argument to run <paramref name="action"/> with.</param>
+            <param name="arg2">The 2nd argument to run <paramref name="action"/> with.</param>
+            <param name="arg3">The 3rd argument to run <paramref name="action"/> with.</param>
+            <param name="arg4">The 4th argument to run <paramref name="action"/> with.</param>
+            <param name="arg5">The 5th argument to run <paramref name="action"/> with.</param>
+            <param name="arg6">The 6th argument to run <paramref name="action"/> with.</param>
+            <param name="arg7">The 7th argument to run <paramref name="action"/> with.</param>
+            <param name="arg8">The 8th argument to run <paramref name="action"/> with.</param>
+            <param name="arg9">The 9th argument to run <paramref name="action"/> with.</param>
+            <typeparam name="T1">The type of the 1st parameter of <paramref name="action"/>.</typeparam>
+            <typeparam name="T2">The type of the 2nd parameter of <paramref name="action"/>.</typeparam>
+            <typeparam name="T3">The type of the 3rd parameter of <paramref name="action"/>.</typeparam>
+            <typeparam name="T4">The type of the 4th parameter of <paramref name="action"/>.</typeparam>
+            <typeparam name="T5">The type of the 5th parameter of <paramref name="action"/>.</typeparam>
+            <typeparam name="T6">The type of the 6th parameter of <paramref name="action"/>.</typeparam>
+            <typeparam name="T7">The type of the 7th parameter of <paramref name="action"/>.</typeparam>
+            <typeparam name="T8">The type of the 8th parameter of <paramref name="action"/>.</typeparam>
+            <typeparam name="T9">The type of the 9th parameter of <paramref name="action"/>.</typeparam>
+            <exception cref="T:System.ArgumentNullException"><paramref name="action"/> is <see langword="null"/>.</exception>
+        </member>
+        <member name="M:Moth.Tasks.Task.From``10(,``0,``1,``2,``3,``4,``5,``6,``7,``8,``9)">
+            <summary>
+            Create a <see cref="T:Moth.Tasks.FunctionPointerTask`10"/> that encapsulates an action.
+            </summary>
+            <returns>A new <see cref="!:&lt;T1, T2, T3, T4, T5, T6, T7, T8, T9, T10&gt;"/> that will invoke the action when run with the supplied arguments.</returns>
+            <param name="action">Function pointer to enqueue.</param>
+            <param name="arg1">The 1st argument to run <paramref name="action"/> with.</param>
+            <param name="arg2">The 2nd argument to run <paramref name="action"/> with.</param>
+            <param name="arg3">The 3rd argument to run <paramref name="action"/> with.</param>
+            <param name="arg4">The 4th argument to run <paramref name="action"/> with.</param>
+            <param name="arg5">The 5th argument to run <paramref name="action"/> with.</param>
+            <param name="arg6">The 6th argument to run <paramref name="action"/> with.</param>
+            <param name="arg7">The 7th argument to run <paramref name="action"/> with.</param>
+            <param name="arg8">The 8th argument to run <paramref name="action"/> with.</param>
+            <param name="arg9">The 9th argument to run <paramref name="action"/> with.</param>
+            <param name="arg10">The 10th argument to run <paramref name="action"/> with.</param>
+            <typeparam name="T1">The type of the 1st parameter of <paramref name="action"/>.</typeparam>
+            <typeparam name="T2">The type of the 2nd parameter of <paramref name="action"/>.</typeparam>
+            <typeparam name="T3">The type of the 3rd parameter of <paramref name="action"/>.</typeparam>
+            <typeparam name="T4">The type of the 4th parameter of <paramref name="action"/>.</typeparam>
+            <typeparam name="T5">The type of the 5th parameter of <paramref name="action"/>.</typeparam>
+            <typeparam name="T6">The type of the 6th parameter of <paramref name="action"/>.</typeparam>
+            <typeparam name="T7">The type of the 7th parameter of <paramref name="action"/>.</typeparam>
+            <typeparam name="T8">The type of the 8th parameter of <paramref name="action"/>.</typeparam>
+            <typeparam name="T9">The type of the 9th parameter of <paramref name="action"/>.</typeparam>
+            <typeparam name="T10">The type of the 10th parameter of <paramref name="action"/>.</typeparam>
+            <exception cref="T:System.ArgumentNullException"><paramref name="action"/> is <see langword="null"/>.</exception>
+        </member>
+        <member name="M:Moth.Tasks.Task.From``11(,``0,``1,``2,``3,``4,``5,``6,``7,``8,``9,``10)">
+            <summary>
+            Create a <see cref="T:Moth.Tasks.FunctionPointerTask`11"/> that encapsulates an action.
+            </summary>
+            <returns>A new <see cref="!:&lt;T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11&gt;"/> that will invoke the action when run with the supplied arguments.</returns>
+            <param name="action">Function pointer to enqueue.</param>
+            <param name="arg1">The 1st argument to run <paramref name="action"/> with.</param>
+            <param name="arg2">The 2nd argument to run <paramref name="action"/> with.</param>
+            <param name="arg3">The 3rd argument to run <paramref name="action"/> with.</param>
+            <param name="arg4">The 4th argument to run <paramref name="action"/> with.</param>
+            <param name="arg5">The 5th argument to run <paramref name="action"/> with.</param>
+            <param name="arg6">The 6th argument to run <paramref name="action"/> with.</param>
+            <param name="arg7">The 7th argument to run <paramref name="action"/> with.</param>
+            <param name="arg8">The 8th argument to run <paramref name="action"/> with.</param>
+            <param name="arg9">The 9th argument to run <paramref name="action"/> with.</param>
+            <param name="arg10">The 10th argument to run <paramref name="action"/> with.</param>
+            <param name="arg11">The 11th argument to run <paramref name="action"/> with.</param>
+            <typeparam name="T1">The type of the 1st parameter of <paramref name="action"/>.</typeparam>
+            <typeparam name="T2">The type of the 2nd parameter of <paramref name="action"/>.</typeparam>
+            <typeparam name="T3">The type of the 3rd parameter of <paramref name="action"/>.</typeparam>
+            <typeparam name="T4">The type of the 4th parameter of <paramref name="action"/>.</typeparam>
+            <typeparam name="T5">The type of the 5th parameter of <paramref name="action"/>.</typeparam>
+            <typeparam name="T6">The type of the 6th parameter of <paramref name="action"/>.</typeparam>
+            <typeparam name="T7">The type of the 7th parameter of <paramref name="action"/>.</typeparam>
+            <typeparam name="T8">The type of the 8th parameter of <paramref name="action"/>.</typeparam>
+            <typeparam name="T9">The type of the 9th parameter of <paramref name="action"/>.</typeparam>
+            <typeparam name="T10">The type of the 10th parameter of <paramref name="action"/>.</typeparam>
+            <typeparam name="T11">The type of the 11th parameter of <paramref name="action"/>.</typeparam>
+            <exception cref="T:System.ArgumentNullException"><paramref name="action"/> is <see langword="null"/>.</exception>
+        </member>
+        <member name="M:Moth.Tasks.Task.From``12(,``0,``1,``2,``3,``4,``5,``6,``7,``8,``9,``10,``11)">
+            <summary>
+            Create a <see cref="T:Moth.Tasks.FunctionPointerTask`12"/> that encapsulates an action.
+            </summary>
+            <returns>A new <see cref="!:&lt;T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12&gt;"/> that will invoke the action when run with the supplied arguments.</returns>
+            <param name="action">Function pointer to enqueue.</param>
+            <param name="arg1">The 1st argument to run <paramref name="action"/> with.</param>
+            <param name="arg2">The 2nd argument to run <paramref name="action"/> with.</param>
+            <param name="arg3">The 3rd argument to run <paramref name="action"/> with.</param>
+            <param name="arg4">The 4th argument to run <paramref name="action"/> with.</param>
+            <param name="arg5">The 5th argument to run <paramref name="action"/> with.</param>
+            <param name="arg6">The 6th argument to run <paramref name="action"/> with.</param>
+            <param name="arg7">The 7th argument to run <paramref name="action"/> with.</param>
+            <param name="arg8">The 8th argument to run <paramref name="action"/> with.</param>
+            <param name="arg9">The 9th argument to run <paramref name="action"/> with.</param>
+            <param name="arg10">The 10th argument to run <paramref name="action"/> with.</param>
+            <param name="arg11">The 11th argument to run <paramref name="action"/> with.</param>
+            <param name="arg12">The 12th argument to run <paramref name="action"/> with.</param>
+            <typeparam name="T1">The type of the 1st parameter of <paramref name="action"/>.</typeparam>
+            <typeparam name="T2">The type of the 2nd parameter of <paramref name="action"/>.</typeparam>
+            <typeparam name="T3">The type of the 3rd parameter of <paramref name="action"/>.</typeparam>
+            <typeparam name="T4">The type of the 4th parameter of <paramref name="action"/>.</typeparam>
+            <typeparam name="T5">The type of the 5th parameter of <paramref name="action"/>.</typeparam>
+            <typeparam name="T6">The type of the 6th parameter of <paramref name="action"/>.</typeparam>
+            <typeparam name="T7">The type of the 7th parameter of <paramref name="action"/>.</typeparam>
+            <typeparam name="T8">The type of the 8th parameter of <paramref name="action"/>.</typeparam>
+            <typeparam name="T9">The type of the 9th parameter of <paramref name="action"/>.</typeparam>
+            <typeparam name="T10">The type of the 10th parameter of <paramref name="action"/>.</typeparam>
+            <typeparam name="T11">The type of the 11th parameter of <paramref name="action"/>.</typeparam>
+            <typeparam name="T12">The type of the 12th parameter of <paramref name="action"/>.</typeparam>
+            <exception cref="T:System.ArgumentNullException"><paramref name="action"/> is <see langword="null"/>.</exception>
+        </member>
+        <member name="M:Moth.Tasks.Task.From``13(,``0,``1,``2,``3,``4,``5,``6,``7,``8,``9,``10,``11,``12)">
+            <summary>
+            Create a <see cref="T:Moth.Tasks.FunctionPointerTask`13"/> that encapsulates an action.
+            </summary>
+            <returns>A new <see cref="!:&lt;T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13&gt;"/> that will invoke the action when run with the supplied arguments.</returns>
+            <param name="action">Function pointer to enqueue.</param>
+            <param name="arg1">The 1st argument to run <paramref name="action"/> with.</param>
+            <param name="arg2">The 2nd argument to run <paramref name="action"/> with.</param>
+            <param name="arg3">The 3rd argument to run <paramref name="action"/> with.</param>
+            <param name="arg4">The 4th argument to run <paramref name="action"/> with.</param>
+            <param name="arg5">The 5th argument to run <paramref name="action"/> with.</param>
+            <param name="arg6">The 6th argument to run <paramref name="action"/> with.</param>
+            <param name="arg7">The 7th argument to run <paramref name="action"/> with.</param>
+            <param name="arg8">The 8th argument to run <paramref name="action"/> with.</param>
+            <param name="arg9">The 9th argument to run <paramref name="action"/> with.</param>
+            <param name="arg10">The 10th argument to run <paramref name="action"/> with.</param>
+            <param name="arg11">The 11th argument to run <paramref name="action"/> with.</param>
+            <param name="arg12">The 12th argument to run <paramref name="action"/> with.</param>
+            <param name="arg13">The 13th argument to run <paramref name="action"/> with.</param>
+            <typeparam name="T1">The type of the 1st parameter of <paramref name="action"/>.</typeparam>
+            <typeparam name="T2">The type of the 2nd parameter of <paramref name="action"/>.</typeparam>
+            <typeparam name="T3">The type of the 3rd parameter of <paramref name="action"/>.</typeparam>
+            <typeparam name="T4">The type of the 4th parameter of <paramref name="action"/>.</typeparam>
+            <typeparam name="T5">The type of the 5th parameter of <paramref name="action"/>.</typeparam>
+            <typeparam name="T6">The type of the 6th parameter of <paramref name="action"/>.</typeparam>
+            <typeparam name="T7">The type of the 7th parameter of <paramref name="action"/>.</typeparam>
+            <typeparam name="T8">The type of the 8th parameter of <paramref name="action"/>.</typeparam>
+            <typeparam name="T9">The type of the 9th parameter of <paramref name="action"/>.</typeparam>
+            <typeparam name="T10">The type of the 10th parameter of <paramref name="action"/>.</typeparam>
+            <typeparam name="T11">The type of the 11th parameter of <paramref name="action"/>.</typeparam>
+            <typeparam name="T12">The type of the 12th parameter of <paramref name="action"/>.</typeparam>
+            <typeparam name="T13">The type of the 13th parameter of <paramref name="action"/>.</typeparam>
+            <exception cref="T:System.ArgumentNullException"><paramref name="action"/> is <see langword="null"/>.</exception>
+        </member>
+        <member name="M:Moth.Tasks.Task.From``14(,``0,``1,``2,``3,``4,``5,``6,``7,``8,``9,``10,``11,``12,``13)">
+            <summary>
+            Create a <see cref="T:Moth.Tasks.FunctionPointerTask`14"/> that encapsulates an action.
+            </summary>
+            <returns>A new <see cref="!:&lt;T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14&gt;"/> that will invoke the action when run with the supplied arguments.</returns>
+            <param name="action">Function pointer to enqueue.</param>
+            <param name="arg1">The 1st argument to run <paramref name="action"/> with.</param>
+            <param name="arg2">The 2nd argument to run <paramref name="action"/> with.</param>
+            <param name="arg3">The 3rd argument to run <paramref name="action"/> with.</param>
+            <param name="arg4">The 4th argument to run <paramref name="action"/> with.</param>
+            <param name="arg5">The 5th argument to run <paramref name="action"/> with.</param>
+            <param name="arg6">The 6th argument to run <paramref name="action"/> with.</param>
+            <param name="arg7">The 7th argument to run <paramref name="action"/> with.</param>
+            <param name="arg8">The 8th argument to run <paramref name="action"/> with.</param>
+            <param name="arg9">The 9th argument to run <paramref name="action"/> with.</param>
+            <param name="arg10">The 10th argument to run <paramref name="action"/> with.</param>
+            <param name="arg11">The 11th argument to run <paramref name="action"/> with.</param>
+            <param name="arg12">The 12th argument to run <paramref name="action"/> with.</param>
+            <param name="arg13">The 13th argument to run <paramref name="action"/> with.</param>
+            <param name="arg14">The 14th argument to run <paramref name="action"/> with.</param>
+            <typeparam name="T1">The type of the 1st parameter of <paramref name="action"/>.</typeparam>
+            <typeparam name="T2">The type of the 2nd parameter of <paramref name="action"/>.</typeparam>
+            <typeparam name="T3">The type of the 3rd parameter of <paramref name="action"/>.</typeparam>
+            <typeparam name="T4">The type of the 4th parameter of <paramref name="action"/>.</typeparam>
+            <typeparam name="T5">The type of the 5th parameter of <paramref name="action"/>.</typeparam>
+            <typeparam name="T6">The type of the 6th parameter of <paramref name="action"/>.</typeparam>
+            <typeparam name="T7">The type of the 7th parameter of <paramref name="action"/>.</typeparam>
+            <typeparam name="T8">The type of the 8th parameter of <paramref name="action"/>.</typeparam>
+            <typeparam name="T9">The type of the 9th parameter of <paramref name="action"/>.</typeparam>
+            <typeparam name="T10">The type of the 10th parameter of <paramref name="action"/>.</typeparam>
+            <typeparam name="T11">The type of the 11th parameter of <paramref name="action"/>.</typeparam>
+            <typeparam name="T12">The type of the 12th parameter of <paramref name="action"/>.</typeparam>
+            <typeparam name="T13">The type of the 13th parameter of <paramref name="action"/>.</typeparam>
+            <typeparam name="T14">The type of the 14th parameter of <paramref name="action"/>.</typeparam>
+            <exception cref="T:System.ArgumentNullException"><paramref name="action"/> is <see langword="null"/>.</exception>
+        </member>
+        <member name="M:Moth.Tasks.Task.From``15(,``0,``1,``2,``3,``4,``5,``6,``7,``8,``9,``10,``11,``12,``13,``14)">
+            <summary>
+            Create a <see cref="T:Moth.Tasks.FunctionPointerTask`15"/> that encapsulates an action.
+            </summary>
+            <returns>A new <see cref="!:&lt;T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15&gt;"/> that will invoke the action when run with the supplied arguments.</returns>
+            <param name="action">Function pointer to enqueue.</param>
+            <param name="arg1">The 1st argument to run <paramref name="action"/> with.</param>
+            <param name="arg2">The 2nd argument to run <paramref name="action"/> with.</param>
+            <param name="arg3">The 3rd argument to run <paramref name="action"/> with.</param>
+            <param name="arg4">The 4th argument to run <paramref name="action"/> with.</param>
+            <param name="arg5">The 5th argument to run <paramref name="action"/> with.</param>
+            <param name="arg6">The 6th argument to run <paramref name="action"/> with.</param>
+            <param name="arg7">The 7th argument to run <paramref name="action"/> with.</param>
+            <param name="arg8">The 8th argument to run <paramref name="action"/> with.</param>
+            <param name="arg9">The 9th argument to run <paramref name="action"/> with.</param>
+            <param name="arg10">The 10th argument to run <paramref name="action"/> with.</param>
+            <param name="arg11">The 11th argument to run <paramref name="action"/> with.</param>
+            <param name="arg12">The 12th argument to run <paramref name="action"/> with.</param>
+            <param name="arg13">The 13th argument to run <paramref name="action"/> with.</param>
+            <param name="arg14">The 14th argument to run <paramref name="action"/> with.</param>
+            <param name="arg15">The 15th argument to run <paramref name="action"/> with.</param>
+            <typeparam name="T1">The type of the 1st parameter of <paramref name="action"/>.</typeparam>
+            <typeparam name="T2">The type of the 2nd parameter of <paramref name="action"/>.</typeparam>
+            <typeparam name="T3">The type of the 3rd parameter of <paramref name="action"/>.</typeparam>
+            <typeparam name="T4">The type of the 4th parameter of <paramref name="action"/>.</typeparam>
+            <typeparam name="T5">The type of the 5th parameter of <paramref name="action"/>.</typeparam>
+            <typeparam name="T6">The type of the 6th parameter of <paramref name="action"/>.</typeparam>
+            <typeparam name="T7">The type of the 7th parameter of <paramref name="action"/>.</typeparam>
+            <typeparam name="T8">The type of the 8th parameter of <paramref name="action"/>.</typeparam>
+            <typeparam name="T9">The type of the 9th parameter of <paramref name="action"/>.</typeparam>
+            <typeparam name="T10">The type of the 10th parameter of <paramref name="action"/>.</typeparam>
+            <typeparam name="T11">The type of the 11th parameter of <paramref name="action"/>.</typeparam>
+            <typeparam name="T12">The type of the 12th parameter of <paramref name="action"/>.</typeparam>
+            <typeparam name="T13">The type of the 13th parameter of <paramref name="action"/>.</typeparam>
+            <typeparam name="T14">The type of the 14th parameter of <paramref name="action"/>.</typeparam>
+            <typeparam name="T15">The type of the 15th parameter of <paramref name="action"/>.</typeparam>
+            <exception cref="T:System.ArgumentNullException"><paramref name="action"/> is <see langword="null"/>.</exception>
+        </member>
+        <member name="M:Moth.Tasks.Task.From``16(,``0,``1,``2,``3,``4,``5,``6,``7,``8,``9,``10,``11,``12,``13,``14,``15)">
+            <summary>
+            Create a <see cref="T:Moth.Tasks.FunctionPointerTask`16"/> that encapsulates an action.
+            </summary>
+            <returns>A new <see cref="!:&lt;T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, T16&gt;"/> that will invoke the action when run with the supplied arguments.</returns>
+            <param name="action">Function pointer to enqueue.</param>
+            <param name="arg1">The 1st argument to run <paramref name="action"/> with.</param>
+            <param name="arg2">The 2nd argument to run <paramref name="action"/> with.</param>
+            <param name="arg3">The 3rd argument to run <paramref name="action"/> with.</param>
+            <param name="arg4">The 4th argument to run <paramref name="action"/> with.</param>
+            <param name="arg5">The 5th argument to run <paramref name="action"/> with.</param>
+            <param name="arg6">The 6th argument to run <paramref name="action"/> with.</param>
+            <param name="arg7">The 7th argument to run <paramref name="action"/> with.</param>
+            <param name="arg8">The 8th argument to run <paramref name="action"/> with.</param>
+            <param name="arg9">The 9th argument to run <paramref name="action"/> with.</param>
+            <param name="arg10">The 10th argument to run <paramref name="action"/> with.</param>
+            <param name="arg11">The 11th argument to run <paramref name="action"/> with.</param>
+            <param name="arg12">The 12th argument to run <paramref name="action"/> with.</param>
+            <param name="arg13">The 13th argument to run <paramref name="action"/> with.</param>
+            <param name="arg14">The 14th argument to run <paramref name="action"/> with.</param>
+            <param name="arg15">The 15th argument to run <paramref name="action"/> with.</param>
+            <param name="arg16">The 16th argument to run <paramref name="action"/> with.</param>
+            <typeparam name="T1">The type of the 1st parameter of <paramref name="action"/>.</typeparam>
+            <typeparam name="T2">The type of the 2nd parameter of <paramref name="action"/>.</typeparam>
+            <typeparam name="T3">The type of the 3rd parameter of <paramref name="action"/>.</typeparam>
+            <typeparam name="T4">The type of the 4th parameter of <paramref name="action"/>.</typeparam>
+            <typeparam name="T5">The type of the 5th parameter of <paramref name="action"/>.</typeparam>
+            <typeparam name="T6">The type of the 6th parameter of <paramref name="action"/>.</typeparam>
+            <typeparam name="T7">The type of the 7th parameter of <paramref name="action"/>.</typeparam>
+            <typeparam name="T8">The type of the 8th parameter of <paramref name="action"/>.</typeparam>
+            <typeparam name="T9">The type of the 9th parameter of <paramref name="action"/>.</typeparam>
+            <typeparam name="T10">The type of the 10th parameter of <paramref name="action"/>.</typeparam>
+            <typeparam name="T11">The type of the 11th parameter of <paramref name="action"/>.</typeparam>
+            <typeparam name="T12">The type of the 12th parameter of <paramref name="action"/>.</typeparam>
+            <typeparam name="T13">The type of the 13th parameter of <paramref name="action"/>.</typeparam>
+            <typeparam name="T14">The type of the 14th parameter of <paramref name="action"/>.</typeparam>
+            <typeparam name="T15">The type of the 15th parameter of <paramref name="action"/>.</typeparam>
+            <typeparam name="T16">The type of the 16th parameter of <paramref name="action"/>.</typeparam>
+            <exception cref="T:System.ArgumentNullException"><paramref name="action"/> is <see langword="null"/>.</exception>
         </member>
         <member name="T:Moth.Tasks.TaskCache">
             <summary>
@@ -1040,7 +1965,7 @@
         </member>
         <member name="P:Moth.Tasks.TaskExceptionEventArgs.Exception">
             <summary>
-            <see cref="T:System.Exception"/> thrown.
+            Gets the <see cref="T:System.Exception"/> that was thrown.
             </summary>
         </member>
         <member name="T:Moth.Tasks.TaskHandle">
