@@ -39,6 +39,9 @@
         /// </remarks>
         public abstract int UnmanagedSize { get; }
 
+        /// <summary>
+        /// Gets the number of reference fields in the task.
+        /// </summary>
         public int ReferenceCount { get; protected set; }
 
         /// <summary>

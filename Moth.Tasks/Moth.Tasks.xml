@@ -548,7 +548,11 @@
             Invokes the encapsulated <see cref="T:System.Action`16"/> with the provided arguments.
             </summary>
         </member>
-        <!-- Badly formed XML comment ignored for member "T:Moth.Tasks.FunctionPointerTask" -->
+        <member name="T:Moth.Tasks.FunctionPointerTask">
+            <summary>
+            Task encapsulating a <see cref="!:delegate*&lt;void&gt;"/> function pointer.
+            </summary>
+        </member>
         <member name="M:Moth.Tasks.FunctionPointerTask.#ctor()">
             <summary>
             Initializes a new instance of the <see cref="T:Moth.Tasks.FunctionPointerTask"/> struct.
@@ -1968,6 +1972,24 @@
             Gets the <see cref="T:System.Exception"/> that was thrown.
             </summary>
         </member>
+        <member name="M:Moth.Tasks.TaskGroup.WhenComplete(System.Action)">
+            <summary>
+            Adds an action to be invoked when all tasks in the group have completed.
+            If the tasks have already completed, the action is invoked immediately.
+            </summary>
+            <remarks>
+            The action is invoked on the thread that completes the last task in the group.
+            </remarks>
+            <param name="action">The action to invoke.</param>
+        </member>
+        <member name="M:Moth.Tasks.TaskGroup.Enqueue``1(Moth.Tasks.TaskQueue,``0)">
+            <summary>
+            Enqueues a task in the specified queue.
+            </summary>
+            <typeparam name="T">Type of task.</typeparam>
+            <param name="queue">The <see cref="T:Moth.Tasks.TaskQueue"/> to enqueue the task in.</param>
+            <param name="task">The task to enqueue.</param>
+        </member>
         <member name="T:Moth.Tasks.TaskHandle">
             <summary>
             Handle for checking task status.
@@ -2022,6 +2044,11 @@
             <remarks>
             The unmanaged size is the size of the task data excluding fields of reference types.
             </remarks>
+        </member>
+        <member name="P:Moth.Tasks.TaskInfo.ReferenceCount">
+            <summary>
+            Gets the number of reference fields in the task.
+            </summary>
         </member>
         <member name="P:Moth.Tasks.TaskInfo.IsManaged">
             <summary>
