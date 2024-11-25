@@ -4,28 +4,32 @@
     using System.Collections.Generic;
 
     /// <summary>
-    /// Cache of <see cref="TaskInfo"/>.
+    /// Cache of <see cref="ITaskInfo"/>.
     /// </summary>
-    internal class TaskCache
+    public class TaskCache
     {
+        private readonly object syncRoot = new object ();
         private readonly Dictionary<Type, int> idCache = new Dictionary<Type, int> (16);
-        private TaskInfo[] taskCache = new TaskInfo[16];
+        private ITaskInfo[] taskCache = new ITaskInfo[16];
         private int nextID;
 
         /// <summary>
         /// Get a task by type.
         /// </summary>
         /// <typeparam name="T">Type of task.</typeparam>
-        /// <returns><see cref="TaskInfo"/> for <typeparamref name="T"/>.</returns>
-        public TaskInfo<T> GetTask<T> () where T : struct, ITask
+        /// <returns><see cref="ITaskInfo"/> for <typeparamref name="T"/>.</returns>
+        internal ITaskInfo<T> GetTask<T> () where T : struct, ITaskType
         {
-            if (!idCache.TryGetValue (typeof (T), out int id))
+            lock (syncRoot)
             {
-                TaskInfo<T> task = AddTask<T> ();
-                return task;
-            }
+                if (!idCache.TryGetValue (typeof (T), out int id))
+                {
+                    ITaskInfo<T> task = AddTask<T> ();
+                    return task;
+                }
 
-            return (TaskInfo<T>)taskCache[id];
+                return (ITaskInfo<T>)taskCache[id];
+            }
         }
 
         /// <summary>
@@ -33,19 +37,22 @@
         /// </summary>
         /// <param name="id">Assigned id of task.</param>
         /// <returns><see cref="TaskInfo"/> for <paramref name="id"/>.</returns>
-        public TaskInfo GetTask (int id)
+        public ITaskInfo GetTask (int id)
         {
-            return taskCache[id];
+            lock (syncRoot)
+            {
+                return taskCache[id];
+            }
         }
 
-        private TaskInfo<T> AddTask<T> () where T : struct, ITask
+        private ITaskInfo<T> AddTask<T> () where T : struct, ITaskType
         {
             int id = nextID;
             nextID++;
 
             idCache.Add (typeof (T), id);
 
-            TaskInfo<T> task = TaskInfo.Create<T> (id);
+            ITaskInfo<T> task = TaskInfo.Create<T> (id);
 
             if (id >= taskCache.Length)
             {

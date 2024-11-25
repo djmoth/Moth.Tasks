@@ -29,7 +29,7 @@ namespace Moth.Tasks.Tests
         void AssertTaskInfo<T> (bool disposable, bool isManaged) where T : struct, ITask
         {
             int taskID = 1; // Mock ID, set by a TaskCache in reality
-            TaskInfo<T> taskInfo = TaskInfo.Create<T> (1);
+            ITaskInfo<T> taskInfo = TaskInfo.Create<T> (1);
 
             Assert.AreEqual (taskID, taskInfo.ID);
 
@@ -39,7 +39,7 @@ namespace Moth.Tasks.Tests
 
             Assert.AreEqual (isManaged, taskInfo.IsManaged);
 
-            Assert.AreEqual (disposable, taskInfo.Disposable); // Task does not implement IDisposable
+            Assert.AreEqual (disposable, taskInfo.IsDisposable); // Task does not implement IDisposable
         }
 
         struct Task : ITask

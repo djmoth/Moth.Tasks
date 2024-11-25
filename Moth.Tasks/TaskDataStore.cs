@@ -15,7 +15,8 @@ namespace Moth.Tasks
             taskData = new byte[dataCapacity];
         }
 
-        public void Enqueue<T> (T task, TaskInfo<T> taskInfo) where T : struct, ITask
+        public void Enqueue<T> (T task, ITaskInfo<T> taskInfo)
+            where T : struct, ITaskType
         {
             // If new task data will overflow the taskData array
             CheckCapacity (taskInfo.UnmanagedSize);
@@ -25,7 +26,8 @@ namespace Moth.Tasks
             lastTaskEnd += taskInfo.UnmanagedSize;
         }
 
-        public T Dequeue<T> (TaskInfo<T> taskInfo) where T : struct, ITask
+        public T Dequeue<T> (ITaskInfo<T> taskInfo)
+            where T : struct, ITaskType
         {
             taskInfo.Deserialize (out T task, taskData.AsSpan (firstTask), taskReferenceStore);
 
@@ -40,7 +42,7 @@ namespace Moth.Tasks
             return task;
         }
 
-        public void Skip (TaskInfo taskInfo)
+        public void Skip (ITaskInfo taskInfo)
         {
             firstTask += taskInfo.UnmanagedSize;
 
@@ -54,7 +56,8 @@ namespace Moth.Tasks
                 taskReferenceStore.Skip (taskInfo.ReferenceCount);
         }
 
-        public void Insert<T> (int dataIndex, int refIndex, T task, TaskInfo<T> taskInfo) where T : struct, ITask
+        public void Insert<T> (int dataIndex, int refIndex, T task, TaskInfoBase<T> taskInfo)
+            where T : struct, ITaskType
         {
             CheckCapacity (taskInfo.UnmanagedSize);
 

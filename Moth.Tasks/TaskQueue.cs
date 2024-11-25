@@ -4,56 +4,22 @@
     using System.Collections.Generic;
     using System.Runtime.CompilerServices;
     using System.Threading;
+    using System.Threading.Tasks;
 
-    /// <summary>
-    /// A queue of tasks, which can be run in FIFO order.
-    /// </summary>
-    public unsafe class TaskQueue : IDisposable
+    public readonly struct TaskRunInfo
     {
-        private readonly object taskLock = new object ();
-        private readonly TaskCache taskCache = new TaskCache ();
-        private readonly Dictionary<int, ManualResetEventSlim> taskHandles = new Dictionary<int, ManualResetEventSlim> ();
-        private readonly ManualResetEventSlim tasksEnqueuedEvent = new ManualResetEventSlim (); // Must be explicitly set by callers of EnqueueImpl
-        private readonly Queue<int> tasks;
-        private readonly TaskDataStore taskData;
-        private bool disposed;
-        private int nextTaskHandle = 1;
+        public TaskQueue TaskQueue { get; }
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="TaskQueue"/> class.
-        /// </summary>
+        public IProfiler Profiler { get; }
+    }
+
+    public unsafe class TaskQueue<TArg> : TaskQueueBase
+    {
         public TaskQueue ()
-            : this (16, 1024) { }
+            : base () { }
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="TaskQueue"/> class.
-        /// </summary>
-        /// <param name="taskCapacity">Starting capacity for the internal task queue.</param>
-        /// <param name="dataCapacity">Starting capacity for the internal task data array.</param>
-        internal TaskQueue (int taskCapacity, int dataCapacity)
-        {
-            tasks = new Queue<int> (taskCapacity);
-            taskData = new TaskDataStore (dataCapacity);
-        }
-
-        /// <summary>
-        /// Finalizes an instance of the <see cref="TaskQueue"/> class. Also disposes of tasks implementing <see cref="IDisposable.Dispose"/>.
-        /// </summary>
-        ~TaskQueue () => Dispose (false);
-
-        /// <summary>
-        /// The number of tasks currently enqueued.
-        /// </summary>
-        public int Count
-        {
-            get
-            {
-                lock (taskLock)
-                {
-                    return tasks.Count;
-                }
-            }
-        }
+        public TaskQueue (int taskCapacity, int dataCapacity)
+            : base (taskCapacity, dataCapacity) { }
 
         /// <summary>
         /// Enqueue an <see cref="ITask"/> to be run later.
@@ -61,48 +27,160 @@
         /// <typeparam name="T">Type of task to run.</typeparam>
         /// <param name="task">Task data.</param>
         /// <exception cref="ObjectDisposedException">The <see cref="TaskQueue"/> has been disposed.</exception>
-        public void Enqueue<T> (in T task) where T : struct, ITask
-        {
-            lock (taskLock)
-            {
-                EnqueueImpl (task);
-            }
+        public void Enqueue<T> (in T task) where T : struct, ITask<TArg> => EnqueueTask (task);
 
-            tasksEnqueuedEvent.Set (); // Signal potentially waiting threads that tasks are ready to be executed
-        }
 
         /// <summary>
         /// Enqueue an <see cref="ITask"/> to be run later, giving out a <see cref="TaskHandle"/> for checking task status.
         /// </summary>
-        /// <typeparam name="T">Type of task to run.</typeparam>
+        /// <typeparam name="TTask">Type of task to run.</typeparam>
         /// <param name="task">Task data.</param>
         /// <param name="handle"><see cref="TaskHandle"/> for checking task status.</param>
         /// <exception cref="ObjectDisposedException">The <see cref="TaskQueue"/> has been disposed.</exception>
-        public void Enqueue<T> (in T task, out TaskHandle handle) where T : struct, ITask
+        public void Enqueue<TTask> (in TTask task, out TaskHandle handle)
+            where TTask : struct, ITask<TArg>
         {
-            lock (taskLock)
+            handle = TaskHandleManager.CreateTaskHandle ();
+
+            if (typeof (IDisposable).IsAssignableFrom (typeof (TTask))) // If T implements IDisposable
             {
-                if (disposed)
-                {
-                    throw new ObjectDisposedException (nameof (TaskQueue), "New tasks may not be enqueued after TaskQueue has been disposed.");
-                }
+                EnqueueTask (new DisposableTaskWithHandle<TTask, TArg> (task, handle));
+            } else
+            {
+                EnqueueTask (new TaskWithHandle<TTask, TArg> (task, handle));
+            }
+        }
 
-                int handleID = nextTaskHandle++;
+        /// <summary>
+        /// Blocks until a task is ready in the queue, then runs it.
+        /// </summary>
+        /// <param name="profiler"><see cref="IProfiler"/> to profile the run-time of the task.</param>
+        /// <param name="token">A <see cref="CancellationToken"/> to observe when waiting for a task. Does not cancel actual task execution.</param>
+        public void RunNextTask (TArg arg, IProfiler profiler = null, CancellationToken token = default) => RunNextTask (arg, out _, profiler, token);
 
-                taskHandles.Add (handleID, null);
+        /// <summary>
+        /// Blocks until a task is ready in the queue, then runs it.
+        /// </summary>
+        /// <param name="exception"><see cref="Exception"/> thrown if task failed. Is <see langword="null"/> if task was run successfully.</param>
+        /// <param name="profiler"><see cref="IProfiler"/> to profile the run-time of the task.</param>
+        /// <param name="token">A <see cref="CancellationToken"/> to observe when waiting for a task. Does not cancel actual task execution.</param>
+        public void RunNextTask (TArg arg, out Exception exception, IProfiler profiler = null, CancellationToken token = default)
+        {
+            WaitForTask (token);
 
-                handle = new TaskHandle (this, handleID);
-
-                if (typeof (IDisposable).IsAssignableFrom (typeof (T))) // If T implements IDisposable
-                {
-                    EnqueueImpl (new DisposableTaskWithHandle<T> (this, task, handleID));
-                } else
-                {
-                    EnqueueImpl (new TaskWithHandle<T> (this, task, handleID));
-                }
+            if (token.IsCancellationRequested)
+            {
+                exception = null;
+                return;
             }
 
-            tasksEnqueuedEvent.Set (); // Signal potentially waiting threads that tasks are ready to be executed
+            TryRunNextTask (arg, out exception, profiler);
+        }
+
+        /// <summary>
+        /// Tries to run the next task in the queue, if present. May also perform profiling on the task through an <see cref="IProfiler"/>.
+        /// </summary>
+        /// <param name="profiler"><see cref="IProfiler"/> to profile the run-time of the task.</param>
+        /// <returns><see langword="true"/> if a task was run, <see langword="false"/> if the <see cref="TaskQueue"/> is empty.</returns>
+        /// <remarks>
+        /// Please note that the return value does not indicate if a task was successful. The method will return <see langword="true"/> if a task was ready in the queue, regardless of whether an exception occured.
+        /// </remarks>
+        public bool TryRunNextTask (TArg arg, IProfiler profiler = null) => TryRunNextTask (arg, out _, profiler);
+
+        /// <summary>
+        /// Tries to run the next task in the queue, if present. Provides an <see cref="Exception"/> thrown by the task, in case it fails.
+        /// May also perform profiling on the task through an <see cref="IProfiler"/>.
+        /// </summary>
+        /// <param name="exception"><see cref="Exception"/> thrown if task failed. Is <see langword="null"/> if task was run successfully.</param>
+        /// <param name="profiler"><see cref="IProfiler"/> to profile the run-time of the task.</param>
+        /// <returns><see langword="true"/> if a task was run, <see langword="false"/> if the <see cref="TaskQueue"/> is empty.</returns>
+        /// <remarks>
+        /// Please note that the return value does not indicate if a task was successful. The method will return <see langword="true"/> if a task was ready in the queue, regardless of whether an exception occured.
+        /// </remarks>
+        public bool TryRunNextTask (TArg arg,out Exception exception, IProfiler profiler = null)
+        {
+            exception = null;
+
+            if (TryGetNextTask (out ITaskInfo task, out TaskDataAccess access))
+            {
+                bool isProfiling = false;
+
+                try
+                {
+                    if (profiler != null)
+                    {
+                        profiler.BeginTask (task.Type.FullName);
+                        isProfiling = true; // If profiler was started without throwing an exception
+                    }
+
+                    ((ITaskInfoRunnable<TArg>)task).Run (ref access, arg); // Run the task
+
+                    if (isProfiling)
+                    {
+                        isProfiling = false;
+                        profiler.EndTask ();
+                    }
+                } catch (Exception ex)
+                {
+                    exception = ex;
+
+                    if (!access.Disposed) // Internal error, TaskInfo should always call TaskDataAccess.Dispose after getting task data in TaskInfo.RunAndDispose
+                    {
+                        access.Dispose ();
+                    }
+
+                    if (isProfiling)
+                    {
+                        profiler.EndTask ();
+                    }
+                }
+
+                return true;
+            } else
+            {
+                return false;
+            }
+        }
+    }
+
+    /// <summary>
+    /// A queue of tasks, which can be run in FIFO order.
+    /// </summary>
+    public unsafe class TaskQueue : TaskQueueBase
+    {
+        public TaskQueue ()
+            : base () { }
+
+        public TaskQueue (int taskCapacity, int dataCapacity)
+            : base (taskCapacity, dataCapacity) { }
+
+        /// <summary>
+        /// Enqueue an <see cref="ITask"/> to be run later.
+        /// </summary>
+        /// <typeparam name="T">Type of task to run.</typeparam>
+        /// <param name="task">Task data.</param>
+        /// <exception cref="ObjectDisposedException">The <see cref="TaskQueue"/> has been disposed.</exception>
+        public void Enqueue<T> (in T task) where T : struct, ITask => EnqueueTask (task);
+
+        /// <summary>
+        /// Enqueue an <see cref="ITask"/> to be run later, giving out a <see cref="TaskHandle"/> for checking task status.
+        /// </summary>
+        /// <typeparam name="TTask">Type of task to run.</typeparam>
+        /// <param name="task">Task data.</param>
+        /// <param name="handle"><see cref="TaskHandle"/> for checking task status.</param>
+        /// <exception cref="ObjectDisposedException">The <see cref="TaskQueue"/> has been disposed.</exception>
+        public void Enqueue<TTask> (in TTask task, out TaskHandle handle)
+            where TTask : struct, ITask
+        {
+            handle = TaskHandleManager.CreateTaskHandle ();
+
+            if (typeof (IDisposable).IsAssignableFrom (typeof (TTask))) // If T implements IDisposable
+            {
+                EnqueueTask (new DisposableTaskWithHandle<TTask> (task, handle));
+            } else
+            {
+                EnqueueTask (new TaskWithHandle<TTask> (task, handle));
+            }
         }
 
         /// <summary>
@@ -120,7 +198,7 @@
         /// <param name="token">A <see cref="CancellationToken"/> to observe when waiting for a task. Does not cancel actual task execution.</param>
         public void RunNextTask (out Exception exception, IProfiler profiler = null, CancellationToken token = default)
         {
-            tasksEnqueuedEvent.Wait (token);
+            WaitForTask (token);
 
             if (token.IsCancellationRequested)
             {
@@ -142,7 +220,8 @@
         public bool TryRunNextTask (IProfiler profiler = null) => TryRunNextTask (out _, profiler);
 
         /// <summary>
-        /// Tries to run the next task in the queue, if present. Provides an <see cref="Exception"/> thrown by the task, in case it fails. May also perform profiling on the task through an <see cref="IProfiler"/>.
+        /// Tries to run the next task in the queue, if present. Provides an <see cref="Exception"/> thrown by the task, in case it fails.
+        /// May also perform profiling on the task through an <see cref="IProfiler"/>.
         /// </summary>
         /// <param name="exception"><see cref="Exception"/> thrown if task failed. Is <see langword="null"/> if task was run successfully.</param>
         /// <param name="profiler"><see cref="IProfiler"/> to profile the run-time of the task.</param>
@@ -154,259 +233,44 @@
         {
             exception = null;
 
-            TaskDataAccess access = new TaskDataAccess (this);
-
-            if (tasks.Count == 0)
+            if (TryGetNextTask (out ITaskInfo task, out TaskDataAccess access))
             {
-                access.Dispose ();
-                return false;
-            }
+                bool isProfiling = false;
 
-            TaskInfo task;
-
-            try
-            {
-                int id = tasks.Dequeue ();
-
-                if (tasks.Count == 0)
+                try
                 {
-                    tasksEnqueuedEvent.Reset (); // All tasks have been fetched, and as such the event can be reset.
-                }
-
-                task = taskCache.GetTask (id);
-            } catch // Internal error
-            {
-                access.Dispose ();
-
-                throw;
-            }
-
-            bool isProfiling = false;
-
-            try
-            {
-                if (profiler != null)
-                {
-                    profiler.BeginTask (task.Type.FullName);
-                    isProfiling = true; // If profiler was started without throwing an exception
-                }
-
-                task.RunAndDispose (ref access); // Run the task
-
-                if (isProfiling)
-                {
-                    isProfiling = false;
-                    profiler.EndTask ();
-                }
-            } catch (Exception ex)
-            {
-                exception = ex;
-
-                if (!access.Disposed) // Internal error, TaskInfo should always call TaskDataAccess.Dispose after getting task data in TaskInfo.RunAndDispose
-                {
-                    access.Dispose ();
-                }
-
-                if (isProfiling)
-                {
-                    profiler.EndTask ();
-                }
-            }
-
-            return true;
-        }
-
-        /// <summary>
-        /// Removes all pending tasks from the queue. Also calls <see cref="IDisposable.Dispose"/> on tasks which implement the method.
-        /// </summary>
-        /// <param name="exceptionHandler">Method for handling an exception thrown by a task's <see cref="IDisposable.Dispose"/>.</param>
-        /// <remarks>
-        /// As the method iterates through all tasks in the queue and calls <see cref="IDisposable.Dispose"/> on tasks, it can hang for an unknown amount of time. If an exception is thrown in an <see cref="IDisposable.Dispose"/> call, the method continues on with disposing the remaining tasks.
-        /// </remarks>
-        public void Clear (Action<Exception> exceptionHandler = null)
-        {
-            using TaskDataAccess access = new TaskDataAccess (this);
-
-            foreach (int id in tasks)
-            {
-                TaskInfo task = taskCache.GetTask (id);
-
-                if (task.Disposable)
-                {
-                    try
+                    if (profiler != null)
                     {
-                        task.Dispose (access);
-                    } catch (Exception ex)
-                    {
-                        exceptionHandler?.Invoke (ex);
+                        profiler.BeginTask (task.Type.FullName);
+                        isProfiling = true; // If profiler was started without throwing an exception
                     }
-                } else
+
+                    ((ITaskInfoRunnable)task).Run (ref access); // Run the task
+
+                    if (isProfiling)
+                    {
+                        isProfiling = false;
+                        profiler.EndTask ();
+                    }
+                } catch (Exception ex)
                 {
-                    taskData.Skip (task);
-                }
-            }
+                    exception = ex;
 
-            tasks.Clear ();
-            taskHandles.Clear ();
-            taskData.Clear ();
-        }
+                    if (!access.Disposed) // Internal error, TaskInfo should always call TaskDataAccess.Dispose after getting task data in TaskInfo.RunAndDispose
+                    {
+                        access.Dispose ();
+                    }
 
-        /// <summary>
-        /// Disposes all tasks which implements <see cref="IDisposable"/>.
-        /// </summary>
-        /// <remarks>
-        /// As the method iterates through all tasks in the queue and calls <see cref="IDisposable.Dispose"/> on tasks, it can hang for an unknown amount of time. If an exception is thrown in an <see cref="IDisposable.Dispose"/> call, the method continues on with disposing the remaining tasks.
-        /// </remarks>
-        public void Dispose ()
-        {
-            lock (taskLock)
-            {
-                Dispose (true);
-                GC.SuppressFinalize (this);
-            }
-        }
-
-        /// <summary>
-        /// Disposes all tasks which implements <see cref="IDisposable"/>.
-        /// </summary>
-        /// <remarks>
-        /// As the method iterates through all tasks in the queue and calls <see cref="IDisposable.Dispose"/> on tasks, it can hang for an unknown amount of time. If an exception is thrown in an <see cref="IDisposable.Dispose"/> call, the method continues on with disposing the remaining tasks.
-        /// </remarks>
-        /// <param name="disposing"><see langword="true"/> if called from <see cref="Dispose ()"/>, <see langword="false"/> if called from finalizer.</param>
-        protected virtual void Dispose (bool disposing)
-        {
-            if (disposed)
-                return;
-
-            Clear ();
-            disposed = true;
-        }
-
-        /// <summary>
-        /// Used by <see cref="TaskHandle.WaitForCompletion ()"/> to wait until task is complete.
-        /// </summary>
-        /// <param name="handleID">ID of handle.</param>
-        /// <param name="millisecondsTimeout">The number of milliseconds to wait, or <see cref="System.Threading.Timeout.Infinite"/> (-1) to wait indefinitely.</param>
-        /// <returns><see langword="true"/> if task was completed, <see langword="false"/> if timeout was reached.</returns>
-        internal bool WaitForCompletion (int handleID, int millisecondsTimeout)
-        {
-            ManualResetEventSlim waitEvent;
-            bool complete;
-
-            lock (taskLock)
-            {
-                complete = !taskHandles.TryGetValue (handleID, out waitEvent);
-
-                if (!complete && waitEvent == null)
-                {
-                    waitEvent = new ManualResetEventSlim ();
-                    taskHandles[handleID] = waitEvent;
-                }
-            }
-
-            if (!complete)
-            {
-                complete = waitEvent.Wait (millisecondsTimeout);
-            }
-
-            return complete;
-        }
-
-        /// <summary>
-        /// Used by <see cref="TaskWithHandle{T}"/> to notify callers of <see cref="WaitForCompletion(int, int)"/> that the task is done.
-        /// </summary>
-        /// <param name="handleID">ID of handle.</param>
-        internal void NotifyTaskComplete (int handleID)
-        {
-            lock (taskLock)
-            {
-                ManualResetEventSlim waitEvent = taskHandles[handleID];
-
-                if (waitEvent != null)
-                {
-                    waitEvent.Set ();
-                    waitEvent.Dispose ();
+                    if (isProfiling)
+                    {
+                        profiler.EndTask ();
+                    }
                 }
 
-                taskHandles.Remove (handleID);
-            }
-        }
-
-        /// <summary>
-        /// Check if a task has completed.
-        /// </summary>
-        /// <param name="handleID">ID of handle.</param>
-        /// <returns><see langword="true"/> if task has completed, otherwise <see langword="false"/>.</returns>
-        internal bool IsTaskComplete (int handleID)
-        {
-            lock (taskLock)
+                return true;
+            } else
             {
-                return !taskHandles.ContainsKey (handleID);
-            }
-        }
-
-        private void EnqueueImpl<T> (in T task) where T : struct, ITask
-        {
-            if (disposed)
-            {
-                throw new ObjectDisposedException (nameof (TaskQueue), "New tasks may not be enqueued after TaskQueue has been disposed.");
-            }
-
-            TaskInfo<T> taskInfo = taskCache.GetTask<T> ();
-
-            tasks.Enqueue (taskInfo.ID); // Add task ID to the queue
-
-            // Only write task data if present
-            if (taskInfo.UnmanagedSize > 0 || taskInfo.IsManaged)
-            {
-                taskData.Enqueue (task, taskInfo);
-            }
-
-            /* tasksEnqueuedEvent.Set () could be called here as this is the shared Enqueue implementation, but taskLock is still locked at this point:
-             * As so, it is better to wait and let it be called explicitly by callers of EnqueueImpl
-             */
-        }
-
-        private T GetNextTask<T> (TaskInfo<T> taskInfo) where T : struct, ITask => taskData.Dequeue (taskInfo);
-
-        /// <summary>
-        /// Provides a way for a task to access its data while locking the <see cref="TaskQueue"/>.
-        /// </summary>
-        internal ref struct TaskDataAccess
-        {
-            private TaskQueue queue;
-
-            /// <summary>
-            /// Initializes a new instance of the <see cref="TaskDataAccess"/> struct. Locks the <see cref="TaskQueue"/>.
-            /// </summary>
-            /// <param name="queue">Reference to the queue.</param>
-            public TaskDataAccess (TaskQueue queue)
-            {
-                this.queue = queue;
-                Monitor.Enter (queue.taskLock);
-            }
-
-            /// <summary>
-            /// Gets a value indicating whether the lock is still held.
-            /// </summary>
-            public bool Disposed => queue == null;
-
-            /// <summary>
-            /// Fetches next data of a task.
-            /// </summary>
-            /// <typeparam name="T">Type of task.</typeparam>
-            /// <param name="task">TaskInfo of task.</param>
-            /// <returns>Task data.</returns>
-            [MethodImpl (MethodImplOptions.AggressiveInlining)]
-            public readonly T GetTaskData<T> (TaskInfo<T> task) where T : struct, ITask => queue.GetNextTask (task);
-
-            /// <summary>
-            /// Exits the lock.
-            /// </summary>
-            public void Dispose ()
-            {
-                Monitor.Exit (queue.taskLock);
-                queue = null;
+                return false;
             }
         }
     }

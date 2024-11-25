@@ -5,20 +5,114 @@
     using System.Collections;
     using System.Collections.Generic;
     using System.Diagnostics;
+    using System.Linq;
     using System.Reflection;
     using System.Runtime.CompilerServices;
     using System.Runtime.InteropServices;
+    using System.Threading.Tasks;
     using Validation;
+
+    public static class TaskInfo
+    {
+        /// <summary>
+        /// Creates a new TaskInfo from a type and ID.
+        /// </summary>
+        /// <typeparam name="T">Type of task.</typeparam>
+        /// <param name="id">ID of task.</param>
+        /// <returns>A new TaskInfo representing the task <typeparamref name="T"/>.</returns>
+        internal static unsafe ITaskInfo<TTask> Create<TTask> (int id)
+             where TTask : struct, ITaskType
+        {
+            Type type = typeof (TTask);
+
+            bool isDisposable = false;
+            bool hasArgs = false;
+
+            foreach (Type interfaceType in type.GetInterfaces ())
+            {
+                if (interfaceType == typeof (IDisposable))
+                    isDisposable = true;
+                else if (interfaceType.IsGenericType && interfaceType.GetGenericTypeDefinition () == typeof (ITask<>))
+                    hasArgs = true;
+            }
+
+            Type taskInfoType;
+
+            if (isDisposable)
+            {
+                if (hasArgs)
+                    taskInfoType = typeof (DisposableTaskInfo<,>).MakeGenericType (type.GetGenericArguments ());
+                else
+                    taskInfoType = typeof (DisposableTaskInfo<>).MakeGenericType (type);
+            } else
+            {
+                if (hasArgs)
+                    taskInfoType = typeof (TaskInfo<,>).MakeGenericType (type.GetGenericArguments ());
+                else
+                    taskInfoType = typeof (TaskInfo<>).MakeGenericType (type);
+            }
+
+            return (ITaskInfo<TTask>)Activator.CreateInstance (taskInfoType, id);
+        }
+    }
+
+    public interface ITaskInfo
+    {
+        int ID { get; }
+
+        Type Type { get; }
+
+        int UnmanagedSize { get; }
+
+        int ReferenceCount { get; }
+
+        bool IsManaged { get; }
+
+        bool IsDisposable { get; }
+
+        bool HasArgs { get; }
+    }
+
+    internal interface ITaskInfoRunnable : ITaskInfo
+    {
+        void Run (ref TaskQueueBase.TaskDataAccess access);
+    }
+
+    internal interface ITaskInfoRunnable<TArg> : ITaskInfo
+    {
+        void Run (ref TaskQueueBase.TaskDataAccess access, TArg arg);
+    }
+
+    internal interface ITaskInfo<TTask> : ITaskInfo
+    {
+        void Serialize (in TTask task, Span<byte> destination, TaskReferenceStore references);
+
+        void Deserialize (out TTask task, ReadOnlySpan<byte> source, TaskReferenceStore references);
+    }
 
     /// <summary>
     /// Representation of a task in a <see cref="TaskCache"/>.
     /// </summary>
-    internal abstract class TaskInfo
+    internal abstract class TaskInfoBase<TTask> : ITaskInfo<TTask>
+        where TTask : struct, ITaskType
     {
-        protected TaskInfo (int id, Type type)
+        private Format<TTask> taskFormat;
+
+        protected TaskInfoBase (int id)
         {
             ID = id;
-            Type = type;
+            Type = typeof (TTask);
+
+            taskFormat = (Format<TTask>)Formats.Get<TTask> ();
+
+            if (taskFormat is VariableFormat<TTask> varFormat)
+            {
+                // Count all references in format
+                Span<byte> tmpTaskData = stackalloc byte[varFormat.MinSize];
+                varFormat.Serialize (default, tmpTaskData, (in object obj, Span<byte> destination) => { ReferenceCount++; return 0; });
+
+                IsManaged = true;
+            }
         }
 
         /// <summary>
@@ -37,115 +131,107 @@
         /// <remarks>
         /// The unmanaged size is the size of the task data excluding fields of reference types.
         /// </remarks>
-        public abstract int UnmanagedSize { get; }
+        public int UnmanagedSize { get; }
 
         /// <summary>
         /// Gets the number of reference fields in the task.
         /// </summary>
-        public int ReferenceCount { get; protected set; }
+        public int ReferenceCount { get; set; }
 
         /// <summary>
         /// Gets whether the task contains reference types.
         /// </summary>
-        public bool IsManaged { get; protected set; }
+        public bool IsManaged { get; set; }
 
-        /// <summary>
-        /// Gets a value indicating whether the task type implements <see cref="IDisposable"/>.
-        /// </summary>
-        public abstract bool Disposable { get; }
+        public abstract bool IsDisposable { get; }
 
-        /// <summary>
-        /// Creates a new TaskInfo from a type and ID.
-        /// </summary>
-        /// <typeparam name="T">Type of task.</typeparam>
-        /// <param name="id">ID of task.</param>
-        /// <returns>A new TaskInfo representing the task <typeparamref name="T"/>.</returns>
-        public static unsafe TaskInfo<T> Create<T> (int id) where T : struct, ITask
-        {
-            Type type = typeof (T);
+        public abstract bool HasArgs { get; }
 
-            if (typeof (IDisposable).IsAssignableFrom (type)) // If T implements IDisposable
-            {
-                Type disposableImplementationOfT = typeof (DisposableTaskInfo<>).MakeGenericType (type);
-
-                return (TaskInfo<T>)Activator.CreateInstance (disposableImplementationOfT, id);
-            } else
-            {
-                return new TaskInfo<T> (id);
-            }
-        }
-
-        /// <summary>
-        /// Call the <see cref="ITask.Run"/> method of the task, with <see cref="TaskQueue.TaskDataAccess"/> for getting task data. Also calls <see cref="IDisposable.Dispose"/>, if implemented.
-        /// </summary>
-        /// <param name="access">Access to data from <see cref="TaskQueue"/>.</param>
-        [MethodImpl (MethodImplOptions.AggressiveInlining)]
-        public abstract void RunAndDispose (ref TaskQueue.TaskDataAccess access);
-
-        /// <summary>
-        /// Call the <see cref="IDisposable.Dispose"/> method of the task, with <see cref="TaskQueue.TaskDataAccess"/> for getting task data.
-        /// </summary>
-        /// <param name="access">Access to data from <see cref="TaskQueue"/>.</param>
-        [MethodImpl (MethodImplOptions.AggressiveInlining)]
-        public virtual void Dispose (in TaskQueue.TaskDataAccess access) { }
-    }
-
-    internal class TaskInfo<T> : TaskInfo where T : struct, ITask
-    {
-        private Format<T> taskFormat;
-
-        public TaskInfo (int id)
-            : base (id, typeof (T))
-        {
-            taskFormat = (Format<T>)Formats.Get<T> ();
-
-            if (taskFormat is VariableFormat<T> varFormat)
-            {
-                // Count all references in format
-                Span<byte> tmpTaskData = stackalloc byte[varFormat.MinSize];
-                varFormat.Serialize (default, tmpTaskData, (in object obj, Span<byte> destination) => { ReferenceCount++; return 0; } );
-
-                IsManaged = true;
-            }
-        }
-
-        public override int UnmanagedSize => taskFormat.MinSize;
-
-        public override bool Disposable => false;
-
-        public void Serialize (in T task, Span<byte> destination, TaskReferenceStore references)
+        public void Serialize (in TTask task, Span<byte> destination, TaskReferenceStore references)
         {
             Debug.Assert (destination.Length >= UnmanagedSize, "destination.Length was less than TaskInfo.UnmanagedSize");
 
             taskFormat.Serialize (task, destination, references.Write);
         }
 
-        public void Deserialize (out T task, ReadOnlySpan<byte> source, TaskReferenceStore references)
+        public void Deserialize (out TTask task, ReadOnlySpan<byte> source, TaskReferenceStore references)
         {
             Debug.Assert (source.Length >= UnmanagedSize, "source.Length was less than TaskInfo.UnmanagedSize");
 
             taskFormat.Deserialize (out task, source, references.Read);
         }
+    }
 
-        public override void RunAndDispose (ref TaskQueue.TaskDataAccess access)
+    internal class TaskInfo<TTask> : TaskInfoBase<TTask>, ITaskInfoRunnable
+        where TTask : struct, ITask
+    {
+        public TaskInfo (int id)
+            : base (id) { }
+
+        public override bool IsDisposable => false;
+
+        public override bool HasArgs => false;
+
+        public void Run (ref TaskQueueBase.TaskDataAccess access)
         {
-            T data = access.GetTaskData (this);
+            TTask data = access.GetNextTaskData (this);
             access.Dispose ();
 
             data.Run ();
         }
     }
 
-    internal class DisposableTaskInfo<T> : TaskInfo<T> where T : struct, ITask, IDisposable
+    internal class TaskInfo<TTask, TArg> : TaskInfoBase<TTask>, ITaskInfoRunnable<TArg>
+        where TTask : struct, ITask<TArg>
+    {
+        public TaskInfo (int id)
+            : base (id) { }
+
+        public override bool IsDisposable => false;
+
+        public override bool HasArgs => true;
+
+        public void Run (ref TaskQueueBase.TaskDataAccess access, TArg arg)
+        {
+            TTask data = access.GetNextTaskData (this);
+            access.Dispose ();
+
+            data.Run (arg);
+        }
+    }
+
+    internal interface IDisposableTaskInfo
+    {
+        void Dispose (in TaskQueueBase.TaskDataAccess access);
+    }
+
+    internal abstract class DisposableTaskInfoBase<TTask> : TaskInfoBase<TTask>, IDisposableTaskInfo
+        where TTask : struct, ITaskType, IDisposable
+    {
+        protected DisposableTaskInfoBase (int id)
+            : base (id) { }
+
+        public override bool IsDisposable => true;
+
+        public void Dispose (in TaskQueueBase.TaskDataAccess access)
+        {
+            TTask data = access.GetNextTaskData (this);
+
+            data.Dispose ();
+        }
+    }
+
+    internal class DisposableTaskInfo<TTask> : DisposableTaskInfoBase<TTask>, ITaskInfoRunnable
+        where TTask : struct, ITask, IDisposable
     {
         public DisposableTaskInfo (int id)
             : base (id) { }
 
-        public override bool Disposable => true;
+        public override bool HasArgs => false;
 
-        public override void RunAndDispose (ref TaskQueue.TaskDataAccess access)
+        public void Run (ref TaskQueueBase.TaskDataAccess access)
         {
-            T data = access.GetTaskData<T> (this);
+            TTask data = access.GetNextTaskData (this);
             access.Dispose ();
 
             try
@@ -157,12 +243,28 @@
                 data.Dispose ();
             }
         }
+    }
 
-        public override void Dispose (in TaskQueue.TaskDataAccess access)
+    internal class DisposableTaskInfo<TTask, TArg> : DisposableTaskInfoBase<TTask>, ITaskInfoRunnable<TArg>
+        where TTask : struct, ITask<TArg>, IDisposable
+    {
+        public DisposableTaskInfo (int id)
+            : base (id) { }
+
+        public override bool HasArgs => true;
+
+        public void Run (ref TaskQueueBase.TaskDataAccess access, TArg arg)
         {
-            T data = access.GetTaskData<T> (this);
+            TTask data = access.GetNextTaskData (this);
+            access.Dispose ();
 
-            data.Dispose ();
+            try
+            {
+                data.Run (arg);
+            } finally
+            {
+                data.Dispose ();
+            }
         }
     }
 }
