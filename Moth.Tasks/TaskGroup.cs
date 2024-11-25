@@ -10,17 +10,40 @@
         private Counter* counter;
         private Action whenComplete;
         private bool isDisposed;
+        private GCHandle thisHandle;
 
         public TaskGroup ()
         {
             counter = (Counter*)Marshal.AllocHGlobal (sizeof (Counter));
-            *counter = new Counter (this);
+
+            thisHandle = GCHandle.Alloc (this, GCHandleType.Normal);
+            *counter = new Counter (thisHandle);
         }
 
         ~TaskGroup ()
         {
             Dispose (false);
         }
+
+        /// <summary>
+        /// Gets the current progress of the task group, as a value between 0 and 1.
+        /// </summary>
+        public float Progress => !isDisposed ? (float)counter->CompletedCount / counter->TaskCount : throw new ObjectDisposedException (nameof (TaskGroup));
+
+        /// <summary>
+        /// Gets the number of tasks in the group.
+        /// </summary>
+        public int TaskCount => !isDisposed ? counter->TaskCount : throw new ObjectDisposedException (nameof (TaskGroup));
+
+        /// <summary>
+        /// Gets the number of tasks that have completed.
+        /// </summary>
+        public int CompletedCount => !isDisposed ? counter->CompletedCount : throw new ObjectDisposedException (nameof (TaskGroup));
+
+        /// <summary>
+        /// Gets a value indicating whether all tasks in the group have completed.
+        /// </summary>
+        public bool IsComplete => !isDisposed ? counter->IsComplete : throw new ObjectDisposedException (nameof (TaskGroup));
 
         /// <summary>
         /// Adds an action to be invoked when all tasks in the group have completed.
@@ -87,6 +110,7 @@
                     }
                 }
 
+                thisHandle.Free ();
                 counter = null;
                 isDisposed = true;
             }
@@ -98,20 +122,20 @@
             private int completedCount;
             private int taskCount;
 
-            public Counter (TaskGroup group)
+            public Counter (GCHandle groupHandle)
             {
-                groupHandle = GCHandle.Alloc (group, GCHandleType.Normal);
+                this.groupHandle = groupHandle;
                 completedCount = 0;
                 taskCount = 0;
             }
 
             public readonly GCHandle GroupHandle => groupHandle;
 
-            public readonly int TaskCount => taskCount;
+            public int TaskCount => Volatile.Read (ref taskCount);
 
-            public readonly int CompletedCount => completedCount;
+            public int CompletedCount => Volatile.Read (ref completedCount);
 
-            public readonly bool IsComplete => completedCount == TaskCount;
+            public bool IsComplete => CompletedCount == TaskCount;
 
             public void AddTask ()
             {
