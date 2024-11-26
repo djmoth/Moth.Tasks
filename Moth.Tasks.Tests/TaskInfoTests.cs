@@ -1,11 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using Moth.Tasks;
-using NUnit.Framework;
-
-namespace Moth.Tasks.Tests
+﻿namespace Moth.Tasks.Tests
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Text;
+    using Moth.Tasks;
+    using NUnit.Framework;
+    using NUnit.Framework.Legacy;
+
     public class TaskInfoTests
     {
         [Test]
@@ -31,15 +32,15 @@ namespace Moth.Tasks.Tests
             int taskID = 1; // Mock ID, set by a TaskCache in reality
             ITaskInfo<T> taskInfo = TaskInfo.Create<T> (1);
 
-            Assert.AreEqual (taskID, taskInfo.ID);
+            ClassicAssert.AreEqual (taskID, taskInfo.ID);
 
-            Assert.AreEqual (typeof (T), taskInfo.Type);
+            ClassicAssert.AreEqual (typeof (T), taskInfo.Type);
 
-            Assert.AreEqual (IntPtr.Size, taskInfo.UnmanagedSize); // Task contains one field of IntPtr, size should match IntPtr.Size then
+            ClassicAssert.AreEqual (IntPtr.Size, taskInfo.UnmanagedSize); // Task contains one field of IntPtr, size should match IntPtr.Size then
 
-            Assert.AreEqual (isManaged, taskInfo.IsManaged);
+            ClassicAssert.AreEqual (isManaged, taskInfo.IsManaged);
 
-            Assert.AreEqual (disposable, taskInfo.IsDisposable); // Task does not implement IDisposable
+            ClassicAssert.AreEqual (disposable, taskInfo.IsDisposable); // Task does not implement IDisposable
         }
 
         struct Task : ITask

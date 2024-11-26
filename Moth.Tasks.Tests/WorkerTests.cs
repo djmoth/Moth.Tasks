@@ -36,7 +36,7 @@ namespace Moth.Tasks.Tests
             }
 
             // Worker.Dispose must dispose of queue if disposeTaskQueue constructor parameter is true
-            Assert.IsTrue (queue.GetPrivateValue<bool> ("disposed"));
+            Assert.Fail ();
         }
     }
 }

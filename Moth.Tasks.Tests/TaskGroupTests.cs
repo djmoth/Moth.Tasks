@@ -1,6 +1,7 @@
 ﻿namespace Moth.Tasks.Tests
 {
     using NUnit.Framework;
+    using NUnit.Framework.Legacy;
     using System;
     using System.Collections.Generic;
     using System.Linq;
@@ -25,11 +26,11 @@
 
             for (int i = 0; i < taskCount; i++)
             {
-                Assert.IsFalse (actionInvoked);
+                ClassicAssert.IsFalse (actionInvoked);
                 queue.RunNextTask ();
             }
 
-            Assert.IsTrue (actionInvoked);
+            ClassicAssert.IsTrue (actionInvoked);
         }
 
         [Test]
@@ -49,11 +50,11 @@
 
             for (int i = 0; i < taskCount; i++)
             {
-                Assert.AreEqual (0, actionInvokedCount);
+                ClassicAssert.AreEqual (0, actionInvokedCount);
                 queue.RunNextTask ();
             }
 
-            Assert.AreEqual (2, actionInvokedCount);
+            ClassicAssert.AreEqual (2, actionInvokedCount);
         }
 
         [Test]
@@ -73,7 +74,7 @@
             bool actionInvoked = false;
             group.WhenComplete (() => actionInvoked = true);
 
-            Assert.IsTrue (actionInvoked);
+            ClassicAssert.IsTrue (actionInvoked);
         }
 
         private struct TestTask : ITask

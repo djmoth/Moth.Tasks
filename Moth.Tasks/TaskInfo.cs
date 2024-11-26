@@ -112,6 +112,9 @@
                 varFormat.Serialize (default, tmpTaskData, (in object obj, Span<byte> destination) => { ReferenceCount++; return 0; });
 
                 IsManaged = true;
+            } else
+            {
+                IsManaged = false;
             }
         }
 
@@ -131,7 +134,7 @@
         /// <remarks>
         /// The unmanaged size is the size of the task data excluding fields of reference types.
         /// </remarks>
-        public int UnmanagedSize { get; }
+        public int UnmanagedSize => taskFormat.MinSize;
 
         /// <summary>
         /// Gets the number of reference fields in the task.

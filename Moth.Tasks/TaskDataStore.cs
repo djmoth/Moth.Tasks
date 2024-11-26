@@ -1,19 +1,23 @@
-﻿using System;
-using System.Runtime.CompilerServices;
-
-namespace Moth.Tasks
+﻿namespace Moth.Tasks
 {
+    using System;
+    using System.Runtime.CompilerServices;
+
     internal class TaskDataStore
     {
         private readonly TaskReferenceStore taskReferenceStore = new TaskReferenceStore ();
         private byte[] taskData;
-        private int firstTask;
-        private int lastTaskEnd;
 
         public TaskDataStore (int dataCapacity)
         {
             taskData = new byte[dataCapacity];
         }
+
+        public int FirstTask { get; private set; }
+
+        public int LastTaskEnd { get; private set; }
+
+        public int Size => LastTaskEnd - FirstTask;
 
         public void Enqueue<T> (T task, ITaskInfo<T> taskInfo)
             where T : struct, ITaskType
@@ -21,22 +25,22 @@ namespace Moth.Tasks
             // If new task data will overflow the taskData array
             CheckCapacity (taskInfo.UnmanagedSize);
 
-            taskInfo.Serialize (task, taskData.AsSpan (lastTaskEnd), taskReferenceStore);
+            taskInfo.Serialize (task, taskData.AsSpan (LastTaskEnd), taskReferenceStore);
 
-            lastTaskEnd += taskInfo.UnmanagedSize;
+            LastTaskEnd += taskInfo.UnmanagedSize;
         }
 
         public T Dequeue<T> (ITaskInfo<T> taskInfo)
             where T : struct, ITaskType
         {
-            taskInfo.Deserialize (out T task, taskData.AsSpan (firstTask), taskReferenceStore);
+            taskInfo.Deserialize (out T task, taskData.AsSpan (FirstTask), taskReferenceStore);
 
-            firstTask += taskInfo.UnmanagedSize;
+            FirstTask += taskInfo.UnmanagedSize;
 
-            if (firstTask == lastTaskEnd) // If firstTask is now equal to lastTaskEnd, then this was the last task in the queue
+            if (FirstTask == LastTaskEnd) // If firstTask is now equal to lastTaskEnd, then this was the last task in the queue
             {
-                firstTask = 0;
-                lastTaskEnd = 0;
+                FirstTask = 0;
+                LastTaskEnd = 0;
             }
 
             return task;
@@ -44,26 +48,26 @@ namespace Moth.Tasks
 
         public void Skip (ITaskInfo taskInfo)
         {
-            firstTask += taskInfo.UnmanagedSize;
+            FirstTask += taskInfo.UnmanagedSize;
 
-            if (firstTask == lastTaskEnd)
+            if (FirstTask == LastTaskEnd)
             {
-                firstTask = 0;
-                lastTaskEnd = 0;
+                FirstTask = 0;
+                LastTaskEnd = 0;
             }
 
             if (taskInfo.IsManaged)
                 taskReferenceStore.Skip (taskInfo.ReferenceCount);
         }
 
-        public void Insert<T> (int dataIndex, int refIndex, T task, TaskInfoBase<T> taskInfo)
+        public void Insert<T> (int dataIndex, int refIndex, T task, ITaskInfo<T> taskInfo)
             where T : struct, ITaskType
         {
             CheckCapacity (taskInfo.UnmanagedSize);
 
             int copyDestination = dataIndex + taskInfo.UnmanagedSize;
             int copySource = dataIndex;
-            int byteCount = lastTaskEnd - copyDestination;
+            int byteCount = LastTaskEnd - copyDestination;
 
             Unsafe.CopyBlockUnaligned (ref taskData[copyDestination], ref taskData[copySource], (uint)byteCount);
 
@@ -72,22 +76,22 @@ namespace Moth.Tasks
                 taskInfo.Serialize (task, taskData.AsSpan (dataIndex), taskReferenceStore);
             }
 
-            lastTaskEnd += taskInfo.UnmanagedSize;
+            LastTaskEnd += taskInfo.UnmanagedSize;
         }
 
         public void Clear ()
         {
-            firstTask = 0;
-            lastTaskEnd = 0;
+            FirstTask = 0;
+            LastTaskEnd = 0;
 
             taskReferenceStore.Clear ();
         }
 
         private void CheckCapacity (int unmanagedSize)
         {
-            if (lastTaskEnd + unmanagedSize > taskData.Length)
+            if (LastTaskEnd + unmanagedSize > taskData.Length)
             {
-                int totalTaskDataLength = lastTaskEnd - firstTask;
+                int totalTaskDataLength = LastTaskEnd - FirstTask;
 
                 // If there is not enough total space in taskData array to hold new task, then resize taskData
                 if (totalTaskDataLength + unmanagedSize > taskData.Length)
@@ -97,12 +101,12 @@ namespace Moth.Tasks
                     Array.Resize (ref taskData, newSize);
                 }
 
-                if (firstTask != 0)
+                if (FirstTask != 0)
                 {
-                    Array.Copy (taskData, firstTask, taskData, 0, totalTaskDataLength); // Move tasks to the beginning of taskData, to eliminate wasted space
+                    Array.Copy (taskData, FirstTask, taskData, 0, totalTaskDataLength); // Move tasks to the beginning of taskData, to eliminate wasted space
 
-                    lastTaskEnd = totalTaskDataLength;
-                    firstTask = 0;
+                    LastTaskEnd = totalTaskDataLength;
+                    FirstTask = 0;
                 }
             }
         }

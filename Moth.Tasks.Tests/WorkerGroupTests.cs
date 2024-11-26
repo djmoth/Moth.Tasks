@@ -1,16 +1,14 @@
-﻿using NUnit.Framework;
-using System;
-using System.Collections.Generic;
-using System.Text;
-using System.Threading;
-
-namespace Moth.Tasks.Tests
+﻿namespace Moth.Tasks.Tests
 {
+    using NUnit.Framework;
+    using NUnit.Framework.Legacy;
+    using System.Threading;
+
     public class WorkerGroupTests
     {
         [Test]
         [TestCase (1), TestCase (2), TestCase (3), TestCase (4)]
-        [Timeout (1000)]
+        [CancelAfter(1000)]
         public void Work (int workerCount)
         {
             using (WorkerGroup workers = new WorkerGroup (workerCount, new TaskQueue (), true, true))
@@ -30,7 +28,7 @@ namespace Moth.Tasks.Tests
             }
 
             // Worker.Dispose must dispose of queue if disposeTaskQueue constructor parameter is true
-            Assert.IsTrue (queue.GetPrivateValue<bool> ("disposed"));
+            ClassicAssert.Fail ();
         }
 
         [Test]
@@ -40,7 +38,7 @@ namespace Moth.Tasks.Tests
 
             using (WorkerGroup workers = new WorkerGroup (workerCount, new TaskQueue (), true, true))
             {
-                Assert.AreEqual (workerCount, workers.WorkerCount);
+                ClassicAssert.AreEqual (workerCount, workers.WorkerCount);
             }
         }
 
@@ -54,7 +52,7 @@ namespace Moth.Tasks.Tests
                 workerCount++;
                 workers.WorkerCount = workerCount;
 
-                Assert.AreEqual (workerCount, workers.WorkerCount);
+                ClassicAssert.AreEqual (workerCount, workers.WorkerCount);
 
                 // Are all workers actually working?
                 EngageAllWorkers (workers);
@@ -71,7 +69,7 @@ namespace Moth.Tasks.Tests
                 workerCount--;
                 workers.WorkerCount = workerCount;
 
-                Assert.AreEqual (workerCount, workers.WorkerCount);
+                ClassicAssert.AreEqual (workerCount, workers.WorkerCount);
 
                 // Are all workers actually working?
                 EngageAllWorkers (workers);
