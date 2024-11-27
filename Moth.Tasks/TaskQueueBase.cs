@@ -5,7 +5,7 @@ using System;
 
 namespace Moth.Tasks
 {
-    public abstract class TaskQueueBase : ITaskQueue, IDisposable
+    public abstract class TaskQueueBase : IDisposable
     {
         private readonly object taskLock = new object ();
         private readonly TaskCache taskCache = new TaskCache ();
@@ -14,7 +14,7 @@ namespace Moth.Tasks
         private readonly TaskDataStore taskData;
         private readonly TaskHandleManager taskHandleManager;
         private bool disposed;
-        
+
         /// <summary>
         /// Initializes a new instance of the <see cref="TaskQueueBase"/> class.
         /// </summary>

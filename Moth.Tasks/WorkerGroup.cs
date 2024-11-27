@@ -32,7 +32,7 @@
         /// <param name="profilerProvider">A <see cref="ProfilerProvider"/> which may provide an <see cref="IProfiler"/> each <see cref="Worker"/>. May be <see langword="null"/>.</param>
         /// <exception cref="ArgumentOutOfRangeException"><paramref name="workerCount"/> must be greater than zero.</exception>
         /// <exception cref="ArgumentNullException"><paramref name="taskQueue"/> cannot be null.</exception>
-        public WorkerGroup (int workerCount, TaskQueue taskQueue, bool disposeTaskQueue, bool isBackground, EventHandler<TaskExceptionEventArgs> exceptionEventHandler = null, ProfilerProvider profilerProvider = null)
+        public WorkerGroup (int workerCount, ITaskQueue taskQueue, bool disposeTaskQueue, bool isBackground, EventHandler<TaskExceptionEventArgs> exceptionEventHandler = null, ProfilerProvider profilerProvider = null)
         {
             Requires.Range (workerCount > 0, nameof (workerCount), $"{nameof (workerCount)} must be greater than zero.");
 
@@ -44,9 +44,15 @@
 
             workers = new Worker[workerCount];
 
+            WorkerOptions workerOptions = new WorkerOptions
+            {
+                ExceptionEventHandler = exceptionEventHandler,
+                ProfilerProvider = profilerProvider,
+            };
+
             for (int i = 0; i < workerCount; i++)
             {
-                workers[i] = new Worker (taskQueue, false, isBackground, profilerProvider, exceptionEventHandler);
+                workers[i] = new Worker (taskQueue, false, workerOptions);
                 GC.SuppressFinalize (workers[i]);
             }
 
@@ -63,7 +69,7 @@
         /// <summary>
         /// The <see cref="TaskQueue"/> of which the workers are executing tasks from.
         /// </summary>
-        public TaskQueue Tasks { get; }
+        public ITaskQueue Tasks { get; }
 
         /// <summary>
         /// Get or set the number of <see cref="Worker"/>s in this <see cref="WorkerGroup"/>. Must be greater than zero.
@@ -101,17 +107,23 @@
 
                     Array.Resize (ref workers, value);
 
+                    WorkerOptions workerOptions = new WorkerOptions
+                    {
+                        ExceptionEventHandler = exceptionEventHandler,
+                        ProfilerProvider = profilerProvider,
+                    };
+
                     // Initialize new workers, if new value is greater than the old worker count
                     for (int i = oldWorkerCount; i < value; i++)
                     {
-                        workers[i] = new Worker (Tasks, false, isBackground, profilerProvider, exceptionEventHandler);
+                        workers[i] = new Worker (Tasks, false, workerOptions);
                     }
                 }
             }
         }
 
         /// <summary>
-        /// Calls <see cref="Dispose"/> and blocks the calling thread until all <see cref="Worker"/>s terminate.
+        /// Calls <see cref="Dispose()"/> and blocks the calling thread until all <see cref="Worker"/>s terminate.
         /// </summary>
         public void DisposeAndJoin ()
         {
@@ -127,7 +139,7 @@
         /// Blocks the calling thread until all <see cref="Worker"/>s terminate.
         /// </summary>
         /// <remarks>
-        /// <see cref="Dispose"/> must be called beforehand.
+        /// <see cref="Dispose()"/> must be called beforehand.
         /// </remarks>
         /// <exception cref="InvalidOperationException">The <see cref="WorkerGroup"/> is not disposed.</exception>
         public void Join ()
@@ -170,9 +182,9 @@
                 worker.Dispose ();
             }
 
-            if (disposeTasks)
+            if (disposeTasks && Tasks is IDisposable disposableTasks)
             {
-                Tasks.Dispose ();
+                disposableTasks.Dispose ();
             }
 
             disposed = true;

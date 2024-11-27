@@ -18,7 +18,7 @@
         private readonly bool disposeTasks;
         private readonly IProfiler profiler;
         private readonly EventHandler<TaskExceptionEventArgs> exceptionEventHandler;
-        private readonly Thread thread;
+        private readonly IWorkerThread thread;
         private readonly CancellationTokenSource cancelSource = new CancellationTokenSource ();
         private int isRunningState;
 
@@ -28,57 +28,30 @@
         /// <remarks>
         /// The <see cref="Worker"/> will start executing tasks automatically.
         /// </remarks>
-        /// <param name="taskQueue">The <see cref="TaskQueue"/> that the <see cref="Worker"/> will execute tasks from.</param>
-        /// <param name="disposeTaskQueue">Determines whether the <see cref="TaskQueue"/> supplied with <paramref name="taskQueue"/> is disposed when <see cref="Dispose ()"/> is called.</param>
-        /// <param name="isBackground">Defines the <see cref="Thread.IsBackground"/> property of the internal thread.</param>
-        /// <param name="profilerProvider">A <see cref="ProfilerProvider"/> which may provide an <see cref="IProfiler"/> for the <see cref="Worker"/>. May be <see langword="null"/>.</param>
-        /// <param name="exceptionEventHandler">Method invoked if a task throws an exception. May be <see langword="null"/>.</param>
+        /// <param name="taskQueue">The <see cref="TaskQueue"/> of which the worker will be executing tasks from.</param>
+        /// <param name="shouldDisposeTaskQueue">Determines whether the <see cref="TaskQueue"/> supplied with <paramref name="taskQueue"/> is disposed when <see cref="Dispose ()"/> is called.</param>
+        /// <param name="options">Options for initializing the <see cref="Worker"/>.</param>
         /// <exception cref="ArgumentNullException"><paramref name="taskQueue"/> cannot be null.</exception>
-        public Worker (
-            TaskQueue taskQueue,
-            bool disposeTaskQueue,
-            bool isBackground,
-            ProfilerProvider profilerProvider,
-            EventHandler<TaskExceptionEventArgs> exceptionEventHandler = null)
-
-            : this (taskQueue, disposeTaskQueue, isBackground, (IProfiler)null, exceptionEventHandler)
-        {
-            profiler = profilerProvider?.Invoke (this);
-        }
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="Worker"/> class.
-        /// </summary>
-        /// <remarks>
-        /// The <see cref="Worker"/> will start executing tasks automatically.
-        /// </remarks>
-        /// <param name="taskQueue">The <see cref="TaskQueue"/> that the <see cref="Worker"/> will execute tasks from.</param>
-        /// <param name="disposeTaskQueue">Determines whether the <see cref="TaskQueue"/> supplied with <paramref name="taskQueue"/> is disposed when <see cref="Dispose ()"/> is called.</param>
-        /// <param name="isBackground">Defines the <see cref="Thread.IsBackground"/> property of the internal thread.</param>
-        /// <param name="profiler"><see cref="IProfiler"/> used to profile tasks. May be <see langword="null"/>.</param>
-        /// <param name="exceptionEventHandler">Method invoked if a task throws an exception. May be <see langword="null"/>.</param>
-        /// <exception cref="ArgumentNullException"><paramref name="taskQueue"/> cannot be null.</exception>
-        public Worker (
-            TaskQueue taskQueue,
-            bool disposeTaskQueue,
-            bool isBackground,
-            IProfiler profiler = null,
-            EventHandler<TaskExceptionEventArgs> exceptionEventHandler = null)
+        public Worker (ITaskQueue taskQueue, bool shouldDisposeTaskQueue, WorkerOptions options)
         {
             Tasks = taskQueue ?? throw new ArgumentNullException (nameof (taskQueue), $"{nameof (taskQueue)} cannot be null.");
-            disposeTasks = disposeTaskQueue;
+            disposeTasks = shouldDisposeTaskQueue;
 
             if (disposeTasks)
                 GC.SuppressFinalize (Tasks);
 
-            this.exceptionEventHandler = exceptionEventHandler;
-            this.profiler = profiler;
+            exceptionEventHandler = options.ExceptionEventHandler;
 
-            thread = new Thread (Work)
-            {
-                IsBackground = isBackground,
-            };
-            thread.Start ();
+            if (options.ProfilerProvider != null && options.Profiler != null)
+                throw new ArgumentException ("Cannot provide both a ProfilerProvider and a Profiler.");
+
+            if (options.ProfilerProvider != null)
+                profiler = options.ProfilerProvider (this);
+            else
+                profiler = options.Profiler;
+
+            thread = options.WorkerThread ?? new WorkerThread (true);
+            thread.Start (Work);
         }
 
         /// <summary>
@@ -101,7 +74,7 @@
         /// <summary>
         /// Gets the <see cref="TaskQueue"/> of which the worker is executing tasks from.
         /// </summary>
-        public TaskQueue Tasks { get; }
+        public ITaskQueue Tasks { get; }
 
         /// <summary>
         /// Gets the <see cref="System.Threading.CancellationToken"/> associated with this worker.
@@ -152,8 +125,8 @@
         {
             cancelSource.Cancel ();
 
-            if (disposeTasks)
-                Tasks.Dispose ();
+            if (disposeTasks && Tasks is IDisposable disposableTasks)
+                disposableTasks.Dispose ();
         }
 
         private void Work ()

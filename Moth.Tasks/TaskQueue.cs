@@ -146,7 +146,7 @@
     /// <summary>
     /// A queue of tasks, which can be run in FIFO order.
     /// </summary>
-    public unsafe class TaskQueue : TaskQueueBase
+    public unsafe class TaskQueue : TaskQueueBase, ITaskQueue
     {
         public TaskQueue ()
             : base () { }

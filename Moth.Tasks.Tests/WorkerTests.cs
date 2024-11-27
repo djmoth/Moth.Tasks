@@ -1,42 +1,60 @@
-﻿using NUnit.Framework;
-using System;
-using System.Collections.Generic;
-using System.Text;
-using System.Threading;
-
-namespace Moth.Tasks.Tests
+﻿namespace Moth.Tasks.Tests
 {
+    using Moq;
+    using NUnit.Framework;
+    using NUnit.Framework.Legacy;
+    using System;
+    using System.Threading;
+
+    [TestFixture]
     public class WorkerTests
     {
         [Test]
-        [Timeout (100)]
-        public void Work ()
+        public void Constructor_WithProfiler_InitializesCorrectly ()
         {
-            TaskQueue queue = new TaskQueue ();
+            ITaskQueue taskQueue = Mock.Of<ITaskQueue> ();
 
-            // Enqueue a task which sets an event
-            AutoResetEvent waitEvent = new AutoResetEvent (false);
-            queue.Enqueue ((AutoResetEvent e) => e.Set (), waitEvent);
-
-            using (Worker worker = new Worker (queue, true, true))
+            WorkerOptions options = new WorkerOptions
             {
-                // The worker must execute the enqueued task for the test to continue and pass. Note Timeout (100) attribute of method.
-                waitEvent.WaitOne (); 
-            }
+                Profiler = Mock.Of<IProfiler> (),
+                WorkerThread = null,
+                ExceptionEventHandler = null,
+            };
+
+            using var worker = new Worker (taskQueue, false, options);
+
+            ClassicAssert.IsNotNull (worker);
         }
 
         [Test]
-        public void Disposable ()
+        public void Constructor_WithWorkerThread_StartsThread ()
         {
-            TaskQueue queue = new TaskQueue ();
+            ITaskQueue taskQueue = Mock.Of<ITaskQueue> ();
+            var mockWorkerThread = new Mock<IWorkerThread> ();
 
-            using (Worker worker = new Worker (queue, true, true)) // Pass true for disposeTaskQueue
+            WorkerOptions options = new WorkerOptions
             {
-                
-            }
+                Profiler = null,
+                WorkerThread = mockWorkerThread.Object,
+                ExceptionEventHandler = null,
+            };
 
-            // Worker.Dispose must dispose of queue if disposeTaskQueue constructor parameter is true
-            Assert.Fail ();
+            using var worker = new Worker (taskQueue, false, options);
+
+            ClassicAssert.IsNotNull (worker);
+            mockWorkerThread.Verify (t => t.Start (It.IsAny<ThreadStart> ()), Times.Once);
+        }
+
+        [Test]
+        public void Dispose_DisposesTaskQueueIfSpecified ()
+        {
+            var mockDisposableTaskQueue = new Mock<ITaskQueue> ().As<IDisposable> ();
+
+            using var worker = new Worker (mockDisposableTaskQueue.Object as ITaskQueue, true, default);
+
+            worker.Dispose ();
+
+            mockDisposableTaskQueue.Verify (t => t.Dispose (), Times.Once);
         }
     }
 }

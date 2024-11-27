@@ -82,7 +82,7 @@
         private void EngageAllWorkers (WorkerGroup workers)
         {
             int workerCount = workers.WorkerCount;
-            TaskQueue tasks = workers.Tasks;
+            ITaskQueue tasks = workers.Tasks;
 
             // Set when all tasks have been enqueued
             ManualResetEvent startEvent = new ManualResetEvent (false);
