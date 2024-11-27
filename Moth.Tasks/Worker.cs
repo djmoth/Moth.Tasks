@@ -20,6 +20,7 @@
         private readonly EventHandler<TaskExceptionEventArgs> exceptionEventHandler;
         private readonly IWorkerThread thread;
         private readonly CancellationTokenSource cancelSource = new CancellationTokenSource ();
+        private bool disposed;
         private int isRunningState;
 
         /// <summary>
@@ -50,8 +51,16 @@
             else
                 profiler = options.Profiler;
 
-            thread = options.WorkerThread ?? new WorkerThread (true);
-            thread.Start (Work);
+            if (options.WorkerThreadProvider != null && options.WorkerThread != null)
+                throw new ArgumentException ("Cannot provide both a WorkerThreadProvider and a WorkerThread.");
+
+            if (options.WorkerThreadProvider != null)
+                thread = options.WorkerThreadProvider (this);
+            else
+                thread = options.WorkerThread ?? new WorkerThread (true);
+
+            if (!options.RequiresManualStart)
+                Start ();
         }
 
         /// <summary>
@@ -62,14 +71,13 @@
         /// <summary>
         /// Gets a value indicating whether the thread is running.
         /// </summary>
-        /// <remarks>
-        /// May be <see langword="true"/> for a short while even after <see cref="Dispose ()"/> is called.
-        /// </remarks>
         public bool IsRunning
         {
             get => Interlocked.CompareExchange (ref isRunningState, 1, 1) == 1;
             protected set => Interlocked.Exchange (ref isRunningState, value ? 1 : 0);
         }
+
+        public bool IsStarted { get; private set; }
 
         /// <summary>
         /// Gets the <see cref="TaskQueue"/> of which the worker is executing tasks from.
@@ -80,12 +88,30 @@
         /// Gets the <see cref="System.Threading.CancellationToken"/> associated with this worker.
         /// </summary>
         /// <remarks>
-        /// Can be passed to a task enqueued on <see cref="Tasks"/>, allowing it to exit early if <see cref="Dispose"/> is called.
+        /// Can be passed to a task enqueued on <see cref="Tasks"/>, allowing it to exit early if <see cref="Dispose()"/> is called.
         /// </remarks>
         public CancellationToken CancellationToken => cancelSource.Token;
 
         /// <summary>
-        /// Calls <see cref="Dispose"/> and blocks the calling thread until the <see cref="Worker"/> terminates.
+        /// Manually starts the worker if <see cref="WorkerOptions.RequiresManualStart"/> was set to <see langword="true"/>.
+        /// </summary>
+        /// <exception cref="ObjectDisposedException">The <see cref="Worker"/> has been disposed.</exception>
+        /// <exception cref="InvalidOperationException">The worker is already started.</exception>
+        public void Start ()
+        {
+            if (disposed)
+                throw new ObjectDisposedException (nameof (Worker));
+
+            if (IsStarted)
+                throw new InvalidOperationException ("Worker is already started.");
+
+            thread.Start (Work);
+
+            IsStarted = true;
+        }
+
+        /// <summary>
+        /// Calls <see cref="Dispose()"/> and blocks the calling thread until the <see cref="Worker"/> terminates.
         /// </summary>
         public void DisposeAndJoin ()
         {
@@ -97,11 +123,14 @@
         /// Blocks the calling thread until the <see cref="Worker"/> terminates.
         /// </summary>
         /// <remarks>
-        /// <see cref="Dispose"/> must be called beforehand.
+        /// <see cref="Dispose()"/> must be called beforehand. If <see cref="Start"/> was never called, this method will return immediately.
         /// </remarks>
         /// <exception cref="InvalidOperationException">The <see cref="Worker"/> is not disposed.</exception>
         public void Join ()
         {
+            if (!IsStarted)
+                return;
+
             if (!cancelSource.IsCancellationRequested)
                 throw new InvalidOperationException ("Join may only be called after the Worker is disposed.");
 
@@ -123,6 +152,11 @@
         /// <param name="disposing"><see langword="true"/> if called from <see cref="Dispose ()"/>, <see langword="false"/> if called from finalizer.</param>
         protected virtual void Dispose (bool disposing)
         {
+            if (disposed)
+                return;
+
+            disposed = true;
+
             cancelSource.Cancel ();
 
             if (disposeTasks && Tasks is IDisposable disposableTasks)

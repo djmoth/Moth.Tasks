@@ -18,6 +18,7 @@
         private readonly bool isBackground;
         private readonly EventHandler<TaskExceptionEventArgs> exceptionEventHandler;
         private readonly ProfilerProvider profilerProvider;
+        private readonly WorkerThreadProvider workerThreadProvider;
         private Worker[] workers;
         private bool disposed;
 
@@ -27,12 +28,10 @@
         /// <param name="workerCount">Number of workers. Must be greater than zero.</param>
         /// <param name="taskQueue">The <see cref="TaskQueue"/> of which the workers will be executing tasks from.</param>
         /// <param name="disposeTaskQueue">Determines whether the <see cref="TaskQueue"/> supplied with <paramref name="taskQueue"/> is disposed when <see cref="Dispose ()"/> is called.</param>
-        /// <param name="isBackground">Defines the <see cref="Thread.IsBackground"/> property of the internal thread of each <see cref="Worker"/>.</param>
-        /// <param name="exceptionEventHandler">Method invoked if a task throws an exception. May be <see langword="null"/>.</param>
-        /// <param name="profilerProvider">A <see cref="ProfilerProvider"/> which may provide an <see cref="IProfiler"/> each <see cref="Worker"/>. May be <see langword="null"/>.</param>
+        /// <param name="options">Options for initializing the <see cref="WorkerGroup"/>.</param>
         /// <exception cref="ArgumentOutOfRangeException"><paramref name="workerCount"/> must be greater than zero.</exception>
         /// <exception cref="ArgumentNullException"><paramref name="taskQueue"/> cannot be null.</exception>
-        public WorkerGroup (int workerCount, ITaskQueue taskQueue, bool disposeTaskQueue, bool isBackground, EventHandler<TaskExceptionEventArgs> exceptionEventHandler = null, ProfilerProvider profilerProvider = null)
+        public WorkerGroup (int workerCount, ITaskQueue taskQueue, bool disposeTaskQueue, WorkerGroupOptions options)
         {
             Requires.Range (workerCount > 0, nameof (workerCount), $"{nameof (workerCount)} must be greater than zero.");
 
@@ -42,12 +41,17 @@
             if (disposeTasks)
                 GC.SuppressFinalize (taskQueue);
 
+            exceptionEventHandler = options.ExceptionEventHandler;
+            profilerProvider = options.ProfilerProvider;
+            workerThreadProvider = options.WorkerThreadProvider;
+
             workers = new Worker[workerCount];
 
             WorkerOptions workerOptions = new WorkerOptions
             {
                 ExceptionEventHandler = exceptionEventHandler,
                 ProfilerProvider = profilerProvider,
+                WorkerThreadProvider = workerThreadProvider,
             };
 
             for (int i = 0; i < workerCount; i++)
@@ -55,10 +59,6 @@
                 workers[i] = new Worker (taskQueue, false, workerOptions);
                 GC.SuppressFinalize (workers[i]);
             }
-
-            this.isBackground = isBackground;
-            this.exceptionEventHandler = exceptionEventHandler;
-            this.profilerProvider = profilerProvider;
         }
 
         /// <summary>
@@ -79,45 +79,38 @@
         /// </remarks>
         public int WorkerCount
         {
-            get
-            {
-                lock (workers)
-                    return workers.Length;
-            }
+            get => workers.Length;
 
             set
             {
-                lock (workers)
+                if (disposed)
+                    throw new ObjectDisposedException (nameof (WorkerGroup));
+
+                if (value == workers.Length)
+                    return;
+
+                Requires.Range (value > 0, nameof (value), $"{nameof (value)} must be greater than zero.");
+
+                int oldWorkerCount = workers.Length;
+
+                // Dispose of the excess workers, if new value is less than the old worker count.
+                for (int i = value; i < oldWorkerCount; i++)
                 {
-                    if (disposed)
-                        throw new ObjectDisposedException (nameof (WorkerGroup));
+                    workers[i].Dispose ();
+                }
 
-                    if (value == workers.Length)
-                        return;
+                Array.Resize (ref workers, value);
 
-                    Requires.Range (value > 0, nameof (value), $"{nameof (value)} must be greater than zero.");
+                WorkerOptions workerOptions = new WorkerOptions
+                {
+                    ExceptionEventHandler = exceptionEventHandler,
+                    ProfilerProvider = profilerProvider,
+                };
 
-                    int oldWorkerCount = workers.Length;
-
-                    // Dispose of the excess workers, if new value is less than the old worker count.
-                    for (int i = value; i < oldWorkerCount; i++)
-                    {
-                        workers[i].Dispose ();
-                    }
-
-                    Array.Resize (ref workers, value);
-
-                    WorkerOptions workerOptions = new WorkerOptions
-                    {
-                        ExceptionEventHandler = exceptionEventHandler,
-                        ProfilerProvider = profilerProvider,
-                    };
-
-                    // Initialize new workers, if new value is greater than the old worker count
-                    for (int i = oldWorkerCount; i < value; i++)
-                    {
-                        workers[i] = new Worker (Tasks, false, workerOptions);
-                    }
+                // Initialize new workers, if new value is greater than the old worker count
+                for (int i = oldWorkerCount; i < value; i++)
+                {
+                    workers[i] = new Worker (Tasks, false, workerOptions);
                 }
             }
         }
@@ -127,12 +120,9 @@
         /// </summary>
         public void DisposeAndJoin ()
         {
-            lock (workers)
-            {
-                Dispose ();
+            Dispose ();
 
-                Join ();
-            }
+            Join ();
         }
 
         /// <summary>
@@ -144,15 +134,12 @@
         /// <exception cref="InvalidOperationException">The <see cref="WorkerGroup"/> is not disposed.</exception>
         public void Join ()
         {
-            lock (workers)
-            {
-                if (!disposed)
-                    throw new InvalidOperationException ("Join may only be called after the WorkerGroup is disposed.");
+            if (!disposed)
+                throw new InvalidOperationException ("Join may only be called after the WorkerGroup is disposed.");
 
-                foreach (Worker worker in workers)
-                {
-                    worker.Join ();
-                }
+            foreach (Worker worker in workers)
+            {
+                worker.Join ();
             }
         }
 
@@ -161,11 +148,8 @@
         /// </summary>
         public void Dispose ()
         {
-            lock (workers)
-            {
-                Dispose (true);
-                GC.SuppressFinalize (this);
-            }
+            Dispose (true);
+            GC.SuppressFinalize (this);
         }
 
         /// <summary>

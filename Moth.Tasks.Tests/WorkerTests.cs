@@ -2,7 +2,6 @@
 {
     using Moq;
     using NUnit.Framework;
-    using NUnit.Framework.Legacy;
     using System;
     using System.Threading;
 
@@ -23,11 +22,33 @@
 
             using var worker = new Worker (taskQueue, false, options);
 
-            ClassicAssert.IsNotNull (worker);
+            Assert.That (worker != null);
         }
 
         [Test]
-        public void Constructor_WithWorkerThread_StartsThread ()
+        public void Construct_WithProfilerProvider_InitializesCorrectly ()
+        {
+            ITaskQueue taskQueue = Mock.Of<ITaskQueue> ();
+
+            var mockProfilerProvider = new Mock<ProfilerProvider> ();
+            mockProfilerProvider.Setup (p => p (It.IsAny<Worker> ())).Returns (Mock.Of<IProfiler> ());
+
+            WorkerOptions options = new WorkerOptions
+            {
+                ProfilerProvider = mockProfilerProvider.Object,
+                WorkerThread = null,
+                ExceptionEventHandler = null,
+            };
+
+            using var worker = new Worker (taskQueue, false, options);
+
+            Assert.That (worker != null);
+
+            mockProfilerProvider.Verify (p => p (It.IsAny<Worker> ()), Times.Once);
+        }
+
+        [Test]
+        public void Constructor_WithWorkerThreadAndAutoStart_StartsThread ()
         {
             ITaskQueue taskQueue = Mock.Of<ITaskQueue> ();
             var mockWorkerThread = new Mock<IWorkerThread> ();
@@ -41,12 +62,76 @@
 
             using var worker = new Worker (taskQueue, false, options);
 
-            ClassicAssert.IsNotNull (worker);
+            Assert.That (worker != null);
+
             mockWorkerThread.Verify (t => t.Start (It.IsAny<ThreadStart> ()), Times.Once);
         }
 
         [Test]
-        public void Dispose_DisposesTaskQueueIfSpecified ()
+        public void Construct_WithWorkerThreadProvider_InitializesCorrectly ()
+        {
+            ITaskQueue taskQueue = Mock.Of<ITaskQueue> ();
+
+            var mockWorkerThreadProvider = new Mock<WorkerThreadProvider> ();
+            mockWorkerThreadProvider.Setup (p => p (It.IsAny<Worker> ())).Returns (Mock.Of<IWorkerThread> ());
+
+            WorkerOptions options = new WorkerOptions
+            {
+                Profiler = null,
+                WorkerThreadProvider = mockWorkerThreadProvider.Object,
+                ExceptionEventHandler = null,
+            };
+
+            using var worker = new Worker (taskQueue, false, options);
+
+            Assert.That (worker != null);
+
+            mockWorkerThreadProvider.Verify (p => p (It.IsAny<Worker> ()), Times.Once);
+        }
+
+        [Test]
+        public void Constructor_WithWorkerThreadAndManualStart_DoesNotStartThread ()
+        {
+            ITaskQueue taskQueue = Mock.Of<ITaskQueue> ();
+            var mockWorkerThread = new Mock<IWorkerThread> ();
+
+            WorkerOptions options = new WorkerOptions
+            {
+                Profiler = null,
+                WorkerThread = mockWorkerThread.Object,
+                ExceptionEventHandler = null,
+                RequiresManualStart = true,
+            };
+
+            using var worker = new Worker (taskQueue, false, options);
+
+            Assert.That (worker != null);
+            mockWorkerThread.Verify (t => t.Start (It.IsAny<ThreadStart> ()), Times.Never);
+        }
+
+        [Test]
+        public void Start_CalledTwice_ThrowsInvalidOperationException ()
+        {
+            var mockTaskQueue = new Mock<ITaskQueue> ();
+            var mockWorkerThread = new Mock<IWorkerThread> ();
+
+            WorkerOptions options = new WorkerOptions
+            {
+                Profiler = null,
+                WorkerThread = mockWorkerThread.Object,
+                ExceptionEventHandler = null,
+                RequiresManualStart = true,
+            };
+
+            using var worker = new Worker (mockTaskQueue.Object, false, options);
+
+            worker.Start ();
+
+            Assert.Throws<InvalidOperationException> (worker.Start);
+        }
+
+        [Test]
+        public void Dispose_DisposeCalled_DisposesTaskQueueIfSpecified ()
         {
             var mockDisposableTaskQueue = new Mock<ITaskQueue> ().As<IDisposable> ();
 
@@ -55,6 +140,84 @@
             worker.Dispose ();
 
             mockDisposableTaskQueue.Verify (t => t.Dispose (), Times.Once);
+        }
+
+        [Test]
+        public void Dispose_DisposeCalledFromTask_StopsWorker ()
+        {
+            var mockTaskQueue = new Mock<ITaskQueue> ();
+
+            var mockWorkerThread = new Mock<IWorkerThread> ();
+            mockWorkerThread.Setup (x => x.Start (It.IsAny<ThreadStart> ())).Callback<ThreadStart> (t => t ());
+
+            WorkerOptions options = new WorkerOptions
+            {
+                Profiler = null,
+                WorkerThread = mockWorkerThread.Object,
+                ExceptionEventHandler = null,
+                RequiresManualStart = true,
+            };
+
+            using var worker = new Worker (mockTaskQueue.Object, false, options);
+
+            mockTaskQueue.Setup (x => x.RunNextTask (out It.Ref<Exception>.IsAny, It.IsAny<IProfiler> (), It.IsAny<CancellationToken> ())).Callback (worker.Dispose);
+
+            worker.Start ();
+
+            Assert.That (worker.IsRunning, Is.False);
+            Assert.That (worker.CancellationToken.IsCancellationRequested, Is.True);
+        }
+
+        [Test]
+        public void Worker_EnqueueTask_RunsTask ()
+        {
+            var mockTaskQueue = new Mock<ITaskQueue> ();
+            var mockWorkerThread = new Mock<IWorkerThread> ();
+
+            mockTaskQueue.Setup (t => t.RunNextTask (out It.Ref<Exception>.IsAny, It.IsAny<IProfiler> (), It.IsAny<CancellationToken> ())).Callback (Assert.Pass);
+
+            mockWorkerThread.Setup (x => x.Start (It.IsAny<ThreadStart> ())).Callback<ThreadStart> (t => t ());
+
+            WorkerOptions options = new WorkerOptions
+            {
+                Profiler = null,
+                WorkerThread = mockWorkerThread.Object,
+                ExceptionEventHandler = null,
+            };
+
+            using var worker = new Worker (mockTaskQueue.Object, false, options);
+        }
+
+        delegate void RunNextTaskCallback (out Exception exception, IProfiler profiler, CancellationToken cancellationToken);
+
+        [Test]
+        public void Worker_EnqueueTaskThatThrowsException_ReportsExceptionToExceptionHandler ()
+        {
+            var mockException = new Exception ();
+
+            var mockTaskQueue = new Mock<ITaskQueue> (MockBehavior.Strict);
+
+            mockTaskQueue.Setup (t => t.RunNextTask (out mockException, It.IsAny<IProfiler> (), It.IsAny<CancellationToken> ()));
+
+            var mockWorkerThread = new Mock<IWorkerThread> ();
+            mockWorkerThread.Setup (x => x.Start (It.IsAny<ThreadStart> ())).Callback<ThreadStart> (t => t ());
+
+            var mockExceptionEventHandler = new Mock<EventHandler<TaskExceptionEventArgs>> (MockBehavior.Strict);
+
+            WorkerOptions options = new WorkerOptions
+            {
+                Profiler = null,
+                WorkerThread = mockWorkerThread.Object,
+                ExceptionEventHandler = mockExceptionEventHandler.Object,
+                RequiresManualStart = true,
+            };
+
+            using var worker = new Worker (mockTaskQueue.Object, false, options);
+            mockExceptionEventHandler.Setup (e => e (worker, It.Is<TaskExceptionEventArgs> (a => a.Exception == mockException))).Callback (Assert.Pass);
+
+            worker.Start ();
+
+            mockExceptionEventHandler.Verify (e => e (worker, It.Is<TaskExceptionEventArgs> (a => a.Exception == mockException)), Times.Once);
         }
     }
 }

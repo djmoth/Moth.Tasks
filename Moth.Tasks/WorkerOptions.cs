@@ -10,6 +10,10 @@
 
         public IWorkerThread WorkerThread { get; set; }
 
+        public WorkerThreadProvider WorkerThreadProvider { get; set; }
+
         public EventHandler<TaskExceptionEventArgs> ExceptionEventHandler { get; set; }
+
+        public bool RequiresManualStart { get; set; }
     }
 }
