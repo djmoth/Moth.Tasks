@@ -8,12 +8,9 @@
     using Validation;
 
     /// <summary>
-    /// Encapsulates a <see cref="Thread"/> running in the background, executing tasks from a <see cref="TaskQueue"/>.
+    /// Runs on an <see cref="IWorkerThread"/> continuously executing tasks from a <see cref="TaskQueue"/>.
     /// </summary>
-    /// <remarks>
-    /// This class is thread-safe.
-    /// </remarks>
-    public class Worker : IDisposable
+    public class Worker : IWorker
     {
         private readonly bool disposeTasks;
         private readonly IProfiler profiler;
@@ -157,10 +154,14 @@
 
             disposed = true;
 
-            cancelSource.Cancel ();
-
-            if (disposeTasks && Tasks is IDisposable disposableTasks)
-                disposableTasks.Dispose ();
+            if (IsStarted)
+            {
+                cancelSource.Cancel ();
+            } else
+            {
+                if (disposeTasks && Tasks is IDisposable disposableTasks)
+                    disposableTasks.Dispose ();
+            }
         }
 
         private void Work ()
@@ -186,6 +187,9 @@
                 Dispose ();
             } finally
             {
+                if (disposeTasks && Tasks is IDisposable disposableTasks)
+                    disposableTasks.Dispose ();
+
                 IsRunning = false;
             }
         }

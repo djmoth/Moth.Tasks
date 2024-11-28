@@ -73,17 +73,17 @@
         bool HasArgs { get; }
     }
 
-    internal interface ITaskInfoRunnable : ITaskInfo
+    public interface ITaskInfoRunnable : ITaskInfo
     {
         void Run (ref TaskQueueBase.TaskDataAccess access);
     }
 
-    internal interface ITaskInfoRunnable<TArg> : ITaskInfo
+    public interface ITaskInfoRunnable<TArg> : ITaskInfo
     {
         void Run (ref TaskQueueBase.TaskDataAccess access, TArg arg);
     }
 
-    internal interface ITaskInfo<TTask> : ITaskInfo
+    public interface ITaskInfo<TTask> : ITaskInfo
     {
         void Serialize (in TTask task, Span<byte> destination, TaskReferenceStore references);
 
@@ -93,7 +93,7 @@
     /// <summary>
     /// Representation of a task in a <see cref="TaskCache"/>.
     /// </summary>
-    internal abstract class TaskInfoBase<TTask> : ITaskInfo<TTask>
+    public abstract class TaskInfoBase<TTask> : ITaskInfo<TTask>
         where TTask : struct, ITaskType
     {
         private Format<TTask> taskFormat;

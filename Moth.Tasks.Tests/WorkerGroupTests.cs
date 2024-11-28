@@ -9,117 +9,114 @@
     public class WorkerGroupTests
     {
         [Test]
-        public void Constructor_InitializesCorrectly ()
+        public void Constructor_WithZeroWorkerCount_ThrowsArgumentOutOfRangeException ()
         {
-            var mockTaskQueue = new Mock<ITaskQueue> ();
-            var mockWorkerThreadProvider = new Mock<WorkerThreadProvider> ();
-            var mockProfilerProvider = new Mock<ProfilerProvider> ();
-
-            WorkerGroupOptions options = new WorkerGroupOptions
-            {
-                WorkerThreadProvider = mockWorkerThreadProvider.Object,
-                ProfilerProvider = mockProfilerProvider.Object,
-                ExceptionEventHandler = null,
-            };
-
-            using var workerGroup = new WorkerGroup (3, mockTaskQueue.Object, false, options);
-
-            Assert.That (workerGroup != null);
+            Assert.Throws<ArgumentOutOfRangeException> (() => new WorkerGroup (0, Mock.Of<ITaskQueue> (), false, null));
         }
 
         [Test]
-        public void WorkerCount_SetToNewValue_ResizesWorkersArray ()
+        public void Constructor_WithNegativeWorkerCount_ThrowsArgumentOutOfRangeException ()
         {
-            var mockTaskQueue = new Mock<ITaskQueue> ();
-            var mockWorkerThreadProvider = new Mock<WorkerThreadProvider> ();
-            var mockProfilerProvider = new Mock<ProfilerProvider> ();
-
-            WorkerGroupOptions options = new WorkerGroupOptions
-            {
-                WorkerThreadProvider = mockWorkerThreadProvider.Object,
-                ProfilerProvider = mockProfilerProvider.Object,
-                ExceptionEventHandler = null,
-            };
-
-            using var workerGroup = new WorkerGroup (3, mockTaskQueue.Object, false, options);
-
-            workerGroup.WorkerCount = 5;
-
-            Assert.That (workerGroup.WorkerCount, Is.EqualTo (5));
+            Assert.Throws<ArgumentOutOfRangeException> (() => new WorkerGroup (-1, Mock.Of<ITaskQueue> (), false, null));
         }
 
         [Test]
-        public void Dispose_DisposesAllWorkers ()
+        public void Constructor_WithNullTaskQueue_ThrowsArgumentNullException ()
         {
-            var mockTaskQueue = new Mock<ITaskQueue> ();
-            var mockWorkerThreadProvider = new Mock<WorkerThreadProvider> ();
-            var mockProfilerProvider = new Mock<ProfilerProvider> ();
+            Assert.Throws<ArgumentNullException> (() => new WorkerGroup (1, null, false, null));
+        }
 
-            WorkerGroupOptions options = new WorkerGroupOptions
+        [Test]
+        public void Constructor_WithTaskQueue_InitializesCorrectly ()
+        {
+            ITaskQueue taskQueue = Mock.Of<ITaskQueue> ();
+
+            WorkerGroup workerGroup = new WorkerGroup (1, taskQueue, false, null);
+
+            Assert.That (workerGroup.Tasks == taskQueue);
+        }
+
+        [Test]
+        public void Constructor_WithWorkerProvider_GetsAndStartsWorkers ()
+        {
+            ITaskQueue taskQueue = Mock.Of<ITaskQueue> ();
+            int workerCount = 4;
+
+            Mock<IWorker>[] mockWorkers = new Mock<IWorker>[workerCount];
+
+            Mock<WorkerProvider> mockWorkerProvider = new Mock<WorkerProvider> ();
+            mockWorkerProvider.Setup (x => x.Invoke (It.IsAny<WorkerGroup> (), It.IsAny<int> ()))
+                .Callback ((WorkerGroup group, int i) => mockWorkers[i] = new Mock<IWorker> ())
+                .Returns ((WorkerGroup group, int i) => mockWorkers[i].Object);
+
+            WorkerGroup workerGroup = new WorkerGroup (workerCount, taskQueue, false, mockWorkerProvider.Object);
+
+            mockWorkerProvider.Verify (x => x.Invoke (It.IsAny<WorkerGroup> (), It.IsAny<int> ()), Times.Exactly (workerCount));
+
+            for (int i = 0; i < workerCount; i++)
             {
-                WorkerThreadProvider = mockWorkerThreadProvider.Object,
-                ProfilerProvider = mockProfilerProvider.Object,
-                ExceptionEventHandler = null,
-            };
-
-            using var workerGroup = new WorkerGroup (3, mockTaskQueue.Object, false, options);
-
-            workerGroup.Dispose ();
-
-            foreach (var worker in workerGroup.Workers)
-            {
-                Assert.That (worker.IsDisposed, Is.True);
+                mockWorkers[i].Verify (w => w.Start (), Times.Once);
             }
         }
 
         [Test]
-        public void DisposeAndJoin_DisposesAndJoinsAllWorkers ()
+        public void Dispose_WhenCalled_DisposesWorkers ()
         {
-            var mockTaskQueue = new Mock<ITaskQueue> ();
-            var mockWorkerThreadProvider = new Mock<WorkerThreadProvider> ();
-            var mockProfilerProvider = new Mock<ProfilerProvider> ();
+            ITaskQueue taskQueue = Mock.Of<ITaskQueue> ();
+            int workerCount = 4;
 
-            WorkerGroupOptions options = new WorkerGroupOptions
+            Mock<IWorker>[] mockWorkers = new Mock<IWorker>[workerCount];
+
+            WorkerProvider workerProvider = (group, i) =>
             {
-                WorkerThreadProvider = mockWorkerThreadProvider.Object,
-                ProfilerProvider = mockProfilerProvider.Object,
-                ExceptionEventHandler = null,
+                mockWorkers[i] = new Mock<IWorker> ();
+                return mockWorkers[i].Object;
             };
 
-            using var workerGroup = new WorkerGroup (3, mockTaskQueue.Object, false, options);
+            WorkerGroup workerGroup = new WorkerGroup (workerCount, taskQueue, false, workerProvider);
+            workerGroup.Dispose ();
 
-            workerGroup.DisposeAndJoin ();
-
-            foreach (var worker in workerGroup.Workers)
+            for (int i = 0; i < workerCount; i++)
             {
-                Assert.That (worker.IsDisposed, Is.True);
-                Assert.That (worker.IsJoined, Is.True);
+                mockWorkers[i].Verify (w => w.Dispose (), Times.Once);
             }
         }
 
         [Test]
-        public void Join_JoinsAllWorkers ()
+        public void Join_WhenCalled_JoinsWorkers ()
         {
-            var mockTaskQueue = new Mock<ITaskQueue> ();
-            var mockWorkerThreadProvider = new Mock<WorkerThreadProvider> ();
-            var mockProfilerProvider = new Mock<ProfilerProvider> ();
+            ITaskQueue taskQueue = Mock.Of<ITaskQueue> ();
+            int workerCount = 4;
 
-            WorkerGroupOptions options = new WorkerGroupOptions
+            Mock<IWorker>[] mockWorkers = new Mock<IWorker>[workerCount];
+            WorkerProvider workerProvider = (group, i) =>
             {
-                WorkerThreadProvider = mockWorkerThreadProvider.Object,
-                ProfilerProvider = mockProfilerProvider.Object,
-                ExceptionEventHandler = null,
+                mockWorkers[i] = new Mock<IWorker> ();
+                return mockWorkers[i].Object;
             };
 
-            using var workerGroup = new WorkerGroup (3, mockTaskQueue.Object, false, options);
-
+            WorkerGroup workerGroup = new WorkerGroup (workerCount, taskQueue, false, workerProvider);
             workerGroup.Dispose ();
+
             workerGroup.Join ();
 
-            foreach (var worker in workerGroup.Workers)
+            for (int i = 0; i < workerCount; i++)
             {
-                Assert.That (worker.IsJoined, Is.True);
+                mockWorkers[i].Verify (w => w.Join (), Times.Once);
             }
+        }
+
+        [Test]
+        public void Join_WhenNotDisposed_ThrowsObjectDisposedException ()
+        {
+            ITaskQueue taskQueue = Mock.Of<ITaskQueue> ();
+            int workerCount = 1;
+
+            WorkerProvider workerProvider = (group, i) => Mock.Of<IWorker> ();
+
+            WorkerGroup workerGroup = new WorkerGroup (workerCount, taskQueue, false, workerProvider);
+
+            Assert.Throws<InvalidOperationException> (workerGroup.Join);
         }
     }
 }

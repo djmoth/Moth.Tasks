@@ -9,6 +9,16 @@
     public class WorkerTests
     {
         [Test]
+        public void Constructor_WithTaskQueue_InitializesCorrectly ()
+        {
+            ITaskQueue taskQueue = Mock.Of<ITaskQueue> ();
+
+            using var worker = new Worker (taskQueue, false, default);
+
+            Assert.That (worker.Tasks == taskQueue);
+        }
+
+        [Test]
         public void Constructor_WithProfiler_InitializesCorrectly ()
         {
             ITaskQueue taskQueue = Mock.Of<ITaskQueue> ();

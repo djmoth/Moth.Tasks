@@ -1132,12 +1132,12 @@
         </member>
         <member name="T:Moth.Tasks.ProfilerProvider">
             <summary>
-            Represents a method that provides an <see cref="T:Moth.Tasks.IProfiler"/> for a <see cref="T:Moth.Tasks.Worker"/>, or <see langword="null"/> if profiling is not desired.
+            Represents a method that provides an <see cref="T:Moth.Tasks.IProfiler"/> for a <see cref="T:Moth.Tasks.IWorker"/>, or <see langword="null"/> if profiling is not desired.
             </summary>
-            <param name="worker">The <see cref="T:Moth.Tasks.Worker"/>.</param>
+            <param name="worker">The <see cref="T:Moth.Tasks.IWorker"/>.</param>
             <returns>An <see cref="T:Moth.Tasks.IProfiler"/> for the <paramref name="worker"/>, or <see langword="null"/> if profiling is not desired.</returns>
             <remarks>
-            The method does not have to provide a unique <see cref="T:Moth.Tasks.IProfiler"/> for each <see cref="T:Moth.Tasks.Worker"/>, yet in that case it must be able to differentiate between <see cref="T:Moth.Tasks.Worker"/>s on its own, so as their calls to <see cref="M:Moth.Tasks.IProfiler.BeginTask(System.String)"/> and <see cref="M:Moth.Tasks.IProfiler.EndTask"/> don't interfere.
+            The method does not have to provide a unique <see cref="T:Moth.Tasks.IProfiler"/> for each <see cref="T:Moth.Tasks.IWorker"/>, yet in that case it must be able to differentiate between <see cref="T:Moth.Tasks.IWorker"/>s on its own, so as their calls to <see cref="M:Moth.Tasks.IProfiler.BeginTask(System.String)"/> and <see cref="M:Moth.Tasks.IProfiler.EndTask"/> don't interfere.
             </remarks>
         </member>
         <member name="M:Moth.Tasks.Task.From(System.Action)">
@@ -3276,11 +3276,8 @@
         </member>
         <member name="T:Moth.Tasks.Worker">
             <summary>
-            Encapsulates a <see cref="T:System.Threading.Thread"/> running in the background, executing tasks from a <see cref="T:Moth.Tasks.TaskQueue"/>.
+            Runs on an <see cref="T:Moth.Tasks.IWorkerThread"/> continuously executing tasks from a <see cref="T:Moth.Tasks.TaskQueue"/>.
             </summary>
-            <remarks>
-            This class is thread-safe.
-            </remarks>
         </member>
         <member name="M:Moth.Tasks.Worker.#ctor(Moth.Tasks.ITaskQueue,System.Boolean,Moth.Tasks.WorkerOptions)">
             <summary>
@@ -3351,20 +3348,20 @@
         </member>
         <member name="T:Moth.Tasks.WorkerGroup">
             <summary>
-            A group of <see cref="T:Moth.Tasks.Worker"/>s, executing tasks from a shared <see cref="T:Moth.Tasks.TaskQueue"/>.
+            A group of <see cref="T:Moth.Tasks.IWorker"/>s, executing tasks from a shared <see cref="T:Moth.Tasks.TaskQueue"/>.
             </summary>
             <remarks>
             This class is thread-safe.
             </remarks>
         </member>
-        <member name="M:Moth.Tasks.WorkerGroup.#ctor(System.Int32,Moth.Tasks.ITaskQueue,System.Boolean,Moth.Tasks.WorkerGroupOptions)">
+        <member name="M:Moth.Tasks.WorkerGroup.#ctor(System.Int32,Moth.Tasks.ITaskQueue,System.Boolean,Moth.Tasks.WorkerProvider)">
             <summary>
             Initializes a new instance of the <see cref="T:Moth.Tasks.WorkerGroup"/> class.
             </summary>
             <param name="workerCount">Number of workers. Must be greater than zero.</param>
             <param name="taskQueue">The <see cref="T:Moth.Tasks.TaskQueue"/> of which the workers will be executing tasks from.</param>
             <param name="disposeTaskQueue">Determines whether the <see cref="T:Moth.Tasks.TaskQueue"/> supplied with <paramref name="taskQueue"/> is disposed when <see cref="M:Moth.Tasks.WorkerGroup.Dispose"/> is called.</param>
-            <param name="options">Options for initializing the <see cref="T:Moth.Tasks.WorkerGroup"/>.</param>
+            <param name="workerProvider">A method that provides an <see cref="T:Moth.Tasks.IWorker"/> for a <see cref="T:Moth.Tasks.WorkerGroup"/>. If <see langword="null"/>, <see cref="M:Moth.Tasks.WorkerGroup.DefaultWorkerProvider(Moth.Tasks.WorkerGroup,System.Int32)"/> is used.</param>
             <exception cref="T:System.ArgumentOutOfRangeException"><paramref name="workerCount"/> must be greater than zero.</exception>
             <exception cref="T:System.ArgumentNullException"><paramref name="taskQueue"/> cannot be null.</exception>
         </member>
@@ -3380,20 +3377,29 @@
         </member>
         <member name="P:Moth.Tasks.WorkerGroup.WorkerCount">
             <summary>
-            Get or set the number of <see cref="T:Moth.Tasks.Worker"/>s in this <see cref="T:Moth.Tasks.WorkerGroup"/>. Must be greater than zero.
+            Get or set the number of <see cref="T:Moth.Tasks.IWorker"/>s in this <see cref="T:Moth.Tasks.WorkerGroup"/>. Must be greater than zero.
             </summary>
             <remarks>
-            The <see cref="T:Moth.Tasks.ProfilerProvider"/> and <see cref="T:System.EventHandler`1"/> provided in the <see cref="T:Moth.Tasks.WorkerGroup"/> constructor will be used to initialize any new <see cref="T:Moth.Tasks.Worker"/>s.
+            The <see cref="T:Moth.Tasks.ProfilerProvider"/> and <see cref="T:System.EventHandler`1"/> provided in the <see cref="T:Moth.Tasks.WorkerGroup"/> constructor will be used to initialize any new <see cref="T:Moth.Tasks.IWorker"/>s.
             </remarks>
+        </member>
+        <member name="M:Moth.Tasks.WorkerGroup.DefaultWorkerProvider(Moth.Tasks.WorkerGroup,System.Int32)">
+            <summary>
+            Provides a <see cref="T:Moth.Tasks.IWorker"/> with default <see cref="T:Moth.Tasks.WorkerOptions"/> for a <see cref="T:Moth.Tasks.WorkerGroup"/>.
+            </summary>
+            <param name="workerGroup">The <see cref="T:Moth.Tasks.WorkerGroup"/> the <see cref="T:Moth.Tasks.IWorker"/> will belong to.</param>
+            <param name="workerIndex">The index of the <see cref="T:Moth.Tasks.IWorker"/> in the <see cref="T:Moth.Tasks.WorkerGroup"/>.</param>
+            <returns>A new <see cref="T:Moth.Tasks.IWorker"/> with default <see cref="T:Moth.Tasks.WorkerOptions"/>.</returns>
+            <remarks>Should not be called directly, but may be passed to <see cref="M:Moth.Tasks.WorkerGroup.#ctor(System.Int32,Moth.Tasks.ITaskQueue,System.Boolean,Moth.Tasks.WorkerProvider)"/> constructor as a <see cref="T:Moth.Tasks.WorkerProvider"/>.</remarks>
         </member>
         <member name="M:Moth.Tasks.WorkerGroup.DisposeAndJoin">
             <summary>
-            Calls <see cref="M:Moth.Tasks.WorkerGroup.Dispose"/> and blocks the calling thread until all <see cref="T:Moth.Tasks.Worker"/>s terminate.
+            Calls <see cref="M:Moth.Tasks.WorkerGroup.Dispose"/> and blocks the calling thread until all <see cref="T:Moth.Tasks.IWorker"/>s terminate.
             </summary>
         </member>
         <member name="M:Moth.Tasks.WorkerGroup.Join">
             <summary>
-            Blocks the calling thread until all <see cref="T:Moth.Tasks.Worker"/>s terminate.
+            Blocks the calling thread until all <see cref="T:Moth.Tasks.IWorker"/>s terminate.
             </summary>
             <remarks>
             <see cref="M:Moth.Tasks.WorkerGroup.Dispose"/> must be called beforehand.
@@ -3410,6 +3416,23 @@
             Signals all workers to shutdown. Also disposes of <see cref="P:Moth.Tasks.WorkerGroup.Tasks"/> if specified in <see cref="T:Moth.Tasks.WorkerGroup"/> constructor.
             </summary>
             <param name="disposing"><see langword="true"/> if called from <see cref="M:Moth.Tasks.WorkerGroup.Dispose"/>, <see langword="false"/> if called from finalizer.</param>
+        </member>
+        <member name="T:Moth.Tasks.WorkerProvider">
+            <summary>
+            Represents a method that provides a new <see cref="T:Moth.Tasks.IWorker"/> for a <see cref="T:Moth.Tasks.WorkerGroup"/>, given an index of the worker in the group.
+            </summary>
+            <param name="workerGroup">The <see cref="T:Moth.Tasks.WorkerGroup"/> the <see cref="T:Moth.Tasks.IWorker"/> will belong to.</param>
+            <param name="workerIndex">The index of the <see cref="T:Moth.Tasks.IWorker"/> in the <see cref="T:Moth.Tasks.WorkerGroup"/>.</param>
+            <returns>A new <see cref="T:Moth.Tasks.IWorker"/>.</returns>
+            <remarks>This method should create a new unique <see cref="T:Moth.Tasks.IWorker"/> for each call. The method may be called multiple times with the same parameters if the <see cref="T:Moth.Tasks.WorkerGroup"/> was resized.</remarks>
+        </member>
+        <member name="T:Moth.Tasks.WorkerThreadProvider">
+            <summary>
+            Represents a method that provides an <see cref="T:Moth.Tasks.IWorkerThread"/> for an <see cref="T:Moth.Tasks.IWorker"/>.
+            </summary>
+            <param name="worker">The <see cref="T:Moth.Tasks.IWorker"/> to provide for.</param>
+            <returns>A new <see cref="T:Moth.Tasks.IWorkerThread"/>.</returns>
+            <remarks>This method should create a new unique <see cref="T:Moth.Tasks.IWorkerThread"/> for each call, which must not have been started beforehand.</remarks>
         </member>
     </members>
 </doc>

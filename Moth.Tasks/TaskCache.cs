@@ -18,7 +18,8 @@
         /// </summary>
         /// <typeparam name="T">Type of task.</typeparam>
         /// <returns><see cref="ITaskInfo"/> for <typeparamref name="T"/>.</returns>
-        internal ITaskInfo<T> GetTask<T> () where T : struct, ITaskType
+        public ITaskInfo<T> GetTask<T> ()
+            where T : struct, ITaskType
         {
             lock (syncRoot)
             {
@@ -36,7 +37,7 @@
         /// Get task by id.
         /// </summary>
         /// <param name="id">Assigned id of task.</param>
-        /// <returns><see cref="TaskInfo"/> for <paramref name="id"/>.</returns>
+        /// <returns><see cref="ITaskInfo"/> for <paramref name="id"/>.</returns>
         public ITaskInfo GetTask (int id)
         {
             lock (syncRoot)

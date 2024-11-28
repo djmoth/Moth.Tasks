@@ -10,5 +10,7 @@
         public ProfilerProvider ProfilerProvider { get; set; }
 
         public EventHandler<TaskExceptionEventArgs> ExceptionEventHandler { get; set; }
+
+        public WorkerProvider WorkerProvider { get; set; }
     }
 }

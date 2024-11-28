@@ -4,7 +4,7 @@
     using System;
     using System.Collections.Generic;
 
-    internal class TaskReferenceStore
+    public class TaskReferenceStore
     {
         private object[] references = new object[32];
         private int start;

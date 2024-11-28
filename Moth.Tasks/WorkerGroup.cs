@@ -7,7 +7,7 @@
     using Validation;
 
     /// <summary>
-    /// A group of <see cref="Worker"/>s, executing tasks from a shared <see cref="TaskQueue"/>.
+    /// A group of <see cref="IWorker"/>s, executing tasks from a shared <see cref="TaskQueue"/>.
     /// </summary>
     /// <remarks>
     /// This class is thread-safe.
@@ -15,11 +15,8 @@
     public class WorkerGroup : IDisposable
     {
         private readonly bool disposeTasks;
-        private readonly bool isBackground;
-        private readonly EventHandler<TaskExceptionEventArgs> exceptionEventHandler;
-        private readonly ProfilerProvider profilerProvider;
-        private readonly WorkerThreadProvider workerThreadProvider;
-        private Worker[] workers;
+        private readonly WorkerProvider workerProvider;
+        private IWorker[] workers;
         private bool disposed;
 
         /// <summary>
@@ -28,10 +25,10 @@
         /// <param name="workerCount">Number of workers. Must be greater than zero.</param>
         /// <param name="taskQueue">The <see cref="TaskQueue"/> of which the workers will be executing tasks from.</param>
         /// <param name="disposeTaskQueue">Determines whether the <see cref="TaskQueue"/> supplied with <paramref name="taskQueue"/> is disposed when <see cref="Dispose ()"/> is called.</param>
-        /// <param name="options">Options for initializing the <see cref="WorkerGroup"/>.</param>
+        /// <param name="workerProvider">A method that provides an <see cref="IWorker"/> for a <see cref="WorkerGroup"/>. If <see langword="null"/>, <see cref="DefaultWorkerProvider(WorkerGroup, int)"/> is used.</param>
         /// <exception cref="ArgumentOutOfRangeException"><paramref name="workerCount"/> must be greater than zero.</exception>
         /// <exception cref="ArgumentNullException"><paramref name="taskQueue"/> cannot be null.</exception>
-        public WorkerGroup (int workerCount, ITaskQueue taskQueue, bool disposeTaskQueue, WorkerGroupOptions options)
+        public WorkerGroup (int workerCount, ITaskQueue taskQueue, bool disposeTaskQueue, WorkerProvider workerProvider = null)
         {
             Requires.Range (workerCount > 0, nameof (workerCount), $"{nameof (workerCount)} must be greater than zero.");
 
@@ -41,23 +38,15 @@
             if (disposeTasks)
                 GC.SuppressFinalize (taskQueue);
 
-            exceptionEventHandler = options.ExceptionEventHandler;
-            profilerProvider = options.ProfilerProvider;
-            workerThreadProvider = options.WorkerThreadProvider;
+            workerProvider ??= DefaultWorkerProvider;
 
-            workers = new Worker[workerCount];
+            this.workerProvider = workerProvider;
 
-            WorkerOptions workerOptions = new WorkerOptions
-            {
-                ExceptionEventHandler = exceptionEventHandler,
-                ProfilerProvider = profilerProvider,
-                WorkerThreadProvider = workerThreadProvider,
-            };
+            workers = new IWorker[workerCount];
 
             for (int i = 0; i < workerCount; i++)
             {
-                workers[i] = new Worker (taskQueue, false, workerOptions);
-                GC.SuppressFinalize (workers[i]);
+                workers[i] = GetAndStartNewWorker (i);
             }
         }
 
@@ -72,10 +61,10 @@
         public ITaskQueue Tasks { get; }
 
         /// <summary>
-        /// Get or set the number of <see cref="Worker"/>s in this <see cref="WorkerGroup"/>. Must be greater than zero.
+        /// Get or set the number of <see cref="IWorker"/>s in this <see cref="WorkerGroup"/>. Must be greater than zero.
         /// </summary>
         /// <remarks>
-        /// The <see cref="ProfilerProvider"/> and <see cref="EventHandler{TaskExceptionEventArgs}"/> provided in the <see cref="WorkerGroup"/> constructor will be used to initialize any new <see cref="Worker"/>s.
+        /// The <see cref="ProfilerProvider"/> and <see cref="EventHandler{TaskExceptionEventArgs}"/> provided in the <see cref="WorkerGroup"/> constructor will be used to initialize any new <see cref="IWorker"/>s.
         /// </remarks>
         public int WorkerCount
         {
@@ -101,22 +90,25 @@
 
                 Array.Resize (ref workers, value);
 
-                WorkerOptions workerOptions = new WorkerOptions
-                {
-                    ExceptionEventHandler = exceptionEventHandler,
-                    ProfilerProvider = profilerProvider,
-                };
-
                 // Initialize new workers, if new value is greater than the old worker count
                 for (int i = oldWorkerCount; i < value; i++)
                 {
-                    workers[i] = new Worker (Tasks, false, workerOptions);
+                    workers[i] = GetAndStartNewWorker (i);
                 }
             }
         }
 
         /// <summary>
-        /// Calls <see cref="Dispose()"/> and blocks the calling thread until all <see cref="Worker"/>s terminate.
+        /// Provides a <see cref="IWorker"/> with default <see cref="WorkerOptions"/> for a <see cref="WorkerGroup"/>.
+        /// </summary>
+        /// <param name="workerGroup">The <see cref="WorkerGroup"/> the <see cref="IWorker"/> will belong to.</param>
+        /// <param name="workerIndex">The index of the <see cref="IWorker"/> in the <see cref="WorkerGroup"/>.</param>
+        /// <returns>A new <see cref="IWorker"/> with default <see cref="WorkerOptions"/>.</returns>
+        /// <remarks>Should not be called directly, but may be passed to <see cref="WorkerGroup(int, ITaskQueue, bool, WorkerProvider)"/> constructor as a <see cref="WorkerProvider"/>.</remarks>
+        public static IWorker DefaultWorkerProvider (WorkerGroup workerGroup, int workerIndex) => new Worker (workerGroup.Tasks, false, default);
+
+        /// <summary>
+        /// Calls <see cref="Dispose()"/> and blocks the calling thread until all <see cref="IWorker"/>s terminate.
         /// </summary>
         public void DisposeAndJoin ()
         {
@@ -126,7 +118,7 @@
         }
 
         /// <summary>
-        /// Blocks the calling thread until all <see cref="Worker"/>s terminate.
+        /// Blocks the calling thread until all <see cref="IWorker"/>s terminate.
         /// </summary>
         /// <remarks>
         /// <see cref="Dispose()"/> must be called beforehand.
@@ -137,7 +129,7 @@
             if (!disposed)
                 throw new InvalidOperationException ("Join may only be called after the WorkerGroup is disposed.");
 
-            foreach (Worker worker in workers)
+            foreach (IWorker worker in workers)
             {
                 worker.Join ();
             }
@@ -161,7 +153,7 @@
             if (disposed)
                 return;
 
-            foreach (Worker worker in workers)
+            foreach (IWorker worker in workers)
             {
                 worker.Dispose ();
             }
@@ -172,6 +164,19 @@
             }
 
             disposed = true;
+        }
+
+        private IWorker GetAndStartNewWorker (int index)
+        {
+            IWorker worker = workerProvider (this, index);
+
+            if (worker is IDisposable disposableWorker)
+                GC.SuppressFinalize (workers);
+
+            if (!worker.IsStarted)
+                worker.Start ();
+
+            return worker;
         }
     }
 }
