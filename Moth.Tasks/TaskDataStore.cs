@@ -1,5 +1,6 @@
 ﻿namespace Moth.Tasks
 {
+    using Moth.IO.Serialization;
     using System;
     using System.Runtime.CompilerServices;
 
@@ -25,7 +26,7 @@
             // If new task data will overflow the taskData array
             CheckCapacity (taskInfo.UnmanagedSize);
 
-            taskInfo.Serialize (task, taskData.AsSpan (LastTaskEnd), taskReferenceStore);
+            taskInfo.Serialize (task, taskData.AsSpan (LastTaskEnd), taskReferenceStore.Write);
 
             LastTaskEnd += taskInfo.UnmanagedSize;
         }
@@ -33,7 +34,7 @@
         public T Dequeue<T> (ITaskInfo<T> taskInfo)
             where T : struct, ITaskType
         {
-            taskInfo.Deserialize (out T task, taskData.AsSpan (FirstTask), taskReferenceStore);
+            taskInfo.Deserialize (out T task, taskData.AsSpan (FirstTask), taskReferenceStore.Read);
 
             FirstTask += taskInfo.UnmanagedSize;
 
@@ -71,9 +72,9 @@
 
             Unsafe.CopyBlockUnaligned (ref taskData[copyDestination], ref taskData[copySource], (uint)byteCount);
 
-            using (var insertContext = taskReferenceStore.EnterInsertContext (refIndex, taskInfo.ReferenceCount))
+            using (var insertContext = taskReferenceStore.EnterInsertContext (refIndex, taskInfo.ReferenceCount, out ObjectWriter insertWriter))
             {
-                taskInfo.Serialize (task, taskData.AsSpan (dataIndex), taskReferenceStore);
+                taskInfo.Serialize (task, taskData.AsSpan (dataIndex), insertWriter);
             }
 
             LastTaskEnd += taskInfo.UnmanagedSize;

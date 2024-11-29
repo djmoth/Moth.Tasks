@@ -2,19 +2,46 @@
 {
     using System;
 
-    public static partial class Task
+    internal struct Task<TTask, TArg, TResult> : ITask
+        where TTask : struct, ITask<TArg, TResult>
     {
-        public static void Enqueue<T> (this T task, TaskQueue queue) where T : struct, ITask
+        private TTask task;
+
+        public Task (TTask task)
         {
-            queue.Enqueue (task);
+            this.task = task;
         }
 
-        public static ChainedTask<T1, T2> Then<T1, T2> (this T1 task, T2 secondTask) where T1 : struct, ITask where T2 : struct, ITask
-        {
-            if (task is IDisposable || secondTask is IDisposable)
-                throw new NotSupportedException ("Chaining of tasks implementing IDisposable is not currently supported.");
+        public void Run () => task.Run (default);
+    }
 
-            return new ChainedTask<T1, T2> (task, secondTask);
+    internal struct Task<TTask, TArg> : ITask
+        where TTask : struct, ITask<TArg>
+    {
+        private TTask task;
+
+        public Task (TTask task)
+        {
+            this.task = task;
+        }
+
+        public void Run () => task.Run (default);
+    }
+
+    internal struct Task<TTask> : ITask<Unit, Unit>
+        where TTask : struct, ITask
+    {
+        private readonly TTask task;
+
+        public Task (TTask task)
+        {
+            this.task = task;
+        }
+
+        public Unit Run (Unit arg)
+        {
+            task.Run ();
+            return default;
         }
     }
 }

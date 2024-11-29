@@ -30,4 +30,10 @@
     <ProjectReference Include="..\Moth.Tasks\Moth.Tasks.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Reference Include="Moth.IO">
+      <HintPath>..\..\Moth.IO\Moth.IO\bin\Release\netstandard2.1\Moth.IO.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+
 </Project>

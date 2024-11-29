@@ -11,23 +11,27 @@
         private int end;
         private int insertIndex = -1;
 
-        private ObjectWriter write;
         private ObjectWriter insert;
 
         public TaskReferenceStore ()
         {
-            write = WriteImpl;
+            Write = WriteImpl;
             insert = InsertImpl;
 
             Read = ReadImpl;
         }
 
-        public ObjectWriter Write => insertIndex == -1 ? write : insert;
+        public ObjectWriter Write { get; }
 
         public ObjectReader Read { get; }
 
-        public InsertContext EnterInsertContext (int insertIndex, int refCount)
+        public InsertContext EnterInsertContext (int insertIndex, int refCount, out ObjectWriter insertWriter)
         {
+            if (this.insertIndex != -1)
+            {
+                throw new InvalidOperationException ("Cannot enter insert context while already in insert context.");
+            }
+
             CheckCapacity (refCount);
 
             int countAboveInsertIndex = end - insertIndex;
@@ -35,6 +39,8 @@
             Array.Copy (references, insertIndex, references, insertIndex + refCount, countAboveInsertIndex); // Move elements above insert area
 
             this.insertIndex = insertIndex;
+
+            insertWriter = insert;
 
             return new InsertContext (this);
         }

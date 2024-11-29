@@ -26,30 +26,49 @@
             Type type = typeof (TTask);
 
             bool isDisposable = false;
-            bool hasArgs = false;
+            TaskType taskType = TaskType.Run;
+
 
             foreach (Type interfaceType in type.GetInterfaces ())
             {
                 if (interfaceType == typeof (IDisposable))
+                {
                     isDisposable = true;
-                else if (interfaceType.IsGenericType && interfaceType.GetGenericTypeDefinition () == typeof (ITask<>))
-                    hasArgs = true;
+                } else if (interfaceType.IsGenericType && interfaceType.GetGenericTypeDefinition () == typeof (ITask<>))
+                {
+                    if (taskType != TaskType.Run)
+                        throw new InvalidOperationException ("Task type is ambiguous.");
+
+                    taskType = TaskType.RunArg;
+                } else if (interfaceType.IsGenericType && interfaceType.GetGenericTypeDefinition () == typeof (ITask<,>))
+                {
+                    if (taskType != TaskType.Run)
+                        throw new InvalidOperationException ("Task type is ambiguous.");
+
+                    taskType = TaskType.RunArgResult;
+                }
             }
 
             Type taskInfoType;
 
             if (isDisposable)
             {
-                if (hasArgs)
-                    taskInfoType = typeof (DisposableTaskInfo<,>).MakeGenericType (type.GetGenericArguments ());
-                else
-                    taskInfoType = typeof (DisposableTaskInfo<>).MakeGenericType (type);
+                taskInfoType = taskType switch
+                {
+                    TaskType.Run => typeof (DisposableTaskInfo<>).MakeGenericType (type),
+                    TaskType.RunArg => typeof (DisposableTaskInfo<,>).MakeGenericType (type.GetGenericArguments ().Prepend (type).ToArray ()),
+                    TaskType.RunArgResult => typeof (DisposableTaskInfo<,,>).MakeGenericType (type.GetGenericArguments ().Prepend (type).ToArray ()),
+                    _ => throw new NotImplementedException (),
+                };
             } else
             {
-                if (hasArgs)
-                    taskInfoType = typeof (TaskInfo<,>).MakeGenericType (type.GetGenericArguments ());
-                else
-                    taskInfoType = typeof (TaskInfo<>).MakeGenericType (type);
+                taskInfoType = taskType switch
+                {
+                    TaskType.Run => typeof (TaskInfo<>).MakeGenericType (type),
+                    TaskType.RunArg => typeof (TaskInfo<,>).MakeGenericType (type.GetGenericArguments ().Prepend (type).ToArray ()),
+                    TaskType.RunArgResult => typeof (TaskInfo<,,>).MakeGenericType (type.GetGenericArguments ().Prepend (type).ToArray ()),
+                    _ => throw new NotImplementedException (),
+                };
             }
 
             return (ITaskInfo<TTask>)Activator.CreateInstance (taskInfoType, id);
@@ -71,23 +90,30 @@
         bool IsDisposable { get; }
 
         bool HasArgs { get; }
+
+        bool HasResult { get; }
     }
 
     public interface ITaskInfoRunnable : ITaskInfo
     {
-        void Run (ref TaskQueueBase.TaskDataAccess access);
+        void Run (TaskQueue.TaskDataAccess access);
     }
 
-    public interface ITaskInfoRunnable<TArg> : ITaskInfo
+    public interface ITaskInfoRunnable<TArg> : ITaskInfoRunnable
     {
-        void Run (ref TaskQueueBase.TaskDataAccess access, TArg arg);
+        void Run (TaskQueue.TaskDataAccess access, TArg arg);
+    }
+
+    public interface ITaskInfoRunnable<TArg, TResult> : ITaskInfoRunnable<TArg>
+    {
+        TResult Run (TaskQueue.TaskDataAccess access, TArg arg);
     }
 
     public interface ITaskInfo<TTask> : ITaskInfo
     {
-        void Serialize (in TTask task, Span<byte> destination, TaskReferenceStore references);
+        void Serialize (in TTask task, Span<byte> destination, ObjectWriter refWriter);
 
-        void Deserialize (out TTask task, ReadOnlySpan<byte> source, TaskReferenceStore references);
+        void Deserialize (out TTask task, ReadOnlySpan<byte> source, ObjectReader refReader);
     }
 
     /// <summary>
@@ -150,18 +176,20 @@
 
         public abstract bool HasArgs { get; }
 
-        public void Serialize (in TTask task, Span<byte> destination, TaskReferenceStore references)
+        public abstract bool HasResult { get; }
+
+        public void Serialize (in TTask task, Span<byte> destination, ObjectWriter refWriter)
         {
             Debug.Assert (destination.Length >= UnmanagedSize, "destination.Length was less than TaskInfo.UnmanagedSize");
 
-            taskFormat.Serialize (task, destination, references.Write);
+            taskFormat.Serialize (task, destination, refWriter);
         }
 
-        public void Deserialize (out TTask task, ReadOnlySpan<byte> source, TaskReferenceStore references)
+        public void Deserialize (out TTask task, ReadOnlySpan<byte> source, ObjectReader refReader)
         {
             Debug.Assert (source.Length >= UnmanagedSize, "source.Length was less than TaskInfo.UnmanagedSize");
 
-            taskFormat.Deserialize (out task, source, references.Read);
+            taskFormat.Deserialize (out task, source, refReader);
         }
     }
 
@@ -175,13 +203,9 @@
 
         public override bool HasArgs => false;
 
-        public void Run (ref TaskQueueBase.TaskDataAccess access)
-        {
-            TTask data = access.GetNextTaskData (this);
-            access.Dispose ();
+        public override bool HasResult => false;
 
-            data.Run ();
-        }
+        public void Run (TaskQueue.TaskDataAccess access) => access.GetNextTaskData (this).Run ();
     }
 
     internal class TaskInfo<TTask, TArg> : TaskInfoBase<TTask>, ITaskInfoRunnable<TArg>
@@ -194,18 +218,35 @@
 
         public override bool HasArgs => true;
 
-        public void Run (ref TaskQueueBase.TaskDataAccess access, TArg arg)
-        {
-            TTask data = access.GetNextTaskData (this);
-            access.Dispose ();
+        public override bool HasResult => false;
 
-            data.Run (arg);
-        }
+        public void Run (TaskQueue.TaskDataAccess access) => Run (default);
+
+        public void Run (TaskQueue.TaskDataAccess access, TArg arg) => access.GetNextTaskData (this).Run (arg);
+    }
+
+    internal class TaskInfo<TTask, TArg, TResult> : TaskInfoBase<TTask>, ITaskInfoRunnable<TArg, TResult>
+        where TTask : struct, ITask<TArg, TResult>
+    {
+        public TaskInfo (int id)
+            : base (id) { }
+
+        public override bool IsDisposable => false;
+
+        public override bool HasArgs => true;
+
+        public override bool HasResult => true;
+
+        public void Run (TaskQueue.TaskDataAccess access) => Run (default);
+
+        public void Run (TaskQueue.TaskDataAccess access, TArg arg) => access.GetNextTaskData (this).Run (arg);
+
+        TResult ITaskInfoRunnable<TArg, TResult>.Run (TaskQueue.TaskDataAccess access, TArg arg) => access.GetNextTaskData (this).Run (arg);
     }
 
     internal interface IDisposableTaskInfo
     {
-        void Dispose (in TaskQueueBase.TaskDataAccess access);
+        void Dispose (TaskQueue.TaskDataAccess access);
     }
 
     internal abstract class DisposableTaskInfoBase<TTask> : TaskInfoBase<TTask>, IDisposableTaskInfo
@@ -216,12 +257,7 @@
 
         public override bool IsDisposable => true;
 
-        public void Dispose (in TaskQueueBase.TaskDataAccess access)
-        {
-            TTask data = access.GetNextTaskData (this);
-
-            data.Dispose ();
-        }
+        public void Dispose (TaskQueue.TaskDataAccess access) => access.GetNextTaskData (this).Dispose ();
     }
 
     internal class DisposableTaskInfo<TTask> : DisposableTaskInfoBase<TTask>, ITaskInfoRunnable
@@ -232,10 +268,11 @@
 
         public override bool HasArgs => false;
 
-        public void Run (ref TaskQueueBase.TaskDataAccess access)
+        public override bool HasResult => false;
+
+        public void Run (TaskQueue.TaskDataAccess access)
         {
             TTask data = access.GetNextTaskData (this);
-            access.Dispose ();
 
             try
             {
@@ -256,14 +293,78 @@
 
         public override bool HasArgs => true;
 
-        public void Run (ref TaskQueueBase.TaskDataAccess access, TArg arg)
+        public override bool HasResult => true;
+
+        public void Run (TaskQueue.TaskDataAccess access)
         {
             TTask data = access.GetNextTaskData (this);
-            access.Dispose ();
+
+            try
+            {
+                data.Run (default);
+            } finally
+            {
+                data.Dispose ();
+            }
+        }
+
+        public void Run (TaskQueue.TaskDataAccess access, TArg arg)
+        {
+            TTask data = access.GetNextTaskData (this);
 
             try
             {
                 data.Run (arg);
+            } finally
+            {
+                data.Dispose ();
+            }
+        }
+    }
+
+    internal class DisposableTaskInfo<TTask, TArg, TResult> : DisposableTaskInfoBase<TTask>, ITaskInfoRunnable<TArg, TResult>
+        where TTask : struct, ITask<TArg, TResult>, IDisposable
+    {
+        public DisposableTaskInfo (int id)
+            : base (id) { }
+
+        public override bool HasArgs => true;
+
+        public override bool HasResult => true;
+
+        public void Run (TaskQueue.TaskDataAccess access)
+        {
+            TTask data = access.GetNextTaskData (this);
+
+            try
+            {
+                data.Run (default);
+            } finally
+            {
+                data.Dispose ();
+            }
+        }
+
+        public void Run (TaskQueue.TaskDataAccess access, TArg arg)
+        {
+            TTask data = access.GetNextTaskData (this);
+
+            try
+            {
+                data.Run (arg);
+            } finally
+            {
+                data.Dispose ();
+            }
+        }
+
+        TResult ITaskInfoRunnable<TArg, TResult>.Run (TaskQueue.TaskDataAccess access, TArg arg)
+        {
+            TTask data = access.GetNextTaskData (this);
+
+            try
+            {
+                return data.Run (arg);
             } finally
             {
                 data.Dispose ();
