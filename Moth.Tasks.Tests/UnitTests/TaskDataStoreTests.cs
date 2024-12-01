@@ -1,6 +1,6 @@
-﻿
-namespace Moth.Tasks.Tests
+﻿namespace Moth.Tasks.Tests.UnitTests
 {
+    using Moth.IO.Serialization;
     using NUnit.Framework;
     using NUnit.Framework.Legacy;
     using System;
@@ -127,14 +127,16 @@ namespace Moth.Tasks.Tests
 
             public bool HasArgs => false;
 
-            public void Deserialize (out Task task, ReadOnlySpan<byte> source, TaskReferenceStore references)
+            public bool HasResult => throw new NotImplementedException ();
+
+            public void Deserialize (out Task task, ReadOnlySpan<byte> source, ObjectReader refReader)
             {
                 task = new Task (MemoryMarshal.Read<int> (source));
             }
 
-            public void Serialize (in Task task, Span<byte> destination, TaskReferenceStore references)
+            public void Serialize (in Task task, Span<byte> destination, ObjectWriter refWriter)
             {
-                MemoryMarshal.Write (destination, ref Unsafe.AsRef (task.Data));
+                MemoryMarshal.Write (destination, task.Data);
             }
         }
     }

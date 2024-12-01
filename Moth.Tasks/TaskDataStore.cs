@@ -4,7 +4,7 @@
     using System;
     using System.Runtime.CompilerServices;
 
-    internal class TaskDataStore
+    internal class TaskDataStore : ITaskDataStore
     {
         private readonly TaskReferenceStore taskReferenceStore = new TaskReferenceStore ();
         private byte[] taskData;
@@ -20,7 +20,7 @@
 
         public int Size => LastTaskEnd - FirstTask;
 
-        public void Enqueue<T> (T task, ITaskInfo<T> taskInfo)
+        public void Enqueue<T> (in T task, ITaskInfo<T> taskInfo)
             where T : struct, ITaskType
         {
             // If new task data will overflow the taskData array

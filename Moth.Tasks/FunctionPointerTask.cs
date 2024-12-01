@@ -9,7 +9,7 @@
      * ----------------------------------------------- */
 
     /// <summary>
-    /// Task encapsulating a <see cref="delegate*{void}"/> function pointer.
+    /// Task encapsulating a delegate*{void} function pointer.
     /// </summary>
     public unsafe readonly struct FunctionPointerTask : ITask
     {
@@ -18,17 +18,17 @@
         /// <summary>
         /// Initializes a new instance of the <see cref="FunctionPointerTask"/> struct.
         /// </summary>
-        /// The <param name="function"><see cref="delegate*{void}"/> to invoke on <see cref="Run"/>.</param>
+        /// The <param name="function">delegate*{void} to invoke on <see cref="Run"/>.</param>
         public FunctionPointerTask (delegate*<void> function) => this.function = function;
 
         /// <summary>
-        /// Invokes the encapsulated <see cref="delegate*{void}"/>.
+        /// Invokes the encapsulated delegate*{void}.
         /// </summary>
         public void Run () => function ();
     }
 
     /// <summary>
-    /// Task encapsulating an <see cref="delegate*{void}"/> with 1 parameters.
+    /// Task encapsulating a delegate*{T1, void} function pointer.
     /// </summary>
     /// <typeparam name="T1">Type of parameter 1.</typeparam>
     [StructLayout (LayoutKind.Auto)]
@@ -40,7 +40,7 @@
         /// <summary>
         /// Initializes a new instance of the <see cref="FunctionPointerTask{T1}"/> struct.
         /// </summary>
-        /// <param name="action"><see cref="delegate*{T1, void}"/> to invoke on <see cref="Run"/>.</param>
+        /// <param name="action">delegate*{T1, void} to invoke on <see cref="Run"/>.</param>
         /// <param name="arg1">Argument 1 to invoke <paramref name="action"/> with.</param>
         public FunctionPointerTask (delegate*<T1, void> action, T1 arg1)
         {
@@ -49,13 +49,13 @@
         }
 
         /// <summary>
-        /// Invokes the encapsulated <see cref="delegate*{T1, void}"/> with the provided arguments.
+        /// Invokes the encapsulated delegate*{T1, void} with the provided arguments.
         /// </summary>
         public void Run () => action (arg1);
     }
 
     /// <summary>
-    /// Task encapsulating an <see cref="delegate*{void}"/> with 2 parameters.
+    /// Task encapsulating a delegate*{T1, T2, void} function pointer.
     /// </summary>
     /// <typeparam name="T1">Type of parameter 1.</typeparam>
     /// <typeparam name="T2">Type of parameter 2.</typeparam>
@@ -69,7 +69,7 @@
         /// <summary>
         /// Initializes a new instance of the <see cref="FunctionPointerTask{T1, T2}"/> struct.
         /// </summary>
-        /// <param name="action"><see cref="delegate*{T1, T2, void}"/> to invoke on <see cref="Run"/>.</param>
+        /// <param name="action">delegate*{T1, T2, void} to invoke on <see cref="Run"/>.</param>
         /// <param name="arg1">Argument 1 to invoke <paramref name="action"/> with.</param>
         /// <param name="arg2">Argument 2 to invoke <paramref name="action"/> with.</param>
         public FunctionPointerTask (delegate*<T1, T2, void> action, T1 arg1, T2 arg2)
@@ -80,13 +80,13 @@
         }
 
         /// <summary>
-        /// Invokes the encapsulated <see cref="delegate*{T1, T2, void}"/> with the provided arguments.
+        /// Invokes the encapsulated delegate*{T1, T2, void} with the provided arguments.
         /// </summary>
         public void Run () => action (arg1, arg2);
     }
 
     /// <summary>
-    /// Task encapsulating an <see cref="delegate*{void}"/> with 3 parameters.
+    /// Task encapsulating a delegate*{T1, T2, T3, void} function pointer.
     /// </summary>
     /// <typeparam name="T1">Type of parameter 1.</typeparam>
     /// <typeparam name="T2">Type of parameter 2.</typeparam>
@@ -102,7 +102,7 @@
         /// <summary>
         /// Initializes a new instance of the <see cref="FunctionPointerTask{T1, T2, T3}"/> struct.
         /// </summary>
-        /// <param name="action"><see cref="delegate*{T1, T2, T3, void}"/> to invoke on <see cref="Run"/>.</param>
+        /// <param name="action">delegate*{T1, T2, T3, void} to invoke on <see cref="Run"/>.</param>
         /// <param name="arg1">Argument 1 to invoke <paramref name="action"/> with.</param>
         /// <param name="arg2">Argument 2 to invoke <paramref name="action"/> with.</param>
         /// <param name="arg3">Argument 3 to invoke <paramref name="action"/> with.</param>
@@ -115,13 +115,13 @@
         }
 
         /// <summary>
-        /// Invokes the encapsulated <see cref="delegate*{T1, T2, T3, void}"/> with the provided arguments.
+        /// Invokes the encapsulated delegate*{T1, T2, T3, void} with the provided arguments.
         /// </summary>
         public void Run () => action (arg1, arg2, arg3);
     }
 
     /// <summary>
-    /// Task encapsulating an <see cref="delegate*{void}"/> with 4 parameters.
+    /// Task encapsulating a delegate*{T1, T2, T3, T4, void} function pointer.
     /// </summary>
     /// <typeparam name="T1">Type of parameter 1.</typeparam>
     /// <typeparam name="T2">Type of parameter 2.</typeparam>
@@ -139,7 +139,7 @@
         /// <summary>
         /// Initializes a new instance of the <see cref="FunctionPointerTask{T1, T2, T3, T4}"/> struct.
         /// </summary>
-        /// <param name="action"><see cref="delegate*{T1, T2, T3, T4, void}"/> to invoke on <see cref="Run"/>.</param>
+        /// <param name="action">delegate*{T1, T2, T3, T4, void} to invoke on <see cref="Run"/>.</param>
         /// <param name="arg1">Argument 1 to invoke <paramref name="action"/> with.</param>
         /// <param name="arg2">Argument 2 to invoke <paramref name="action"/> with.</param>
         /// <param name="arg3">Argument 3 to invoke <paramref name="action"/> with.</param>
@@ -154,13 +154,13 @@
         }
 
         /// <summary>
-        /// Invokes the encapsulated <see cref="delegate*{T1, T2, T3, T4, void}"/> with the provided arguments.
+        /// Invokes the encapsulated delegate*{T1, T2, T3, T4, void} with the provided arguments.
         /// </summary>
         public void Run () => action (arg1, arg2, arg3, arg4);
     }
 
     /// <summary>
-    /// Task encapsulating an <see cref="delegate*{void}"/> with 5 parameters.
+    /// Task encapsulating a delegate*{T1, T2, T3, T4, T5, void} function pointer.
     /// </summary>
     /// <typeparam name="T1">Type of parameter 1.</typeparam>
     /// <typeparam name="T2">Type of parameter 2.</typeparam>
@@ -180,7 +180,7 @@
         /// <summary>
         /// Initializes a new instance of the <see cref="FunctionPointerTask{T1, T2, T3, T4, T5}"/> struct.
         /// </summary>
-        /// <param name="action"><see cref="delegate*{T1, T2, T3, T4, T5, void}"/> to invoke on <see cref="Run"/>.</param>
+        /// <param name="action">delegate*{T1, T2, T3, T4, T5, void} to invoke on <see cref="Run"/>.</param>
         /// <param name="arg1">Argument 1 to invoke <paramref name="action"/> with.</param>
         /// <param name="arg2">Argument 2 to invoke <paramref name="action"/> with.</param>
         /// <param name="arg3">Argument 3 to invoke <paramref name="action"/> with.</param>
@@ -197,13 +197,13 @@
         }
 
         /// <summary>
-        /// Invokes the encapsulated <see cref="delegate*{T1, T2, T3, T4, T5, void}"/> with the provided arguments.
+        /// Invokes the encapsulated delegate*{T1, T2, T3, T4, T5, void} with the provided arguments.
         /// </summary>
         public void Run () => action (arg1, arg2, arg3, arg4, arg5);
     }
 
     /// <summary>
-    /// Task encapsulating an <see cref="delegate*{void}"/> with 6 parameters.
+    /// Task encapsulating a delegate*{T1, T2, T3, T4, T5, T6, void} function pointer.
     /// </summary>
     /// <typeparam name="T1">Type of parameter 1.</typeparam>
     /// <typeparam name="T2">Type of parameter 2.</typeparam>
@@ -225,7 +225,7 @@
         /// <summary>
         /// Initializes a new instance of the <see cref="FunctionPointerTask{T1, T2, T3, T4, T5, T6}"/> struct.
         /// </summary>
-        /// <param name="action"><see cref="delegate*{T1, T2, T3, T4, T5, T6, void}"/> to invoke on <see cref="Run"/>.</param>
+        /// <param name="action">delegate*{T1, T2, T3, T4, T5, T6, void} to invoke on <see cref="Run"/>.</param>
         /// <param name="arg1">Argument 1 to invoke <paramref name="action"/> with.</param>
         /// <param name="arg2">Argument 2 to invoke <paramref name="action"/> with.</param>
         /// <param name="arg3">Argument 3 to invoke <paramref name="action"/> with.</param>
@@ -244,13 +244,13 @@
         }
 
         /// <summary>
-        /// Invokes the encapsulated <see cref="delegate*{T1, T2, T3, T4, T5, T6, void}"/> with the provided arguments.
+        /// Invokes the encapsulated delegate*{T1, T2, T3, T4, T5, T6, void} with the provided arguments.
         /// </summary>
         public void Run () => action (arg1, arg2, arg3, arg4, arg5, arg6);
     }
 
     /// <summary>
-    /// Task encapsulating an <see cref="delegate*{void}"/> with 7 parameters.
+    /// Task encapsulating a delegate*{T1, T2, T3, T4, T5, T6, T7, void} function pointer.
     /// </summary>
     /// <typeparam name="T1">Type of parameter 1.</typeparam>
     /// <typeparam name="T2">Type of parameter 2.</typeparam>
@@ -274,7 +274,7 @@
         /// <summary>
         /// Initializes a new instance of the <see cref="FunctionPointerTask{T1, T2, T3, T4, T5, T6, T7}"/> struct.
         /// </summary>
-        /// <param name="action"><see cref="delegate*{T1, T2, T3, T4, T5, T6, T7, void}"/> to invoke on <see cref="Run"/>.</param>
+        /// <param name="action">delegate*{T1, T2, T3, T4, T5, T6, T7, void} to invoke on <see cref="Run"/>.</param>
         /// <param name="arg1">Argument 1 to invoke <paramref name="action"/> with.</param>
         /// <param name="arg2">Argument 2 to invoke <paramref name="action"/> with.</param>
         /// <param name="arg3">Argument 3 to invoke <paramref name="action"/> with.</param>
@@ -295,13 +295,13 @@
         }
 
         /// <summary>
-        /// Invokes the encapsulated <see cref="delegate*{T1, T2, T3, T4, T5, T6, T7, void}"/> with the provided arguments.
+        /// Invokes the encapsulated delegate*{T1, T2, T3, T4, T5, T6, T7, void} with the provided arguments.
         /// </summary>
         public void Run () => action (arg1, arg2, arg3, arg4, arg5, arg6, arg7);
     }
 
     /// <summary>
-    /// Task encapsulating an <see cref="delegate*{void}"/> with 8 parameters.
+    /// Task encapsulating a delegate*{T1, T2, T3, T4, T5, T6, T7, T8, void} function pointer.
     /// </summary>
     /// <typeparam name="T1">Type of parameter 1.</typeparam>
     /// <typeparam name="T2">Type of parameter 2.</typeparam>
@@ -327,7 +327,7 @@
         /// <summary>
         /// Initializes a new instance of the <see cref="FunctionPointerTask{T1, T2, T3, T4, T5, T6, T7, T8}"/> struct.
         /// </summary>
-        /// <param name="action"><see cref="delegate*{T1, T2, T3, T4, T5, T6, T7, T8, void}"/> to invoke on <see cref="Run"/>.</param>
+        /// <param name="action">delegate*{T1, T2, T3, T4, T5, T6, T7, T8, void} to invoke on <see cref="Run"/>.</param>
         /// <param name="arg1">Argument 1 to invoke <paramref name="action"/> with.</param>
         /// <param name="arg2">Argument 2 to invoke <paramref name="action"/> with.</param>
         /// <param name="arg3">Argument 3 to invoke <paramref name="action"/> with.</param>
@@ -350,13 +350,13 @@
         }
 
         /// <summary>
-        /// Invokes the encapsulated <see cref="delegate*{T1, T2, T3, T4, T5, T6, T7, T8, void}"/> with the provided arguments.
+        /// Invokes the encapsulated delegate*{T1, T2, T3, T4, T5, T6, T7, T8, void} with the provided arguments.
         /// </summary>
         public void Run () => action (arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8);
     }
 
     /// <summary>
-    /// Task encapsulating an <see cref="delegate*{void}"/> with 9 parameters.
+    /// Task encapsulating a delegate*{T1, T2, T3, T4, T5, T6, T7, T8, T9, void} function pointer.
     /// </summary>
     /// <typeparam name="T1">Type of parameter 1.</typeparam>
     /// <typeparam name="T2">Type of parameter 2.</typeparam>
@@ -384,7 +384,7 @@
         /// <summary>
         /// Initializes a new instance of the <see cref="FunctionPointerTask{T1, T2, T3, T4, T5, T6, T7, T8, T9}"/> struct.
         /// </summary>
-        /// <param name="action"><see cref="delegate*{T1, T2, T3, T4, T5, T6, T7, T8, T9, void}"/> to invoke on <see cref="Run"/>.</param>
+        /// <param name="action">delegate*{T1, T2, T3, T4, T5, T6, T7, T8, T9, void} to invoke on <see cref="Run"/>.</param>
         /// <param name="arg1">Argument 1 to invoke <paramref name="action"/> with.</param>
         /// <param name="arg2">Argument 2 to invoke <paramref name="action"/> with.</param>
         /// <param name="arg3">Argument 3 to invoke <paramref name="action"/> with.</param>
@@ -409,13 +409,13 @@
         }
 
         /// <summary>
-        /// Invokes the encapsulated <see cref="delegate*{T1, T2, T3, T4, T5, T6, T7, T8, T9, void}"/> with the provided arguments.
+        /// Invokes the encapsulated delegate*{T1, T2, T3, T4, T5, T6, T7, T8, T9, void} with the provided arguments.
         /// </summary>
         public void Run () => action (arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8, arg9);
     }
 
     /// <summary>
-    /// Task encapsulating an <see cref="delegate*{void}"/> with 10 parameters.
+    /// Task encapsulating a delegate*{T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, void} function pointer.
     /// </summary>
     /// <typeparam name="T1">Type of parameter 1.</typeparam>
     /// <typeparam name="T2">Type of parameter 2.</typeparam>
@@ -445,7 +445,7 @@
         /// <summary>
         /// Initializes a new instance of the <see cref="FunctionPointerTask{T1, T2, T3, T4, T5, T6, T7, T8, T9, T10}"/> struct.
         /// </summary>
-        /// <param name="action"><see cref="delegate*{T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, void}"/> to invoke on <see cref="Run"/>.</param>
+        /// <param name="action">delegate*{T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, void} to invoke on <see cref="Run"/>.</param>
         /// <param name="arg1">Argument 1 to invoke <paramref name="action"/> with.</param>
         /// <param name="arg2">Argument 2 to invoke <paramref name="action"/> with.</param>
         /// <param name="arg3">Argument 3 to invoke <paramref name="action"/> with.</param>
@@ -472,13 +472,13 @@
         }
 
         /// <summary>
-        /// Invokes the encapsulated <see cref="delegate*{T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, void}"/> with the provided arguments.
+        /// Invokes the encapsulated delegate*{T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, void} with the provided arguments.
         /// </summary>
         public void Run () => action (arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8, arg9, arg10);
     }
 
     /// <summary>
-    /// Task encapsulating an <see cref="delegate*{void}"/> with 11 parameters.
+    /// Task encapsulating a delegate*{T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, void} function pointer.
     /// </summary>
     /// <typeparam name="T1">Type of parameter 1.</typeparam>
     /// <typeparam name="T2">Type of parameter 2.</typeparam>
@@ -510,7 +510,7 @@
         /// <summary>
         /// Initializes a new instance of the <see cref="FunctionPointerTask{T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11}"/> struct.
         /// </summary>
-        /// <param name="action"><see cref="delegate*{T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, void}"/> to invoke on <see cref="Run"/>.</param>
+        /// <param name="action">delegate*{T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, void} to invoke on <see cref="Run"/>.</param>
         /// <param name="arg1">Argument 1 to invoke <paramref name="action"/> with.</param>
         /// <param name="arg2">Argument 2 to invoke <paramref name="action"/> with.</param>
         /// <param name="arg3">Argument 3 to invoke <paramref name="action"/> with.</param>
@@ -539,13 +539,13 @@
         }
 
         /// <summary>
-        /// Invokes the encapsulated <see cref="delegate*{T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, void}"/> with the provided arguments.
+        /// Invokes the encapsulated delegate*{T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, void} with the provided arguments.
         /// </summary>
         public void Run () => action (arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8, arg9, arg10, arg11);
     }
 
     /// <summary>
-    /// Task encapsulating an <see cref="delegate*{void}"/> with 12 parameters.
+    /// Task encapsulating a delegate*{T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, void} function pointer.
     /// </summary>
     /// <typeparam name="T1">Type of parameter 1.</typeparam>
     /// <typeparam name="T2">Type of parameter 2.</typeparam>
@@ -579,7 +579,7 @@
         /// <summary>
         /// Initializes a new instance of the <see cref="FunctionPointerTask{T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12}"/> struct.
         /// </summary>
-        /// <param name="action"><see cref="delegate*{T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, void}"/> to invoke on <see cref="Run"/>.</param>
+        /// <param name="action">delegate*{T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, void} to invoke on <see cref="Run"/>.</param>
         /// <param name="arg1">Argument 1 to invoke <paramref name="action"/> with.</param>
         /// <param name="arg2">Argument 2 to invoke <paramref name="action"/> with.</param>
         /// <param name="arg3">Argument 3 to invoke <paramref name="action"/> with.</param>
@@ -610,13 +610,13 @@
         }
 
         /// <summary>
-        /// Invokes the encapsulated <see cref="delegate*{T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, void}"/> with the provided arguments.
+        /// Invokes the encapsulated delegate*{T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, void} with the provided arguments.
         /// </summary>
         public void Run () => action (arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8, arg9, arg10, arg11, arg12);
     }
 
     /// <summary>
-    /// Task encapsulating an <see cref="delegate*{void}"/> with 13 parameters.
+    /// Task encapsulating a delegate*{T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, void} function pointer.
     /// </summary>
     /// <typeparam name="T1">Type of parameter 1.</typeparam>
     /// <typeparam name="T2">Type of parameter 2.</typeparam>
@@ -652,7 +652,7 @@
         /// <summary>
         /// Initializes a new instance of the <see cref="FunctionPointerTask{T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13}"/> struct.
         /// </summary>
-        /// <param name="action"><see cref="delegate*{T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, void}"/> to invoke on <see cref="Run"/>.</param>
+        /// <param name="action">delegate*{T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, void} to invoke on <see cref="Run"/>.</param>
         /// <param name="arg1">Argument 1 to invoke <paramref name="action"/> with.</param>
         /// <param name="arg2">Argument 2 to invoke <paramref name="action"/> with.</param>
         /// <param name="arg3">Argument 3 to invoke <paramref name="action"/> with.</param>
@@ -685,13 +685,13 @@
         }
 
         /// <summary>
-        /// Invokes the encapsulated <see cref="delegate*{T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, void}"/> with the provided arguments.
+        /// Invokes the encapsulated delegate*{T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, void} with the provided arguments.
         /// </summary>
         public void Run () => action (arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8, arg9, arg10, arg11, arg12, arg13);
     }
 
     /// <summary>
-    /// Task encapsulating an <see cref="delegate*{void}"/> with 14 parameters.
+    /// Task encapsulating a delegate*{T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, void} function pointer.
     /// </summary>
     /// <typeparam name="T1">Type of parameter 1.</typeparam>
     /// <typeparam name="T2">Type of parameter 2.</typeparam>
@@ -729,7 +729,7 @@
         /// <summary>
         /// Initializes a new instance of the <see cref="FunctionPointerTask{T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14}"/> struct.
         /// </summary>
-        /// <param name="action"><see cref="delegate*{T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, void}"/> to invoke on <see cref="Run"/>.</param>
+        /// <param name="action">delegate*{T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, void} to invoke on <see cref="Run"/>.</param>
         /// <param name="arg1">Argument 1 to invoke <paramref name="action"/> with.</param>
         /// <param name="arg2">Argument 2 to invoke <paramref name="action"/> with.</param>
         /// <param name="arg3">Argument 3 to invoke <paramref name="action"/> with.</param>
@@ -764,13 +764,13 @@
         }
 
         /// <summary>
-        /// Invokes the encapsulated <see cref="delegate*{T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, void}"/> with the provided arguments.
+        /// Invokes the encapsulated delegate*{T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, void} with the provided arguments.
         /// </summary>
         public void Run () => action (arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8, arg9, arg10, arg11, arg12, arg13, arg14);
     }
 
     /// <summary>
-    /// Task encapsulating an <see cref="delegate*{void}"/> with 15 parameters.
+    /// Task encapsulating a delegate*{T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, void} function pointer.
     /// </summary>
     /// <typeparam name="T1">Type of parameter 1.</typeparam>
     /// <typeparam name="T2">Type of parameter 2.</typeparam>
@@ -810,7 +810,7 @@
         /// <summary>
         /// Initializes a new instance of the <see cref="FunctionPointerTask{T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15}"/> struct.
         /// </summary>
-        /// <param name="action"><see cref="delegate*{T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, void}"/> to invoke on <see cref="Run"/>.</param>
+        /// <param name="action">delegate*{T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, void} to invoke on <see cref="Run"/>.</param>
         /// <param name="arg1">Argument 1 to invoke <paramref name="action"/> with.</param>
         /// <param name="arg2">Argument 2 to invoke <paramref name="action"/> with.</param>
         /// <param name="arg3">Argument 3 to invoke <paramref name="action"/> with.</param>
@@ -847,13 +847,13 @@
         }
 
         /// <summary>
-        /// Invokes the encapsulated <see cref="delegate*{T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, void}"/> with the provided arguments.
+        /// Invokes the encapsulated delegate*{T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, void} with the provided arguments.
         /// </summary>
         public void Run () => action (arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8, arg9, arg10, arg11, arg12, arg13, arg14, arg15);
     }
 
     /// <summary>
-    /// Task encapsulating an <see cref="delegate*{void}"/> with 16 parameters.
+    /// Task encapsulating a delegate*{T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, T16, void} function pointer.
     /// </summary>
     /// <typeparam name="T1">Type of parameter 1.</typeparam>
     /// <typeparam name="T2">Type of parameter 2.</typeparam>
@@ -895,7 +895,7 @@
         /// <summary>
         /// Initializes a new instance of the <see cref="FunctionPointerTask{T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, T16}"/> struct.
         /// </summary>
-        /// <param name="action"><see cref="delegate*{T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, T16, void}"/> to invoke on <see cref="Run"/>.</param>
+        /// <param name="action">delegate*{T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, T16, void} to invoke on <see cref="Run"/>.</param>
         /// <param name="arg1">Argument 1 to invoke <paramref name="action"/> with.</param>
         /// <param name="arg2">Argument 2 to invoke <paramref name="action"/> with.</param>
         /// <param name="arg3">Argument 3 to invoke <paramref name="action"/> with.</param>
@@ -934,7 +934,7 @@
         }
 
         /// <summary>
-        /// Invokes the encapsulated <see cref="delegate*{T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, T16, void}"/> with the provided arguments.
+        /// Invokes the encapsulated delegate*{T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, T16, void} with the provided arguments.
         /// </summary>
         public void Run () => action (arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8, arg9, arg10, arg11, arg12, arg13, arg14, arg15, arg16);
     }

@@ -43,7 +43,7 @@ for (int i = 1; i <= maxParameterCount; i++)
         /// <summary>
         /// Create a <see cref="DelegateTask{<#=typeParameters#>}"/> that encapsulates an action.
         /// </summary>
-        /// <returns>A new <see cref="{<#=typeParameters#>}"/> that will invoke the action when run with the supplied arguments.</returns>
+        /// <returns>A new <see cref="DelegateTask{<#=typeParameters#>}"/> that will invoke the action when run with the supplied arguments.</returns>
         /// <param name="action">Action to enqueue.</param>
 <# 
 string paramList = "";

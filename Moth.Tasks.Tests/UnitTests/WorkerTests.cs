@@ -1,4 +1,4 @@
-﻿namespace Moth.Tasks.Tests
+﻿namespace Moth.Tasks.Tests.UnitTests
 {
     using Moq;
     using NUnit.Framework;
@@ -36,7 +36,7 @@
         }
 
         [Test]
-        public void Construct_WithProfilerProvider_InitializesCorrectly ()
+        public void Constructor_WithProfilerProvider_InitializesCorrectly ()
         {
             ITaskQueue taskQueue = Mock.Of<ITaskQueue> ();
 

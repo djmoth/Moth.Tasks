@@ -1,4 +1,4 @@
-﻿namespace Moth.Tasks.Tests
+﻿namespace Moth.Tasks.Tests.UnitTests
 {
     using NUnit.Framework;
     using NUnit.Framework.Legacy;
@@ -13,7 +13,7 @@
         public void TestFromAction ()
         {
             var task = Task.From (static () => { throw new Exception (); });
-            ClassicAssert.Throws<Exception> (task.Run);
+            Assert.Throws<Exception> (task.Run);
         }
 
         [Test]
@@ -21,9 +21,9 @@
         {
             const int i = 42;
 
-            var task = Task.From (static (int a) => { throw new Exception (a.ToString ()); }, i);
+            var task = Task.From (static (a) => { throw new Exception (a.ToString ()); }, i);
 
-            string message = ClassicAssert.Throws<Exception> (task.Run).Message;
+            string message = Assert.Throws<Exception> (task.Run).Message;
 
             ClassicAssert.AreEqual (i.ToString (), message);
         }
@@ -32,7 +32,7 @@
         public void TestFromFunctionPointer ()
         {
             var task = Task.From (&ThrowException);
-            ClassicAssert.Throws<Exception> (task.Run);
+            Assert.Throws<Exception> (task.Run);
 
             static void ThrowException () => throw new Exception ();
         }
@@ -44,7 +44,7 @@
 
             var task = Task.From (&ThrowException, i);
 
-            string message = ClassicAssert.Throws<Exception> (task.Run).Message;
+            string message = Assert.Throws<Exception> (task.Run).Message;
 
             ClassicAssert.AreEqual (i.ToString (), message);
 

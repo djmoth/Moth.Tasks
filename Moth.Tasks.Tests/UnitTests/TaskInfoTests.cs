@@ -1,4 +1,4 @@
-﻿namespace Moth.Tasks.Tests
+﻿namespace Moth.Tasks.Tests.UnitTests
 {
     using System;
     using System.Collections.Generic;
@@ -36,7 +36,7 @@
 
             ClassicAssert.AreEqual (typeof (T), taskInfo.Type);
 
-            ClassicAssert.AreEqual (IntPtr.Size, taskInfo.UnmanagedSize); // Task contains one field of IntPtr, size should match IntPtr.Size then
+            ClassicAssert.AreEqual (nint.Size, taskInfo.UnmanagedSize); // Task contains one field of IntPtr, size should match IntPtr.Size then
 
             ClassicAssert.AreEqual (isManaged, taskInfo.IsManaged);
 
@@ -45,7 +45,7 @@
 
         struct Task : ITask
         {
-            public IntPtr MockData;
+            public nint MockData;
 
             public void Run ()
             {
@@ -55,7 +55,7 @@
 
         struct TaskWithRef : ITask
         {
-            public IntPtr MockData;
+            public nint MockData;
             public object Ref;
 
             public void Run ()
@@ -66,7 +66,7 @@
 
         struct DisposableTask : ITask, IDisposable
         {
-            public IntPtr MockData;
+            public nint MockData;
 
             public void Run ()
             {

@@ -3,7 +3,7 @@ using System.Threading;
 
 namespace Moth.Tasks
 {
-    public class TaskHandleManager
+    public class TaskHandleManager : ITaskHandleManager
     {
         private readonly Dictionary<int, ManualResetEventSlim> taskHandles = new Dictionary<int, ManualResetEventSlim> ();
         private int nextTaskHandle = 1;

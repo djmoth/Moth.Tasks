@@ -1,4 +1,4 @@
-﻿namespace Moth.Tasks.Tests
+﻿namespace Moth.Tasks.Tests.UnitTests
 {
     using Moq;
     using NUnit.Framework;

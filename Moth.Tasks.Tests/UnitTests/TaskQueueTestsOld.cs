@@ -1,4 +1,4 @@
-namespace Moth.Tasks.Tests
+namespace Moth.Tasks.Tests.UnitTests
 {
     using System;
     using System.Collections.Generic;
@@ -8,7 +8,7 @@ namespace Moth.Tasks.Tests
     using NUnit.Framework;
     using NUnit.Framework.Legacy;
 
-    public class TaskQueueTests
+    public class TaskQueueTestsOld
     {
         /// <summary>
         /// Enqueues an <see cref="ITask"/> in an empty <see cref="TaskQueue"/>.
@@ -427,7 +427,7 @@ namespace Moth.Tasks.Tests
             {
                 ClassicAssert.IsInstanceOf<InvalidOperationException> (ex);
             }
-            
+
             for (int i = 0; i < 10; i++)
             {
                 ClassicAssert.AreEqual (i, disposeResults[i].Value);
@@ -448,10 +448,10 @@ namespace Moth.Tasks.Tests
 
             ClassicAssert.IsTrue (GetPrivateValue<bool> ("disposed"));
 
-            ClassicAssert.Throws<ObjectDisposedException> (() => queue.Enqueue (new Task ()));
-            ClassicAssert.Throws<ObjectDisposedException> (() => queue.Enqueue (new Task (), out _));
+            Assert.Throws<ObjectDisposedException> (() => queue.Enqueue (new Task ()));
+            Assert.Throws<ObjectDisposedException> (() => queue.Enqueue (new Task (), out _));
 
-            T GetPrivateValue<T> (string fieldName) => (T)typeof (TaskQueueBase).GetField (fieldName, BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.FlattenHierarchy).GetValue (queue);
+            T GetPrivateValue<T> (string fieldName) => (T)typeof (TaskQueue).GetField (fieldName, BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.FlattenHierarchy).GetValue (queue);
         }
 
         [Test]
@@ -461,11 +461,11 @@ namespace Moth.Tasks.Tests
 
             WeakReference objRef = new WeakReference (null);
 
-            queue.Enqueue ((TaskQueue queue, WeakReference objRef) =>
+            queue.Enqueue ((queue, objRef) =>
             {
                 object obj = new object ();
                 objRef.Target = obj;
-                queue.Enqueue ((object obj) => obj.ToString (), obj);
+                queue.Enqueue ((obj) => obj.ToString (), obj);
             }, queue, objRef);
 
             queue.RunNextTask ();
@@ -501,7 +501,7 @@ namespace Moth.Tasks.Tests
         /// </summary>
         struct Task : ITask
         {
-            public IntPtr Data;
+            public nint Data;
 
             public void Run ()
             {

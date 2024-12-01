@@ -13,7 +13,7 @@ namespace Moth.Tasks
      * This file should not be edited manually.                       *
      * -------------------------------------------------------------- */
 
-    public unsafe static partial class Task
+    public static unsafe partial class Task
     {
         /// <summary>
         /// Create a <see cref="FunctionPointerTask"/> that encapsulates a function pointer.
@@ -43,7 +43,7 @@ for (int i = 1; i <= maxParameterCount; i++)
         /// <summary>
         /// Create a <see cref="FunctionPointerTask{<#=typeParameters#>}"/> that encapsulates an action.
         /// </summary>
-        /// <returns>A new <see cref="{<#=typeParameters#>}"/> that will invoke the action when run with the supplied arguments.</returns>
+        /// <returns>A new <see cref="FunctionPointerTask{<#=typeParameters#>}"/> that will invoke the action when run with the supplied arguments.</returns>
         /// <param name="action">Function pointer to enqueue.</param>
 <# 
 string paramList = "";

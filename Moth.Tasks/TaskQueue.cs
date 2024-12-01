@@ -9,11 +9,11 @@ namespace Moth.Tasks
     public class TaskQueue : ITaskQueue
     {
         private readonly object taskLock = new object ();
-        private readonly TaskCache taskCache = new TaskCache ();
-        private readonly ManualResetEventSlim tasksEnqueuedEvent = new ManualResetEventSlim (); // Must be explicitly set by callers of EnqueueImpl
         private readonly Queue<int> tasks;
-        private readonly TaskDataStore taskData;
-        private readonly TaskHandleManager taskHandleManager;
+        private readonly ManualResetEventSlim tasksEnqueuedEvent = new ManualResetEventSlim (); // Must be explicitly set by callers of EnqueueImpl
+        private readonly ITaskCache taskCache;
+        private readonly ITaskDataStore taskDataStore;
+        private readonly ITaskHandleManager taskHandleManager;
         private bool disposed;
 
         /// <summary>
@@ -25,13 +25,19 @@ namespace Moth.Tasks
         /// <summary>
         /// Initializes a new instance of the <see cref="TaskQueue"/> class.
         /// </summary>
-        /// <param name="taskCapacity">Starting capacity for the internal task queue.</param>
-        /// <param name="dataCapacity">Starting capacity for the internal task data array.</param>
-        internal TaskQueue (int taskCapacity, int dataCapacity)
+        /// <param name="taskCapacity">Starting capacity for the internal task queue in no. of tasks.</param>
+        /// <param name="dataCapacity">Starting capacity for the internal task data array in bytes.</param>
+        /// <param name="taskCache">Optional <see cref="ITaskCache"/> for caching task types.</param>
+        public TaskQueue (int taskCapacity, int dataCapacity, ITaskCache taskCache = null)
+            : this (taskCapacity, taskCache, new TaskDataStore (dataCapacity), new TaskHandleManager ()) { }
+
+        internal TaskQueue (int taskCapacity, ITaskCache taskCache, ITaskDataStore taskDataStore, ITaskHandleManager taskHandleManager)
         {
             tasks = new Queue<int> (taskCapacity);
-            taskData = new TaskDataStore (dataCapacity);
-            taskHandleManager = new TaskHandleManager ();
+
+            this.taskCache = taskCache ?? new TaskCache ();
+            this.taskDataStore = taskDataStore;
+            this.taskHandleManager = taskHandleManager;
         }
 
         /// <summary>
@@ -53,10 +59,6 @@ namespace Moth.Tasks
             }
         }
 
-        protected TaskCache TaskCache => taskCache;
-
-        protected TaskHandleManager TaskHandleManager => taskHandleManager;
-
         /// <summary>
         /// Enqueue an <see cref="ITask"/> to be run later.
         /// </summary>
@@ -76,7 +78,7 @@ namespace Moth.Tasks
         public void Enqueue<TTask> (in TTask task, out TaskHandle handle)
             where TTask : struct, ITask
         {
-            handle = TaskHandleManager.CreateTaskHandle ();
+            handle = CreateTaskHandle ();
 
             if (typeof (IDisposable).IsAssignableFrom (typeof (TTask))) // If T implements IDisposable
             {
@@ -147,9 +149,10 @@ namespace Moth.Tasks
         /// <remarks>
         /// As the method iterates through all tasks in the queue and calls <see cref="IDisposable.Dispose"/> on tasks, it can hang for an unknown amount of time. If an exception is thrown in an <see cref="IDisposable.Dispose"/> call, the method continues on with disposing the remaining tasks.
         /// </remarks>
-        public void Clear (Action<Exception> exceptionHandler = null)
+        public unsafe void Clear (Action<Exception> exceptionHandler = null)
         {
-            using TaskDataAccess access = new TaskDataAccess (this);
+            bool accessDisposed = false;
+            using TaskDataAccess access = new TaskDataAccess (this, &accessDisposed, false);
 
             foreach (int id in tasks)
             {
@@ -166,13 +169,13 @@ namespace Moth.Tasks
                     }
                 } else
                 {
-                    taskData.Skip (task);
+                    taskDataStore.Skip (task);
                 }
             }
 
             tasks.Clear ();
             taskHandleManager.Clear ();
-            taskData.Clear ();
+            taskDataStore.Clear ();
         }
 
         /// <summary>
@@ -206,6 +209,8 @@ namespace Moth.Tasks
             disposed = true;
         }
 
+        protected TaskHandle CreateTaskHandle () => taskHandleManager.CreateTaskHandle ();
+
         /// <summary>
         /// Enqueue an <see cref="ITask"/> to be run later.
         /// </summary>
@@ -228,7 +233,7 @@ namespace Moth.Tasks
                 // Only write task data if present
                 if (taskInfo.UnmanagedSize > 0 || taskInfo.IsManaged)
                 {
-                    taskData.Enqueue (task, taskInfo);
+                    taskDataStore.Enqueue (task, taskInfo);
                 }
             }
 
@@ -313,12 +318,12 @@ namespace Moth.Tasks
         }
 
         private T GetNextTaskData<T> (ITaskInfo<T> taskInfo)
-            where T : struct, ITaskType => taskData.Dequeue (taskInfo);
+            where T : struct, ITaskType => taskDataStore.Dequeue (taskInfo);
 
         /// <summary>
         /// Provides a way for a task to access its data while locking the <see cref="TaskQueue"/>.
         /// </summary>
-        public unsafe readonly struct TaskDataAccess
+        public unsafe readonly struct TaskDataAccess : IDisposable
         {
             private readonly TaskQueue queue;
             private readonly bool* disposed;
@@ -375,12 +380,7 @@ namespace Moth.Tasks
             }
         }
 
-        private struct TaskRunWrapper : ITask<TaskRunWrapperArgs>
-        {
-            public void Run (TaskRunWrapperArgs args) => args.GetTaskInfoRunnable<ITaskInfoRunnable> ().Run (args.Access);
-        }
-
-        public readonly struct TaskRunWrapperArgs
+        protected readonly struct TaskRunWrapperArgs
         {
             private readonly ITaskInfo task;
 
@@ -392,7 +392,12 @@ namespace Moth.Tasks
 
             public TaskDataAccess Access { get; }
 
-            public T GetTaskInfoRunnable<T> () where T : ITaskInfoRunnable => (T)task;
+            public T GetTaskInfoRunnable<T> () where T : IRunnableTaskInfo => (T)task;
+        }
+
+        private struct TaskRunWrapper : ITask<TaskRunWrapperArgs>
+        {
+            public readonly void Run (TaskRunWrapperArgs args) => args.GetTaskInfoRunnable<IRunnableTaskInfo> ().Run (args.Access);
         }
     }
 }

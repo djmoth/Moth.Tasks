@@ -1,4 +1,4 @@
-﻿namespace Moth.Tasks.Tests
+﻿namespace Moth.Tasks.Tests.UnitTests
 {
     using NUnit.Framework;
     using NUnit.Framework.Legacy;
@@ -81,7 +81,7 @@
         {
             public void Run ()
             {
-                
+
             }
         }
     }

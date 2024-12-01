@@ -2,15 +2,8 @@
 {
     using Moth.IO.Serialization;
     using System;
-    using System.Collections;
-    using System.Collections.Generic;
     using System.Diagnostics;
     using System.Linq;
-    using System.Reflection;
-    using System.Runtime.CompilerServices;
-    using System.Runtime.InteropServices;
-    using System.Threading.Tasks;
-    using Validation;
 
     public static class TaskInfo
     {
@@ -26,49 +19,60 @@
             Type type = typeof (TTask);
 
             bool isDisposable = false;
-            TaskType taskType = TaskType.Run;
+            Type interfaceType = null;
 
-
-            foreach (Type interfaceType in type.GetInterfaces ())
+            foreach (Type i in type.GetInterfaces ())
             {
-                if (interfaceType == typeof (IDisposable))
+                if (i == typeof (IDisposable))
                 {
                     isDisposable = true;
-                } else if (interfaceType.IsGenericType && interfaceType.GetGenericTypeDefinition () == typeof (ITask<>))
+                } else if (i == typeof (ITask))
                 {
-                    if (taskType != TaskType.Run)
+                    interfaceType = i;
+                } else if (i.IsGenericType && (i.GetGenericTypeDefinition () == typeof (ITask<>) || i.GetGenericTypeDefinition () == typeof (ITask<,>)))
+                {
+                    if (interfaceType != null)
                         throw new InvalidOperationException ("Task type is ambiguous.");
 
-                    taskType = TaskType.RunArg;
-                } else if (interfaceType.IsGenericType && interfaceType.GetGenericTypeDefinition () == typeof (ITask<,>))
-                {
-                    if (taskType != TaskType.Run)
-                        throw new InvalidOperationException ("Task type is ambiguous.");
-
-                    taskType = TaskType.RunArgResult;
+                    interfaceType = i;
                 }
             }
+
+            if (interfaceType == null)
+                throw new InvalidOperationException ("Task type does not implement ITask or its generic variants.");
 
             Type taskInfoType;
 
             if (isDisposable)
             {
-                taskInfoType = taskType switch
+                if (interfaceType == typeof (ITask))
                 {
-                    TaskType.Run => typeof (DisposableTaskInfo<>).MakeGenericType (type),
-                    TaskType.RunArg => typeof (DisposableTaskInfo<,>).MakeGenericType (type.GetGenericArguments ().Prepend (type).ToArray ()),
-                    TaskType.RunArgResult => typeof (DisposableTaskInfo<,,>).MakeGenericType (type.GetGenericArguments ().Prepend (type).ToArray ()),
-                    _ => throw new NotImplementedException (),
-                };
+                    taskInfoType = typeof (DisposableTaskInfo<>).MakeGenericType (type);
+                } else if (interfaceType.GetGenericTypeDefinition () == typeof (ITask<>))
+                {
+                    taskInfoType = typeof (DisposableTaskInfo<,>).MakeGenericType (interfaceType.GetGenericArguments ().Prepend (type).ToArray ());
+                } else if (interfaceType.GetGenericTypeDefinition () == typeof (ITask<,>))
+                {
+                    taskInfoType = typeof (DisposableTaskInfo<,,>).MakeGenericType (interfaceType.GetGenericArguments ().Prepend (type).ToArray ());
+                } else
+                {
+                    throw new NotImplementedException ();
+                }
             } else
             {
-                taskInfoType = taskType switch
+                if (interfaceType == typeof (ITask))
                 {
-                    TaskType.Run => typeof (TaskInfo<>).MakeGenericType (type),
-                    TaskType.RunArg => typeof (TaskInfo<,>).MakeGenericType (type.GetGenericArguments ().Prepend (type).ToArray ()),
-                    TaskType.RunArgResult => typeof (TaskInfo<,,>).MakeGenericType (type.GetGenericArguments ().Prepend (type).ToArray ()),
-                    _ => throw new NotImplementedException (),
-                };
+                    taskInfoType = typeof (TaskInfo<>).MakeGenericType (type);
+                } else if (interfaceType.GetGenericTypeDefinition () == typeof (ITask<>))
+                {
+                    taskInfoType = typeof (TaskInfo<,>).MakeGenericType (interfaceType.GetGenericArguments ().Prepend (type).ToArray ());
+                } else if (interfaceType.GetGenericTypeDefinition () == typeof (ITask<,>))
+                {
+                    taskInfoType = typeof (TaskInfo<,,>).MakeGenericType (interfaceType.GetGenericArguments ().Prepend (type).ToArray ());
+                } else
+                {
+                    throw new NotImplementedException ();
+                }
             }
 
             return (ITaskInfo<TTask>)Activator.CreateInstance (taskInfoType, id);
@@ -94,17 +98,17 @@
         bool HasResult { get; }
     }
 
-    public interface ITaskInfoRunnable : ITaskInfo
+    public interface IRunnableTaskInfo : ITaskInfo
     {
         void Run (TaskQueue.TaskDataAccess access);
     }
 
-    public interface ITaskInfoRunnable<TArg> : ITaskInfoRunnable
+    public interface IRunnableTaskInfo<TArg> : IRunnableTaskInfo
     {
         void Run (TaskQueue.TaskDataAccess access, TArg arg);
     }
 
-    public interface ITaskInfoRunnable<TArg, TResult> : ITaskInfoRunnable<TArg>
+    public interface IRunnableTaskInfo<TArg, TResult> : IRunnableTaskInfo<TArg>
     {
         TResult Run (TaskQueue.TaskDataAccess access, TArg arg);
     }
@@ -193,7 +197,7 @@
         }
     }
 
-    internal class TaskInfo<TTask> : TaskInfoBase<TTask>, ITaskInfoRunnable
+    internal class TaskInfo<TTask> : TaskInfoBase<TTask>, IRunnableTaskInfo
         where TTask : struct, ITask
     {
         public TaskInfo (int id)
@@ -208,7 +212,7 @@
         public void Run (TaskQueue.TaskDataAccess access) => access.GetNextTaskData (this).Run ();
     }
 
-    internal class TaskInfo<TTask, TArg> : TaskInfoBase<TTask>, ITaskInfoRunnable<TArg>
+    internal class TaskInfo<TTask, TArg> : TaskInfoBase<TTask>, IRunnableTaskInfo<TArg>
         where TTask : struct, ITask<TArg>
     {
         public TaskInfo (int id)
@@ -225,7 +229,7 @@
         public void Run (TaskQueue.TaskDataAccess access, TArg arg) => access.GetNextTaskData (this).Run (arg);
     }
 
-    internal class TaskInfo<TTask, TArg, TResult> : TaskInfoBase<TTask>, ITaskInfoRunnable<TArg, TResult>
+    internal class TaskInfo<TTask, TArg, TResult> : TaskInfoBase<TTask>, IRunnableTaskInfo<TArg, TResult>
         where TTask : struct, ITask<TArg, TResult>
     {
         public TaskInfo (int id)
@@ -241,10 +245,10 @@
 
         public void Run (TaskQueue.TaskDataAccess access, TArg arg) => access.GetNextTaskData (this).Run (arg);
 
-        TResult ITaskInfoRunnable<TArg, TResult>.Run (TaskQueue.TaskDataAccess access, TArg arg) => access.GetNextTaskData (this).Run (arg);
+        TResult IRunnableTaskInfo<TArg, TResult>.Run (TaskQueue.TaskDataAccess access, TArg arg) => access.GetNextTaskData (this).Run (arg);
     }
 
-    internal interface IDisposableTaskInfo
+    public interface IDisposableTaskInfo
     {
         void Dispose (TaskQueue.TaskDataAccess access);
     }
@@ -260,7 +264,7 @@
         public void Dispose (TaskQueue.TaskDataAccess access) => access.GetNextTaskData (this).Dispose ();
     }
 
-    internal class DisposableTaskInfo<TTask> : DisposableTaskInfoBase<TTask>, ITaskInfoRunnable
+    internal class DisposableTaskInfo<TTask> : DisposableTaskInfoBase<TTask>, IRunnableTaskInfo
         where TTask : struct, ITask, IDisposable
     {
         public DisposableTaskInfo (int id)
@@ -285,7 +289,7 @@
         }
     }
 
-    internal class DisposableTaskInfo<TTask, TArg> : DisposableTaskInfoBase<TTask>, ITaskInfoRunnable<TArg>
+    internal class DisposableTaskInfo<TTask, TArg> : DisposableTaskInfoBase<TTask>, IRunnableTaskInfo<TArg>
         where TTask : struct, ITask<TArg>, IDisposable
     {
         public DisposableTaskInfo (int id)
@@ -322,7 +326,7 @@
         }
     }
 
-    internal class DisposableTaskInfo<TTask, TArg, TResult> : DisposableTaskInfoBase<TTask>, ITaskInfoRunnable<TArg, TResult>
+    internal class DisposableTaskInfo<TTask, TArg, TResult> : DisposableTaskInfoBase<TTask>, IRunnableTaskInfo<TArg, TResult>
         where TTask : struct, ITask<TArg, TResult>, IDisposable
     {
         public DisposableTaskInfo (int id)
@@ -358,7 +362,7 @@
             }
         }
 
-        TResult ITaskInfoRunnable<TArg, TResult>.Run (TaskQueue.TaskDataAccess access, TArg arg)
+        TResult IRunnableTaskInfo<TArg, TResult>.Run (TaskQueue.TaskDataAccess access, TArg arg)
         {
             TTask data = access.GetNextTaskData (this);
 

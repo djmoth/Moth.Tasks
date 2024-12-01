@@ -14,7 +14,17 @@
 
         public new void Enqueue<TTask> (in TTask task, out TaskHandle handle)
             where TTask : struct, ITask<TArg>
-            => base.Enqueue (new Task<TTask, TArg> (task), out handle);
+        {
+            handle = CreateTaskHandle ();
+
+            if (typeof (IDisposable).IsAssignableFrom (typeof (TTask))) // If T implements IDisposable
+            {
+                EnqueueTask (new DisposableTaskWithHandle<Task<TTask, TArg>, TArg, Unit> (new Task<TTask, TArg> (task), handle));
+            } else
+            {
+                EnqueueTask (new TaskWithHandle<Task<TTask, TArg>, TArg, Unit> (new Task<TTask, TArg> (task), handle));
+            }
+        }
 
         public void RunNextTask (TArg arg, IProfiler profiler = null, CancellationToken token = default) => RunNextTask (arg, out _, profiler, token);
 
@@ -36,14 +46,14 @@
 
         private struct TaskRunWrapper : ITask<TaskRunWrapperArgs>
         {
-            private TArg arg;
+            private readonly TArg arg;
 
             public TaskRunWrapper (TArg arg)
             {
                 this.arg = arg;
             }
 
-            public void Run (TaskRunWrapperArgs args) => args.GetTaskInfoRunnable<ITaskInfoRunnable<TArg>> ().Run (args.Access, arg);
+            public readonly void Run (TaskRunWrapperArgs args) => args.GetTaskInfoRunnable<IRunnableTaskInfo<TArg>> ().Run (args.Access, arg);
         }
     }
 }

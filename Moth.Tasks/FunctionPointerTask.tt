@@ -15,7 +15,7 @@ namespace Moth.Tasks
      * ----------------------------------------------- */
 
     /// <summary>
-    /// Task encapsulating a <see cref="delegate*{void}"/> function pointer.
+    /// Task encapsulating a delegate*{void} function pointer.
     /// </summary>
     public unsafe readonly struct FunctionPointerTask : ITask
     {
@@ -24,11 +24,11 @@ namespace Moth.Tasks
         /// <summary>
         /// Initializes a new instance of the <see cref="FunctionPointerTask"/> struct.
         /// </summary>
-        /// The <param name="function"><see cref="delegate*{void}"/> to invoke on <see cref="Run"/>.</param>
+        /// The <param name="function">delegate*{void} to invoke on <see cref="Run"/>.</param>
         public FunctionPointerTask (delegate*<void> function) => this.function = function;
 
         /// <summary>
-        /// Invokes the encapsulated <see cref="delegate*{void}"/>.
+        /// Invokes the encapsulated delegate*{void}.
         /// </summary>
         public void Run () => function ();
     }
@@ -42,7 +42,7 @@ for (int i = 1; i <= maxParameterCount; i++)
 #>
 
     /// <summary>
-    /// Task encapsulating an <see cref="delegate*{void}"/> with <#=i#> parameters.
+    /// Task encapsulating a delegate*{<#=typeParameters#>, void} function pointer.
     /// </summary>
 <# for (int t = 1; t <= i; t++) WriteLine ($"    /// <typeparam name=\"T{t}\">Type of parameter {t}.</typeparam>");#>
     [StructLayout (LayoutKind.Auto)]
@@ -54,7 +54,7 @@ for (int i = 1; i <= maxParameterCount; i++)
         /// <summary>
         /// Initializes a new instance of the <see cref="FunctionPointerTask{<#=typeParameters#>}"/> struct.
         /// </summary>
-        /// <param name="action"><see cref="delegate*{<#=typeParameters#>, void}"/> to invoke on <see cref="Run"/>.</param>
+        /// <param name="action">delegate*{<#=typeParameters#>, void} to invoke on <see cref="Run"/>.</param>
 <# string paramList = "";
 for (int t = 1; t <= i; t++) 
 {
@@ -68,7 +68,7 @@ for (int t = 1; t <= i; t++)
         }
 
         /// <summary>
-        /// Invokes the encapsulated <see cref="delegate*{<#=typeParameters#>, void}"/> with the provided arguments.
+        /// Invokes the encapsulated delegate*{<#=typeParameters#>, void} with the provided arguments.
         /// </summary>
 <# string argList = "arg1";
 for (int t = 2; t <= i; t++)

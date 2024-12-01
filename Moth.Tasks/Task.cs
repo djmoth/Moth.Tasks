@@ -15,7 +15,7 @@
         public void Run () => task.Run (default);
     }
 
-    internal struct Task<TTask, TArg> : ITask
+    internal struct Task<TTask, TArg> : ITask<TArg, Unit>
         where TTask : struct, ITask<TArg>
     {
         private TTask task;
@@ -25,7 +25,11 @@
             this.task = task;
         }
 
-        public void Run () => task.Run (default);
+        public Unit Run (TArg arg)
+        {
+            task.Run (arg);
+            return default;
+        }
     }
 
     internal struct Task<TTask> : ITask<Unit, Unit>

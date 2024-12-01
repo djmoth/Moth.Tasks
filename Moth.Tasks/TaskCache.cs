@@ -6,7 +6,7 @@
     /// <summary>
     /// Cache of <see cref="ITaskInfo"/>.
     /// </summary>
-    public class TaskCache
+    public class TaskCache : ITaskCache
     {
         private readonly object syncRoot = new object ();
         private readonly Dictionary<Type, int> idCache = new Dictionary<Type, int> (16);

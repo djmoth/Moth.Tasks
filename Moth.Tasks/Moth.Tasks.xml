@@ -548,25 +548,46 @@
             Invokes the encapsulated <see cref="T:System.Action`16"/> with the provided arguments.
             </summary>
         </member>
+        <member name="T:Moth.Tasks.DisposableTaskWithHandle`3">
+            <summary>
+            Encapsulates a task which implements <see cref="T:System.IDisposable"/>, enqueued with a <see cref="T:Moth.Tasks.TaskHandle"/>.
+            </summary>
+            <typeparam name="TTask">Type of task.</typeparam>
+        </member>
+        <member name="M:Moth.Tasks.DisposableTaskWithHandle`3.#ctor(`0@,Moth.Tasks.TaskHandle)">
+            <summary>
+            Initializes a new instance of the <see cref="T:Moth.Tasks.DisposableTaskWithHandle`3"/> struct.
+            </summary>
+            <param name="task">Task data.</param>
+            <param name="handle">Task handle.</param>
+        </member>
+        <member name="M:Moth.Tasks.DisposableTaskWithHandle`3.Run(`1)">
+            <inheritdoc/>
+        </member>
+        <member name="M:Moth.Tasks.DisposableTaskWithHandle`3.Dispose">
+            <summary>
+            Dispose of encapsulated task, and notify handle that task was completed.
+            </summary>
+        </member>
         <member name="T:Moth.Tasks.FunctionPointerTask">
             <summary>
-            Task encapsulating a <see cref="!:delegate*&lt;void&gt;"/> function pointer.
+            Task encapsulating a delegate*{void} function pointer.
             </summary>
         </member>
         <member name="M:Moth.Tasks.FunctionPointerTask.#ctor()">
             <summary>
             Initializes a new instance of the <see cref="T:Moth.Tasks.FunctionPointerTask"/> struct.
             </summary>
-            The <param name="function"><see cref="!:delegate*&lt;void&gt;"/> to invoke on <see cref="M:Moth.Tasks.FunctionPointerTask.Run"/>.</param>
+            The <param name="function">delegate*{void} to invoke on <see cref="M:Moth.Tasks.FunctionPointerTask.Run"/>.</param>
         </member>
         <member name="M:Moth.Tasks.FunctionPointerTask.Run">
             <summary>
-            Invokes the encapsulated <see cref="!:delegate*&lt;void&gt;"/>.
+            Invokes the encapsulated delegate*{void}.
             </summary>
         </member>
         <member name="T:Moth.Tasks.FunctionPointerTask`1">
             <summary>
-            Task encapsulating an <see cref="!:delegate*&lt;void&gt;"/> with 1 parameters.
+            Task encapsulating a delegate*{T1, void} function pointer.
             </summary>
             <typeparam name="T1">Type of parameter 1.</typeparam>
         </member>
@@ -574,17 +595,17 @@
             <summary>
             Initializes a new instance of the <see cref="T:Moth.Tasks.FunctionPointerTask`1"/> struct.
             </summary>
-            <param name="action"><see cref="!:delegate*&lt;T1, void&gt;"/> to invoke on <see cref="M:Moth.Tasks.FunctionPointerTask`1.Run"/>.</param>
+            <param name="action">delegate*{T1, void} to invoke on <see cref="M:Moth.Tasks.FunctionPointerTask`1.Run"/>.</param>
             <param name="arg1">Argument 1 to invoke <paramref name="action"/> with.</param>
         </member>
         <member name="M:Moth.Tasks.FunctionPointerTask`1.Run">
             <summary>
-            Invokes the encapsulated <see cref="!:delegate*&lt;T1, void&gt;"/> with the provided arguments.
+            Invokes the encapsulated delegate*{T1, void} with the provided arguments.
             </summary>
         </member>
         <member name="T:Moth.Tasks.FunctionPointerTask`2">
             <summary>
-            Task encapsulating an <see cref="!:delegate*&lt;void&gt;"/> with 2 parameters.
+            Task encapsulating a delegate*{T1, T2, void} function pointer.
             </summary>
             <typeparam name="T1">Type of parameter 1.</typeparam>
             <typeparam name="T2">Type of parameter 2.</typeparam>
@@ -593,18 +614,18 @@
             <summary>
             Initializes a new instance of the <see cref="T:Moth.Tasks.FunctionPointerTask`2"/> struct.
             </summary>
-            <param name="action"><see cref="!:delegate*&lt;T1, T2, void&gt;"/> to invoke on <see cref="M:Moth.Tasks.FunctionPointerTask`2.Run"/>.</param>
+            <param name="action">delegate*{T1, T2, void} to invoke on <see cref="M:Moth.Tasks.FunctionPointerTask`2.Run"/>.</param>
             <param name="arg1">Argument 1 to invoke <paramref name="action"/> with.</param>
             <param name="arg2">Argument 2 to invoke <paramref name="action"/> with.</param>
         </member>
         <member name="M:Moth.Tasks.FunctionPointerTask`2.Run">
             <summary>
-            Invokes the encapsulated <see cref="!:delegate*&lt;T1, T2, void&gt;"/> with the provided arguments.
+            Invokes the encapsulated delegate*{T1, T2, void} with the provided arguments.
             </summary>
         </member>
         <member name="T:Moth.Tasks.FunctionPointerTask`3">
             <summary>
-            Task encapsulating an <see cref="!:delegate*&lt;void&gt;"/> with 3 parameters.
+            Task encapsulating a delegate*{T1, T2, T3, void} function pointer.
             </summary>
             <typeparam name="T1">Type of parameter 1.</typeparam>
             <typeparam name="T2">Type of parameter 2.</typeparam>
@@ -614,19 +635,19 @@
             <summary>
             Initializes a new instance of the <see cref="T:Moth.Tasks.FunctionPointerTask`3"/> struct.
             </summary>
-            <param name="action"><see cref="!:delegate*&lt;T1, T2, T3, void&gt;"/> to invoke on <see cref="M:Moth.Tasks.FunctionPointerTask`3.Run"/>.</param>
+            <param name="action">delegate*{T1, T2, T3, void} to invoke on <see cref="M:Moth.Tasks.FunctionPointerTask`3.Run"/>.</param>
             <param name="arg1">Argument 1 to invoke <paramref name="action"/> with.</param>
             <param name="arg2">Argument 2 to invoke <paramref name="action"/> with.</param>
             <param name="arg3">Argument 3 to invoke <paramref name="action"/> with.</param>
         </member>
         <member name="M:Moth.Tasks.FunctionPointerTask`3.Run">
             <summary>
-            Invokes the encapsulated <see cref="!:delegate*&lt;T1, T2, T3, void&gt;"/> with the provided arguments.
+            Invokes the encapsulated delegate*{T1, T2, T3, void} with the provided arguments.
             </summary>
         </member>
         <member name="T:Moth.Tasks.FunctionPointerTask`4">
             <summary>
-            Task encapsulating an <see cref="!:delegate*&lt;void&gt;"/> with 4 parameters.
+            Task encapsulating a delegate*{T1, T2, T3, T4, void} function pointer.
             </summary>
             <typeparam name="T1">Type of parameter 1.</typeparam>
             <typeparam name="T2">Type of parameter 2.</typeparam>
@@ -637,7 +658,7 @@
             <summary>
             Initializes a new instance of the <see cref="T:Moth.Tasks.FunctionPointerTask`4"/> struct.
             </summary>
-            <param name="action"><see cref="!:delegate*&lt;T1, T2, T3, T4, void&gt;"/> to invoke on <see cref="M:Moth.Tasks.FunctionPointerTask`4.Run"/>.</param>
+            <param name="action">delegate*{T1, T2, T3, T4, void} to invoke on <see cref="M:Moth.Tasks.FunctionPointerTask`4.Run"/>.</param>
             <param name="arg1">Argument 1 to invoke <paramref name="action"/> with.</param>
             <param name="arg2">Argument 2 to invoke <paramref name="action"/> with.</param>
             <param name="arg3">Argument 3 to invoke <paramref name="action"/> with.</param>
@@ -645,12 +666,12 @@
         </member>
         <member name="M:Moth.Tasks.FunctionPointerTask`4.Run">
             <summary>
-            Invokes the encapsulated <see cref="!:delegate*&lt;T1, T2, T3, T4, void&gt;"/> with the provided arguments.
+            Invokes the encapsulated delegate*{T1, T2, T3, T4, void} with the provided arguments.
             </summary>
         </member>
         <member name="T:Moth.Tasks.FunctionPointerTask`5">
             <summary>
-            Task encapsulating an <see cref="!:delegate*&lt;void&gt;"/> with 5 parameters.
+            Task encapsulating a delegate*{T1, T2, T3, T4, T5, void} function pointer.
             </summary>
             <typeparam name="T1">Type of parameter 1.</typeparam>
             <typeparam name="T2">Type of parameter 2.</typeparam>
@@ -662,7 +683,7 @@
             <summary>
             Initializes a new instance of the <see cref="T:Moth.Tasks.FunctionPointerTask`5"/> struct.
             </summary>
-            <param name="action"><see cref="!:delegate*&lt;T1, T2, T3, T4, T5, void&gt;"/> to invoke on <see cref="M:Moth.Tasks.FunctionPointerTask`5.Run"/>.</param>
+            <param name="action">delegate*{T1, T2, T3, T4, T5, void} to invoke on <see cref="M:Moth.Tasks.FunctionPointerTask`5.Run"/>.</param>
             <param name="arg1">Argument 1 to invoke <paramref name="action"/> with.</param>
             <param name="arg2">Argument 2 to invoke <paramref name="action"/> with.</param>
             <param name="arg3">Argument 3 to invoke <paramref name="action"/> with.</param>
@@ -671,12 +692,12 @@
         </member>
         <member name="M:Moth.Tasks.FunctionPointerTask`5.Run">
             <summary>
-            Invokes the encapsulated <see cref="!:delegate*&lt;T1, T2, T3, T4, T5, void&gt;"/> with the provided arguments.
+            Invokes the encapsulated delegate*{T1, T2, T3, T4, T5, void} with the provided arguments.
             </summary>
         </member>
         <member name="T:Moth.Tasks.FunctionPointerTask`6">
             <summary>
-            Task encapsulating an <see cref="!:delegate*&lt;void&gt;"/> with 6 parameters.
+            Task encapsulating a delegate*{T1, T2, T3, T4, T5, T6, void} function pointer.
             </summary>
             <typeparam name="T1">Type of parameter 1.</typeparam>
             <typeparam name="T2">Type of parameter 2.</typeparam>
@@ -689,7 +710,7 @@
             <summary>
             Initializes a new instance of the <see cref="T:Moth.Tasks.FunctionPointerTask`6"/> struct.
             </summary>
-            <param name="action"><see cref="!:delegate*&lt;T1, T2, T3, T4, T5, T6, void&gt;"/> to invoke on <see cref="M:Moth.Tasks.FunctionPointerTask`6.Run"/>.</param>
+            <param name="action">delegate*{T1, T2, T3, T4, T5, T6, void} to invoke on <see cref="M:Moth.Tasks.FunctionPointerTask`6.Run"/>.</param>
             <param name="arg1">Argument 1 to invoke <paramref name="action"/> with.</param>
             <param name="arg2">Argument 2 to invoke <paramref name="action"/> with.</param>
             <param name="arg3">Argument 3 to invoke <paramref name="action"/> with.</param>
@@ -699,12 +720,12 @@
         </member>
         <member name="M:Moth.Tasks.FunctionPointerTask`6.Run">
             <summary>
-            Invokes the encapsulated <see cref="!:delegate*&lt;T1, T2, T3, T4, T5, T6, void&gt;"/> with the provided arguments.
+            Invokes the encapsulated delegate*{T1, T2, T3, T4, T5, T6, void} with the provided arguments.
             </summary>
         </member>
         <member name="T:Moth.Tasks.FunctionPointerTask`7">
             <summary>
-            Task encapsulating an <see cref="!:delegate*&lt;void&gt;"/> with 7 parameters.
+            Task encapsulating a delegate*{T1, T2, T3, T4, T5, T6, T7, void} function pointer.
             </summary>
             <typeparam name="T1">Type of parameter 1.</typeparam>
             <typeparam name="T2">Type of parameter 2.</typeparam>
@@ -718,7 +739,7 @@
             <summary>
             Initializes a new instance of the <see cref="T:Moth.Tasks.FunctionPointerTask`7"/> struct.
             </summary>
-            <param name="action"><see cref="!:delegate*&lt;T1, T2, T3, T4, T5, T6, T7, void&gt;"/> to invoke on <see cref="M:Moth.Tasks.FunctionPointerTask`7.Run"/>.</param>
+            <param name="action">delegate*{T1, T2, T3, T4, T5, T6, T7, void} to invoke on <see cref="M:Moth.Tasks.FunctionPointerTask`7.Run"/>.</param>
             <param name="arg1">Argument 1 to invoke <paramref name="action"/> with.</param>
             <param name="arg2">Argument 2 to invoke <paramref name="action"/> with.</param>
             <param name="arg3">Argument 3 to invoke <paramref name="action"/> with.</param>
@@ -729,12 +750,12 @@
         </member>
         <member name="M:Moth.Tasks.FunctionPointerTask`7.Run">
             <summary>
-            Invokes the encapsulated <see cref="!:delegate*&lt;T1, T2, T3, T4, T5, T6, T7, void&gt;"/> with the provided arguments.
+            Invokes the encapsulated delegate*{T1, T2, T3, T4, T5, T6, T7, void} with the provided arguments.
             </summary>
         </member>
         <member name="T:Moth.Tasks.FunctionPointerTask`8">
             <summary>
-            Task encapsulating an <see cref="!:delegate*&lt;void&gt;"/> with 8 parameters.
+            Task encapsulating a delegate*{T1, T2, T3, T4, T5, T6, T7, T8, void} function pointer.
             </summary>
             <typeparam name="T1">Type of parameter 1.</typeparam>
             <typeparam name="T2">Type of parameter 2.</typeparam>
@@ -749,7 +770,7 @@
             <summary>
             Initializes a new instance of the <see cref="T:Moth.Tasks.FunctionPointerTask`8"/> struct.
             </summary>
-            <param name="action"><see cref="!:delegate*&lt;T1, T2, T3, T4, T5, T6, T7, T8, void&gt;"/> to invoke on <see cref="M:Moth.Tasks.FunctionPointerTask`8.Run"/>.</param>
+            <param name="action">delegate*{T1, T2, T3, T4, T5, T6, T7, T8, void} to invoke on <see cref="M:Moth.Tasks.FunctionPointerTask`8.Run"/>.</param>
             <param name="arg1">Argument 1 to invoke <paramref name="action"/> with.</param>
             <param name="arg2">Argument 2 to invoke <paramref name="action"/> with.</param>
             <param name="arg3">Argument 3 to invoke <paramref name="action"/> with.</param>
@@ -761,12 +782,12 @@
         </member>
         <member name="M:Moth.Tasks.FunctionPointerTask`8.Run">
             <summary>
-            Invokes the encapsulated <see cref="!:delegate*&lt;T1, T2, T3, T4, T5, T6, T7, T8, void&gt;"/> with the provided arguments.
+            Invokes the encapsulated delegate*{T1, T2, T3, T4, T5, T6, T7, T8, void} with the provided arguments.
             </summary>
         </member>
         <member name="T:Moth.Tasks.FunctionPointerTask`9">
             <summary>
-            Task encapsulating an <see cref="!:delegate*&lt;void&gt;"/> with 9 parameters.
+            Task encapsulating a delegate*{T1, T2, T3, T4, T5, T6, T7, T8, T9, void} function pointer.
             </summary>
             <typeparam name="T1">Type of parameter 1.</typeparam>
             <typeparam name="T2">Type of parameter 2.</typeparam>
@@ -782,7 +803,7 @@
             <summary>
             Initializes a new instance of the <see cref="T:Moth.Tasks.FunctionPointerTask`9"/> struct.
             </summary>
-            <param name="action"><see cref="!:delegate*&lt;T1, T2, T3, T4, T5, T6, T7, T8, T9, void&gt;"/> to invoke on <see cref="M:Moth.Tasks.FunctionPointerTask`9.Run"/>.</param>
+            <param name="action">delegate*{T1, T2, T3, T4, T5, T6, T7, T8, T9, void} to invoke on <see cref="M:Moth.Tasks.FunctionPointerTask`9.Run"/>.</param>
             <param name="arg1">Argument 1 to invoke <paramref name="action"/> with.</param>
             <param name="arg2">Argument 2 to invoke <paramref name="action"/> with.</param>
             <param name="arg3">Argument 3 to invoke <paramref name="action"/> with.</param>
@@ -795,12 +816,12 @@
         </member>
         <member name="M:Moth.Tasks.FunctionPointerTask`9.Run">
             <summary>
-            Invokes the encapsulated <see cref="!:delegate*&lt;T1, T2, T3, T4, T5, T6, T7, T8, T9, void&gt;"/> with the provided arguments.
+            Invokes the encapsulated delegate*{T1, T2, T3, T4, T5, T6, T7, T8, T9, void} with the provided arguments.
             </summary>
         </member>
         <member name="T:Moth.Tasks.FunctionPointerTask`10">
             <summary>
-            Task encapsulating an <see cref="!:delegate*&lt;void&gt;"/> with 10 parameters.
+            Task encapsulating a delegate*{T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, void} function pointer.
             </summary>
             <typeparam name="T1">Type of parameter 1.</typeparam>
             <typeparam name="T2">Type of parameter 2.</typeparam>
@@ -817,7 +838,7 @@
             <summary>
             Initializes a new instance of the <see cref="T:Moth.Tasks.FunctionPointerTask`10"/> struct.
             </summary>
-            <param name="action"><see cref="!:delegate*&lt;T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, void&gt;"/> to invoke on <see cref="M:Moth.Tasks.FunctionPointerTask`10.Run"/>.</param>
+            <param name="action">delegate*{T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, void} to invoke on <see cref="M:Moth.Tasks.FunctionPointerTask`10.Run"/>.</param>
             <param name="arg1">Argument 1 to invoke <paramref name="action"/> with.</param>
             <param name="arg2">Argument 2 to invoke <paramref name="action"/> with.</param>
             <param name="arg3">Argument 3 to invoke <paramref name="action"/> with.</param>
@@ -831,12 +852,12 @@
         </member>
         <member name="M:Moth.Tasks.FunctionPointerTask`10.Run">
             <summary>
-            Invokes the encapsulated <see cref="!:delegate*&lt;T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, void&gt;"/> with the provided arguments.
+            Invokes the encapsulated delegate*{T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, void} with the provided arguments.
             </summary>
         </member>
         <member name="T:Moth.Tasks.FunctionPointerTask`11">
             <summary>
-            Task encapsulating an <see cref="!:delegate*&lt;void&gt;"/> with 11 parameters.
+            Task encapsulating a delegate*{T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, void} function pointer.
             </summary>
             <typeparam name="T1">Type of parameter 1.</typeparam>
             <typeparam name="T2">Type of parameter 2.</typeparam>
@@ -854,7 +875,7 @@
             <summary>
             Initializes a new instance of the <see cref="T:Moth.Tasks.FunctionPointerTask`11"/> struct.
             </summary>
-            <param name="action"><see cref="!:delegate*&lt;T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, void&gt;"/> to invoke on <see cref="M:Moth.Tasks.FunctionPointerTask`11.Run"/>.</param>
+            <param name="action">delegate*{T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, void} to invoke on <see cref="M:Moth.Tasks.FunctionPointerTask`11.Run"/>.</param>
             <param name="arg1">Argument 1 to invoke <paramref name="action"/> with.</param>
             <param name="arg2">Argument 2 to invoke <paramref name="action"/> with.</param>
             <param name="arg3">Argument 3 to invoke <paramref name="action"/> with.</param>
@@ -869,12 +890,12 @@
         </member>
         <member name="M:Moth.Tasks.FunctionPointerTask`11.Run">
             <summary>
-            Invokes the encapsulated <see cref="!:delegate*&lt;T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, void&gt;"/> with the provided arguments.
+            Invokes the encapsulated delegate*{T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, void} with the provided arguments.
             </summary>
         </member>
         <member name="T:Moth.Tasks.FunctionPointerTask`12">
             <summary>
-            Task encapsulating an <see cref="!:delegate*&lt;void&gt;"/> with 12 parameters.
+            Task encapsulating a delegate*{T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, void} function pointer.
             </summary>
             <typeparam name="T1">Type of parameter 1.</typeparam>
             <typeparam name="T2">Type of parameter 2.</typeparam>
@@ -893,7 +914,7 @@
             <summary>
             Initializes a new instance of the <see cref="T:Moth.Tasks.FunctionPointerTask`12"/> struct.
             </summary>
-            <param name="action"><see cref="!:delegate*&lt;T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, void&gt;"/> to invoke on <see cref="M:Moth.Tasks.FunctionPointerTask`12.Run"/>.</param>
+            <param name="action">delegate*{T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, void} to invoke on <see cref="M:Moth.Tasks.FunctionPointerTask`12.Run"/>.</param>
             <param name="arg1">Argument 1 to invoke <paramref name="action"/> with.</param>
             <param name="arg2">Argument 2 to invoke <paramref name="action"/> with.</param>
             <param name="arg3">Argument 3 to invoke <paramref name="action"/> with.</param>
@@ -909,12 +930,12 @@
         </member>
         <member name="M:Moth.Tasks.FunctionPointerTask`12.Run">
             <summary>
-            Invokes the encapsulated <see cref="!:delegate*&lt;T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, void&gt;"/> with the provided arguments.
+            Invokes the encapsulated delegate*{T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, void} with the provided arguments.
             </summary>
         </member>
         <member name="T:Moth.Tasks.FunctionPointerTask`13">
             <summary>
-            Task encapsulating an <see cref="!:delegate*&lt;void&gt;"/> with 13 parameters.
+            Task encapsulating a delegate*{T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, void} function pointer.
             </summary>
             <typeparam name="T1">Type of parameter 1.</typeparam>
             <typeparam name="T2">Type of parameter 2.</typeparam>
@@ -934,7 +955,7 @@
             <summary>
             Initializes a new instance of the <see cref="T:Moth.Tasks.FunctionPointerTask`13"/> struct.
             </summary>
-            <param name="action"><see cref="!:delegate*&lt;T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, void&gt;"/> to invoke on <see cref="M:Moth.Tasks.FunctionPointerTask`13.Run"/>.</param>
+            <param name="action">delegate*{T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, void} to invoke on <see cref="M:Moth.Tasks.FunctionPointerTask`13.Run"/>.</param>
             <param name="arg1">Argument 1 to invoke <paramref name="action"/> with.</param>
             <param name="arg2">Argument 2 to invoke <paramref name="action"/> with.</param>
             <param name="arg3">Argument 3 to invoke <paramref name="action"/> with.</param>
@@ -951,12 +972,12 @@
         </member>
         <member name="M:Moth.Tasks.FunctionPointerTask`13.Run">
             <summary>
-            Invokes the encapsulated <see cref="!:delegate*&lt;T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, void&gt;"/> with the provided arguments.
+            Invokes the encapsulated delegate*{T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, void} with the provided arguments.
             </summary>
         </member>
         <member name="T:Moth.Tasks.FunctionPointerTask`14">
             <summary>
-            Task encapsulating an <see cref="!:delegate*&lt;void&gt;"/> with 14 parameters.
+            Task encapsulating a delegate*{T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, void} function pointer.
             </summary>
             <typeparam name="T1">Type of parameter 1.</typeparam>
             <typeparam name="T2">Type of parameter 2.</typeparam>
@@ -977,7 +998,7 @@
             <summary>
             Initializes a new instance of the <see cref="T:Moth.Tasks.FunctionPointerTask`14"/> struct.
             </summary>
-            <param name="action"><see cref="!:delegate*&lt;T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, void&gt;"/> to invoke on <see cref="M:Moth.Tasks.FunctionPointerTask`14.Run"/>.</param>
+            <param name="action">delegate*{T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, void} to invoke on <see cref="M:Moth.Tasks.FunctionPointerTask`14.Run"/>.</param>
             <param name="arg1">Argument 1 to invoke <paramref name="action"/> with.</param>
             <param name="arg2">Argument 2 to invoke <paramref name="action"/> with.</param>
             <param name="arg3">Argument 3 to invoke <paramref name="action"/> with.</param>
@@ -995,12 +1016,12 @@
         </member>
         <member name="M:Moth.Tasks.FunctionPointerTask`14.Run">
             <summary>
-            Invokes the encapsulated <see cref="!:delegate*&lt;T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, void&gt;"/> with the provided arguments.
+            Invokes the encapsulated delegate*{T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, void} with the provided arguments.
             </summary>
         </member>
         <member name="T:Moth.Tasks.FunctionPointerTask`15">
             <summary>
-            Task encapsulating an <see cref="!:delegate*&lt;void&gt;"/> with 15 parameters.
+            Task encapsulating a delegate*{T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, void} function pointer.
             </summary>
             <typeparam name="T1">Type of parameter 1.</typeparam>
             <typeparam name="T2">Type of parameter 2.</typeparam>
@@ -1022,7 +1043,7 @@
             <summary>
             Initializes a new instance of the <see cref="T:Moth.Tasks.FunctionPointerTask`15"/> struct.
             </summary>
-            <param name="action"><see cref="!:delegate*&lt;T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, void&gt;"/> to invoke on <see cref="M:Moth.Tasks.FunctionPointerTask`15.Run"/>.</param>
+            <param name="action">delegate*{T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, void} to invoke on <see cref="M:Moth.Tasks.FunctionPointerTask`15.Run"/>.</param>
             <param name="arg1">Argument 1 to invoke <paramref name="action"/> with.</param>
             <param name="arg2">Argument 2 to invoke <paramref name="action"/> with.</param>
             <param name="arg3">Argument 3 to invoke <paramref name="action"/> with.</param>
@@ -1041,12 +1062,12 @@
         </member>
         <member name="M:Moth.Tasks.FunctionPointerTask`15.Run">
             <summary>
-            Invokes the encapsulated <see cref="!:delegate*&lt;T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, void&gt;"/> with the provided arguments.
+            Invokes the encapsulated delegate*{T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, void} with the provided arguments.
             </summary>
         </member>
         <member name="T:Moth.Tasks.FunctionPointerTask`16">
             <summary>
-            Task encapsulating an <see cref="!:delegate*&lt;void&gt;"/> with 16 parameters.
+            Task encapsulating a delegate*{T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, T16, void} function pointer.
             </summary>
             <typeparam name="T1">Type of parameter 1.</typeparam>
             <typeparam name="T2">Type of parameter 2.</typeparam>
@@ -1069,7 +1090,7 @@
             <summary>
             Initializes a new instance of the <see cref="T:Moth.Tasks.FunctionPointerTask`16"/> struct.
             </summary>
-            <param name="action"><see cref="!:delegate*&lt;T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, T16, void&gt;"/> to invoke on <see cref="M:Moth.Tasks.FunctionPointerTask`16.Run"/>.</param>
+            <param name="action">delegate*{T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, T16, void} to invoke on <see cref="M:Moth.Tasks.FunctionPointerTask`16.Run"/>.</param>
             <param name="arg1">Argument 1 to invoke <paramref name="action"/> with.</param>
             <param name="arg2">Argument 2 to invoke <paramref name="action"/> with.</param>
             <param name="arg3">Argument 3 to invoke <paramref name="action"/> with.</param>
@@ -1089,7 +1110,7 @@
         </member>
         <member name="M:Moth.Tasks.FunctionPointerTask`16.Run">
             <summary>
-            Invokes the encapsulated <see cref="!:delegate*&lt;T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, T16, void&gt;"/> with the provided arguments.
+            Invokes the encapsulated delegate*{T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, T16, void} with the provided arguments.
             </summary>
         </member>
         <member name="T:Moth.Tasks.IProfiler">
@@ -1108,6 +1129,16 @@
             Signals the completion of a task.
             </summary>
         </member>
+        <member name="T:Moth.Tasks.ITask">
+            <summary>
+            Interface for a task taking no arguments.
+            </summary>
+        </member>
+        <member name="M:Moth.Tasks.ITask.Run">
+            <summary>
+            Run the task.
+            </summary>
+        </member>
         <member name="T:Moth.Tasks.ITask`1">
             <summary>
             Interface for a task taking an argument.
@@ -1120,15 +1151,17 @@
             </summary>
             <param name="arg">Task argument.</param>
         </member>
-        <member name="T:Moth.Tasks.ITask">
+        <member name="T:Moth.Tasks.ITask`2">
             <summary>
-            Interface for a task taking no arguments.
+            Interface for a task taking an argument.
             </summary>
+            <typeparam name="TArg">Type of argument to pass to the task.</typeparam>
         </member>
-        <member name="M:Moth.Tasks.ITask.Run">
+        <member name="M:Moth.Tasks.ITask`2.Run(`0)">
             <summary>
             Run the task.
             </summary>
+            <param name="arg">Task argument.</param>
         </member>
         <member name="T:Moth.Tasks.ProfilerProvider">
             <summary>
@@ -1139,6 +1172,25 @@
             <remarks>
             The method does not have to provide a unique <see cref="T:Moth.Tasks.IProfiler"/> for each <see cref="T:Moth.Tasks.IWorker"/>, yet in that case it must be able to differentiate between <see cref="T:Moth.Tasks.IWorker"/>s on its own, so as their calls to <see cref="M:Moth.Tasks.IProfiler.BeginTask(System.String)"/> and <see cref="M:Moth.Tasks.IProfiler.EndTask"/> don't interfere.
             </remarks>
+        </member>
+        <member name="T:Moth.Tasks.TaskCache">
+            <summary>
+            Cache of <see cref="T:Moth.Tasks.ITaskInfo"/>.
+            </summary>
+        </member>
+        <member name="M:Moth.Tasks.TaskCache.GetTask``1">
+            <summary>
+            Get a task by type.
+            </summary>
+            <typeparam name="T">Type of task.</typeparam>
+            <returns><see cref="T:Moth.Tasks.ITaskInfo"/> for <typeparamref name="T"/>.</returns>
+        </member>
+        <member name="M:Moth.Tasks.TaskCache.GetTask(System.Int32)">
+            <summary>
+            Get task by id.
+            </summary>
+            <param name="id">Assigned id of task.</param>
+            <returns><see cref="T:Moth.Tasks.ITaskInfo"/> for <paramref name="id"/>.</returns>
         </member>
         <member name="M:Moth.Tasks.Task.From(System.Action)">
             <summary>
@@ -1152,7 +1204,7 @@
             <summary>
             Create a <see cref="T:Moth.Tasks.DelegateTask`1"/> that encapsulates an action.
             </summary>
-            <returns>A new <see cref="!:&lt;T1&gt;"/> that will invoke the action when run with the supplied arguments.</returns>
+            <returns>A new <see cref="T:Moth.Tasks.DelegateTask`1"/> that will invoke the action when run with the supplied arguments.</returns>
             <param name="action">Action to enqueue.</param>
             <param name="arg1">The 1st argument to run <paramref name="action"/> with.</param>
             <typeparam name="T1">The type of the 1st parameter of <paramref name="action"/>.</typeparam>
@@ -1162,7 +1214,7 @@
             <summary>
             Create a <see cref="T:Moth.Tasks.DelegateTask`2"/> that encapsulates an action.
             </summary>
-            <returns>A new <see cref="!:&lt;T1, T2&gt;"/> that will invoke the action when run with the supplied arguments.</returns>
+            <returns>A new <see cref="T:Moth.Tasks.DelegateTask`2"/> that will invoke the action when run with the supplied arguments.</returns>
             <param name="action">Action to enqueue.</param>
             <param name="arg1">The 1st argument to run <paramref name="action"/> with.</param>
             <param name="arg2">The 2nd argument to run <paramref name="action"/> with.</param>
@@ -1174,7 +1226,7 @@
             <summary>
             Create a <see cref="T:Moth.Tasks.DelegateTask`3"/> that encapsulates an action.
             </summary>
-            <returns>A new <see cref="!:&lt;T1, T2, T3&gt;"/> that will invoke the action when run with the supplied arguments.</returns>
+            <returns>A new <see cref="T:Moth.Tasks.DelegateTask`3"/> that will invoke the action when run with the supplied arguments.</returns>
             <param name="action">Action to enqueue.</param>
             <param name="arg1">The 1st argument to run <paramref name="action"/> with.</param>
             <param name="arg2">The 2nd argument to run <paramref name="action"/> with.</param>
@@ -1188,7 +1240,7 @@
             <summary>
             Create a <see cref="T:Moth.Tasks.DelegateTask`4"/> that encapsulates an action.
             </summary>
-            <returns>A new <see cref="!:&lt;T1, T2, T3, T4&gt;"/> that will invoke the action when run with the supplied arguments.</returns>
+            <returns>A new <see cref="T:Moth.Tasks.DelegateTask`4"/> that will invoke the action when run with the supplied arguments.</returns>
             <param name="action">Action to enqueue.</param>
             <param name="arg1">The 1st argument to run <paramref name="action"/> with.</param>
             <param name="arg2">The 2nd argument to run <paramref name="action"/> with.</param>
@@ -1204,7 +1256,7 @@
             <summary>
             Create a <see cref="T:Moth.Tasks.DelegateTask`5"/> that encapsulates an action.
             </summary>
-            <returns>A new <see cref="!:&lt;T1, T2, T3, T4, T5&gt;"/> that will invoke the action when run with the supplied arguments.</returns>
+            <returns>A new <see cref="T:Moth.Tasks.DelegateTask`5"/> that will invoke the action when run with the supplied arguments.</returns>
             <param name="action">Action to enqueue.</param>
             <param name="arg1">The 1st argument to run <paramref name="action"/> with.</param>
             <param name="arg2">The 2nd argument to run <paramref name="action"/> with.</param>
@@ -1222,7 +1274,7 @@
             <summary>
             Create a <see cref="T:Moth.Tasks.DelegateTask`6"/> that encapsulates an action.
             </summary>
-            <returns>A new <see cref="!:&lt;T1, T2, T3, T4, T5, T6&gt;"/> that will invoke the action when run with the supplied arguments.</returns>
+            <returns>A new <see cref="T:Moth.Tasks.DelegateTask`6"/> that will invoke the action when run with the supplied arguments.</returns>
             <param name="action">Action to enqueue.</param>
             <param name="arg1">The 1st argument to run <paramref name="action"/> with.</param>
             <param name="arg2">The 2nd argument to run <paramref name="action"/> with.</param>
@@ -1242,7 +1294,7 @@
             <summary>
             Create a <see cref="T:Moth.Tasks.DelegateTask`7"/> that encapsulates an action.
             </summary>
-            <returns>A new <see cref="!:&lt;T1, T2, T3, T4, T5, T6, T7&gt;"/> that will invoke the action when run with the supplied arguments.</returns>
+            <returns>A new <see cref="T:Moth.Tasks.DelegateTask`7"/> that will invoke the action when run with the supplied arguments.</returns>
             <param name="action">Action to enqueue.</param>
             <param name="arg1">The 1st argument to run <paramref name="action"/> with.</param>
             <param name="arg2">The 2nd argument to run <paramref name="action"/> with.</param>
@@ -1264,7 +1316,7 @@
             <summary>
             Create a <see cref="T:Moth.Tasks.DelegateTask`8"/> that encapsulates an action.
             </summary>
-            <returns>A new <see cref="!:&lt;T1, T2, T3, T4, T5, T6, T7, T8&gt;"/> that will invoke the action when run with the supplied arguments.</returns>
+            <returns>A new <see cref="T:Moth.Tasks.DelegateTask`8"/> that will invoke the action when run with the supplied arguments.</returns>
             <param name="action">Action to enqueue.</param>
             <param name="arg1">The 1st argument to run <paramref name="action"/> with.</param>
             <param name="arg2">The 2nd argument to run <paramref name="action"/> with.</param>
@@ -1288,7 +1340,7 @@
             <summary>
             Create a <see cref="T:Moth.Tasks.DelegateTask`9"/> that encapsulates an action.
             </summary>
-            <returns>A new <see cref="!:&lt;T1, T2, T3, T4, T5, T6, T7, T8, T9&gt;"/> that will invoke the action when run with the supplied arguments.</returns>
+            <returns>A new <see cref="T:Moth.Tasks.DelegateTask`9"/> that will invoke the action when run with the supplied arguments.</returns>
             <param name="action">Action to enqueue.</param>
             <param name="arg1">The 1st argument to run <paramref name="action"/> with.</param>
             <param name="arg2">The 2nd argument to run <paramref name="action"/> with.</param>
@@ -1314,7 +1366,7 @@
             <summary>
             Create a <see cref="T:Moth.Tasks.DelegateTask`10"/> that encapsulates an action.
             </summary>
-            <returns>A new <see cref="!:&lt;T1, T2, T3, T4, T5, T6, T7, T8, T9, T10&gt;"/> that will invoke the action when run with the supplied arguments.</returns>
+            <returns>A new <see cref="T:Moth.Tasks.DelegateTask`10"/> that will invoke the action when run with the supplied arguments.</returns>
             <param name="action">Action to enqueue.</param>
             <param name="arg1">The 1st argument to run <paramref name="action"/> with.</param>
             <param name="arg2">The 2nd argument to run <paramref name="action"/> with.</param>
@@ -1342,7 +1394,7 @@
             <summary>
             Create a <see cref="T:Moth.Tasks.DelegateTask`11"/> that encapsulates an action.
             </summary>
-            <returns>A new <see cref="!:&lt;T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11&gt;"/> that will invoke the action when run with the supplied arguments.</returns>
+            <returns>A new <see cref="T:Moth.Tasks.DelegateTask`11"/> that will invoke the action when run with the supplied arguments.</returns>
             <param name="action">Action to enqueue.</param>
             <param name="arg1">The 1st argument to run <paramref name="action"/> with.</param>
             <param name="arg2">The 2nd argument to run <paramref name="action"/> with.</param>
@@ -1372,7 +1424,7 @@
             <summary>
             Create a <see cref="T:Moth.Tasks.DelegateTask`12"/> that encapsulates an action.
             </summary>
-            <returns>A new <see cref="!:&lt;T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12&gt;"/> that will invoke the action when run with the supplied arguments.</returns>
+            <returns>A new <see cref="T:Moth.Tasks.DelegateTask`12"/> that will invoke the action when run with the supplied arguments.</returns>
             <param name="action">Action to enqueue.</param>
             <param name="arg1">The 1st argument to run <paramref name="action"/> with.</param>
             <param name="arg2">The 2nd argument to run <paramref name="action"/> with.</param>
@@ -1404,7 +1456,7 @@
             <summary>
             Create a <see cref="T:Moth.Tasks.DelegateTask`13"/> that encapsulates an action.
             </summary>
-            <returns>A new <see cref="!:&lt;T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13&gt;"/> that will invoke the action when run with the supplied arguments.</returns>
+            <returns>A new <see cref="T:Moth.Tasks.DelegateTask`13"/> that will invoke the action when run with the supplied arguments.</returns>
             <param name="action">Action to enqueue.</param>
             <param name="arg1">The 1st argument to run <paramref name="action"/> with.</param>
             <param name="arg2">The 2nd argument to run <paramref name="action"/> with.</param>
@@ -1438,7 +1490,7 @@
             <summary>
             Create a <see cref="T:Moth.Tasks.DelegateTask`14"/> that encapsulates an action.
             </summary>
-            <returns>A new <see cref="!:&lt;T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14&gt;"/> that will invoke the action when run with the supplied arguments.</returns>
+            <returns>A new <see cref="T:Moth.Tasks.DelegateTask`14"/> that will invoke the action when run with the supplied arguments.</returns>
             <param name="action">Action to enqueue.</param>
             <param name="arg1">The 1st argument to run <paramref name="action"/> with.</param>
             <param name="arg2">The 2nd argument to run <paramref name="action"/> with.</param>
@@ -1474,7 +1526,7 @@
             <summary>
             Create a <see cref="T:Moth.Tasks.DelegateTask`15"/> that encapsulates an action.
             </summary>
-            <returns>A new <see cref="!:&lt;T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15&gt;"/> that will invoke the action when run with the supplied arguments.</returns>
+            <returns>A new <see cref="T:Moth.Tasks.DelegateTask`15"/> that will invoke the action when run with the supplied arguments.</returns>
             <param name="action">Action to enqueue.</param>
             <param name="arg1">The 1st argument to run <paramref name="action"/> with.</param>
             <param name="arg2">The 2nd argument to run <paramref name="action"/> with.</param>
@@ -1512,7 +1564,7 @@
             <summary>
             Create a <see cref="T:Moth.Tasks.DelegateTask`16"/> that encapsulates an action.
             </summary>
-            <returns>A new <see cref="!:&lt;T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, T16&gt;"/> that will invoke the action when run with the supplied arguments.</returns>
+            <returns>A new <see cref="T:Moth.Tasks.DelegateTask`16"/> that will invoke the action when run with the supplied arguments.</returns>
             <param name="action">Action to enqueue.</param>
             <param name="arg1">The 1st argument to run <paramref name="action"/> with.</param>
             <param name="arg2">The 2nd argument to run <paramref name="action"/> with.</param>
@@ -1553,7 +1605,7 @@
             <summary>
             Create a <see cref="T:Moth.Tasks.FunctionPointerTask`1"/> that encapsulates an action.
             </summary>
-            <returns>A new <see cref="!:&lt;T1&gt;"/> that will invoke the action when run with the supplied arguments.</returns>
+            <returns>A new <see cref="T:Moth.Tasks.FunctionPointerTask`1"/> that will invoke the action when run with the supplied arguments.</returns>
             <param name="action">Function pointer to enqueue.</param>
             <param name="arg1">The 1st argument to run <paramref name="action"/> with.</param>
             <typeparam name="T1">The type of the 1st parameter of <paramref name="action"/>.</typeparam>
@@ -1563,7 +1615,7 @@
             <summary>
             Create a <see cref="T:Moth.Tasks.FunctionPointerTask`2"/> that encapsulates an action.
             </summary>
-            <returns>A new <see cref="!:&lt;T1, T2&gt;"/> that will invoke the action when run with the supplied arguments.</returns>
+            <returns>A new <see cref="T:Moth.Tasks.FunctionPointerTask`2"/> that will invoke the action when run with the supplied arguments.</returns>
             <param name="action">Function pointer to enqueue.</param>
             <param name="arg1">The 1st argument to run <paramref name="action"/> with.</param>
             <param name="arg2">The 2nd argument to run <paramref name="action"/> with.</param>
@@ -1575,7 +1627,7 @@
             <summary>
             Create a <see cref="T:Moth.Tasks.FunctionPointerTask`3"/> that encapsulates an action.
             </summary>
-            <returns>A new <see cref="!:&lt;T1, T2, T3&gt;"/> that will invoke the action when run with the supplied arguments.</returns>
+            <returns>A new <see cref="T:Moth.Tasks.FunctionPointerTask`3"/> that will invoke the action when run with the supplied arguments.</returns>
             <param name="action">Function pointer to enqueue.</param>
             <param name="arg1">The 1st argument to run <paramref name="action"/> with.</param>
             <param name="arg2">The 2nd argument to run <paramref name="action"/> with.</param>
@@ -1589,7 +1641,7 @@
             <summary>
             Create a <see cref="T:Moth.Tasks.FunctionPointerTask`4"/> that encapsulates an action.
             </summary>
-            <returns>A new <see cref="!:&lt;T1, T2, T3, T4&gt;"/> that will invoke the action when run with the supplied arguments.</returns>
+            <returns>A new <see cref="T:Moth.Tasks.FunctionPointerTask`4"/> that will invoke the action when run with the supplied arguments.</returns>
             <param name="action">Function pointer to enqueue.</param>
             <param name="arg1">The 1st argument to run <paramref name="action"/> with.</param>
             <param name="arg2">The 2nd argument to run <paramref name="action"/> with.</param>
@@ -1605,7 +1657,7 @@
             <summary>
             Create a <see cref="T:Moth.Tasks.FunctionPointerTask`5"/> that encapsulates an action.
             </summary>
-            <returns>A new <see cref="!:&lt;T1, T2, T3, T4, T5&gt;"/> that will invoke the action when run with the supplied arguments.</returns>
+            <returns>A new <see cref="T:Moth.Tasks.FunctionPointerTask`5"/> that will invoke the action when run with the supplied arguments.</returns>
             <param name="action">Function pointer to enqueue.</param>
             <param name="arg1">The 1st argument to run <paramref name="action"/> with.</param>
             <param name="arg2">The 2nd argument to run <paramref name="action"/> with.</param>
@@ -1623,7 +1675,7 @@
             <summary>
             Create a <see cref="T:Moth.Tasks.FunctionPointerTask`6"/> that encapsulates an action.
             </summary>
-            <returns>A new <see cref="!:&lt;T1, T2, T3, T4, T5, T6&gt;"/> that will invoke the action when run with the supplied arguments.</returns>
+            <returns>A new <see cref="T:Moth.Tasks.FunctionPointerTask`6"/> that will invoke the action when run with the supplied arguments.</returns>
             <param name="action">Function pointer to enqueue.</param>
             <param name="arg1">The 1st argument to run <paramref name="action"/> with.</param>
             <param name="arg2">The 2nd argument to run <paramref name="action"/> with.</param>
@@ -1643,7 +1695,7 @@
             <summary>
             Create a <see cref="T:Moth.Tasks.FunctionPointerTask`7"/> that encapsulates an action.
             </summary>
-            <returns>A new <see cref="!:&lt;T1, T2, T3, T4, T5, T6, T7&gt;"/> that will invoke the action when run with the supplied arguments.</returns>
+            <returns>A new <see cref="T:Moth.Tasks.FunctionPointerTask`7"/> that will invoke the action when run with the supplied arguments.</returns>
             <param name="action">Function pointer to enqueue.</param>
             <param name="arg1">The 1st argument to run <paramref name="action"/> with.</param>
             <param name="arg2">The 2nd argument to run <paramref name="action"/> with.</param>
@@ -1665,7 +1717,7 @@
             <summary>
             Create a <see cref="T:Moth.Tasks.FunctionPointerTask`8"/> that encapsulates an action.
             </summary>
-            <returns>A new <see cref="!:&lt;T1, T2, T3, T4, T5, T6, T7, T8&gt;"/> that will invoke the action when run with the supplied arguments.</returns>
+            <returns>A new <see cref="T:Moth.Tasks.FunctionPointerTask`8"/> that will invoke the action when run with the supplied arguments.</returns>
             <param name="action">Function pointer to enqueue.</param>
             <param name="arg1">The 1st argument to run <paramref name="action"/> with.</param>
             <param name="arg2">The 2nd argument to run <paramref name="action"/> with.</param>
@@ -1689,7 +1741,7 @@
             <summary>
             Create a <see cref="T:Moth.Tasks.FunctionPointerTask`9"/> that encapsulates an action.
             </summary>
-            <returns>A new <see cref="!:&lt;T1, T2, T3, T4, T5, T6, T7, T8, T9&gt;"/> that will invoke the action when run with the supplied arguments.</returns>
+            <returns>A new <see cref="T:Moth.Tasks.FunctionPointerTask`9"/> that will invoke the action when run with the supplied arguments.</returns>
             <param name="action">Function pointer to enqueue.</param>
             <param name="arg1">The 1st argument to run <paramref name="action"/> with.</param>
             <param name="arg2">The 2nd argument to run <paramref name="action"/> with.</param>
@@ -1715,7 +1767,7 @@
             <summary>
             Create a <see cref="T:Moth.Tasks.FunctionPointerTask`10"/> that encapsulates an action.
             </summary>
-            <returns>A new <see cref="!:&lt;T1, T2, T3, T4, T5, T6, T7, T8, T9, T10&gt;"/> that will invoke the action when run with the supplied arguments.</returns>
+            <returns>A new <see cref="T:Moth.Tasks.FunctionPointerTask`10"/> that will invoke the action when run with the supplied arguments.</returns>
             <param name="action">Function pointer to enqueue.</param>
             <param name="arg1">The 1st argument to run <paramref name="action"/> with.</param>
             <param name="arg2">The 2nd argument to run <paramref name="action"/> with.</param>
@@ -1743,7 +1795,7 @@
             <summary>
             Create a <see cref="T:Moth.Tasks.FunctionPointerTask`11"/> that encapsulates an action.
             </summary>
-            <returns>A new <see cref="!:&lt;T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11&gt;"/> that will invoke the action when run with the supplied arguments.</returns>
+            <returns>A new <see cref="T:Moth.Tasks.FunctionPointerTask`11"/> that will invoke the action when run with the supplied arguments.</returns>
             <param name="action">Function pointer to enqueue.</param>
             <param name="arg1">The 1st argument to run <paramref name="action"/> with.</param>
             <param name="arg2">The 2nd argument to run <paramref name="action"/> with.</param>
@@ -1773,7 +1825,7 @@
             <summary>
             Create a <see cref="T:Moth.Tasks.FunctionPointerTask`12"/> that encapsulates an action.
             </summary>
-            <returns>A new <see cref="!:&lt;T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12&gt;"/> that will invoke the action when run with the supplied arguments.</returns>
+            <returns>A new <see cref="T:Moth.Tasks.FunctionPointerTask`12"/> that will invoke the action when run with the supplied arguments.</returns>
             <param name="action">Function pointer to enqueue.</param>
             <param name="arg1">The 1st argument to run <paramref name="action"/> with.</param>
             <param name="arg2">The 2nd argument to run <paramref name="action"/> with.</param>
@@ -1805,7 +1857,7 @@
             <summary>
             Create a <see cref="T:Moth.Tasks.FunctionPointerTask`13"/> that encapsulates an action.
             </summary>
-            <returns>A new <see cref="!:&lt;T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13&gt;"/> that will invoke the action when run with the supplied arguments.</returns>
+            <returns>A new <see cref="T:Moth.Tasks.FunctionPointerTask`13"/> that will invoke the action when run with the supplied arguments.</returns>
             <param name="action">Function pointer to enqueue.</param>
             <param name="arg1">The 1st argument to run <paramref name="action"/> with.</param>
             <param name="arg2">The 2nd argument to run <paramref name="action"/> with.</param>
@@ -1839,7 +1891,7 @@
             <summary>
             Create a <see cref="T:Moth.Tasks.FunctionPointerTask`14"/> that encapsulates an action.
             </summary>
-            <returns>A new <see cref="!:&lt;T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14&gt;"/> that will invoke the action when run with the supplied arguments.</returns>
+            <returns>A new <see cref="T:Moth.Tasks.FunctionPointerTask`14"/> that will invoke the action when run with the supplied arguments.</returns>
             <param name="action">Function pointer to enqueue.</param>
             <param name="arg1">The 1st argument to run <paramref name="action"/> with.</param>
             <param name="arg2">The 2nd argument to run <paramref name="action"/> with.</param>
@@ -1875,7 +1927,7 @@
             <summary>
             Create a <see cref="T:Moth.Tasks.FunctionPointerTask`15"/> that encapsulates an action.
             </summary>
-            <returns>A new <see cref="!:&lt;T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15&gt;"/> that will invoke the action when run with the supplied arguments.</returns>
+            <returns>A new <see cref="T:Moth.Tasks.FunctionPointerTask`15"/> that will invoke the action when run with the supplied arguments.</returns>
             <param name="action">Function pointer to enqueue.</param>
             <param name="arg1">The 1st argument to run <paramref name="action"/> with.</param>
             <param name="arg2">The 2nd argument to run <paramref name="action"/> with.</param>
@@ -1913,7 +1965,7 @@
             <summary>
             Create a <see cref="T:Moth.Tasks.FunctionPointerTask`16"/> that encapsulates an action.
             </summary>
-            <returns>A new <see cref="!:&lt;T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, T16&gt;"/> that will invoke the action when run with the supplied arguments.</returns>
+            <returns>A new <see cref="T:Moth.Tasks.FunctionPointerTask`16"/> that will invoke the action when run with the supplied arguments.</returns>
             <param name="action">Function pointer to enqueue.</param>
             <param name="arg1">The 1st argument to run <paramref name="action"/> with.</param>
             <param name="arg2">The 2nd argument to run <paramref name="action"/> with.</param>
@@ -1948,25 +2000,6 @@
             <typeparam name="T15">The type of the 15th parameter of <paramref name="action"/>.</typeparam>
             <typeparam name="T16">The type of the 16th parameter of <paramref name="action"/>.</typeparam>
             <exception cref="T:System.ArgumentNullException"><paramref name="action"/> is <see langword="null"/>.</exception>
-        </member>
-        <member name="T:Moth.Tasks.TaskCache">
-            <summary>
-            Cache of <see cref="T:Moth.Tasks.ITaskInfo"/>.
-            </summary>
-        </member>
-        <member name="M:Moth.Tasks.TaskCache.GetTask``1">
-            <summary>
-            Get a task by type.
-            </summary>
-            <typeparam name="T">Type of task.</typeparam>
-            <returns><see cref="T:Moth.Tasks.ITaskInfo"/> for <typeparamref name="T"/>.</returns>
-        </member>
-        <member name="M:Moth.Tasks.TaskCache.GetTask(System.Int32)">
-            <summary>
-            Get task by id.
-            </summary>
-            <param name="id">Assigned id of task.</param>
-            <returns><see cref="T:Moth.Tasks.TaskInfo"/> for <paramref name="id"/>.</returns>
         </member>
         <member name="T:Moth.Tasks.TaskExceptionEventArgs">
             <summary>
@@ -2071,7 +2104,7 @@
         </member>
         <member name="M:Moth.Tasks.TaskHandleManager.NotifyTaskCompletion(System.Int32)">
             <summary>
-            Used by <see cref="T:Moth.Tasks.TaskWithHandle`1"/> to notify callers of <see cref="M:Moth.Tasks.TaskHandleManager.WaitForCompletion(System.Int32,System.Int32)"/> that the task is done.
+            Used by <see cref="!:TaskWithHandle&lt;T&gt;"/> to notify callers of <see cref="M:Moth.Tasks.TaskHandleManager.WaitForCompletion(System.Int32,System.Int32)"/> that the task is done.
             </summary>
             <param name="handleID">ID of handle.</param>
         </member>
@@ -2116,63 +2149,27 @@
             Gets whether the task contains reference types.
             </summary>
         </member>
-        <member name="M:Moth.Tasks.TaskQueue`1.Enqueue``1(``0@)">
+        <member name="M:Moth.Tasks.TaskQueue.#ctor">
             <summary>
-            Enqueue an <see cref="T:Moth.Tasks.ITask"/> to be run later.
+            Initializes a new instance of the <see cref="T:Moth.Tasks.TaskQueue"/> class.
             </summary>
-            <typeparam name="T">Type of task to run.</typeparam>
-            <param name="task">Task data.</param>
-            <exception cref="T:System.ObjectDisposedException">The <see cref="T:Moth.Tasks.TaskQueue"/> has been disposed.</exception>
         </member>
-        <member name="M:Moth.Tasks.TaskQueue`1.Enqueue``1(``0@,Moth.Tasks.TaskHandle@)">
+        <member name="M:Moth.Tasks.TaskQueue.#ctor(System.Int32,System.Int32,Moth.Tasks.ITaskCache)">
             <summary>
-            Enqueue an <see cref="T:Moth.Tasks.ITask"/> to be run later, giving out a <see cref="T:Moth.Tasks.TaskHandle"/> for checking task status.
+            Initializes a new instance of the <see cref="T:Moth.Tasks.TaskQueue"/> class.
             </summary>
-            <typeparam name="TTask">Type of task to run.</typeparam>
-            <param name="task">Task data.</param>
-            <param name="handle"><see cref="T:Moth.Tasks.TaskHandle"/> for checking task status.</param>
-            <exception cref="T:System.ObjectDisposedException">The <see cref="T:Moth.Tasks.TaskQueue"/> has been disposed.</exception>
+            <param name="taskCapacity">Starting capacity for the internal task queue in no. of tasks.</param>
+            <param name="dataCapacity">Starting capacity for the internal task data array in bytes.</param>
+            <param name="taskCache">Optional <see cref="T:Moth.Tasks.ITaskCache"/> for caching task types.</param>
         </member>
-        <member name="M:Moth.Tasks.TaskQueue`1.RunNextTask(`0,Moth.Tasks.IProfiler,System.Threading.CancellationToken)">
+        <member name="M:Moth.Tasks.TaskQueue.Finalize">
             <summary>
-            Blocks until a task is ready in the queue, then runs it.
+            Finalizes an instance of the <see cref="T:Moth.Tasks.TaskQueue"/> class. Also disposes of any enqueued tasks implementing <see cref="M:System.IDisposable.Dispose"/>.
             </summary>
-            <param name="profiler"><see cref="T:Moth.Tasks.IProfiler"/> to profile the run-time of the task.</param>
-            <param name="token">A <see cref="T:System.Threading.CancellationToken"/> to observe when waiting for a task. Does not cancel actual task execution.</param>
         </member>
-        <member name="M:Moth.Tasks.TaskQueue`1.RunNextTask(`0,System.Exception@,Moth.Tasks.IProfiler,System.Threading.CancellationToken)">
+        <member name="P:Moth.Tasks.TaskQueue.Count">
             <summary>
-            Blocks until a task is ready in the queue, then runs it.
-            </summary>
-            <param name="exception"><see cref="T:System.Exception"/> thrown if task failed. Is <see langword="null"/> if task was run successfully.</param>
-            <param name="profiler"><see cref="T:Moth.Tasks.IProfiler"/> to profile the run-time of the task.</param>
-            <param name="token">A <see cref="T:System.Threading.CancellationToken"/> to observe when waiting for a task. Does not cancel actual task execution.</param>
-        </member>
-        <member name="M:Moth.Tasks.TaskQueue`1.TryRunNextTask(`0,Moth.Tasks.IProfiler)">
-            <summary>
-            Tries to run the next task in the queue, if present. May also perform profiling on the task through an <see cref="T:Moth.Tasks.IProfiler"/>.
-            </summary>
-            <param name="profiler"><see cref="T:Moth.Tasks.IProfiler"/> to profile the run-time of the task.</param>
-            <returns><see langword="true"/> if a task was run, <see langword="false"/> if the <see cref="T:Moth.Tasks.TaskQueue"/> is empty.</returns>
-            <remarks>
-            Please note that the return value does not indicate if a task was successful. The method will return <see langword="true"/> if a task was ready in the queue, regardless of whether an exception occured.
-            </remarks>
-        </member>
-        <member name="M:Moth.Tasks.TaskQueue`1.TryRunNextTask(`0,System.Exception@,Moth.Tasks.IProfiler)">
-            <summary>
-            Tries to run the next task in the queue, if present. Provides an <see cref="T:System.Exception"/> thrown by the task, in case it fails.
-            May also perform profiling on the task through an <see cref="T:Moth.Tasks.IProfiler"/>.
-            </summary>
-            <param name="exception"><see cref="T:System.Exception"/> thrown if task failed. Is <see langword="null"/> if task was run successfully.</param>
-            <param name="profiler"><see cref="T:Moth.Tasks.IProfiler"/> to profile the run-time of the task.</param>
-            <returns><see langword="true"/> if a task was run, <see langword="false"/> if the <see cref="T:Moth.Tasks.TaskQueue"/> is empty.</returns>
-            <remarks>
-            Please note that the return value does not indicate if a task was successful. The method will return <see langword="true"/> if a task was ready in the queue, regardless of whether an exception occured.
-            </remarks>
-        </member>
-        <member name="T:Moth.Tasks.TaskQueue">
-            <summary>
-            A queue of tasks, which can be run in FIFO order.
+            The number of tasks currently enqueued.
             </summary>
         </member>
         <member name="M:Moth.Tasks.TaskQueue.Enqueue``1(``0@)">
@@ -2229,29 +2226,7 @@
             Please note that the return value does not indicate if a task was successful. The method will return <see langword="true"/> if a task was ready in the queue, regardless of whether an exception occured.
             </remarks>
         </member>
-        <member name="M:Moth.Tasks.TaskQueueBase.#ctor">
-            <summary>
-            Initializes a new instance of the <see cref="T:Moth.Tasks.TaskQueueBase"/> class.
-            </summary>
-        </member>
-        <member name="M:Moth.Tasks.TaskQueueBase.#ctor(System.Int32,System.Int32)">
-            <summary>
-            Initializes a new instance of the <see cref="T:Moth.Tasks.TaskQueueBase"/> class.
-            </summary>
-            <param name="taskCapacity">Starting capacity for the internal task queue.</param>
-            <param name="dataCapacity">Starting capacity for the internal task data array.</param>
-        </member>
-        <member name="M:Moth.Tasks.TaskQueueBase.Finalize">
-            <summary>
-            Finalizes an instance of the <see cref="T:Moth.Tasks.TaskQueueBase"/> class. Also disposes of any enqueued tasks implementing <see cref="M:System.IDisposable.Dispose"/>.
-            </summary>
-        </member>
-        <member name="P:Moth.Tasks.TaskQueueBase.Count">
-            <summary>
-            The number of tasks currently enqueued.
-            </summary>
-        </member>
-        <member name="M:Moth.Tasks.TaskQueueBase.Clear(System.Action{System.Exception})">
+        <member name="M:Moth.Tasks.TaskQueue.Clear(System.Action{System.Exception})">
             <summary>
             Removes all pending tasks from the queue. Also calls <see cref="M:System.IDisposable.Dispose"/> on tasks which implement the method.
             </summary>
@@ -2260,7 +2235,7 @@
             As the method iterates through all tasks in the queue and calls <see cref="M:System.IDisposable.Dispose"/> on tasks, it can hang for an unknown amount of time. If an exception is thrown in an <see cref="M:System.IDisposable.Dispose"/> call, the method continues on with disposing the remaining tasks.
             </remarks>
         </member>
-        <member name="M:Moth.Tasks.TaskQueueBase.Dispose">
+        <member name="M:Moth.Tasks.TaskQueue.Dispose">
             <summary>
             Disposes all tasks which implements <see cref="T:System.IDisposable"/>.
             </summary>
@@ -2268,16 +2243,16 @@
             As the method iterates through all tasks in the queue and calls <see cref="M:System.IDisposable.Dispose"/> on tasks, it can hang for an unknown amount of time. If an exception is thrown in an <see cref="M:System.IDisposable.Dispose"/> call, the method continues on with disposing the remaining tasks.
             </remarks>
         </member>
-        <member name="M:Moth.Tasks.TaskQueueBase.Dispose(System.Boolean)">
+        <member name="M:Moth.Tasks.TaskQueue.Dispose(System.Boolean)">
             <summary>
             Disposes all tasks which implements <see cref="T:System.IDisposable"/>.
             </summary>
             <remarks>
             As the method iterates through all tasks in the queue and calls <see cref="M:System.IDisposable.Dispose"/> on tasks, it can hang for an unknown amount of time. If an exception is thrown in an <see cref="M:System.IDisposable.Dispose"/> call, the method continues on with disposing the remaining tasks.
             </remarks>
-            <param name="disposing"><see langword="true"/> if called from <see cref="M:Moth.Tasks.TaskQueueBase.Dispose"/>, <see langword="false"/> if called from finalizer.</param>
+            <param name="disposing"><see langword="true"/> if called from <see cref="M:Moth.Tasks.TaskQueue.Dispose"/>, <see langword="false"/> if called from finalizer.</param>
         </member>
-        <member name="M:Moth.Tasks.TaskQueueBase.EnqueueTask``1(``0@)">
+        <member name="M:Moth.Tasks.TaskQueue.EnqueueTask``1(``0@)">
             <summary>
             Enqueue an <see cref="T:Moth.Tasks.ITask"/> to be run later.
             </summary>
@@ -2285,31 +2260,31 @@
             <param name="task">Task data.</param>
             <exception cref="T:System.ObjectDisposedException">The <see cref="T:Moth.Tasks.TaskQueue"/> has been disposed.</exception>
         </member>
-        <member name="T:Moth.Tasks.TaskQueueBase.TaskDataAccess">
+        <member name="T:Moth.Tasks.TaskQueue.TaskDataAccess">
             <summary>
             Provides a way for a task to access its data while locking the <see cref="T:Moth.Tasks.TaskQueue"/>.
             </summary>
         </member>
-        <member name="M:Moth.Tasks.TaskQueueBase.TaskDataAccess.#ctor(Moth.Tasks.TaskQueueBase)">
+        <member name="M:Moth.Tasks.TaskQueue.TaskDataAccess.#ctor(Moth.Tasks.TaskQueue,System.Boolean*,System.Boolean)">
             <summary>
-            Initializes a new instance of the <see cref="T:Moth.Tasks.TaskQueueBase.TaskDataAccess"/> struct. Locks the <see cref="T:Moth.Tasks.TaskQueue"/>.
+            Initializes a new instance of the <see cref="T:Moth.Tasks.TaskQueue.TaskDataAccess"/> struct. Locks the <see cref="T:Moth.Tasks.TaskQueue"/>.
             </summary>
             <param name="queue">Reference to the queue.</param>
         </member>
-        <member name="P:Moth.Tasks.TaskQueueBase.TaskDataAccess.Disposed">
+        <member name="P:Moth.Tasks.TaskQueue.TaskDataAccess.Disposed">
             <summary>
             Gets a value indicating whether the lock is still held.
             </summary>
         </member>
-        <member name="M:Moth.Tasks.TaskQueueBase.TaskDataAccess.GetNextTaskData``1(Moth.Tasks.ITaskInfo{``0})">
+        <member name="M:Moth.Tasks.TaskQueue.TaskDataAccess.GetNextTaskData``1(Moth.Tasks.ITaskInfo{``0})">
             <summary>
             Fetches next data of a task.
             </summary>
-            <typeparam name="T">Type of task.</typeparam>
-            <param name="task">TaskInfo of task.</param>
+            <typeparam name="TTask">Type of task.</typeparam>
+            <param name="taskInfo">TaskInfo of task.</param>
             <returns>Task data.</returns>
         </member>
-        <member name="M:Moth.Tasks.TaskQueueBase.TaskDataAccess.Dispose">
+        <member name="M:Moth.Tasks.TaskQueue.TaskDataAccess.Dispose">
             <summary>
             Exits the lock.
             </summary>
@@ -3176,102 +3151,26 @@
             <exception cref="T:System.ArgumentNullException"><paramref name="action"/> is <see langword="null"/>.</exception>
             <exception cref="T:System.ObjectDisposedException">The <see cref="T:Moth.Tasks.ITaskQueue"/> has been disposed.</exception>
         </member>
-        <member name="T:Moth.Tasks.TaskHandleData`1">
-            <summary>
-            Encapsulates a task enqueued with a <see cref="T:Moth.Tasks.TaskHandle"/>.
-            </summary>
-            <typeparam name="TTask">Type of task.</typeparam>
-        </member>
-        <member name="M:Moth.Tasks.TaskHandleData`1.#ctor(`0@,Moth.Tasks.TaskHandle)">
-            <summary>
-            Initializes a new instance of the <see cref="T:Moth.Tasks.TaskHandleData`1"/> struct.
-            </summary>
-            <param name="task">Task data.</param>
-            <param name="handle">Task handle.</param>
-        </member>
-        <member name="T:Moth.Tasks.TaskWithHandle`1">
-            <summary>
-            Encapsulates a task enqueued with a <see cref="T:Moth.Tasks.TaskHandle"/>.
-            </summary>
-            <typeparam name="TTask">Type of task.</typeparam>
-        </member>
-        <member name="M:Moth.Tasks.TaskWithHandle`1.#ctor(`0@,Moth.Tasks.TaskHandle)">
-            <summary>
-            Initializes a new instance of the <see cref="T:Moth.Tasks.TaskWithHandle`1"/> struct.
-            </summary>
-            <param name="task">Task data.</param>
-            <param name="handle">Task handle.</param>
-        </member>
-        <member name="M:Moth.Tasks.TaskWithHandle`1.Run">
-            <inheritdoc/>
-        </member>
-        <member name="M:Moth.Tasks.TaskWithHandle`1.Dispose">
-            <summary>
-            Notify handle that task was completed.
-            </summary>
-        </member>
-        <member name="T:Moth.Tasks.TaskWithHandle`2">
+        <member name="T:Moth.Tasks.TaskWithHandle`3">
             <summary>
             Encapsulates a task enqueued with a <see cref="T:Moth.Tasks.TaskHandle"/>.
             </summary>
             <typeparam name="TTask">Type of task.</typeparam>
             <typeparam name="TArg">Type of task argument.</typeparam>
         </member>
-        <member name="M:Moth.Tasks.TaskWithHandle`2.#ctor(`0@,Moth.Tasks.TaskHandle)">
+        <member name="M:Moth.Tasks.TaskWithHandle`3.#ctor(`0@,Moth.Tasks.TaskHandle)">
             <summary>
-            Initializes a new instance of the <see cref="T:Moth.Tasks.TaskWithHandle`1"/> struct.
+            Initializes a new instance of the <see cref="T:Moth.Tasks.TaskWithHandle`3"/> struct.
             </summary>
             <param name="task">Task data.</param>
             <param name="handle">Task handle.</param>
         </member>
-        <member name="M:Moth.Tasks.TaskWithHandle`2.Run(`1)">
+        <member name="M:Moth.Tasks.TaskWithHandle`3.Run(`1)">
             <inheritdoc/>
         </member>
-        <member name="M:Moth.Tasks.TaskWithHandle`2.Dispose">
+        <member name="M:Moth.Tasks.TaskWithHandle`3.Dispose">
             <summary>
             Notify handle that task was completed.
-            </summary>
-        </member>
-        <member name="T:Moth.Tasks.DisposableTaskWithHandle`1">
-            <summary>
-            Encapsulates a task which implements <see cref="T:System.IDisposable"/>, enqueued with a <see cref="T:Moth.Tasks.TaskHandle"/>.
-            </summary>
-            <typeparam name="TTask">Type of task.</typeparam>
-        </member>
-        <member name="M:Moth.Tasks.DisposableTaskWithHandle`1.#ctor(`0@,Moth.Tasks.TaskHandle)">
-            <summary>
-            Initializes a new instance of the <see cref="T:Moth.Tasks.DisposableTaskWithHandle`1"/> struct.
-            </summary>
-            <param name="task">Task data.</param>
-            <param name="handle">Task handle.</param>
-        </member>
-        <member name="M:Moth.Tasks.DisposableTaskWithHandle`1.Run">
-            <inheritdoc/>
-        </member>
-        <member name="M:Moth.Tasks.DisposableTaskWithHandle`1.Dispose">
-            <summary>
-            Dispose of encapsulated task, and notify handle that task was completed.
-            </summary>
-        </member>
-        <member name="T:Moth.Tasks.DisposableTaskWithHandle`2">
-            <summary>
-            Encapsulates a task which implements <see cref="T:System.IDisposable"/>, enqueued with a <see cref="T:Moth.Tasks.TaskHandle"/>.
-            </summary>
-            <typeparam name="TTask">Type of task.</typeparam>
-        </member>
-        <member name="M:Moth.Tasks.DisposableTaskWithHandle`2.#ctor(`0@,Moth.Tasks.TaskHandle)">
-            <summary>
-            Initializes a new instance of the <see cref="T:Moth.Tasks.DisposableTaskWithHandle`2"/> struct.
-            </summary>
-            <param name="task">Task data.</param>
-            <param name="handle">Task handle.</param>
-        </member>
-        <member name="M:Moth.Tasks.DisposableTaskWithHandle`2.Run(`1)">
-            <inheritdoc/>
-        </member>
-        <member name="M:Moth.Tasks.DisposableTaskWithHandle`2.Dispose">
-            <summary>
-            Dispose of encapsulated task, and notify handle that task was completed.
             </summary>
         </member>
         <member name="T:Moth.Tasks.Worker">
