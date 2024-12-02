@@ -7,6 +7,8 @@
 
     public static class TaskInfo
     {
+        public static readonly TaskInfoProvider Provider = new TaskInfoProvider (Format.Provider);
+
         /// <summary>
         /// Creates a new TaskInfo from a type and ID.
         /// </summary>
@@ -15,68 +17,7 @@
         /// <returns>A new TaskInfo representing the task <typeparamref name="T"/>.</returns>
         internal static unsafe ITaskInfo<TTask> Create<TTask> (int id)
              where TTask : struct, ITaskType
-        {
-            Type type = typeof (TTask);
-
-            bool isDisposable = false;
-            Type interfaceType = null;
-
-            foreach (Type i in type.GetInterfaces ())
-            {
-                if (i == typeof (IDisposable))
-                {
-                    isDisposable = true;
-                } else if (i == typeof (ITask))
-                {
-                    interfaceType = i;
-                } else if (i.IsGenericType && (i.GetGenericTypeDefinition () == typeof (ITask<>) || i.GetGenericTypeDefinition () == typeof (ITask<,>)))
-                {
-                    if (interfaceType != null)
-                        throw new InvalidOperationException ("Task type is ambiguous.");
-
-                    interfaceType = i;
-                }
-            }
-
-            if (interfaceType == null)
-                throw new InvalidOperationException ("Task type does not implement ITask or its generic variants.");
-
-            Type taskInfoType;
-
-            if (isDisposable)
-            {
-                if (interfaceType == typeof (ITask))
-                {
-                    taskInfoType = typeof (DisposableTaskInfo<>).MakeGenericType (type);
-                } else if (interfaceType.GetGenericTypeDefinition () == typeof (ITask<>))
-                {
-                    taskInfoType = typeof (DisposableTaskInfo<,>).MakeGenericType (interfaceType.GetGenericArguments ().Prepend (type).ToArray ());
-                } else if (interfaceType.GetGenericTypeDefinition () == typeof (ITask<,>))
-                {
-                    taskInfoType = typeof (DisposableTaskInfo<,,>).MakeGenericType (interfaceType.GetGenericArguments ().Prepend (type).ToArray ());
-                } else
-                {
-                    throw new NotImplementedException ();
-                }
-            } else
-            {
-                if (interfaceType == typeof (ITask))
-                {
-                    taskInfoType = typeof (TaskInfo<>).MakeGenericType (type);
-                } else if (interfaceType.GetGenericTypeDefinition () == typeof (ITask<>))
-                {
-                    taskInfoType = typeof (TaskInfo<,>).MakeGenericType (interfaceType.GetGenericArguments ().Prepend (type).ToArray ());
-                } else if (interfaceType.GetGenericTypeDefinition () == typeof (ITask<,>))
-                {
-                    taskInfoType = typeof (TaskInfo<,,>).MakeGenericType (interfaceType.GetGenericArguments ().Prepend (type).ToArray ());
-                } else
-                {
-                    throw new NotImplementedException ();
-                }
-            }
-
-            return (ITaskInfo<TTask>)Activator.CreateInstance (taskInfoType, id);
-        }
+            => Provider.Create<TTask> (id);
     }
 
     public interface ITaskInfo
@@ -126,16 +67,16 @@
     public abstract class TaskInfoBase<TTask> : ITaskInfo<TTask>
         where TTask : struct, ITaskType
     {
-        private Format<TTask> taskFormat;
+        private readonly IFormat<TTask> taskFormat;
 
-        protected TaskInfoBase (int id)
+        protected TaskInfoBase (int id, IFormat<TTask> taskFormat)
         {
             ID = id;
             Type = typeof (TTask);
 
-            taskFormat = (Format<TTask>)Formats.Get<TTask> ();
+            this.taskFormat = taskFormat;
 
-            if (taskFormat is VariableFormat<TTask> varFormat)
+            if (taskFormat is IVariableFormat<TTask> varFormat)
             {
                 // Count all references in format
                 Span<byte> tmpTaskData = stackalloc byte[varFormat.MinSize];
@@ -200,8 +141,8 @@
     internal class TaskInfo<TTask> : TaskInfoBase<TTask>, IRunnableTaskInfo
         where TTask : struct, ITask
     {
-        public TaskInfo (int id)
-            : base (id) { }
+        public TaskInfo (int id, IFormat<TTask> taskFormat)
+            : base (id, taskFormat) { }
 
         public override bool IsDisposable => false;
 
@@ -215,8 +156,8 @@
     internal class TaskInfo<TTask, TArg> : TaskInfoBase<TTask>, IRunnableTaskInfo<TArg>
         where TTask : struct, ITask<TArg>
     {
-        public TaskInfo (int id)
-            : base (id) { }
+        public TaskInfo (int id, IFormat<TTask> taskFormat)
+            : base (id, taskFormat) { }
 
         public override bool IsDisposable => false;
 
@@ -232,8 +173,8 @@
     internal class TaskInfo<TTask, TArg, TResult> : TaskInfoBase<TTask>, IRunnableTaskInfo<TArg, TResult>
         where TTask : struct, ITask<TArg, TResult>
     {
-        public TaskInfo (int id)
-            : base (id) { }
+        public TaskInfo (int id, IFormat<TTask> taskFormat)
+            : base (id, taskFormat) { }
 
         public override bool IsDisposable => false;
 
@@ -256,8 +197,8 @@
     internal abstract class DisposableTaskInfoBase<TTask> : TaskInfoBase<TTask>, IDisposableTaskInfo
         where TTask : struct, ITaskType, IDisposable
     {
-        protected DisposableTaskInfoBase (int id)
-            : base (id) { }
+        protected DisposableTaskInfoBase (int id, IFormat<TTask> taskFormat)
+            : base (id, taskFormat) { }
 
         public override bool IsDisposable => true;
 
@@ -267,8 +208,8 @@
     internal class DisposableTaskInfo<TTask> : DisposableTaskInfoBase<TTask>, IRunnableTaskInfo
         where TTask : struct, ITask, IDisposable
     {
-        public DisposableTaskInfo (int id)
-            : base (id) { }
+        public DisposableTaskInfo (int id, IFormat<TTask> taskFormat)
+            : base (id, taskFormat) { }
 
         public override bool HasArgs => false;
 
@@ -292,12 +233,12 @@
     internal class DisposableTaskInfo<TTask, TArg> : DisposableTaskInfoBase<TTask>, IRunnableTaskInfo<TArg>
         where TTask : struct, ITask<TArg>, IDisposable
     {
-        public DisposableTaskInfo (int id)
-            : base (id) { }
+        public DisposableTaskInfo (int id, IFormat<TTask> taskFormat)
+            : base (id, taskFormat) { }
 
         public override bool HasArgs => true;
 
-        public override bool HasResult => true;
+        public override bool HasResult => false;
 
         public void Run (TaskQueue.TaskDataAccess access)
         {
@@ -329,8 +270,8 @@
     internal class DisposableTaskInfo<TTask, TArg, TResult> : DisposableTaskInfoBase<TTask>, IRunnableTaskInfo<TArg, TResult>
         where TTask : struct, ITask<TArg, TResult>, IDisposable
     {
-        public DisposableTaskInfo (int id)
-            : base (id) { }
+        public DisposableTaskInfo (int id, IFormat<TTask> taskFormat)
+            : base (id, taskFormat) { }
 
         public override bool HasArgs => true;
 

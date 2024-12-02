@@ -1178,6 +1178,18 @@
             Cache of <see cref="T:Moth.Tasks.ITaskInfo"/>.
             </summary>
         </member>
+        <member name="M:Moth.Tasks.TaskCache.#ctor">
+            <summary>
+            Initializes a new instance of the <see cref="T:Moth.Tasks.TaskCache"/> class, using <see cref="F:Moth.Tasks.TaskInfo.Provider"/> as <see cref="T:Moth.Tasks.ITaskInfoProvider"/>.
+            </summary>
+        </member>
+        <member name="M:Moth.Tasks.TaskCache.#ctor(Moth.Tasks.ITaskInfoProvider)">
+            <summary>
+            Initializes a new instance of the <see cref="T:Moth.Tasks.TaskCache"/> class, using <paramref name="taskInfoProvider"/> as <see cref="T:Moth.Tasks.ITaskInfoProvider"/>.
+            </summary>
+            <param name="taskInfoProvider">The <see cref="T:Moth.Tasks.ITaskInfoProvider"/> to use for creating task information.</param>
+            <exception cref="T:System.ArgumentNullException"><paramref name="taskInfoProvider"/> is null.</exception>
+        </member>
         <member name="M:Moth.Tasks.TaskCache.GetTask``1">
             <summary>
             Get a task by type.

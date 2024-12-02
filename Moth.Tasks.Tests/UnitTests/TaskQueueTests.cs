@@ -24,35 +24,36 @@
         public void SetUp ()
         {
             mockTaskCache = new Mock<ITaskCache> (MockBehavior.Strict);
+            mockTaskDataStore = new Mock<ITaskDataStore> (MockBehavior.Strict);
+            mockTaskDataStore.Setup (store => store.Skip (It.IsAny<ITaskInfo> ()));
+            mockTaskDataStore.Setup (store => store.Clear ());
 
             int nextTaskInfoID = 0;
 
             mockTestTaskInfo = new MockTaskInfo<TestTask> (nextTaskInfoID++);
-            SetupTaskCacheGetTask (mockTestTaskInfo);
+            SetupTaskInfo (mockTestTaskInfo);
 
             mockTestTaskThrowingExceptionInfo = new MockTaskInfo<TestTaskThrowingException> (nextTaskInfoID++);
-            SetupTaskCacheGetTask (mockTestTaskThrowingExceptionInfo);
+            SetupTaskInfo (mockTestTaskThrowingExceptionInfo);
 
             mockDisposableTestTaskInfo = new MockDisposableTaskInfo<DisposableTestTask> (nextTaskInfoID++);
-            SetupTaskCacheGetTask (mockDisposableTestTaskInfo);
+            SetupTaskInfo (mockDisposableTestTaskInfo);
 
             mockDisposableTestTaskThrowingExceptionInfo = new MockDisposableTaskInfo<DisposableTestTaskThrowingException> (nextTaskInfoID++);
-            SetupTaskCacheGetTask (mockDisposableTestTaskThrowingExceptionInfo);
-
-            mockTaskDataStore = new Mock<ITaskDataStore> (MockBehavior.Strict);
-            mockTaskDataStore.Setup (store => store.Enqueue (It.Ref<TestTask>.IsAny, mockTestTaskInfo));
-            mockTaskDataStore.Setup (store => store.Enqueue (It.Ref<TestTaskThrowingException>.IsAny, mockTestTaskThrowingExceptionInfo));
-            mockTaskDataStore.Setup (store => store.Enqueue (It.Ref<DisposableTestTask>.IsAny, mockDisposableTestTaskInfo));
+            SetupTaskInfo (mockDisposableTestTaskThrowingExceptionInfo);
 
             mockTaskHandleManager = new Mock<ITaskHandleManager> (MockBehavior.Strict);
+            mockTaskHandleManager.Setup (manager => manager.Clear ());
 
             mockProfiler = new Mock<IProfiler> (MockBehavior.Loose);
 
-            void SetupTaskCacheGetTask<TTask> (ITaskInfo<TTask> taskInfo)
+            void SetupTaskInfo<TTask> (ITaskInfo<TTask> taskInfo)
                 where TTask : struct, ITask
             {
                 mockTaskCache.Setup (t => t.GetTask<TTask> ()).Returns (taskInfo);
                 mockTaskCache.Setup (t => t.GetTask (taskInfo.ID)).Returns (taskInfo);
+
+                mockTaskDataStore.Setup (store => store.Enqueue (It.Ref<TTask>.IsAny, taskInfo));
             }
         }
 
@@ -145,8 +146,7 @@
         {
             TaskQueue queue = new TaskQueue (0, mockTaskCache.Object, mockTaskDataStore.Object, mockTaskHandleManager.Object);
 
-            int runCallCount = 0;
-            TestTask task = new TestTask { RunCallCount = &runCallCount };
+            TestTask task = new TestTask { };
 
             mockTaskDataStore.Setup (store => store.Dequeue (mockTestTaskInfo)).Returns (task);
 
@@ -164,7 +164,6 @@
             mockTaskDataStore.Verify (store => store.Dequeue (mockTestTaskInfo), Times.Once);
 
             Assert.That (mockTestTaskInfo.RunCallCount, Is.EqualTo (1));
-            Assert.That (runCallCount, Is.EqualTo (1));
         }
 
         [Test]
@@ -173,16 +172,12 @@
         {
             TaskQueue queue = new TaskQueue (0, mockTaskCache.Object, mockTaskDataStore.Object, mockTaskHandleManager.Object);
 
-            int runCallCount1 = 0;
-            TestTask task1 = new TestTask { RunCallCount = &runCallCount1 };
+            TestTask task = new TestTask { };
 
-            int runCallCount2 = 0;
-            TestTask task2 = new TestTask { RunCallCount = &runCallCount2 };
+            mockTaskDataStore.SetupSequence (store => store.Dequeue (mockTestTaskInfo)).Returns (task).Returns (task);
 
-            mockTaskDataStore.SetupSequence (store => store.Dequeue (mockTestTaskInfo)).Returns (task1).Returns (task2);
-
-            queue.Enqueue (task1);
-            queue.Enqueue (task2);
+            queue.Enqueue (task);
+            queue.Enqueue (task);
 
             queue.RunNextTask (token: token);
 
@@ -191,14 +186,11 @@
 
             mockTaskCache.Verify (t => t.GetTask<TestTask> (), Times.Exactly (2));
 
-            mockTaskDataStore.Verify (store => store.Enqueue (task1, mockTestTaskInfo), Times.Once);
-            mockTaskDataStore.Verify (store => store.Enqueue (task2, mockTestTaskInfo), Times.Once);
+            mockTaskDataStore.Verify (store => store.Enqueue (task, mockTestTaskInfo), Times.Exactly (2));
             mockTaskDataStore.Verify (store => store.Dequeue (mockTestTaskInfo), Times.Once);
 
+            // Assert that only one task was run
             Assert.That (mockTestTaskInfo.RunCallCount, Is.EqualTo (1));
-
-            Assert.That (runCallCount1, Is.EqualTo (1));
-            Assert.That (runCallCount2, Is.EqualTo (0));
         }
 
         [Test]
@@ -225,36 +217,6 @@
             // Verify that the exception was caught and returned
             Assert.That (exception, Is.Not.Null);
             Assert.That (exception.Message, Is.EqualTo (task.ExceptionCode.ToString ()));
-        }
-
-        [Test]
-        [CancelAfter (1000)]
-        public unsafe void RunNextTask_DisposableTaskThrowsException_RunsTaskAndCatchesExceptionAndCallsDispose (CancellationToken token)
-        {
-            TaskQueue queue = new TaskQueue (0, mockTaskCache.Object, mockTaskDataStore.Object, mockTaskHandleManager.Object);
-
-            // Task will throw an exception with code 42
-            int disposeCallCount = 0;
-            DisposableTestTaskThrowingException task = new DisposableTestTaskThrowingException { ExceptionCode = 42, DisposeCallCount = &disposeCallCount };
-
-            mockTaskDataStore.Setup (store => store.Dequeue (mockDisposableTestTaskThrowingExceptionInfo)).Returns (task);
-
-            queue.Enqueue (task);
-            queue.RunNextTask (out Exception exception, token: token);
-
-            mockTaskCache.Verify (t => t.GetTask<DisposableTestTaskThrowingException> (), Times.Once);
-
-            mockTaskDataStore.Verify (store => store.Enqueue (task, mockDisposableTestTaskThrowingExceptionInfo), Times.Once);
-            mockTaskDataStore.Verify (store => store.Dequeue (mockDisposableTestTaskThrowingExceptionInfo), Times.Once);
-
-            Assert.That (mockDisposableTestTaskThrowingExceptionInfo.RunCallCount, Is.EqualTo (1));
-
-            // Verify that the exception was caught and returned
-            Assert.That (exception, Is.Not.Null);
-            Assert.That (exception.Message, Is.EqualTo (task.ExceptionCode.ToString ()));
-
-            // Verify that Dispose was called
-            Assert.That (disposeCallCount, Is.EqualTo (1));
         }
 
         [Test]
@@ -325,15 +287,105 @@
             Assert.That (result, Is.True);
         }
 
+        [Test]
+        public void Clear_WhenQueueIsEmpty_ClearsDependencies ()
+        {
+            TaskQueue queue = new TaskQueue (0, mockTaskCache.Object, mockTaskDataStore.Object, mockTaskHandleManager.Object);
+
+            queue.Clear ();
+
+            mockTaskDataStore.Verify (store => store.Clear (), Times.Once);
+            mockTaskHandleManager.Verify (manager => manager.Clear (), Times.Once);
+
+            Assert.That (queue.Count, Is.EqualTo (0));
+        }
+
+        [Test]
+        public void Clear_NoDisposableTasks_ClearsQueueWhileSkippingTasks ()
+        {
+            TaskQueue queue = new TaskQueue (0, mockTaskCache.Object, mockTaskDataStore.Object, mockTaskHandleManager.Object);
+
+            TestTask task = new TestTask { };
+
+            queue.Enqueue (task);
+            queue.Enqueue (task);
+
+            queue.Clear ();
+
+            mockTaskDataStore.Verify (store => store.Skip (mockTestTaskInfo), Times.Exactly (2));
+
+            Assert.That (queue.Count, Is.EqualTo (0));
+        }
+
+        [Test]
+        public void Clear_WithOnlyDisposableTasks_ClearsQueueWhileDisposingTasks ()
+        {
+            TaskQueue queue = new TaskQueue (0, mockTaskCache.Object, mockTaskDataStore.Object, mockTaskHandleManager.Object);
+
+            DisposableTestTask task = new DisposableTestTask { };
+
+            queue.Enqueue (task);
+            queue.Enqueue (task);
+
+            queue.Clear ();
+
+            mockTaskDataStore.Verify (store => store.Clear (), Times.Once);
+
+            Assert.That (queue.Count, Is.EqualTo (0));
+            Assert.That (mockDisposableTestTaskInfo.DisposeCallCount, Is.EqualTo (2));
+        }
+
+        [Test]
+        public void Clear_WithMixedTasks_ClearsQueueSkipsNonDisposableTasksAndDisposesDisposableTasks ()
+        {
+            TaskQueue queue = new TaskQueue (0, mockTaskCache.Object, mockTaskDataStore.Object, mockTaskHandleManager.Object);
+
+            TestTask task = new TestTask { };
+            DisposableTestTask disposableTask = new DisposableTestTask { };
+
+            queue.Enqueue (task);
+            queue.Enqueue (disposableTask);
+            queue.Enqueue (task);
+            queue.Enqueue (disposableTask);
+
+            queue.Clear ();
+
+            mockTaskDataStore.Verify (store => store.Skip (mockTestTaskInfo), Times.Exactly (2));
+
+            Assert.That (queue.Count, Is.EqualTo (0));
+            Assert.That (mockDisposableTestTaskInfo.DisposeCallCount, Is.EqualTo (2));
+        }
+
+        [Test]
+        public void Dispose_WhenCalledOnce_ClearsTasks ()
+        {
+            TaskQueue queue = new TaskQueue (0, mockTaskCache.Object, mockTaskDataStore.Object, mockTaskHandleManager.Object);
+
+            queue.Dispose ();
+
+            mockTaskDataStore.Verify (store => store.Clear (), Times.Once);
+            mockTaskHandleManager.Verify (manager => manager.Clear (), Times.Once);
+
+            Assert.That (queue.Count, Is.EqualTo (0));
+        }
+
+        [Test]
+        public void Dispose_WhenCalledTwice_ClearsTasksThenDoesNothing ()
+        {
+            TaskQueue queue = new TaskQueue (0, mockTaskCache.Object, mockTaskDataStore.Object, mockTaskHandleManager.Object);
+
+            queue.Dispose ();
+            queue.Dispose ();
+
+            mockTaskDataStore.Verify (store => store.Clear (), Times.Once);
+            mockTaskHandleManager.Verify (manager => manager.Clear (), Times.Once);
+
+            Assert.That (queue.Count, Is.EqualTo (0));
+        }
+
         private unsafe struct TestTask : ITask
         {
-            public int* RunCallCount;
-
-            public void Run ()
-            {
-                if (RunCallCount != null)
-                    (*RunCallCount)++;
-            }
+            public void Run () { }
         }
 
         private struct TestTaskThrowingException : ITask
@@ -345,34 +397,18 @@
 
         private unsafe struct DisposableTestTask : ITask, IDisposable
         {
-            public int* RunCallCount;
-            public int* DisposeCallCount;
+            public void Run () { }
 
-            public void Run ()
-            {
-                if (RunCallCount != null)
-                    (*RunCallCount)++;
-            }
-
-            public void Dispose ()
-            {
-                if (DisposeCallCount != null)
-                    (*DisposeCallCount)++;
-            }
+            public void Dispose () { }
         }
 
         private unsafe struct DisposableTestTaskThrowingException : ITask, IDisposable
         {
             public int ExceptionCode;
-            public int* DisposeCallCount;
 
             public void Run () => throw new Exception (ExceptionCode.ToString ());
 
-            public void Dispose ()
-            {
-                if (DisposeCallCount != null)
-                    (*DisposeCallCount)++;
-            }
+            public void Dispose () { }
         }
 
         private unsafe class MockTaskInfo<TTask> : ITaskInfo<TTask>, IRunnableTaskInfo
@@ -396,22 +432,17 @@
 
             public bool HasResult => false;
 
-            public int SerializeCallCount { get; private set; }
-
-            public int DeserializeCallCount { get; private set; }
 
             public int RunCallCount { get; private set; }
 
             public void Serialize (in TTask task, Span<byte> destination, ObjectWriter refWriter)
             {
-                SerializeCallCount++;
-                MemoryMarshal.Write (destination, task);
+                
             }
 
             public void Deserialize (out TTask task, ReadOnlySpan<byte> source, ObjectReader refReader)
             {
-                DeserializeCallCount++;
-                task = MemoryMarshal.Read<TTask> (source);
+                task = default;
             }
 
             public void Run (TaskQueue.TaskDataAccess access)

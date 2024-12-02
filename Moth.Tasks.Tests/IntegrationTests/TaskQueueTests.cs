@@ -1,4 +1,4 @@
-namespace Moth.Tasks.Tests.UnitTests
+namespace Moth.Tasks.Tests.IntegrationTests
 {
     using System;
     using System.Collections.Generic;
@@ -8,7 +8,7 @@ namespace Moth.Tasks.Tests.UnitTests
     using NUnit.Framework;
     using NUnit.Framework.Legacy;
 
-    public class TaskQueueTestsOld
+    public class TaskQueueTests
     {
         /// <summary>
         /// Enqueues an <see cref="ITask"/> in an empty <see cref="TaskQueue"/>.
