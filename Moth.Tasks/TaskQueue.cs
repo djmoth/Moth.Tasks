@@ -20,16 +20,17 @@ namespace Moth.Tasks
         /// Initializes a new instance of the <see cref="TaskQueue"/> class.
         /// </summary>
         public TaskQueue ()
-            : this (16, 1024) { }
+            : this (16, 1024, 32) { }
 
         /// <summary>
         /// Initializes a new instance of the <see cref="TaskQueue"/> class.
         /// </summary>
         /// <param name="taskCapacity">Starting capacity for the internal task queue in no. of tasks.</param>
-        /// <param name="dataCapacity">Starting capacity for the internal task data array in bytes.</param>
+        /// <param name="unmanagedDataCapacity">Starting capacity for the internal task data array in bytes.</param>
+        /// <param name="managedReferenceCapacity">Starting capacity for the internal task reference field store in no. of references.</param>
         /// <param name="taskCache">Optional <see cref="ITaskCache"/> for caching task types.</param>
-        public TaskQueue (int taskCapacity, int dataCapacity, ITaskCache taskCache = null)
-            : this (taskCapacity, taskCache, new TaskDataStore (dataCapacity), new TaskHandleManager ()) { }
+        public TaskQueue (int taskCapacity, int unmanagedDataCapacity, int managedReferenceCapacity, ITaskCache taskCache = null)
+            : this (taskCapacity, taskCache, new TaskDataStore (unmanagedDataCapacity, new TaskReferenceStore (managedReferenceCapacity)), new TaskHandleManager ()) { }
 
         internal TaskQueue (int taskCapacity, ITaskCache taskCache, ITaskDataStore taskDataStore, ITaskHandleManager taskHandleManager)
         {

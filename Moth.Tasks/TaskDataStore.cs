@@ -3,23 +3,44 @@
     using Moth.IO.Serialization;
     using System;
     using System.Runtime.CompilerServices;
+    using Validation;
 
+    /// <summary>
+    /// Stores task data.
+    /// </summary>
     internal class TaskDataStore : ITaskDataStore
     {
-        private readonly TaskReferenceStore taskReferenceStore = new TaskReferenceStore ();
+        private readonly ITaskReferenceStore taskReferenceStore;
         private byte[] taskData;
 
-        public TaskDataStore (int dataCapacity)
+        /// <summary>
+        /// Initializes a new instance of the <see cref="TaskDataStore"/> class with a specified data starting capacity.
+        /// </summary>
+        /// <param name="dataCapacity">Starting capacity of unmanaged task data.</param>
+        /// <exception cref="ArgumentOutOfRangeException"><paramref name="dataCapacity"/> is less than zero.</exception>
+        /// <exception cref="ArgumentNullException"><paramref name="taskReferenceStore"/> is <see langword="null"/>.</exception>"
+        public TaskDataStore (int dataCapacity, ITaskReferenceStore taskReferenceStore)
         {
+            Requires.Range (dataCapacity >= 0, nameof (dataCapacity));
+            Requires.NotNull (taskReferenceStore, nameof (taskReferenceStore));
+
             taskData = new byte[dataCapacity];
+            this.taskReferenceStore = taskReferenceStore;
         }
 
+        /// <inheritdoc/>
         public int FirstTask { get; private set; }
 
+        /// <inheritdoc/>
         public int LastTaskEnd { get; private set; }
 
+        /// <inheritdoc/>
         public int Size => LastTaskEnd - FirstTask;
 
+        /// <inheritdoc/>
+        public int Capacity => taskData.Length;
+
+        /// <inheritdoc/>
         public void Enqueue<T> (in T task, ITaskInfo<T> taskInfo)
             where T : struct, ITaskType
         {
@@ -31,9 +52,14 @@
             LastTaskEnd += taskInfo.UnmanagedSize;
         }
 
+        /// <inheritdoc/>
+        /// <exception cref="InvalidOperationException"><see cref="Size"/> is zero.</exception>
         public T Dequeue<T> (ITaskInfo<T> taskInfo)
             where T : struct, ITaskType
         {
+            if (Size == 0)
+                throw new InvalidOperationException ("Cannot Dequeue as TaskDataStore.Size is zero.");
+
             taskInfo.Deserialize (out T task, taskData.AsSpan (FirstTask), taskReferenceStore.Read);
 
             FirstTask += taskInfo.UnmanagedSize;
@@ -47,8 +73,13 @@
             return task;
         }
 
+        /// <inheritdoc/>
+        /// <exception cref="InvalidOperationException"><see cref="Size"/> is zero.</exception>
         public void Skip (ITaskInfo taskInfo)
         {
+            if (Size == 0)
+                throw new InvalidOperationException ("Cannot Skip as TaskDataStore.Size is zero.");
+
             FirstTask += taskInfo.UnmanagedSize;
 
             if (FirstTask == LastTaskEnd)
@@ -61,25 +92,48 @@
                 taskReferenceStore.Skip (taskInfo.ReferenceCount);
         }
 
-        public void Insert<T> (int dataIndex, int refIndex, T task, ITaskInfo<T> taskInfo)
+        /// <inheritdoc/>
+        public void Insert<T> (ref int dataIndex, ref int refIndex, in T task, ITaskInfo<T> taskInfo)
             where T : struct, ITaskType
         {
-            CheckCapacity (taskInfo.UnmanagedSize);
+            if (dataIndex < 0 || dataIndex > LastTaskEnd)
+                throw new ArgumentOutOfRangeException (nameof (dataIndex));
 
-            int copyDestination = dataIndex + taskInfo.UnmanagedSize;
-            int copySource = dataIndex;
-            int byteCount = LastTaskEnd - copyDestination;
+            if (refIndex < 0 || refIndex > taskReferenceStore.Count)
+                throw new ArgumentOutOfRangeException (nameof (refIndex));
 
-            Unsafe.CopyBlockUnaligned (ref taskData[copyDestination], ref taskData[copySource], (uint)byteCount);
+            if (dataIndex == LastTaskEnd)
+            {
+                Enqueue (task, taskInfo);
+                return;
+            }
+
+            // If inserting at the beginning of the store and there is enough space before the first task
+            if (dataIndex == FirstTask && dataIndex - taskInfo.UnmanagedSize > 0)
+            {
+                // Insert new task data before the first task without moving any data
+                FirstTask -= taskInfo.UnmanagedSize;
+                dataIndex = FirstTask;
+            } else
+            {
+                CheckCapacity (taskInfo.UnmanagedSize);
+
+                int copyDestination = dataIndex + taskInfo.UnmanagedSize;
+                int copySource = dataIndex;
+                int byteCount = LastTaskEnd - copyDestination;
+
+                Unsafe.CopyBlockUnaligned (ref taskData[copyDestination], ref taskData[copySource], (uint)byteCount);
+
+                LastTaskEnd += taskInfo.UnmanagedSize;
+            }
 
             using (var insertContext = taskReferenceStore.EnterInsertContext (refIndex, taskInfo.ReferenceCount, out ObjectWriter insertWriter))
             {
                 taskInfo.Serialize (task, taskData.AsSpan (dataIndex), insertWriter);
             }
-
-            LastTaskEnd += taskInfo.UnmanagedSize;
         }
 
+        /// <inheritdoc/>
         public void Clear ()
         {
             FirstTask = 0;
@@ -97,7 +151,7 @@
                 // If there is not enough total space in taskData array to hold new task, then resize taskData
                 if (totalTaskDataLength + unmanagedSize > taskData.Length)
                 {
-                    // If taskInfo.DataIndices is abnormally large, doubling the size might not always be enough
+                    // If unmanagedSize is abnormally large, doubling the size might not always be enough
                     int newSize = Math.Max (taskData.Length * 2, totalTaskDataLength + unmanagedSize);
                     Array.Resize (ref taskData, newSize);
                 }

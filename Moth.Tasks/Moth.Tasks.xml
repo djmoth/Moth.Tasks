@@ -1163,6 +1163,118 @@
             </summary>
             <param name="arg">Task argument.</param>
         </member>
+        <member name="T:Moth.Tasks.ITaskDataStore">
+            <summary>
+            Interface for a task data store.
+            </summary>
+        </member>
+        <member name="P:Moth.Tasks.ITaskDataStore.FirstTask">
+            <summary>
+            Gets the index of the first byte of first task data in the store.
+            </summary>
+        </member>
+        <member name="P:Moth.Tasks.ITaskDataStore.LastTaskEnd">
+            <summary>
+            Gets the index of the last byte of the last task data in the store.
+            </summary>
+        </member>
+        <member name="P:Moth.Tasks.ITaskDataStore.Size">
+            <summary>
+            Gets the total size of the data in the store in bytes.
+            </summary>
+        </member>
+        <member name="P:Moth.Tasks.ITaskDataStore.Capacity">
+            <summary>
+            Gets the current capacity of the store in bytes.
+            </summary>
+        </member>
+        <member name="M:Moth.Tasks.ITaskDataStore.Clear">
+            <summary>
+            Clears the task data store.
+            </summary>
+        </member>
+        <member name="M:Moth.Tasks.ITaskDataStore.Dequeue``1(Moth.Tasks.ITaskInfo{``0})">
+            <summary>
+            Dequeues a task from the store.
+            </summary>
+            <typeparam name="T">The type of the task data.</typeparam>
+            <param name="taskInfo"><see cref="T:Moth.Tasks.ITaskInfo`1"/> instance containing task type information.</param>
+            <returns>The task data.</returns>
+        </member>
+        <member name="M:Moth.Tasks.ITaskDataStore.Enqueue``1(``0@,Moth.Tasks.ITaskInfo{``0})">
+            <summary>
+            Enqueues a task into the store.
+            </summary>
+            <typeparam name="T">The type of the task data.</typeparam>
+            <param name="task">The task data to enqueue.</param>
+            <param name="taskInfo"><see cref="T:Moth.Tasks.ITaskInfo`1"/> instance containing task type information.</param>
+        </member>
+        <member name="M:Moth.Tasks.ITaskDataStore.Insert``1(System.Int32,System.Int32,``0@,Moth.Tasks.ITaskInfo{``0})">
+            <summary>
+            Inserts a task into the store at a specific index.
+            </summary>
+            <typeparam name="T">The type of the task data.</typeparam>
+            <param name="dataIndex">Insertion index of unmanaged data.</param>
+            <param name="refIndex">Inseration index of managed references.</param>
+            <param name="task">Task data to insert.</param>
+            <param name="taskInfo"><see cref="T:Moth.Tasks.ITaskInfo`1"/> instance containing task type information.</param>
+        </member>
+        <member name="M:Moth.Tasks.ITaskDataStore.Skip(Moth.Tasks.ITaskInfo)">
+            <summary>
+            Skips a task in the store.
+            </summary>
+            <param name="taskInfo"><see cref="T:Moth.Tasks.ITaskInfo"/> instance containing task type information.</param>
+        </member>
+        <member name="T:Moth.Tasks.ITaskReferenceStore">
+            <summary>
+            Stores reference fields from tasks.
+            </summary>
+        </member>
+        <member name="P:Moth.Tasks.ITaskReferenceStore.Start">
+            <summary>
+            Gets the index of the first reference.
+            </summary>
+        </member>
+        <member name="P:Moth.Tasks.ITaskReferenceStore.End">
+            <summary>
+            Gets the index after the last reference.
+            </summary>
+        </member>
+        <member name="P:Moth.Tasks.ITaskReferenceStore.Count">
+            <summary>
+            Gets the total number of references stored.
+            </summary>
+        </member>
+        <member name="P:Moth.Tasks.ITaskReferenceStore.Read">
+            <summary>
+            Gets the <see cref="T:Moth.IO.Serialization.ObjectReader"/> for reading stored references.
+            </summary>
+        </member>
+        <member name="P:Moth.Tasks.ITaskReferenceStore.Write">
+            <summary>
+            Gets the <see cref="T:Moth.IO.Serialization.ObjectWriter"/> for writing references.
+            </summary>
+        </member>
+        <member name="M:Moth.Tasks.ITaskReferenceStore.Clear">
+            <summary>
+            Clears all stored references.
+            </summary>
+        </member>
+        <member name="M:Moth.Tasks.ITaskReferenceStore.EnterInsertContext(System.Int32,System.Int32,Moth.IO.Serialization.ObjectWriter@)">
+            <summary>
+            Enters an insert context to insert references.
+            </summary>
+            <param name="insertIndex">The index to start inserting at</param>
+            <param name="refCount">The total number of references that will be inserted.</param>
+            <param name="insertWriter">The <see cref="T:Moth.IO.Serialization.ObjectWriter"/> to write references to.</param>
+            <returns>A <see cref="T:Moth.Tasks.TaskReferenceInsertContext"/> on which <see cref="M:Moth.Tasks.TaskReferenceInsertContext.Dispose"/> must be called when done.</returns>
+        </member>
+        <member name="M:Moth.Tasks.ITaskReferenceStore.Skip(System.Int32)">
+            <summary>
+            Skips a number of references.
+            </summary>
+            <param name="refCount">The number of references to skip.</param>
+        </member>
         <member name="T:Moth.Tasks.ProfilerProvider">
             <summary>
             Represents a method that provides an <see cref="T:Moth.Tasks.IProfiler"/> for a <see cref="T:Moth.Tasks.IWorker"/>, or <see langword="null"/> if profiling is not desired.
@@ -1203,6 +1315,48 @@
             </summary>
             <param name="id">Assigned id of task.</param>
             <returns><see cref="T:Moth.Tasks.ITaskInfo"/> for <paramref name="id"/>.</returns>
+        </member>
+        <member name="T:Moth.Tasks.TaskDataStore">
+            <summary>
+            Stores task data.
+            </summary>
+        </member>
+        <member name="M:Moth.Tasks.TaskDataStore.#ctor(System.Int32,Moth.Tasks.ITaskReferenceStore)">
+            <summary>
+            Initializes a new instance of the <see cref="T:Moth.Tasks.TaskDataStore"/> class with a specified data starting capacity.
+            </summary>
+            <param name="dataCapacity">Starting capacity of unmanaged task data.</param>
+            <exception cref="T:System.ArgumentOutOfRangeException"><paramref name="dataCapacity"/> is less than zero.</exception>
+            <exception cref="T:System.ArgumentNullException"><paramref name="taskReferenceStore"/> is <see langword="null"/>.</exception>"
+        </member>
+        <member name="P:Moth.Tasks.TaskDataStore.FirstTask">
+            <inheritdoc/>
+        </member>
+        <member name="P:Moth.Tasks.TaskDataStore.LastTaskEnd">
+            <inheritdoc/>
+        </member>
+        <member name="P:Moth.Tasks.TaskDataStore.Size">
+            <inheritdoc/>
+        </member>
+        <member name="P:Moth.Tasks.TaskDataStore.Capacity">
+            <inheritdoc/>
+        </member>
+        <member name="M:Moth.Tasks.TaskDataStore.Enqueue``1(``0@,Moth.Tasks.ITaskInfo{``0})">
+            <inheritdoc/>
+        </member>
+        <member name="M:Moth.Tasks.TaskDataStore.Dequeue``1(Moth.Tasks.ITaskInfo{``0})">
+            <inheritdoc/>
+            <exception cref="T:System.InvalidOperationException"><see cref="P:Moth.Tasks.TaskDataStore.Size"/> is zero.</exception>
+        </member>
+        <member name="M:Moth.Tasks.TaskDataStore.Skip(Moth.Tasks.ITaskInfo)">
+            <inheritdoc/>
+            <exception cref="T:System.InvalidOperationException"><see cref="P:Moth.Tasks.TaskDataStore.Size"/> is zero.</exception>
+        </member>
+        <member name="M:Moth.Tasks.TaskDataStore.Insert``1(System.Int32,System.Int32,``0@,Moth.Tasks.ITaskInfo{``0})">
+            <inheritdoc/>
+        </member>
+        <member name="M:Moth.Tasks.TaskDataStore.Clear">
+            <inheritdoc/>
         </member>
         <member name="M:Moth.Tasks.Task.From(System.Action)">
             <summary>
@@ -3162,6 +3316,22 @@
             <param name="handle"><see cref="T:Moth.Tasks.TaskHandle"/> for checking task status.</param>
             <exception cref="T:System.ArgumentNullException"><paramref name="action"/> is <see langword="null"/>.</exception>
             <exception cref="T:System.ObjectDisposedException">The <see cref="T:Moth.Tasks.ITaskQueue"/> has been disposed.</exception>
+        </member>
+        <member name="T:Moth.Tasks.TaskReferenceInsertContext">
+            <summary>
+            Represents a context for inserting references into an <see cref="T:Moth.Tasks.ITaskReferenceStore"/>.
+            </summary>
+        </member>
+        <member name="M:Moth.Tasks.TaskReferenceInsertContext.#ctor(System.Action)">
+            <summary>
+            Initializes a new instance of the <see cref="T:Moth.Tasks.TaskReferenceInsertContext"/> struct.
+            </summary>
+            <param name="onDisposeAction"><see cref="T:System.Action"/> to call on <see cref="M:Moth.Tasks.TaskReferenceInsertContext.Dispose"/>.</param>
+        </member>
+        <member name="M:Moth.Tasks.TaskReferenceInsertContext.Dispose">
+            <summary>
+            Disposes the insert context.
+            </summary>
         </member>
         <member name="T:Moth.Tasks.TaskWithHandle`3">
             <summary>

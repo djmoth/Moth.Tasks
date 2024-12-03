@@ -2,74 +2,110 @@
 {
     using Moth.IO.Serialization;
     using System;
-    using System.Collections.Generic;
 
-    public class TaskReferenceStore
+    /// <inheritdoc/>
+    public class TaskReferenceStore : ITaskReferenceStore
     {
-        private object[] references = new object[32];
-        private int start;
-        private int end;
+        private readonly ObjectWriter insert;
+        private readonly Action insertContextOnDispose;
+        private object[] references;
         private int insertIndex = -1;
 
-        private ObjectWriter insert;
-
-        public TaskReferenceStore ()
+        /// <summary>
+        /// Initializes a new instance of the <see cref="TaskReferenceStore"/> class.
+        /// </summary>
+        /// <param name="startCapacity">The starting capacity of the store.</param>
+        public TaskReferenceStore (int startCapacity)
         {
+            references = new object[startCapacity];
+
             Write = WriteImpl;
             insert = InsertImpl;
+            insertContextOnDispose = () => insertIndex = -1;
 
             Read = ReadImpl;
         }
 
+        /// <inheritdoc/>
+        public int Start { get; private set; }
+
+        /// <inheritdoc/>
+        public int End { get; private set; }
+
+        /// <inheritdoc/>
+        public int Count => End - Start;
+
+        /// <inheritdoc/>
+        public int Capacity => references.Length;
+
+        /// <inheritdoc/>
         public ObjectWriter Write { get; }
 
+        /// <inheritdoc/>
         public ObjectReader Read { get; }
 
-        public InsertContext EnterInsertContext (int insertIndex, int refCount, out ObjectWriter insertWriter)
+        /// <inheritdoc/>
+        /// <exception cref="ArgumentOutOfRangeException"><paramref name="insertIndex"/> is not within the range of stored references.</exception>"
+        public TaskReferenceInsertContext EnterInsertContext (ref int insertIndex, int refCount, out ObjectWriter insertWriter)
         {
             if (this.insertIndex != -1)
             {
                 throw new InvalidOperationException ("Cannot enter insert context while already in insert context.");
             }
 
-            CheckCapacity (refCount);
+            if (insertIndex < Start || insertIndex > End)
+            {
+                throw new ArgumentOutOfRangeException (nameof (insertIndex), "Insert index must be within the range of stored references.");
+            }
 
-            int countAboveInsertIndex = end - insertIndex;
+            // If inserting at the beginning of the store and there is enough space before the first task
+            if (insertIndex == Start && Start - refCount > 0)
+            {
+                Start -= refCount;
+                insertIndex = Start;
+            } else
+            {
+                CheckCapacity (refCount);
 
-            Array.Copy (references, insertIndex, references, insertIndex + refCount, countAboveInsertIndex); // Move elements above insert area
+                int countAboveInsertIndex = End - insertIndex;
+                End += refCount;
+
+                Array.Copy (references, insertIndex, references, insertIndex + refCount, countAboveInsertIndex); // Move elements above insert area
+            }
 
             this.insertIndex = insertIndex;
-
             insertWriter = insert;
 
-            return new InsertContext (this);
+            return new TaskReferenceInsertContext (insertContextOnDispose);
         }
 
+        /// <inheritdoc/>
         public void Clear ()
         {
-            for (int i = start; i < end; i++)
+            for (int i = Start; i < End; i++)
             {
                 references[i] = null;
             }
 
-            start = 0;
-            end = 0;
+            Start = 0;
+            End = 0;
         }
 
+        /// <inheritdoc/>
         public void Skip (int refCount)
         {
             // Clear references
             for (int i = 0; i < refCount; i++)
             {
-                references[start + i] = null;
+                references[Start + i] = null;
             }
 
-            start += refCount;
+            Start += refCount;
 
-            if (start == end)
+            if (Start == End)
             {
-                start = 0;
-                end = 0;
+                Start = 0;
+                End = 0;
             }
         }
 
@@ -77,14 +113,19 @@
         {
             CheckCapacity (1);
 
-            references[end] = obj;
-            end++;
+            references[End] = obj;
+            End++;
 
             return 0;
         }
 
         private int InsertImpl (in object obj, Span<byte> destination)
         {
+            if (insertIndex == -1)
+            {
+                throw new InvalidOperationException ("Cannot insert object outside of insert context.");
+            }
+
             references[insertIndex] = obj;
             insertIndex++;
 
@@ -93,15 +134,15 @@
 
         private int ReadImpl (out object obj, Type type, ReadOnlySpan<byte> source)
         {
-            obj = references[start];
-            references[start] = null; // Clear stored reference
+            obj = references[Start];
+            references[Start] = null; // Clear stored reference
 
-            start++;
+            Start++;
 
-            if (start == end)
+            if (Start == End)
             {
-                start = 0;
-                end = 0;
+                Start = 0;
+                End = 0;
             }
 
             return 0;
@@ -109,9 +150,9 @@
 
         private void CheckCapacity (int refCount)
         {
-            if (end + refCount > references.Length)
+            if (End + refCount > references.Length)
             {
-                int count = end - start;
+                int count = End - Start;
 
                 if (count + refCount > references.Length)
                 {
@@ -119,28 +160,13 @@
                     Array.Resize (ref references, newSize);
                 }
 
-                if (start != 0)
+                if (Start != 0)
                 {
-                    Array.Copy (references, start, references, 0, count);
+                    Array.Copy (references, Start, references, 0, count);
 
-                    end = count;
-                    start = 0;
+                    End = count;
+                    Start = 0;
                 }
-            }
-        }
-
-        public ref struct InsertContext
-        {
-            private TaskReferenceStore store;
-
-            internal InsertContext (TaskReferenceStore store)
-            {
-                this.store = store;
-            }
-
-            public void Dispose ()
-            {
-                store.insertIndex = -1;
             }
         }
     }

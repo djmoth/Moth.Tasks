@@ -1,5 +1,6 @@
 ﻿namespace Moth.Tasks.Tests.UnitTests
 {
+    using Moq;
     using Moth.IO.Serialization;
     using NUnit.Framework;
     using NUnit.Framework.Legacy;
@@ -14,93 +15,230 @@
 
     internal class TaskDataStoreTests
     {
-        [Test]
-        public unsafe void EnqueueTask_ExpandTaskData ()
+        private ITaskInfo<TestTask> mockTaskInfo;
+        private Mock<ITaskReferenceStore> mockReferenceStore;
+
+        [SetUp]
+        public void SetUp ()
         {
-            TaskDataStore taskData = new TaskDataStore (1);
-            ITaskInfo<Task> taskInfoStub = new FakeTaskInfo ();
+            mockTaskInfo = new MockTestTaskInfo ();
 
-            taskData.Enqueue (new Task (), taskInfoStub);
+            mockReferenceStore = new Mock<ITaskReferenceStore> ();
+        }
 
-            ClassicAssert.AreEqual (sizeof (Task), taskData.Size);
+        public void Constructor_WithDataCapacity_InitializesCorrectly ()
+        {
+            TaskDataStore taskData = new TaskDataStore (0, mockReferenceStore.Object);
+
+            Assert.That (taskData.FirstTask, Is.EqualTo (0));
+            Assert.That (taskData.LastTaskEnd, Is.EqualTo (0));
+            Assert.That (taskData.Size, Is.EqualTo (0));
         }
 
         [Test]
-        public void DequeueTask_ReturnsCorrectTask ()
+        public unsafe void EnqueueTask_WhenOutOfCapacity_IncreasesCapacity ()
         {
-            TaskDataStore taskData = new TaskDataStore (100);
-            ITaskInfo<Task> taskInfoStub = new FakeTaskInfo ();
-            Task task = new Task (42);
+            TaskDataStore taskData = new TaskDataStore (0, mockReferenceStore.Object);
 
-            taskData.Enqueue (task, taskInfoStub);
-            Task dequeuedTask = taskData.Dequeue (taskInfoStub);
+            int firstTask = taskData.FirstTask;
 
-            ClassicAssert.AreEqual (task.Data, dequeuedTask.Data);
+            taskData.Enqueue (new TestTask (), mockTaskInfo);
+
+            mockReferenceStore.Verify (store => store.Write, Times.Once);
+
+            Assert.That (taskData.FirstTask, Is.EqualTo (firstTask));
+            Assert.That (taskData.LastTaskEnd, Is.EqualTo (mockTaskInfo.UnmanagedSize));
+            Assert.That (taskData.Size, Is.EqualTo (mockTaskInfo.UnmanagedSize));
+            Assert.That (taskData.Capacity, Is.GreaterThanOrEqualTo (mockTaskInfo.UnmanagedSize));
         }
 
         [Test]
-        public void SkipTask_UpdatesFirstTaskCorrectly ()
+        public unsafe void EnqueueTask_WhenEmpty_EnqueuesCorrectly ()
         {
-            TaskDataStore taskData = new TaskDataStore (100);
-            ITaskInfo<Task> taskInfoStub = new FakeTaskInfo ();
-            Task task = new Task (42);
+            TaskDataStore taskData = new TaskDataStore (0, mockReferenceStore.Object);
 
-            taskData.Enqueue (task, taskInfoStub);
-            taskData.Skip (taskInfoStub);
+            int firstTask = taskData.FirstTask;
 
-            ClassicAssert.AreEqual (0, taskData.FirstTask);
-            ClassicAssert.AreEqual (0, taskData.LastTaskEnd);
+            taskData.Enqueue (new TestTask (), mockTaskInfo);
+
+            mockReferenceStore.Verify (store => store.Write, Times.Once);
+
+            Assert.That (taskData.FirstTask, Is.EqualTo (firstTask));
+            Assert.That (taskData.LastTaskEnd, Is.EqualTo (mockTaskInfo.UnmanagedSize));
+            Assert.That (taskData.Size, Is.EqualTo (mockTaskInfo.UnmanagedSize));
         }
 
         [Test]
-        public void InsertTask_InsertsCorrectly ()
+        public void EnqueueTask_WhenNotEmpty_EnqueuesCorrectly ()
         {
-            TaskDataStore taskData = new TaskDataStore (100);
-            ITaskInfo<Task> taskInfoStub = new FakeTaskInfo ();
-            Task task1 = new Task (42);
-            Task task2 = new Task (123);
+            TaskDataStore taskData = new TaskDataStore (0, mockReferenceStore.Object);
 
-            taskData.Enqueue (task1, taskInfoStub);
-            taskData.Insert (0, 0, task2, taskInfoStub);
+            int firstTask = taskData.FirstTask;
 
-            Task dequeuedTask = taskData.Dequeue (taskInfoStub);
-            ClassicAssert.AreEqual (task2.Data, dequeuedTask.Data);
+            taskData.Enqueue (new TestTask (), mockTaskInfo);
+            taskData.Enqueue (new TestTask (), mockTaskInfo);
+
+            mockReferenceStore.Verify (store => store.Write, Times.Exactly (2));
+
+            Assert.That (taskData.FirstTask, Is.EqualTo (firstTask));
+            Assert.That (taskData.LastTaskEnd, Is.EqualTo (mockTaskInfo.UnmanagedSize * 2));
+            Assert.That (taskData.Size, Is.EqualTo (mockTaskInfo.UnmanagedSize * 2));
         }
 
         [Test]
-        public void ClearTaskDataStore_ResetsCorrectly ()
+        public void DequeueTask_WhenNotEmpty_ReturnsCorrectTask ()
         {
-            TaskDataStore taskData = new TaskDataStore (100);
-            ITaskInfo<Task> taskInfoStub = new FakeTaskInfo ();
-            Task task = new Task { Data = 42 };
+            TaskDataStore taskData = new TaskDataStore (0, mockReferenceStore.Object);
+            
+            TestTask task = new TestTask (42);
+            mockTaskInfo = new MockTestTaskInfo (task);
 
-            taskData.Enqueue (task, taskInfoStub);
+            taskData.Enqueue (task, mockTaskInfo);
+            TestTask dequeuedTask = taskData.Dequeue (mockTaskInfo);
+
+            mockReferenceStore.Verify (store => store.Read, Times.Once);
+
+            Assert.That (dequeuedTask.Data, Is.EqualTo (task.Data));
+        }
+
+        [Test]
+        public void DequeueTask_WhenEmpty_ThrowsInvalidOperationException ()
+        {
+            TaskDataStore taskData = new TaskDataStore (0, mockReferenceStore.Object);
+
+            Assert.Throws<InvalidOperationException> (() => taskData.Dequeue (new MockTestTaskInfo ()));
+        }
+
+        [Test]
+        public void Skip_WhenNotEmptyBeforeAndNotEmptyAfter_IncrementsFirstTaskAndLastTaskEndIsUnchangedAndSizeIsDecremented ()
+        {
+            TaskDataStore taskData = new TaskDataStore (0, mockReferenceStore.Object);
+            TestTask task = new TestTask (42);
+
+            taskData.Enqueue (task, mockTaskInfo);
+            taskData.Enqueue (task, mockTaskInfo);
+            taskData.Skip (mockTaskInfo);
+
+            Assert.That (taskData.FirstTask, Is.EqualTo (mockTaskInfo.UnmanagedSize));
+            Assert.That (taskData.LastTaskEnd, Is.EqualTo (mockTaskInfo.UnmanagedSize * 2));
+            Assert.That (taskData.Size, Is.EqualTo (mockTaskInfo.UnmanagedSize));
+        }
+
+        [Test]
+        public void Skip_WhenNotEmptyBeforeButEmptyAfter_ResetsFirstTaskAndLastTaskEndAndSize ()
+        {
+            TaskDataStore taskData = new TaskDataStore (0, mockReferenceStore.Object);
+            TestTask task = new TestTask (42);
+
+            taskData.Enqueue (task, mockTaskInfo);
+            taskData.Skip (mockTaskInfo);
+
+            Assert.That (taskData.FirstTask, Is.EqualTo (0));
+            Assert.That (taskData.LastTaskEnd, Is.EqualTo (0));
+            Assert.That (taskData.Size, Is.EqualTo (0));
+        }
+
+        [Test]
+        public void Skip_WhenEmpty_ThrowsInvalidOperationException ()
+        {
+            TaskDataStore taskData = new TaskDataStore (0, mockReferenceStore.Object);
+            Assert.Throws<InvalidOperationException> (() => taskData.Skip (new MockTestTaskInfo ()));
+        }
+
+        [Test]
+        public void Insert_WhenEmpty_ActsAsEnqueue ()
+        {
+            TaskDataStore taskData = new TaskDataStore (0, mockReferenceStore.Object);
+
+            int firstTask = taskData.FirstTask;
+            taskData.Insert (0, 0, new TestTask (), mockTaskInfo);
+
+            Assert.That (taskData.FirstTask, Is.EqualTo (firstTask));
+            Assert.That (taskData.LastTaskEnd, Is.EqualTo (mockTaskInfo.UnmanagedSize));
+            Assert.That (taskData.Size, Is.EqualTo (mockTaskInfo.UnmanagedSize));
+        }
+
+        [Test]
+        public void Insert_InFront_FirstTaskIsUnchangedAndIncrementsLastTaskEndAndSize ()
+        {
+            TaskDataStore taskData = new TaskDataStore (0, mockReferenceStore.Object);
+
+            int firstTask = taskData.FirstTask;
+
+            taskData.Enqueue (new TestTask (), mockTaskInfo);
+            taskData.Insert (0, 0, new TestTask (), mockTaskInfo);
+
+            mockReferenceStore.Verify (store => store.EnterInsertContext (It.IsAny<int> (), mockTaskInfo.ReferenceCount, out It.Ref<ObjectWriter>.IsAny));
+
+            Assert.That (taskData.FirstTask, Is.EqualTo (firstTask));
+            Assert.That (taskData.LastTaskEnd, Is.EqualTo (mockTaskInfo.UnmanagedSize * 2));
+            Assert.That (taskData.Size, Is.EqualTo (mockTaskInfo.UnmanagedSize * 2));
+        }
+
+        [Test]
+        public void Insert_InEnd_ActsAsEnqueue ()
+        {
+            TaskDataStore taskData = new TaskDataStore (0, mockReferenceStore.Object);
+
+            int firstTask = taskData.FirstTask;
+            taskData.Enqueue (new TestTask (), mockTaskInfo);
+            taskData.Insert (mockTaskInfo.UnmanagedSize, 0, new TestTask (), mockTaskInfo);
+
+            Assert.That (taskData.FirstTask, Is.EqualTo (firstTask));
+            Assert.That (taskData.LastTaskEnd, Is.EqualTo (mockTaskInfo.UnmanagedSize * 2));
+            Assert.That (taskData.Size, Is.EqualTo (mockTaskInfo.UnmanagedSize * 2));
+        }
+
+        [Test]
+        public void Insert_InBetween_FirstTaskIsUnchangedAndIncrementsLastTaskEndAndSize ()
+        {
+            TaskDataStore taskData = new TaskDataStore (0, mockReferenceStore.Object);
+
+            int firstTask = taskData.FirstTask;
+            taskData.Enqueue (new TestTask (), mockTaskInfo);
+            taskData.Enqueue (new TestTask (), mockTaskInfo);
+            taskData.Insert (mockTaskInfo.UnmanagedSize, 0, new TestTask (), mockTaskInfo);
+
+            mockReferenceStore.Verify (store => store.EnterInsertContext (It.IsAny<int> (), mockTaskInfo.ReferenceCount, out It.Ref<ObjectWriter>.IsAny));
+
+            Assert.That (taskData.FirstTask, Is.EqualTo (firstTask));
+            Assert.That (taskData.LastTaskEnd, Is.EqualTo (mockTaskInfo.UnmanagedSize * 3));
+            Assert.That (taskData.Size, Is.EqualTo (mockTaskInfo.UnmanagedSize * 3));
+        }
+
+        [Test]
+        public void Clear_WhenNotEmpty_ResetsCorrectly ()
+        {
+            TaskDataStore taskData = new TaskDataStore (0, mockReferenceStore.Object);
+
+            TestTask task = new TestTask ();
+
+            taskData.Enqueue (task, mockTaskInfo);
             taskData.Clear ();
 
-            ClassicAssert.AreEqual (0, taskData.FirstTask);
-            ClassicAssert.AreEqual (0, taskData.LastTaskEnd);
+            Assert.That (taskData.FirstTask, Is.EqualTo (0));
+            Assert.That (taskData.LastTaskEnd, Is.EqualTo (0));
         }
 
         [Test]
-        public unsafe void CheckCapacity_ResizesCorrectly ()
+        public void Clear_WhenEmpty_DoesNothing ()
         {
-            TaskDataStore taskData = new TaskDataStore (1);
-            ITaskInfo<Task> taskInfoStub = new FakeTaskInfo ();
-            Task task = new Task (42);
+            TaskDataStore taskData = new TaskDataStore (0, mockReferenceStore.Object);
 
-            taskData.Enqueue (task, taskInfoStub);
+            taskData.Clear ();
 
-            ClassicAssert.GreaterOrEqual (taskData.Size, sizeof (Task));
+            Assert.That (taskData.FirstTask, Is.EqualTo (0));
+            Assert.That (taskData.LastTaskEnd, Is.EqualTo (0));
         }
 
         /// <summary>
         /// Test task
         /// </summary>
-        struct Task : ITask
+        struct TestTask : ITask
         {
             public int Data;
 
-            public Task (int data)
+            public TestTask (int data)
             {
                 Data = data;
             }
@@ -111,32 +249,51 @@
             }
         }
 
-        unsafe class FakeTaskInfo : ITaskInfo<Task>
+        class MockTestTaskInfo : MockTaskInfo<TestTask>
         {
+            public MockTestTaskInfo (TestTask deserializeValue = default)
+                : base (deserializeValue) { }
+        }
+
+        unsafe class MockTaskInfo<TTask> : ITaskInfo<TTask>
+            where TTask : struct, ITask
+        {
+            public MockTaskInfo (TTask deserializeValue = default)
+            {
+                DeserializeValue = deserializeValue;
+            }
+
             public int ID => 0;
 
-            public Type Type => typeof (Task);
+            public Type Type => typeof (TTask);
 
-            public int UnmanagedSize => sizeof (Task);
+            public int UnmanagedSize => sizeof (TTask);
 
             public int ReferenceCount => 0;
 
             public bool IsManaged => false;
 
-            public bool IsDisposable => false;
+            public bool IsDisposable => throw new NotImplementedException ();
 
-            public bool HasArgs => false;
+            public bool HasArgs => throw new NotImplementedException ();
 
             public bool HasResult => throw new NotImplementedException ();
 
-            public void Deserialize (out Task task, ReadOnlySpan<byte> source, ObjectReader refReader)
+            public TTask DeserializeValue { get; }
+
+            public int SerializeCallCount { get; private set; }
+
+            public int DeserializeCallCount { get; private set; }
+
+            public void Serialize (in TTask task, Span<byte> destination, ObjectWriter refWriter)
             {
-                task = new Task (MemoryMarshal.Read<int> (source));
+                SerializeCallCount++;
             }
 
-            public void Serialize (in Task task, Span<byte> destination, ObjectWriter refWriter)
+            public void Deserialize (out TTask task, ReadOnlySpan<byte> source, ObjectReader refReader)
             {
-                MemoryMarshal.Write (destination, task.Data);
+                DeserializeCallCount++;
+                task = DeserializeValue;
             }
         }
     }

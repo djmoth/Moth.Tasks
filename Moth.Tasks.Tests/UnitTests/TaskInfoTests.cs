@@ -112,10 +112,14 @@
         {
             int taskID = 1;
             var taskFormat = new MockFixedFormat<TestTask<int>> (42);
-            var taskInfo = new TaskInfo<TestTask<int>> (taskID, taskFormat);
+            var mockTaskInfo = new Mock<TaskInfoBase<TestTask<int>>> (taskID, taskFormat)
+            {
+                CallBase = true,
+            };
+
 
             Span<byte> destination = new byte[taskFormat.MinSize];
-            taskInfo.Serialize (default, destination, Mock.Of<ObjectWriter> ());
+            mockTaskInfo.Object.Serialize (default, destination, Mock.Of<ObjectWriter> ());
 
             Assert.That (taskFormat.SerializeCallCount, Is.EqualTo (1));
         }
@@ -125,10 +129,13 @@
         {
             int taskID = 1;
             var taskFormat = new MockFixedFormat<TestTask<int>> (42);
-            var taskInfo = new TaskInfo<TestTask<int>> (taskID, taskFormat);
+            var mockTaskInfo = new Mock<TaskInfoBase<TestTask<int>>> (taskID, taskFormat)
+            {
+                CallBase = true,
+            };
 
             ReadOnlySpan<byte> source = new byte[taskFormat.MinSize];
-            taskInfo.Deserialize (out _, source, Mock.Of<ObjectReader> ());
+            mockTaskInfo.Object.Deserialize (out _, source, Mock.Of<ObjectReader> ());
 
             Assert.That (taskFormat.DeserializeCallCount, Is.EqualTo (1));
         }
