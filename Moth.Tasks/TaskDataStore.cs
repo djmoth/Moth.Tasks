@@ -127,7 +127,7 @@
                 LastTaskEnd += taskInfo.UnmanagedSize;
             }
 
-            using (var insertContext = taskReferenceStore.EnterInsertContext (refIndex, taskInfo.ReferenceCount, out ObjectWriter insertWriter))
+            using (var insertContext = taskReferenceStore.EnterInsertContext (ref refIndex, taskInfo.ReferenceCount, out ObjectWriter insertWriter))
             {
                 taskInfo.Serialize (task, taskData.AsSpan (dataIndex), insertWriter);
             }

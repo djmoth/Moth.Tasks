@@ -42,7 +42,7 @@ namespace Moth.Tasks.Tests.IntegrationTests
         [Test]
         public void EnqueueAndTryRun_AssertValidData ()
         {
-            TaskQueue queue = new TaskQueue (2, 8);
+            TaskQueue queue = new TaskQueue (2, 8, 8);
 
             Queue<TaskResult> results = new Queue<TaskResult> ();
             int nextTaskIndex = 1;

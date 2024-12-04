@@ -1209,7 +1209,7 @@
             <param name="task">The task data to enqueue.</param>
             <param name="taskInfo"><see cref="T:Moth.Tasks.ITaskInfo`1"/> instance containing task type information.</param>
         </member>
-        <member name="M:Moth.Tasks.ITaskDataStore.Insert``1(System.Int32,System.Int32,``0@,Moth.Tasks.ITaskInfo{``0})">
+        <member name="M:Moth.Tasks.ITaskDataStore.Insert``1(System.Int32@,System.Int32@,``0@,Moth.Tasks.ITaskInfo{``0})">
             <summary>
             Inserts a task into the store at a specific index.
             </summary>
@@ -1245,6 +1245,11 @@
             Gets the total number of references stored.
             </summary>
         </member>
+        <member name="P:Moth.Tasks.ITaskReferenceStore.Capacity">
+            <summary>
+            Gets the current capacity of the store.
+            </summary>
+        </member>
         <member name="P:Moth.Tasks.ITaskReferenceStore.Read">
             <summary>
             Gets the <see cref="T:Moth.IO.Serialization.ObjectReader"/> for reading stored references.
@@ -1260,7 +1265,7 @@
             Clears all stored references.
             </summary>
         </member>
-        <member name="M:Moth.Tasks.ITaskReferenceStore.EnterInsertContext(System.Int32,System.Int32,Moth.IO.Serialization.ObjectWriter@)">
+        <member name="M:Moth.Tasks.ITaskReferenceStore.EnterInsertContext(System.Int32@,System.Int32,Moth.IO.Serialization.ObjectWriter@)">
             <summary>
             Enters an insert context to insert references.
             </summary>
@@ -1352,7 +1357,7 @@
             <inheritdoc/>
             <exception cref="T:System.InvalidOperationException"><see cref="P:Moth.Tasks.TaskDataStore.Size"/> is zero.</exception>
         </member>
-        <member name="M:Moth.Tasks.TaskDataStore.Insert``1(System.Int32,System.Int32,``0@,Moth.Tasks.ITaskInfo{``0})">
+        <member name="M:Moth.Tasks.TaskDataStore.Insert``1(System.Int32@,System.Int32@,``0@,Moth.Tasks.ITaskInfo{``0})">
             <inheritdoc/>
         </member>
         <member name="M:Moth.Tasks.TaskDataStore.Clear">
@@ -2320,12 +2325,13 @@
             Initializes a new instance of the <see cref="T:Moth.Tasks.TaskQueue"/> class.
             </summary>
         </member>
-        <member name="M:Moth.Tasks.TaskQueue.#ctor(System.Int32,System.Int32,Moth.Tasks.ITaskCache)">
+        <member name="M:Moth.Tasks.TaskQueue.#ctor(System.Int32,System.Int32,System.Int32,Moth.Tasks.ITaskCache)">
             <summary>
             Initializes a new instance of the <see cref="T:Moth.Tasks.TaskQueue"/> class.
             </summary>
             <param name="taskCapacity">Starting capacity for the internal task queue in no. of tasks.</param>
-            <param name="dataCapacity">Starting capacity for the internal task data array in bytes.</param>
+            <param name="unmanagedDataCapacity">Starting capacity for the internal task data array in bytes.</param>
+            <param name="managedReferenceCapacity">Starting capacity for the internal task reference field store in no. of references.</param>
             <param name="taskCache">Optional <see cref="T:Moth.Tasks.ITaskCache"/> for caching task types.</param>
         </member>
         <member name="M:Moth.Tasks.TaskQueue.Finalize">
@@ -3332,6 +3338,43 @@
             <summary>
             Disposes the insert context.
             </summary>
+        </member>
+        <member name="T:Moth.Tasks.TaskReferenceStore">
+            <inheritdoc/>
+        </member>
+        <member name="M:Moth.Tasks.TaskReferenceStore.#ctor(System.Int32)">
+            <summary>
+            Initializes a new instance of the <see cref="T:Moth.Tasks.TaskReferenceStore"/> class.
+            </summary>
+            <param name="startCapacity">The starting capacity of the store.</param>
+        </member>
+        <member name="P:Moth.Tasks.TaskReferenceStore.Start">
+            <inheritdoc/>
+        </member>
+        <member name="P:Moth.Tasks.TaskReferenceStore.End">
+            <inheritdoc/>
+        </member>
+        <member name="P:Moth.Tasks.TaskReferenceStore.Count">
+            <inheritdoc/>
+        </member>
+        <member name="P:Moth.Tasks.TaskReferenceStore.Capacity">
+            <inheritdoc/>
+        </member>
+        <member name="P:Moth.Tasks.TaskReferenceStore.Write">
+            <inheritdoc/>
+        </member>
+        <member name="P:Moth.Tasks.TaskReferenceStore.Read">
+            <inheritdoc/>
+        </member>
+        <member name="M:Moth.Tasks.TaskReferenceStore.EnterInsertContext(System.Int32@,System.Int32,Moth.IO.Serialization.ObjectWriter@)">
+            <inheritdoc/>
+            <exception cref="T:System.ArgumentOutOfRangeException"><paramref name="insertIndex"/> is not within the range of stored references.</exception>"
+        </member>
+        <member name="M:Moth.Tasks.TaskReferenceStore.Clear">
+            <inheritdoc/>
+        </member>
+        <member name="M:Moth.Tasks.TaskReferenceStore.Skip(System.Int32)">
+            <inheritdoc/>
         </member>
         <member name="T:Moth.Tasks.TaskWithHandle`3">
             <summary>

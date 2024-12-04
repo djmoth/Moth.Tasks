@@ -94,6 +94,11 @@
         /// <inheritdoc/>
         public void Skip (int refCount)
         {
+            if (Start + refCount > End)
+            {
+                throw new ArgumentOutOfRangeException (nameof (refCount), "Cannot skip more references than stored.");
+            }
+
             // Clear references
             for (int i = 0; i < refCount; i++)
             {
@@ -134,6 +139,9 @@
 
         private int ReadImpl (out object obj, Type type, ReadOnlySpan<byte> source)
         {
+            if (Count == 0)
+                throw new InvalidOperationException ("Cannot read from empty store.");
+
             obj = references[Start];
             references[Start] = null; // Clear stored reference
 

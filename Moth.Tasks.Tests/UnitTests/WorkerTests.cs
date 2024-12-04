@@ -153,12 +153,62 @@
         }
 
         [Test]
-        public void Dispose_DisposeCalledFromTask_StopsWorker ()
+        public void Dispose_WhenCalled_StopsWorker ()
         {
-            var mockTaskQueue = new Mock<ITaskQueue> ();
+            var mockTaskQueue = new Mock<ITaskQueue> (MockBehavior.Strict);
+            mockTaskQueue.Setup (queue => queue.RunNextTask (out It.Ref<Exception>.IsAny, It.IsAny<IProfiler> (), It.IsAny<CancellationToken> ())).Callback (() =>
+            {
+                Assert.Fail ("Worker should have been stopped.");
+            });
 
             var mockWorkerThread = new Mock<IWorkerThread> ();
-            mockWorkerThread.Setup (x => x.Start (It.IsAny<ThreadStart> ())).Callback<ThreadStart> (t => t ());
+
+            ThreadStart workerWorkMethod = null;
+            mockWorkerThread.Setup (x => x.Start (It.IsAny<ThreadStart> ())).Callback<ThreadStart> (t => workerWorkMethod = t);
+
+            WorkerOptions options = new WorkerOptions
+            {
+                Profiler = null,
+                WorkerThread = mockWorkerThread.Object,
+                ExceptionEventHandler = null,
+            };
+
+            using var worker = new Worker (mockTaskQueue.Object, false, options);
+
+            worker.Dispose ();
+
+            workerWorkMethod ();
+
+            Assert.That (worker.IsRunning, Is.False);
+            Assert.That (worker.CancellationToken.IsCancellationRequested, Is.True);
+        }
+
+        [Test]
+        public void Dispose_WhenNotStartedAndInitializedWithDisposeTaskQueue_DisposesTaskQueue ()
+        {
+            var mockDisposableTaskQueue = new Mock<ITaskQueue> ().As<IDisposable> ();
+
+            var worker = new Worker (mockDisposableTaskQueue.Object as ITaskQueue, true, default);
+            worker.Dispose ();
+
+            mockDisposableTaskQueue.Verify (t => t.Dispose (), Times.Once);
+        }
+
+        [Test]
+        public void Dispose_WhenStartedAndInitializedWithDisposeTaskQueue_DisposesTaskQueue ()
+        {
+            var mockTaskQueue = new Mock<ITaskQueue> (MockBehavior.Strict);
+            mockTaskQueue.Setup (queue => queue.RunNextTask (out It.Ref<Exception>.IsAny, It.IsAny<IProfiler> (), It.IsAny<CancellationToken> ())).Callback (() =>
+            {
+                Assert.Fail ("Worker should have been stopped.");
+            });
+
+            mockTaskQueue.As<IDisposable> ().Setup (t => t.Dispose ());
+
+            var mockWorkerThread = new Mock<IWorkerThread> ();
+
+            ThreadStart workerWorkMethod = null;
+            mockWorkerThread.Setup (x => x.Start (It.IsAny<ThreadStart> ())).Callback<ThreadStart> (t => workerWorkMethod = t);
 
             WorkerOptions options = new WorkerOptions
             {
@@ -168,18 +218,18 @@
                 RequiresManualStart = true,
             };
 
-            using var worker = new Worker (mockTaskQueue.Object, false, options);
-
-            mockTaskQueue.Setup (x => x.RunNextTask (out It.Ref<Exception>.IsAny, It.IsAny<IProfiler> (), It.IsAny<CancellationToken> ())).Callback (worker.Dispose);
-
+            var worker = new Worker (mockTaskQueue.Object, true, options);
             worker.Start ();
 
-            Assert.That (worker.IsRunning, Is.False);
-            Assert.That (worker.CancellationToken.IsCancellationRequested, Is.True);
+            worker.Dispose ();
+
+            workerWorkMethod ();
+
+            mockTaskQueue.As<IDisposable> ().Verify (t => t.Dispose (), Times.Once);
         }
 
         [Test]
-        public void Worker_EnqueueTask_RunsTask ()
+        public void Worker_WhenRunning_RunsTask ()
         {
             var mockTaskQueue = new Mock<ITaskQueue> ();
             var mockWorkerThread = new Mock<IWorkerThread> ();
@@ -201,7 +251,7 @@
         delegate void RunNextTaskCallback (out Exception exception, IProfiler profiler, CancellationToken cancellationToken);
 
         [Test]
-        public void Worker_EnqueueTaskThatThrowsException_ReportsExceptionToExceptionHandler ()
+        public void Worker_WhenRunningTaskThatThrowsException_ReportsExceptionToExceptionHandler ()
         {
             var mockException = new Exception ();
 
