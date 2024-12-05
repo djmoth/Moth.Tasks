@@ -7,6 +7,9 @@
      * This file should not be edited manually.                *
      * ------------------------------------------------------- */
 
+    /// <summary>
+    /// Provides extension methods for creating <see cref="DelegateTask"/> instances.
+    /// </summary>
     public static partial class Task
     {
         /// <summary>

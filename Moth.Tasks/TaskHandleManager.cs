@@ -1,13 +1,16 @@
-﻿using System.Collections.Generic;
-using System.Threading;
-
-namespace Moth.Tasks
+﻿namespace Moth.Tasks
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Threading;
+
+    /// <inheritdoc />
     public class TaskHandleManager : ITaskHandleManager
     {
         private readonly Dictionary<int, ManualResetEventSlim> taskHandles = new Dictionary<int, ManualResetEventSlim> ();
         private int nextTaskHandle = 1;
 
+        /// <inheritdoc />
         public TaskHandle CreateTaskHandle ()
         {
             lock (taskHandles)
@@ -21,19 +24,18 @@ namespace Moth.Tasks
             }
         }
 
-        /// <summary>
-        /// Check if a task has completed.
-        /// </summary>
-        /// <param name="handleID">ID of handle.</param>
-        /// <returns><see langword="true"/> if task has completed, otherwise <see langword="false"/>.</returns>
-        public bool IsTaskComplete (int handleID)
+        /// <inheritdoc />
+        public bool IsTaskComplete (TaskHandle handle)
         {
+            ThrowIfInvalidHandle (handle);
+
             lock (taskHandles)
             {
-                return !taskHandles.ContainsKey (handleID);
+                return !taskHandles.ContainsKey (handle.ID);
             }
         }
 
+        /// <inheritdoc />
         public void Clear ()
         {
             lock (taskHandles)
@@ -47,25 +49,22 @@ namespace Moth.Tasks
             }
         }
 
-        /// <summary>
-        /// Used by <see cref="TaskHandle.WaitForCompletion ()"/> to wait until task is complete.
-        /// </summary>
-        /// <param name="handleID">ID of handle.</param>
-        /// <param name="millisecondsTimeout">The number of milliseconds to wait, or <see cref="System.Threading.Timeout.Infinite"/> (-1) to wait indefinitely.</param>
-        /// <returns><see langword="true"/> if task was completed, <see langword="false"/> if timeout was reached.</returns>
-        internal bool WaitForCompletion (int handleID, int millisecondsTimeout)
+        /// <inheritdoc />
+        public bool WaitForCompletion (TaskHandle handle, int millisecondsTimeout)
         {
+            ThrowIfInvalidHandle (handle);
+
             ManualResetEventSlim waitEvent;
             bool complete;
 
             lock (taskHandles)
             {
-                complete = !taskHandles.TryGetValue (handleID, out waitEvent);
+                complete = !taskHandles.TryGetValue (handle.ID, out waitEvent);
 
                 if (!complete && waitEvent == null)
                 {
                     waitEvent = new ManualResetEventSlim ();
-                    taskHandles[handleID] = waitEvent;
+                    taskHandles[handle.ID] = waitEvent;
                 }
             }
 
@@ -77,15 +76,14 @@ namespace Moth.Tasks
             return complete;
         }
 
-        /// <summary>
-        /// Used by <see cref="TaskWithHandle{T}"/> to notify callers of <see cref="WaitForCompletion(int, int)"/> that the task is done.
-        /// </summary>
-        /// <param name="handleID">ID of handle.</param>
-        internal void NotifyTaskCompletion (int handleID)
+        /// <inheritdoc />
+        public void NotifyTaskCompletion (TaskHandle handle)
         {
+            ThrowIfInvalidHandle (handle);
+
             lock (taskHandles)
             {
-                ManualResetEventSlim waitEvent = taskHandles[handleID];
+                ManualResetEventSlim waitEvent = taskHandles[handle.ID];
 
                 if (waitEvent != null)
                 {
@@ -93,8 +91,17 @@ namespace Moth.Tasks
                     waitEvent.Dispose ();
                 }
 
-                taskHandles.Remove (handleID);
+                taskHandles.Remove (handle.ID);
             }
+        }
+
+        private void ThrowIfInvalidHandle (TaskHandle handle)
+        {
+            if (!handle.IsValid || handle.ID >= nextTaskHandle)
+                throw new InvalidOperationException ($"{nameof (TaskHandle)} is invalid.");
+
+            if (handle.Manager != this)
+                throw new InvalidOperationException ($"{nameof (TaskHandle)} does not belong to this {nameof (TaskHandleManager)}.");
         }
     }
 }

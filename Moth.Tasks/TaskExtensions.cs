@@ -4,7 +4,7 @@
 
     public static class TaskExtensions
     {
-        public static void Enqueue<T> (this T task, TaskQueue queue) where T : struct, ITask
+        public static void Enqueue<T> (this T task, ITaskQueue queue) where T : struct, ITask
         {
             queue.Enqueue (task);
         }

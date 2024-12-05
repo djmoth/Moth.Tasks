@@ -1,8 +1,8 @@
 ﻿namespace Moth.Tasks
 {
-    using Moth.IO.Serialization;
     using System;
     using System.Runtime.CompilerServices;
+    using Moth.IO.Serialization;
     using Validation;
 
     /// <summary>

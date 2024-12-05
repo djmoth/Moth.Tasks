@@ -20,7 +20,6 @@
         public TaskCache ()
             : this (TaskInfo.Provider) { }
 
-
         /// <summary>
         /// Initializes a new instance of the <see cref="TaskCache"/> class, using <paramref name="taskInfoProvider"/> as <see cref="ITaskInfoProvider"/>.
         /// </summary>

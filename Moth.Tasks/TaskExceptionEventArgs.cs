@@ -3,7 +3,7 @@
     using System;
 
     /// <summary>
-    /// Contains information about an exception that was thrown in a task.
+    /// Contains information about an exception that was thrown while running a task.
     /// </summary>
     public class TaskExceptionEventArgs : EventArgs
     {
