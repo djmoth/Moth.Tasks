@@ -59,7 +59,7 @@
             }
 
             // If inserting at the beginning of the store and there is enough space before the first task
-            if (insertIndex == Start && Start - refCount > 0)
+            if (insertIndex == Start && Start >= refCount)
             {
                 Start -= refCount;
                 insertIndex = Start;

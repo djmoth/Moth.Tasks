@@ -1,7 +1,9 @@
 ﻿namespace Moth.Tasks.Tests.UnitTests
 {
+    using Moth.IO.Serialization;
     using NUnit.Framework;
     using System;
+    using System.Collections.Generic;
     using System.Runtime.InteropServices;
 
     [TestFixture]
@@ -121,21 +123,41 @@
             GC.KeepAlive (store); // Ensure store is not collected before the end of the test
         }
 
-        [Test]
-        public void WriteThenRead_WhenOutOfCapacity_PreservesReferencesWhenResizingWritesAndReadesSameReference ()
+        [TestCase (1)]
+        [TestCase (2)]
+        [TestCase (3)]
+        public void WriteThenRead_WhenOutOfCapacity_PreservesReferencesWhenResizingWritesAndReadesSameReference (int timesToResize)
         {
             TaskReferenceStore store = new TaskReferenceStore (1);
 
-            object[] writtenReferences = { new object (), new object () };
+            List<object> writtenReferences = new List<object> ();
 
-            for (int i = 0; i < writtenReferences.Length; i++)
+            int timesResized = 0;
+
+            int maxWrittenReferences = 100;
+            for (int i = 0; i < maxWrittenReferences; i++)
             {
+                writtenReferences.Add (new object ());
+
+                int previousCapacity = store.Capacity;
                 store.Write (writtenReferences[i], Span<byte>.Empty);
+
+                if (store.Capacity > previousCapacity)
+                {
+                    timesResized++;
+
+                    if (timesResized == timesToResize)
+                    {
+                        break;
+                    }
+                }
             }
 
-            object[] readReferences = new object[writtenReferences.Length];
+            Assume.That (timesResized, Is.EqualTo (timesToResize));
 
-            for (int i = 0; i < writtenReferences.Length; i++)
+            object[] readReferences = new object[writtenReferences.Count];
+
+            for (int i = 0; i < readReferences.Length; i++)
             {
                 store.Read (out readReferences[i], typeof (object), Span<byte>.Empty);
             }
@@ -157,7 +179,192 @@
         }
 
         [Test]
-        public void EnterInsertContext
+        public void EnterInsertContext_WhenCalled_ReturnsInsertObjectWriter ()
+        {
+            TaskReferenceStore store = new TaskReferenceStore (0);
+
+            int insertIndex = 0;
+            store.EnterInsertContext (ref insertIndex, 1, out ObjectWriter insertWriter);
+
+            Assert.That (insertWriter, Is.Not.Null);
+        }
+
+        [Test]
+        public void EnterInsertContext_WhenInsertObjectWriterUsedAfterDispose_ThrowsInvalidOperationException ()
+        {
+            TaskReferenceStore store = new TaskReferenceStore (0);
+            int insertIndex = 0;
+
+            var insertContext = store.EnterInsertContext (ref insertIndex, 1, out ObjectWriter insertWriter);
+
+            insertContext.Dispose ();
+
+            Assert.That (() => insertWriter (null, Span<byte>.Empty), Throws.TypeOf (typeof (InvalidOperationException)));
+        }
+
+        [Test]
+        public void EnterInsertContext_InsertIndexLessThanStart_ThrowsArgumentOutOfRangeException ()
+        {
+            TaskReferenceStore store = new TaskReferenceStore (0);
+
+            int insertIndex = store.Start - 1;
+
+            Assert.That (() => store.EnterInsertContext (ref insertIndex, 1, out _), Throws.TypeOf (typeof (ArgumentOutOfRangeException)));
+        }
+
+        [Test]
+        public void EnterInsertContext_InsertIndexGreaterThanEnd_ThrowsArgumentOutOfRangeException ()
+        {
+            TaskReferenceStore store = new TaskReferenceStore (0);
+            int insertIndex = store.End + 1;
+            Assert.That (() => store.EnterInsertContext (ref insertIndex, 1, out _), Throws.TypeOf (typeof (ArgumentOutOfRangeException)));
+        }
+
+        [Test]
+        public void EnterInsertContext_InsertAtStartWithSpaceEnoughBeforeStart_InsertsWithoutMovingReferences ()
+        {
+            TaskReferenceStore store = new TaskReferenceStore (0);
+
+            store.Write (null, Span<byte>.Empty);
+            store.Write (null, Span<byte>.Empty);
+            store.Read (out _, typeof (object), Span<byte>.Empty);
+
+            Assume.That (store.Start, Is.EqualTo (1));
+            Assume.That (store.End, Is.EqualTo (2));
+
+            int insertIndex = store.Start;
+            store.EnterInsertContext (ref insertIndex, 1, out _);
+
+            Assert.That (insertIndex, Is.EqualTo (0));
+            Assert.That (store.Start, Is.EqualTo (0));
+            Assert.That (store.End, Is.EqualTo (2));
+        }
+
+        [Test]
+        public void EnterInsertContext_InsertAtStartWithoutEnoughSpaceBeforeStartWithoutIncreasingCapacity_InsertIndexIsUnchanged ()
+        {
+            int initialCapacity = 4;
+            TaskReferenceStore store = new TaskReferenceStore (initialCapacity);
+
+            store.Write (null, Span<byte>.Empty);
+            store.Write (null, Span<byte>.Empty);
+            store.Read (out _, typeof (object), Span<byte>.Empty);
+
+            Assume.That (store.Start, Is.EqualTo (1));
+            Assume.That (store.End, Is.EqualTo (2));
+
+            int insertIndex = store.Start;
+            int originalInsertIndex = insertIndex;
+            store.EnterInsertContext (ref insertIndex, 2, out _);
+
+            Assume.That (store.Capacity, Is.EqualTo (initialCapacity));
+
+            Assert.That (insertIndex, Is.EqualTo (originalInsertIndex));
+            Assert.That (store.Start, Is.EqualTo (1));
+            Assert.That (store.End, Is.EqualTo (4));
+        }
+
+        [Test]
+        public void EnterInsertContext_WhenCalledTwiceWithoutDisposeFirst_ThrowsInvalidOperationException ()
+        {
+            TaskReferenceStore store = new TaskReferenceStore (0);
+
+            int insertIndex = 0;
+
+            store.EnterInsertContext (ref insertIndex, 1, out _);
+
+            Assert.That (() => store.EnterInsertContext (ref insertIndex, 1, out _), Throws.TypeOf (typeof (InvalidOperationException)));
+        }
+
+        [Test]
+        public void EnterInsertContext_WhenCalledTwiceButDisposedFirst_EntersCorrectly ()
+        {
+            TaskReferenceStore store = new TaskReferenceStore (0);
+            int insertIndex = 0;
+            var insertContext = store.EnterInsertContext (ref insertIndex, 1, out _);
+            insertContext.Dispose ();
+
+            Assert.That (() => store.EnterInsertContext (ref insertIndex, 1, out _), Throws.Nothing);
+        }
+
+        [TestCase (1)]
+        [TestCase (2)]
+        [TestCase (5)]
+        public void EnterInsertContextThenRead_WhenEmpty_InsertsAndReadsSameReference (int refCount)
+        {
+            TaskReferenceStore store = new TaskReferenceStore (0);
+
+            object[] writtenReferences = new object[refCount];
+
+            for (int i = 0; i < writtenReferences.Length; i++)
+            {
+                writtenReferences[i] = new object ();
+            }
+
+            int insertIndex = 0;
+
+            using (var insertContext = store.EnterInsertContext (ref insertIndex, writtenReferences.Length, out ObjectWriter insertWriter))
+            {
+                foreach (object reference in writtenReferences)
+                {
+                    insertWriter (reference, Span<byte>.Empty);
+                }
+            }
+
+            object[] readReferences = new object[writtenReferences.Length];
+
+            for (int i = 0; i < writtenReferences.Length; i++)
+            {
+                store.Read (out readReferences[i], typeof (object), Span<byte>.Empty);
+            }
+
+            Assert.That (readReferences, Is.EqualTo (writtenReferences));
+        }
+
+        [TestCase (0, 0, 1)] // Insert 1 reference at Start when empty
+        [TestCase (1, 1, 1)] // Insert 1 reference at End when Count is one
+        [TestCase (2, 1, 1)] // Insert 1 reference in middle when Count is two
+        public void EnterInsertContextThenRead_WhenCalled_InsertsAndReadsSameReference (int initialCount, int insertIndex, int insertCount)
+        {
+            TaskReferenceStore store = new TaskReferenceStore (0);
+
+            List<object> writtenReferences = new List<object> (initialCount);
+
+            for (int i = 0; i < initialCount; i++)
+            {
+                object reference = new object ();
+                writtenReferences.Add (reference);
+                store.Write (reference, Span<byte>.Empty);
+            }
+
+            Assume.That (store.Count, Is.EqualTo (initialCount));
+
+            int originalInsertIndex = insertIndex;
+
+            using (var insertContext = store.EnterInsertContext (ref insertIndex, insertCount, out ObjectWriter insertWriter))
+            {
+                for (int i = 0; i < insertCount; i++)
+                {
+                    object reference = new object ();
+                    writtenReferences.Insert (insertIndex, reference);
+
+                    insertWriter (reference, Span<byte>.Empty);
+                }
+            }
+
+            // insertIndex shouldn't have changed, as there should not be space to insert before the original insertIndex
+            Assume.That (insertIndex, Is.EqualTo (originalInsertIndex));
+            Assume.That (store.Count, Is.EqualTo (initialCount + insertCount));
+
+            object[] readReferences = new object[writtenReferences.Count];
+
+            for (int i = 0; i < writtenReferences.Count; i++)
+            {
+                store.Read (out readReferences[i], typeof (object), Span<byte>.Empty);
+            }
+
+            Assert.That (readReferences, Is.EqualTo (writtenReferences));
+        }
 
         [Test]
         public void Skip_WhenNotEmptyBeforeAndNotEmptyAfter_StartIncrementedAndEndUnchangedAndCountDecremented ()
