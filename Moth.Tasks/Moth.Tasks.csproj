@@ -32,10 +32,10 @@
       <AutoGen>True</AutoGen>
       <DependentUpon>TaskFunctionPointerFromExtensions.tt</DependentUpon>
     </None>
-    <None Include="TaskQueueEnqueueExtensions.cs">
+    <None Include="ITaskQueueEnqueueExtensions.cs">
       <DesignTime>True</DesignTime>
       <AutoGen>True</AutoGen>
-      <DependentUpon>TaskQueueEnqueueExtensions.tt</DependentUpon>
+      <DependentUpon>ITaskQueueEnqueueExtensions.tt</DependentUpon>
     </None>
   </ItemGroup>
 
@@ -72,9 +72,9 @@
       <Generator>TextTemplatingFileGenerator</Generator>
       <LastGenOutput>TaskFunctionPointerFromExtensions.cs</LastGenOutput>
     </None>
-    <None Update="TaskQueueEnqueueExtensions.tt">
+    <None Update="ITaskQueueEnqueueExtensions.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
-      <LastGenOutput>TaskQueueEnqueueExtensions.cs</LastGenOutput>
+      <LastGenOutput>ITaskQueueEnqueueExtensions.cs</LastGenOutput>
     </None>
   </ItemGroup>
 
@@ -92,6 +92,11 @@
       <DesignTime>True</DesignTime>
       <AutoGen>True</AutoGen>
       <DependentUpon>FunctionPointerTask.tt</DependentUpon>
+    </Compile>
+    <Compile Update="ITaskQueueEnqueueExtensions.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>ITaskQueueEnqueueExtensions.tt</DependentUpon>
     </Compile>
     <Compile Update="TaskDelegateFromExtensions.cs">
       <DesignTime>True</DesignTime>

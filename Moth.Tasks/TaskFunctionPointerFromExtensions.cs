@@ -7,12 +7,15 @@
      * This file should not be edited manually.                       *
      * -------------------------------------------------------------- */
 
+    /// <summary>
+    /// Provides extension methods for creating <see cref="FunctionPointerTask"/> instances.
+    /// </summary>
     public static unsafe partial class Task
     {
         /// <summary>
         /// Create a <see cref="FunctionPointerTask"/> that encapsulates a function pointer.
         /// </summary>
-        /// <param name="action">delegate*<void> to encapsulate.</param>
+        /// <param name="action">Function pointer to encapsulate.</param>
         /// <returns>A new <see cref="FunctionPointerTask"/> that will invoke the function pointer when run.</returns>
         /// <exception cref="ArgumentNullException"><paramref name="action"/> is <see langword="null"/>.</exception>
         public static FunctionPointerTask From (delegate*<void> action)
@@ -26,10 +29,10 @@
         }
 
         /// <summary>
-        /// Create a <see cref="FunctionPointerTask{T1}"/> that encapsulates an action.
+        /// Create a <see cref="FunctionPointerTask{T1}"/> that encapsulates a function pointer.
         /// </summary>
-        /// <returns>A new <see cref="FunctionPointerTask{T1}"/> that will invoke the action when run with the supplied arguments.</returns>
-        /// <param name="action">Function pointer to enqueue.</param>
+        /// <returns>A new <see cref="FunctionPointerTask{T1}"/> that will invoke the function pointer when run with the supplied arguments.</returns>
+        /// <param name="action">Function pointer to encapsulate.</param>
         /// <param name="arg1">The 1st argument to run <paramref name="action"/> with.</param>
         /// <typeparam name="T1">The type of the 1st parameter of <paramref name="action"/>.</typeparam>
         /// <exception cref="ArgumentNullException"><paramref name="action"/> is <see langword="null"/>.</exception>
@@ -44,10 +47,10 @@
         }
 
         /// <summary>
-        /// Create a <see cref="FunctionPointerTask{T1, T2}"/> that encapsulates an action.
+        /// Create a <see cref="FunctionPointerTask{T1, T2}"/> that encapsulates a function pointer.
         /// </summary>
-        /// <returns>A new <see cref="FunctionPointerTask{T1, T2}"/> that will invoke the action when run with the supplied arguments.</returns>
-        /// <param name="action">Function pointer to enqueue.</param>
+        /// <returns>A new <see cref="FunctionPointerTask{T1, T2}"/> that will invoke the function pointer when run with the supplied arguments.</returns>
+        /// <param name="action">Function pointer to encapsulate.</param>
         /// <param name="arg1">The 1st argument to run <paramref name="action"/> with.</param>
         /// <param name="arg2">The 2nd argument to run <paramref name="action"/> with.</param>
         /// <typeparam name="T1">The type of the 1st parameter of <paramref name="action"/>.</typeparam>
@@ -64,10 +67,10 @@
         }
 
         /// <summary>
-        /// Create a <see cref="FunctionPointerTask{T1, T2, T3}"/> that encapsulates an action.
+        /// Create a <see cref="FunctionPointerTask{T1, T2, T3}"/> that encapsulates a function pointer.
         /// </summary>
-        /// <returns>A new <see cref="FunctionPointerTask{T1, T2, T3}"/> that will invoke the action when run with the supplied arguments.</returns>
-        /// <param name="action">Function pointer to enqueue.</param>
+        /// <returns>A new <see cref="FunctionPointerTask{T1, T2, T3}"/> that will invoke the function pointer when run with the supplied arguments.</returns>
+        /// <param name="action">Function pointer to encapsulate.</param>
         /// <param name="arg1">The 1st argument to run <paramref name="action"/> with.</param>
         /// <param name="arg2">The 2nd argument to run <paramref name="action"/> with.</param>
         /// <param name="arg3">The 3rd argument to run <paramref name="action"/> with.</param>
@@ -86,10 +89,10 @@
         }
 
         /// <summary>
-        /// Create a <see cref="FunctionPointerTask{T1, T2, T3, T4}"/> that encapsulates an action.
+        /// Create a <see cref="FunctionPointerTask{T1, T2, T3, T4}"/> that encapsulates a function pointer.
         /// </summary>
-        /// <returns>A new <see cref="FunctionPointerTask{T1, T2, T3, T4}"/> that will invoke the action when run with the supplied arguments.</returns>
-        /// <param name="action">Function pointer to enqueue.</param>
+        /// <returns>A new <see cref="FunctionPointerTask{T1, T2, T3, T4}"/> that will invoke the function pointer when run with the supplied arguments.</returns>
+        /// <param name="action">Function pointer to encapsulate.</param>
         /// <param name="arg1">The 1st argument to run <paramref name="action"/> with.</param>
         /// <param name="arg2">The 2nd argument to run <paramref name="action"/> with.</param>
         /// <param name="arg3">The 3rd argument to run <paramref name="action"/> with.</param>
@@ -110,10 +113,10 @@
         }
 
         /// <summary>
-        /// Create a <see cref="FunctionPointerTask{T1, T2, T3, T4, T5}"/> that encapsulates an action.
+        /// Create a <see cref="FunctionPointerTask{T1, T2, T3, T4, T5}"/> that encapsulates a function pointer.
         /// </summary>
-        /// <returns>A new <see cref="FunctionPointerTask{T1, T2, T3, T4, T5}"/> that will invoke the action when run with the supplied arguments.</returns>
-        /// <param name="action">Function pointer to enqueue.</param>
+        /// <returns>A new <see cref="FunctionPointerTask{T1, T2, T3, T4, T5}"/> that will invoke the function pointer when run with the supplied arguments.</returns>
+        /// <param name="action">Function pointer to encapsulate.</param>
         /// <param name="arg1">The 1st argument to run <paramref name="action"/> with.</param>
         /// <param name="arg2">The 2nd argument to run <paramref name="action"/> with.</param>
         /// <param name="arg3">The 3rd argument to run <paramref name="action"/> with.</param>
@@ -136,10 +139,10 @@
         }
 
         /// <summary>
-        /// Create a <see cref="FunctionPointerTask{T1, T2, T3, T4, T5, T6}"/> that encapsulates an action.
+        /// Create a <see cref="FunctionPointerTask{T1, T2, T3, T4, T5, T6}"/> that encapsulates a function pointer.
         /// </summary>
-        /// <returns>A new <see cref="FunctionPointerTask{T1, T2, T3, T4, T5, T6}"/> that will invoke the action when run with the supplied arguments.</returns>
-        /// <param name="action">Function pointer to enqueue.</param>
+        /// <returns>A new <see cref="FunctionPointerTask{T1, T2, T3, T4, T5, T6}"/> that will invoke the function pointer when run with the supplied arguments.</returns>
+        /// <param name="action">Function pointer to encapsulate.</param>
         /// <param name="arg1">The 1st argument to run <paramref name="action"/> with.</param>
         /// <param name="arg2">The 2nd argument to run <paramref name="action"/> with.</param>
         /// <param name="arg3">The 3rd argument to run <paramref name="action"/> with.</param>
@@ -164,10 +167,10 @@
         }
 
         /// <summary>
-        /// Create a <see cref="FunctionPointerTask{T1, T2, T3, T4, T5, T6, T7}"/> that encapsulates an action.
+        /// Create a <see cref="FunctionPointerTask{T1, T2, T3, T4, T5, T6, T7}"/> that encapsulates a function pointer.
         /// </summary>
-        /// <returns>A new <see cref="FunctionPointerTask{T1, T2, T3, T4, T5, T6, T7}"/> that will invoke the action when run with the supplied arguments.</returns>
-        /// <param name="action">Function pointer to enqueue.</param>
+        /// <returns>A new <see cref="FunctionPointerTask{T1, T2, T3, T4, T5, T6, T7}"/> that will invoke the function pointer when run with the supplied arguments.</returns>
+        /// <param name="action">Function pointer to encapsulate.</param>
         /// <param name="arg1">The 1st argument to run <paramref name="action"/> with.</param>
         /// <param name="arg2">The 2nd argument to run <paramref name="action"/> with.</param>
         /// <param name="arg3">The 3rd argument to run <paramref name="action"/> with.</param>
@@ -194,10 +197,10 @@
         }
 
         /// <summary>
-        /// Create a <see cref="FunctionPointerTask{T1, T2, T3, T4, T5, T6, T7, T8}"/> that encapsulates an action.
+        /// Create a <see cref="FunctionPointerTask{T1, T2, T3, T4, T5, T6, T7, T8}"/> that encapsulates a function pointer.
         /// </summary>
-        /// <returns>A new <see cref="FunctionPointerTask{T1, T2, T3, T4, T5, T6, T7, T8}"/> that will invoke the action when run with the supplied arguments.</returns>
-        /// <param name="action">Function pointer to enqueue.</param>
+        /// <returns>A new <see cref="FunctionPointerTask{T1, T2, T3, T4, T5, T6, T7, T8}"/> that will invoke the function pointer when run with the supplied arguments.</returns>
+        /// <param name="action">Function pointer to encapsulate.</param>
         /// <param name="arg1">The 1st argument to run <paramref name="action"/> with.</param>
         /// <param name="arg2">The 2nd argument to run <paramref name="action"/> with.</param>
         /// <param name="arg3">The 3rd argument to run <paramref name="action"/> with.</param>
@@ -226,10 +229,10 @@
         }
 
         /// <summary>
-        /// Create a <see cref="FunctionPointerTask{T1, T2, T3, T4, T5, T6, T7, T8, T9}"/> that encapsulates an action.
+        /// Create a <see cref="FunctionPointerTask{T1, T2, T3, T4, T5, T6, T7, T8, T9}"/> that encapsulates a function pointer.
         /// </summary>
-        /// <returns>A new <see cref="FunctionPointerTask{T1, T2, T3, T4, T5, T6, T7, T8, T9}"/> that will invoke the action when run with the supplied arguments.</returns>
-        /// <param name="action">Function pointer to enqueue.</param>
+        /// <returns>A new <see cref="FunctionPointerTask{T1, T2, T3, T4, T5, T6, T7, T8, T9}"/> that will invoke the function pointer when run with the supplied arguments.</returns>
+        /// <param name="action">Function pointer to encapsulate.</param>
         /// <param name="arg1">The 1st argument to run <paramref name="action"/> with.</param>
         /// <param name="arg2">The 2nd argument to run <paramref name="action"/> with.</param>
         /// <param name="arg3">The 3rd argument to run <paramref name="action"/> with.</param>
@@ -260,10 +263,10 @@
         }
 
         /// <summary>
-        /// Create a <see cref="FunctionPointerTask{T1, T2, T3, T4, T5, T6, T7, T8, T9, T10}"/> that encapsulates an action.
+        /// Create a <see cref="FunctionPointerTask{T1, T2, T3, T4, T5, T6, T7, T8, T9, T10}"/> that encapsulates a function pointer.
         /// </summary>
-        /// <returns>A new <see cref="FunctionPointerTask{T1, T2, T3, T4, T5, T6, T7, T8, T9, T10}"/> that will invoke the action when run with the supplied arguments.</returns>
-        /// <param name="action">Function pointer to enqueue.</param>
+        /// <returns>A new <see cref="FunctionPointerTask{T1, T2, T3, T4, T5, T6, T7, T8, T9, T10}"/> that will invoke the function pointer when run with the supplied arguments.</returns>
+        /// <param name="action">Function pointer to encapsulate.</param>
         /// <param name="arg1">The 1st argument to run <paramref name="action"/> with.</param>
         /// <param name="arg2">The 2nd argument to run <paramref name="action"/> with.</param>
         /// <param name="arg3">The 3rd argument to run <paramref name="action"/> with.</param>
@@ -296,10 +299,10 @@
         }
 
         /// <summary>
-        /// Create a <see cref="FunctionPointerTask{T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11}"/> that encapsulates an action.
+        /// Create a <see cref="FunctionPointerTask{T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11}"/> that encapsulates a function pointer.
         /// </summary>
-        /// <returns>A new <see cref="FunctionPointerTask{T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11}"/> that will invoke the action when run with the supplied arguments.</returns>
-        /// <param name="action">Function pointer to enqueue.</param>
+        /// <returns>A new <see cref="FunctionPointerTask{T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11}"/> that will invoke the function pointer when run with the supplied arguments.</returns>
+        /// <param name="action">Function pointer to encapsulate.</param>
         /// <param name="arg1">The 1st argument to run <paramref name="action"/> with.</param>
         /// <param name="arg2">The 2nd argument to run <paramref name="action"/> with.</param>
         /// <param name="arg3">The 3rd argument to run <paramref name="action"/> with.</param>
@@ -334,10 +337,10 @@
         }
 
         /// <summary>
-        /// Create a <see cref="FunctionPointerTask{T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12}"/> that encapsulates an action.
+        /// Create a <see cref="FunctionPointerTask{T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12}"/> that encapsulates a function pointer.
         /// </summary>
-        /// <returns>A new <see cref="FunctionPointerTask{T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12}"/> that will invoke the action when run with the supplied arguments.</returns>
-        /// <param name="action">Function pointer to enqueue.</param>
+        /// <returns>A new <see cref="FunctionPointerTask{T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12}"/> that will invoke the function pointer when run with the supplied arguments.</returns>
+        /// <param name="action">Function pointer to encapsulate.</param>
         /// <param name="arg1">The 1st argument to run <paramref name="action"/> with.</param>
         /// <param name="arg2">The 2nd argument to run <paramref name="action"/> with.</param>
         /// <param name="arg3">The 3rd argument to run <paramref name="action"/> with.</param>
@@ -374,10 +377,10 @@
         }
 
         /// <summary>
-        /// Create a <see cref="FunctionPointerTask{T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13}"/> that encapsulates an action.
+        /// Create a <see cref="FunctionPointerTask{T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13}"/> that encapsulates a function pointer.
         /// </summary>
-        /// <returns>A new <see cref="FunctionPointerTask{T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13}"/> that will invoke the action when run with the supplied arguments.</returns>
-        /// <param name="action">Function pointer to enqueue.</param>
+        /// <returns>A new <see cref="FunctionPointerTask{T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13}"/> that will invoke the function pointer when run with the supplied arguments.</returns>
+        /// <param name="action">Function pointer to encapsulate.</param>
         /// <param name="arg1">The 1st argument to run <paramref name="action"/> with.</param>
         /// <param name="arg2">The 2nd argument to run <paramref name="action"/> with.</param>
         /// <param name="arg3">The 3rd argument to run <paramref name="action"/> with.</param>
@@ -416,10 +419,10 @@
         }
 
         /// <summary>
-        /// Create a <see cref="FunctionPointerTask{T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14}"/> that encapsulates an action.
+        /// Create a <see cref="FunctionPointerTask{T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14}"/> that encapsulates a function pointer.
         /// </summary>
-        /// <returns>A new <see cref="FunctionPointerTask{T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14}"/> that will invoke the action when run with the supplied arguments.</returns>
-        /// <param name="action">Function pointer to enqueue.</param>
+        /// <returns>A new <see cref="FunctionPointerTask{T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14}"/> that will invoke the function pointer when run with the supplied arguments.</returns>
+        /// <param name="action">Function pointer to encapsulate.</param>
         /// <param name="arg1">The 1st argument to run <paramref name="action"/> with.</param>
         /// <param name="arg2">The 2nd argument to run <paramref name="action"/> with.</param>
         /// <param name="arg3">The 3rd argument to run <paramref name="action"/> with.</param>
@@ -460,10 +463,10 @@
         }
 
         /// <summary>
-        /// Create a <see cref="FunctionPointerTask{T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15}"/> that encapsulates an action.
+        /// Create a <see cref="FunctionPointerTask{T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15}"/> that encapsulates a function pointer.
         /// </summary>
-        /// <returns>A new <see cref="FunctionPointerTask{T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15}"/> that will invoke the action when run with the supplied arguments.</returns>
-        /// <param name="action">Function pointer to enqueue.</param>
+        /// <returns>A new <see cref="FunctionPointerTask{T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15}"/> that will invoke the function pointer when run with the supplied arguments.</returns>
+        /// <param name="action">Function pointer to encapsulate.</param>
         /// <param name="arg1">The 1st argument to run <paramref name="action"/> with.</param>
         /// <param name="arg2">The 2nd argument to run <paramref name="action"/> with.</param>
         /// <param name="arg3">The 3rd argument to run <paramref name="action"/> with.</param>
@@ -506,10 +509,10 @@
         }
 
         /// <summary>
-        /// Create a <see cref="FunctionPointerTask{T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, T16}"/> that encapsulates an action.
+        /// Create a <see cref="FunctionPointerTask{T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, T16}"/> that encapsulates a function pointer.
         /// </summary>
-        /// <returns>A new <see cref="FunctionPointerTask{T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, T16}"/> that will invoke the action when run with the supplied arguments.</returns>
-        /// <param name="action">Function pointer to enqueue.</param>
+        /// <returns>A new <see cref="FunctionPointerTask{T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, T16}"/> that will invoke the function pointer when run with the supplied arguments.</returns>
+        /// <param name="action">Function pointer to encapsulate.</param>
         /// <param name="arg1">The 1st argument to run <paramref name="action"/> with.</param>
         /// <param name="arg2">The 2nd argument to run <paramref name="action"/> with.</param>
         /// <param name="arg3">The 3rd argument to run <paramref name="action"/> with.</param>

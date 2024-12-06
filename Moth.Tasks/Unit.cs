@@ -7,6 +7,11 @@
     /// </summary>
     public struct Unit : IEquatable<Unit>
     {
-        public bool Equals (Unit other) => true;
+        /// <summary>
+        /// Compares this instance of <see cref="Unit"/> with another instance.
+        /// </summary>
+        /// <param name="other">Other instance of <see cref="Unit"/>.</param>
+        /// <returns>Always returns <see langword="true"/>.</returns>
+        public readonly bool Equals (Unit other) => true;
     }
 }

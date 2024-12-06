@@ -4,6 +4,9 @@
     using System.Runtime.InteropServices;
     using System.Threading;
 
+    /// <summary>
+    /// Represents a group of tasks that can be tracked and waited on.
+    /// </summary>
     public unsafe class TaskGroup : IDisposable
     {
         private readonly object whenCompleteLock = new object ();
@@ -12,6 +15,9 @@
         private bool isDisposed;
         private GCHandle thisHandle;
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="TaskGroup"/> class.
+        /// </summary>
         public TaskGroup ()
         {
             counter = (Counter*)Marshal.AllocHGlobal (sizeof (Counter));
@@ -20,6 +26,9 @@
             *counter = new Counter (thisHandle);
         }
 
+        /// <summary>
+        /// Finalizes an instance of the <see cref="TaskGroup"/> class.
+        /// </summary>
         ~TaskGroup ()
         {
             Dispose (false);
@@ -89,12 +98,20 @@
             queue.Enqueue (new TaskGroupItem<T> (counter, task));
         }
 
+        /// <summary>
+        /// Disposes of the task group.
+        /// </summary>
         public void Dispose ()
         {
             Dispose (true);
             GC.SuppressFinalize (this);
         }
 
+        /// <summary>
+        /// Disposes of the task group.
+        /// </summary>
+        /// <param name="disposing"><see langword="true"/> if called from <see cref="Dispose()"/>.</param>
+        /// <exception cref="InvalidOperationException"><see cref="IsComplete"/> is not false.</exception>
         protected virtual void Dispose (bool disposing)
         {
             if (!isDisposed)

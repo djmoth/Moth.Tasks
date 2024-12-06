@@ -16,13 +16,13 @@
     [TestFixture]
     internal class TaskDataStoreTests
     {
-        private ITaskInfo<TestTask> mockTaskInfo;
+        private ITaskMetadata<TestTask> mockTaskMetadata;
         private Mock<ITaskReferenceStore> mockReferenceStore;
 
         [SetUp]
         public void SetUp ()
         {
-            mockTaskInfo = new MockTestTaskInfo ();
+            mockTaskMetadata = new MockTestTaskMetadata ();
 
             mockReferenceStore = new Mock<ITaskReferenceStore> ();
         }
@@ -46,16 +46,16 @@
         {
             TaskDataStore taskData = new TaskDataStore (0, mockReferenceStore.Object);
 
-            taskData.Enqueue (new TestTask (), mockTaskInfo);
+            taskData.Enqueue (new TestTask (), mockTaskMetadata);
 
             mockReferenceStore.Verify (store => store.Write, Times.Once);
 
             Assert.Multiple (() =>
             {
                 Assert.That (taskData.FirstTask, Is.EqualTo (0));
-                Assert.That (taskData.LastTaskEnd, Is.EqualTo (mockTaskInfo.UnmanagedSize));
-                Assert.That (taskData.Size, Is.EqualTo (mockTaskInfo.UnmanagedSize));
-                Assert.That (taskData.Capacity, Is.GreaterThanOrEqualTo (mockTaskInfo.UnmanagedSize));
+                Assert.That (taskData.LastTaskEnd, Is.EqualTo (mockTaskMetadata.UnmanagedSize));
+                Assert.That (taskData.Size, Is.EqualTo (mockTaskMetadata.UnmanagedSize));
+                Assert.That (taskData.Capacity, Is.GreaterThanOrEqualTo (mockTaskMetadata.UnmanagedSize));
             });
         }
 
@@ -64,15 +64,15 @@
         {
             TaskDataStore taskData = new TaskDataStore (0, mockReferenceStore.Object);
 
-            taskData.Enqueue (new TestTask (), mockTaskInfo);
+            taskData.Enqueue (new TestTask (), mockTaskMetadata);
 
             mockReferenceStore.Verify (store => store.Write, Times.Once);
 
             Assert.Multiple (() =>
             {
                 Assert.That (taskData.FirstTask, Is.EqualTo (0));
-                Assert.That (taskData.LastTaskEnd, Is.EqualTo (mockTaskInfo.UnmanagedSize));
-                Assert.That (taskData.Size, Is.EqualTo (mockTaskInfo.UnmanagedSize));
+                Assert.That (taskData.LastTaskEnd, Is.EqualTo (mockTaskMetadata.UnmanagedSize));
+                Assert.That (taskData.Size, Is.EqualTo (mockTaskMetadata.UnmanagedSize));
             });
         }
 
@@ -81,16 +81,16 @@
         {
             TaskDataStore taskData = new TaskDataStore (0, mockReferenceStore.Object);
 
-            taskData.Enqueue (new TestTask (), mockTaskInfo);
-            taskData.Enqueue (new TestTask (), mockTaskInfo);
+            taskData.Enqueue (new TestTask (), mockTaskMetadata);
+            taskData.Enqueue (new TestTask (), mockTaskMetadata);
 
             mockReferenceStore.Verify (store => store.Write, Times.Exactly (2));
 
             Assert.Multiple (() =>
             {
                 Assert.That (taskData.FirstTask, Is.EqualTo (0));
-                Assert.That (taskData.LastTaskEnd, Is.EqualTo (mockTaskInfo.UnmanagedSize * 2));
-                Assert.That (taskData.Size, Is.EqualTo (mockTaskInfo.UnmanagedSize * 2));
+                Assert.That (taskData.LastTaskEnd, Is.EqualTo (mockTaskMetadata.UnmanagedSize * 2));
+                Assert.That (taskData.Size, Is.EqualTo (mockTaskMetadata.UnmanagedSize * 2));
             });
         }
 
@@ -100,10 +100,10 @@
             TaskDataStore taskData = new TaskDataStore (0, mockReferenceStore.Object);
             
             TestTask task = new TestTask (42);
-            mockTaskInfo = new MockTestTaskInfo (task);
+            mockTaskMetadata = new MockTestTaskMetadata (task);
 
-            taskData.Enqueue (task, mockTaskInfo);
-            TestTask dequeuedTask = taskData.Dequeue (mockTaskInfo);
+            taskData.Enqueue (task, mockTaskMetadata);
+            TestTask dequeuedTask = taskData.Dequeue (mockTaskMetadata);
 
             mockReferenceStore.Verify (store => store.Read, Times.Once);
 
@@ -115,7 +115,7 @@
         {
             TaskDataStore taskData = new TaskDataStore (0, mockReferenceStore.Object);
 
-            Assert.Throws<InvalidOperationException> (() => taskData.Dequeue (new MockTestTaskInfo ()));
+            Assert.Throws<InvalidOperationException> (() => taskData.Dequeue (new MockTestTaskMetadata ()));
         }
 
         [Test]
@@ -124,15 +124,15 @@
             TaskDataStore taskData = new TaskDataStore (0, mockReferenceStore.Object);
             TestTask task = new TestTask (42);
 
-            taskData.Enqueue (task, mockTaskInfo);
-            taskData.Enqueue (task, mockTaskInfo);
-            taskData.Skip (mockTaskInfo);
+            taskData.Enqueue (task, mockTaskMetadata);
+            taskData.Enqueue (task, mockTaskMetadata);
+            taskData.Skip (mockTaskMetadata);
 
             Assert.Multiple (() =>
             {
-                Assert.That (taskData.FirstTask, Is.EqualTo (mockTaskInfo.UnmanagedSize));
-                Assert.That (taskData.LastTaskEnd, Is.EqualTo (mockTaskInfo.UnmanagedSize * 2));
-                Assert.That (taskData.Size, Is.EqualTo (mockTaskInfo.UnmanagedSize));
+                Assert.That (taskData.FirstTask, Is.EqualTo (mockTaskMetadata.UnmanagedSize));
+                Assert.That (taskData.LastTaskEnd, Is.EqualTo (mockTaskMetadata.UnmanagedSize * 2));
+                Assert.That (taskData.Size, Is.EqualTo (mockTaskMetadata.UnmanagedSize));
             });
         }
 
@@ -142,8 +142,8 @@
             TaskDataStore taskData = new TaskDataStore (0, mockReferenceStore.Object);
             TestTask task = new TestTask (42);
 
-            taskData.Enqueue (task, mockTaskInfo);
-            taskData.Skip (mockTaskInfo);
+            taskData.Enqueue (task, mockTaskMetadata);
+            taskData.Skip (mockTaskMetadata);
 
             Assert.That (taskData.FirstTask, Is.EqualTo (0));
             Assert.That (taskData.LastTaskEnd, Is.EqualTo (0));
@@ -154,7 +154,7 @@
         public void Skip_WhenEmpty_ThrowsInvalidOperationException ()
         {
             TaskDataStore taskData = new TaskDataStore (0, mockReferenceStore.Object);
-            Assert.Throws<InvalidOperationException> (() => taskData.Skip (new MockTestTaskInfo ()));
+            Assert.Throws<InvalidOperationException> (() => taskData.Skip (new MockTestTaskMetadata ()));
         }
 
         [Test]
@@ -166,11 +166,11 @@
 
             int dataIndex = 0;
             int refIndex = 0;
-            taskData.Insert (ref dataIndex, ref refIndex, new TestTask (), mockTaskInfo);
+            taskData.Insert (ref dataIndex, ref refIndex, new TestTask (), mockTaskMetadata);
 
             Assert.That (taskData.FirstTask, Is.EqualTo (firstTask));
-            Assert.That (taskData.LastTaskEnd, Is.EqualTo (mockTaskInfo.UnmanagedSize));
-            Assert.That (taskData.Size, Is.EqualTo (mockTaskInfo.UnmanagedSize));
+            Assert.That (taskData.LastTaskEnd, Is.EqualTo (mockTaskMetadata.UnmanagedSize));
+            Assert.That (taskData.Size, Is.EqualTo (mockTaskMetadata.UnmanagedSize));
         }
 
         [Test]
@@ -180,17 +180,17 @@
 
             int firstTask = taskData.FirstTask;
 
-            taskData.Enqueue (new TestTask (), mockTaskInfo);
+            taskData.Enqueue (new TestTask (), mockTaskMetadata);
 
             int dataIndex = 0;
             int refIndex = 0;
-            taskData.Insert (ref dataIndex, ref refIndex, new TestTask (), mockTaskInfo);
+            taskData.Insert (ref dataIndex, ref refIndex, new TestTask (), mockTaskMetadata);
 
-            mockReferenceStore.Verify (store => store.EnterInsertContext (ref It.Ref<int>.IsAny, mockTaskInfo.ReferenceCount, out It.Ref<ObjectWriter>.IsAny));
+            mockReferenceStore.Verify (store => store.EnterInsertContext (ref It.Ref<int>.IsAny, mockTaskMetadata.ReferenceCount, out It.Ref<ObjectWriter>.IsAny));
 
             Assert.That (taskData.FirstTask, Is.EqualTo (firstTask));
-            Assert.That (taskData.LastTaskEnd, Is.EqualTo (mockTaskInfo.UnmanagedSize * 2));
-            Assert.That (taskData.Size, Is.EqualTo (mockTaskInfo.UnmanagedSize * 2));
+            Assert.That (taskData.LastTaskEnd, Is.EqualTo (mockTaskMetadata.UnmanagedSize * 2));
+            Assert.That (taskData.Size, Is.EqualTo (mockTaskMetadata.UnmanagedSize * 2));
         }
 
         [Test]
@@ -199,15 +199,15 @@
             TaskDataStore taskData = new TaskDataStore (0, mockReferenceStore.Object);
 
             int firstTask = taskData.FirstTask;
-            taskData.Enqueue (new TestTask (), mockTaskInfo);
+            taskData.Enqueue (new TestTask (), mockTaskMetadata);
 
-            int dataIndex = mockTaskInfo.UnmanagedSize;
+            int dataIndex = mockTaskMetadata.UnmanagedSize;
             int refIndex = 0;
-            taskData.Insert (ref dataIndex, ref refIndex, new TestTask (), mockTaskInfo);
+            taskData.Insert (ref dataIndex, ref refIndex, new TestTask (), mockTaskMetadata);
 
             Assert.That (taskData.FirstTask, Is.EqualTo (firstTask));
-            Assert.That (taskData.LastTaskEnd, Is.EqualTo (mockTaskInfo.UnmanagedSize * 2));
-            Assert.That (taskData.Size, Is.EqualTo (mockTaskInfo.UnmanagedSize * 2));
+            Assert.That (taskData.LastTaskEnd, Is.EqualTo (mockTaskMetadata.UnmanagedSize * 2));
+            Assert.That (taskData.Size, Is.EqualTo (mockTaskMetadata.UnmanagedSize * 2));
         }
 
         [Test]
@@ -216,18 +216,18 @@
             TaskDataStore taskData = new TaskDataStore (0, mockReferenceStore.Object);
 
             int firstTask = taskData.FirstTask;
-            taskData.Enqueue (new TestTask (), mockTaskInfo);
-            taskData.Enqueue (new TestTask (), mockTaskInfo);
+            taskData.Enqueue (new TestTask (), mockTaskMetadata);
+            taskData.Enqueue (new TestTask (), mockTaskMetadata);
 
-            int dataIndex = mockTaskInfo.UnmanagedSize;
+            int dataIndex = mockTaskMetadata.UnmanagedSize;
             int refIndex = 0;
-            taskData.Insert (ref dataIndex, ref refIndex, new TestTask (), mockTaskInfo);
+            taskData.Insert (ref dataIndex, ref refIndex, new TestTask (), mockTaskMetadata);
 
-            mockReferenceStore.Verify (store => store.EnterInsertContext (ref It.Ref<int>.IsAny, mockTaskInfo.ReferenceCount, out It.Ref<ObjectWriter>.IsAny));
+            mockReferenceStore.Verify (store => store.EnterInsertContext (ref It.Ref<int>.IsAny, mockTaskMetadata.ReferenceCount, out It.Ref<ObjectWriter>.IsAny));
 
             Assert.That (taskData.FirstTask, Is.EqualTo (firstTask));
-            Assert.That (taskData.LastTaskEnd, Is.EqualTo (mockTaskInfo.UnmanagedSize * 3));
-            Assert.That (taskData.Size, Is.EqualTo (mockTaskInfo.UnmanagedSize * 3));
+            Assert.That (taskData.LastTaskEnd, Is.EqualTo (mockTaskMetadata.UnmanagedSize * 3));
+            Assert.That (taskData.Size, Is.EqualTo (mockTaskMetadata.UnmanagedSize * 3));
         }
 
         [Test]
@@ -237,7 +237,7 @@
 
             TestTask task = new TestTask ();
 
-            taskData.Enqueue (task, mockTaskInfo);
+            taskData.Enqueue (task, mockTaskMetadata);
             taskData.Clear ();
 
             Assert.That (taskData.FirstTask, Is.EqualTo (0));
@@ -273,16 +273,16 @@
             }
         }
 
-        class MockTestTaskInfo : MockTaskInfo<TestTask>
+        class MockTestTaskMetadata : MockTaskMetadata<TestTask>
         {
-            public MockTestTaskInfo (TestTask deserializeValue = default)
+            public MockTestTaskMetadata (TestTask deserializeValue = default)
                 : base (deserializeValue) { }
         }
 
-        unsafe class MockTaskInfo<TTask> : ITaskInfo<TTask>
+        unsafe class MockTaskMetadata<TTask> : ITaskMetadata<TTask>
             where TTask : struct, ITask
         {
-            public MockTaskInfo (TTask deserializeValue = default)
+            public MockTaskMetadata (TTask deserializeValue = default)
             {
                 DeserializeValue = deserializeValue;
             }

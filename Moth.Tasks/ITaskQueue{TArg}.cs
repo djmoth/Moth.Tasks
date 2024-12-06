@@ -15,7 +15,7 @@
         /// <inheritdoc cref="ITaskQueue.Enqueue{TTask}(in TTask)"/>
         void Enqueue<TTask> (in TTask task) where TTask : struct, ITask<TArg>;
 
-        ///<summary>
+        /// <summary>
         /// Enqueues an <see cref="ITask{TArg}"/> to be run later, giving out a <see cref="TaskHandle"/> for checking task status.
         /// </summary>
         /// <inheritdoc cref="ITaskQueue.Enqueue{TTask}(in TTask, out TaskHandle)"/>

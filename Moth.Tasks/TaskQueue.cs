@@ -5,13 +5,15 @@
     using System.Runtime.CompilerServices;
     using System.Threading;
 
-
+    /// <summary>
+    /// Represents a queue of tasks to be run.
+    /// </summary>
     public class TaskQueue : ITaskQueue
     {
         private readonly object taskLock = new object ();
         private readonly Queue<int> tasks;
         private readonly ManualResetEventSlim tasksEnqueuedEvent = new ManualResetEventSlim (); // Must be explicitly set by callers of EnqueueImpl
-        private readonly ITaskCache taskCache;
+        private readonly ITaskMetadataCache taskCache;
         private readonly ITaskDataStore taskDataStore;
         private readonly ITaskHandleManager taskHandleManager;
         private bool disposed;
@@ -28,23 +30,23 @@
         /// <param name="taskCapacity">Starting capacity for the internal task queue in no. of tasks.</param>
         /// <param name="unmanagedDataCapacity">Starting capacity for the internal task data array in bytes.</param>
         /// <param name="managedReferenceCapacity">Starting capacity for the internal task reference field store in no. of references.</param>
-        /// <param name="taskCache">Optional <see cref="ITaskCache"/> for caching task types.</param>
-        public TaskQueue (int taskCapacity, int unmanagedDataCapacity, int managedReferenceCapacity, ITaskCache taskCache = null)
+        /// <param name="taskCache">Optional <see cref="ITaskMetadataCache"/> for caching task types.</param>
+        public TaskQueue (int taskCapacity, int unmanagedDataCapacity, int managedReferenceCapacity, ITaskMetadataCache taskCache = null)
             : this (taskCapacity, taskCache, new TaskDataStore (unmanagedDataCapacity, new TaskReferenceStore (managedReferenceCapacity)), new TaskHandleManager ()) { }
 
         /// <summary>
         /// Initializes a new instance of the <see cref="TaskQueue"/> class.
         /// </summary>
-        /// <inheritdoc cref="TaskQueue(int, int, int, ITaskCache)"/>/>
+        /// <inheritdoc cref="TaskQueue(int, int, int, ITaskMetadataCache)"/>/>
         /// <param name="taskCapacity"></param>
         /// <param name="taskCache"></param>
         /// <param name="taskDataStore"><see cref="ITaskDataStore"/> responsible for storing task data.</param>
         /// <param name="taskHandleManager"><see cref="ITaskHandleManager"/> responsible for managing task handles.</param>
-        internal TaskQueue (int taskCapacity, ITaskCache taskCache, ITaskDataStore taskDataStore, ITaskHandleManager taskHandleManager)
+        internal TaskQueue (int taskCapacity, ITaskMetadataCache taskCache, ITaskDataStore taskDataStore, ITaskHandleManager taskHandleManager)
         {
             tasks = new Queue<int> (taskCapacity);
 
-            this.taskCache = taskCache ?? new TaskCache ();
+            this.taskCache = taskCache ?? new TaskMetadataCache ();
             this.taskDataStore = taskDataStore;
             this.taskHandleManager = taskHandleManager;
         }
@@ -72,7 +74,6 @@
         /// <exception cref="ObjectDisposedException">The <see cref="TaskQueue"/> has been disposed.</exception>
         public void Enqueue<T> (in T task) where T : struct, ITask => EnqueueTask (task);
 
-
         /// <inheritdoc />
         /// <exception cref="ObjectDisposedException">The <see cref="TaskQueue"/> has been disposed.</exception>
         public void Enqueue<TTask> (in TTask task, out TaskHandle handle)
@@ -95,15 +96,9 @@
         /// <inheritdoc />
         public void RunNextTask (out Exception exception, IProfiler profiler = null, CancellationToken token = default)
         {
-            WaitForTask (token);
+            TaskRunWrapper taskRunWrapper = default;
 
-            if (token.IsCancellationRequested)
-            {
-                exception = null;
-                return;
-            }
-
-            TryRunNextTask (out exception, profiler);
+            RunNextTask (ref taskRunWrapper, out exception, profiler, token);
         }
 
         /// <inheritdoc />
@@ -131,13 +126,13 @@
 
             foreach (int id in tasks)
             {
-                ITaskInfo task = taskCache.GetTask (id);
+                ITaskMetadata task = taskCache.GetTask (id);
 
-                if (task is IDisposableTaskInfo disposableTaskInfo)
+                if (task is IDisposableTaskMetadata disposableTaskMetadata)
                 {
                     try
                     {
-                        disposableTaskInfo.Dispose (access);
+                        disposableTaskMetadata.Dispose (access);
                     } catch (Exception ex)
                     {
                         exceptionHandler?.Invoke (ex);
@@ -184,6 +179,10 @@
             disposed = true;
         }
 
+        /// <summary>
+        /// Creates a new <see cref="TaskHandle"/>.
+        /// </summary>
+        /// <returns>A new unique <see cref="TaskHandle"/>.</returns>
         protected TaskHandle CreateTaskHandle () => taskHandleManager.CreateTaskHandle ();
 
         /// <summary>
@@ -201,7 +200,7 @@
                     throw new ObjectDisposedException (nameof (TaskQueue), "New tasks may not be enqueued after TaskQueue has been disposed.");
                 }
 
-                ITaskInfo<T> taskInfo = taskCache.GetTask<T> ();
+                ITaskMetadata<T> taskInfo = taskCache.GetTask<T> ();
 
                 tasks.Enqueue (taskInfo.ID); // Add task ID to the queue
 
@@ -215,15 +214,19 @@
             tasksEnqueuedEvent.Set (); // Signal potentially waiting threads that tasks are ready to be executed
         }
 
-        protected void WaitForTask (CancellationToken token)
+        /// <summary>
+        /// Runs the next task in the queue using a wrapper for running the task.
+        /// </summary>
+        /// <typeparam name="TTaskRunWrapper">Type of task run wrapper.</typeparam>
+        /// <inheritdoc cref="RunNextTask(out Exception, IProfiler, CancellationToken)"/>
+        /// <param name="taskRunWrapper">Wrapper to run the task in.</param>
+        /// <param name="exception"/>
+        /// <param name="profiler"/>
+        /// <param name="token"/>
+        protected void RunNextTask<TTaskRunWrapper> (ref TTaskRunWrapper taskRunWrapper, out Exception exception, IProfiler profiler = null, CancellationToken token = default)
+            where TTaskRunWrapper : struct, ITask<TaskRunWrapperArgs>
         {
             tasksEnqueuedEvent.Wait (token);
-        }
-
-        protected void RunNextTask<TTask> (ref TTask taskRunWrapper, out Exception exception, IProfiler profiler = null, CancellationToken token = default)
-            where TTask : struct, ITask<TaskRunWrapperArgs>
-        {
-            WaitForTask (token);
 
             if (token.IsCancellationRequested)
             {
@@ -234,8 +237,16 @@
             TryRunNextTask (ref taskRunWrapper, out exception, profiler);
         }
 
-        protected unsafe bool TryRunNextTask<TTask> (ref TTask taskRunWrapper, out Exception exception, IProfiler profiler = null)
-            where TTask : struct, ITask<TaskRunWrapperArgs>
+        /// <summary>
+        /// Tries to run the next task in the queue using a wrapper for running the task.
+        /// </summary>
+        /// <inheritdoc cref="TryRunNextTask(out Exception, IProfiler)"/>
+        /// <inheritdoc cref="RunNextTask{TTaskRunWrapper}(ref TTaskRunWrapper, out Exception, IProfiler, CancellationToken)"/>
+        /// <param name="taskRunWrapper"/>
+        /// <param name="exception"/>
+        /// <param name="profiler"/>
+        protected unsafe bool TryRunNextTask<TTaskRunWrapper> (ref TTaskRunWrapper taskRunWrapper, out Exception exception, IProfiler profiler = null)
+            where TTaskRunWrapper : struct, ITask<TaskRunWrapperArgs>
         {
             exception = null;
 
@@ -255,7 +266,7 @@
                 tasksEnqueuedEvent.Reset (); // All tasks have been fetched, and as such the event can be reset.
             }
 
-            ITaskInfo task = taskCache.GetTask (id);
+            ITaskMetadata task = taskCache.GetTask (id);
 
             bool isProfiling = false;
 
@@ -278,7 +289,7 @@
             {
                 exception = ex;
 
-                if (!access.Disposed) // Internal error, TaskInfo should always call TaskDataAccess.Dispose after getting task data in TaskInfo.RunAndDispose
+                if (!access.Disposed) // Internal error, TaskMetadata should always call TaskDataAccess.Dispose after getting task data in TaskMetadata.RunAndDispose
                 {
                     access.Dispose ();
                 }
@@ -292,7 +303,7 @@
             return true;
         }
 
-        private T GetNextTaskData<T> (ITaskInfo<T> taskInfo)
+        private T GetNextTaskData<T> (ITaskMetadata<T> taskInfo)
             where T : struct, ITaskType => taskDataStore.Dequeue (taskInfo);
 
         /// <summary>
@@ -308,6 +319,8 @@
             /// Initializes a new instance of the <see cref="TaskDataAccess"/> struct. Locks the <see cref="TaskQueue"/>.
             /// </summary>
             /// <param name="queue">Reference to the queue.</param>
+            /// <param name="disposed">Pointer to the disposed flag.</param>
+            /// <param name="disposeOnGetNextTaskData">Whether to dispose the lock after getting the next task data.</param>
             internal TaskDataAccess (TaskQueue queue, bool* disposed, bool disposeOnGetNextTaskData)
             {
                 this.queue = queue;
@@ -326,10 +339,10 @@
             /// Fetches next data of a task.
             /// </summary>
             /// <typeparam name="TTask">Type of task.</typeparam>
-            /// <param name="taskInfo">TaskInfo of task.</param>
+            /// <param name="taskInfo">TaskMetadata of task.</param>
             /// <returns>Task data.</returns>
             [MethodImpl (MethodImplOptions.AggressiveInlining)]
-            internal readonly TTask GetNextTaskData<TTask> (ITaskInfo<TTask> taskInfo)
+            internal readonly TTask GetNextTaskData<TTask> (ITaskMetadata<TTask> taskInfo)
                 where TTask : struct, ITaskType
             {
                 TTask taskData = queue.GetNextTaskData (taskInfo);
@@ -355,24 +368,40 @@
             }
         }
 
+        /// <summary>
+        /// Wrapper for running a task.
+        /// </summary>
         protected readonly struct TaskRunWrapperArgs
         {
-            private readonly ITaskInfo task;
+            private readonly ITaskMetadata task;
 
-            public TaskRunWrapperArgs (ITaskInfo task, TaskDataAccess access)
+            /// <summary>
+            /// Initializes a new instance of the <see cref="TaskRunWrapperArgs"/> struct.
+            /// </summary>
+            /// <param name="task">Metadata of task.</param>
+            /// <param name="access">Access to task data.</param>
+            public TaskRunWrapperArgs (ITaskMetadata task, TaskDataAccess access)
             {
                 this.task = task;
                 Access = access;
             }
 
+            /// <summary>
+            /// Gets the access to task data.
+            /// </summary>
             public TaskDataAccess Access { get; }
 
-            public T GetTaskInfoRunnable<T> () where T : IRunnableTaskInfo => (T)task;
+            /// <summary>
+            /// Gets the task metadata as a runnable task.
+            /// </summary>
+            /// <typeparam name="T">Type of task metadata.</typeparam>
+            /// <returns>A task metadata instance for running the task.</returns>
+            public T GetTaskMetadataRunnable<T> () where T : IRunnableTaskMetadata => (T)task;
         }
 
         private struct TaskRunWrapper : ITask<TaskRunWrapperArgs>
         {
-            public readonly void Run (TaskRunWrapperArgs args) => args.GetTaskInfoRunnable<IRunnableTaskInfo> ().Run (args.Access);
+            public readonly void Run (TaskRunWrapperArgs args) => args.GetTaskMetadataRunnable<IRunnableTaskMetadata> ().Run (args.Access);
         }
     }
 }

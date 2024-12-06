@@ -8,7 +8,7 @@
     using IFormatProvider = Moth.IO.Serialization.IFormatProvider;
 
     [TestFixture]
-    public class TaskInfoProviderTests
+    public class TaskMetadataProviderTests
     {
         private Mock<IFormatProvider> mockFormatProvider;
 
@@ -19,34 +19,34 @@
         }
 
         [Test]
-        public void Create_TestTask_ReturnsCorrectType () => TestCreatesCorrectTaskInfoType<TestTask> (typeof (TaskInfo<TestTask>));
+        public void Create_TestTask_ReturnsCorrectType () => TestCreatesCorrectTaskMetadataType<TestTask> (typeof (TaskMetadata<TestTask>));
 
         [Test]
-        public void Create_TestTaskArg_ReturnsCorrectType () => TestCreatesCorrectTaskInfoType<TestTaskArg> (typeof (TaskInfo<TestTaskArg, int>));
+        public void Create_TestTaskArg_ReturnsCorrectType () => TestCreatesCorrectTaskMetadataType<TestTaskArg> (typeof (TaskMetadata<TestTaskArg, int>));
 
         [Test]
-        public void Create_TestTaskArgResult_ReturnsCorrectType () => TestCreatesCorrectTaskInfoType<TestTaskArgResult> (typeof (TaskInfo<TestTaskArgResult, int, int>));
+        public void Create_TestTaskArgResult_ReturnsCorrectType () => TestCreatesCorrectTaskMetadataType<TestTaskArgResult> (typeof (TaskMetadata<TestTaskArgResult, int, int>));
 
         [Test]
-        public void Create_DisposableTestTask_ReturnsCorrectType () => TestCreatesCorrectTaskInfoType<DisposableTestTask> (typeof (DisposableTaskInfo<DisposableTestTask>));
+        public void Create_DisposableTestTask_ReturnsCorrectType () => TestCreatesCorrectTaskMetadataType<DisposableTestTask> (typeof (DisposableTaskMetadata<DisposableTestTask>));
 
         [Test]
-        public void Create_DisposableTestTaskArg_ReturnsCorrectType () => TestCreatesCorrectTaskInfoType<DisposableTestTaskArg> (typeof (DisposableTaskInfo<DisposableTestTaskArg, int>));
+        public void Create_DisposableTestTaskArg_ReturnsCorrectType () => TestCreatesCorrectTaskMetadataType<DisposableTestTaskArg> (typeof (DisposableTaskMetadata<DisposableTestTaskArg, int>));
 
         [Test]
-        public void Create_DisposableTestTaskArgResult_ReturnsCorrectType () => TestCreatesCorrectTaskInfoType<DisposableTestTaskArgResult> (typeof (DisposableTaskInfo<DisposableTestTaskArgResult, int, int>));
-        public unsafe void TestCreatesCorrectTaskInfoType<T> (Type expectedTaskInfoType)
+        public void Create_DisposableTestTaskArgResult_ReturnsCorrectType () => TestCreatesCorrectTaskMetadataType<DisposableTestTaskArgResult> (typeof (DisposableTaskMetadata<DisposableTestTaskArgResult, int, int>));
+        public unsafe void TestCreatesCorrectTaskMetadataType<T> (Type expectedTaskMetadataType)
             where T : struct, ITaskType
         {
             int taskID = 1;
 
             mockFormatProvider.Setup (x => x.Get<T> ()).Returns (Mock.Of<IFormat<T>> ());
 
-            TaskInfoProvider taskInfoProvider = new TaskInfoProvider (mockFormatProvider.Object);
+            TaskMetadataProvider taskInfoProvider = new TaskMetadataProvider (mockFormatProvider.Object);
 
-            ITaskInfo<T> taskInfo = taskInfoProvider.Create<T> (taskID);
+            ITaskMetadata<T> taskInfo = taskInfoProvider.Create<T> (taskID);
 
-            Assert.That (taskInfo.GetType (), Is.EqualTo (expectedTaskInfoType));
+            Assert.That (taskInfo.GetType (), Is.EqualTo (expectedTaskMetadataType));
         }
 
         public struct TestTask : ITask

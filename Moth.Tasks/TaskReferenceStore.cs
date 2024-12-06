@@ -1,7 +1,7 @@
 ﻿namespace Moth.Tasks
 {
-    using Moth.IO.Serialization;
     using System;
+    using Moth.IO.Serialization;
 
     /// <inheritdoc/>
     public class TaskReferenceStore : ITaskReferenceStore

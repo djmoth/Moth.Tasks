@@ -1,7 +1,7 @@
-﻿using Moth.IO.Serialization;
-
-namespace Moth.Tasks
+﻿namespace Moth.Tasks
 {
+    using Moth.IO.Serialization;
+
     /// <summary>
     /// Stores reference fields from tasks.
     /// </summary>
@@ -45,7 +45,7 @@ namespace Moth.Tasks
         /// <summary>
         /// Enters an insert context to insert references.
         /// </summary>
-        /// <param name="insertIndex">The index to start inserting at</param>
+        /// <param name="insertIndex">The index to start inserting at.</param>
         /// <param name="refCount">The total number of references that will be inserted.</param>
         /// <param name="insertWriter">The <see cref="ObjectWriter"/> to write references to.</param>
         /// <returns>A <see cref="TaskReferenceInsertContext"/> on which <see cref="TaskReferenceInsertContext.Dispose"/> must be called when done.</returns>

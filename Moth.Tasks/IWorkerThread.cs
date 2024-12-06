@@ -1,7 +1,7 @@
-﻿using System.Threading;
-
-namespace Moth.Tasks
+﻿namespace Moth.Tasks
 {
+    using System.Threading;
+
     /// <summary>
     /// Represents a worker thread.
     /// </summary>

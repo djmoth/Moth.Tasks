@@ -6,7 +6,10 @@
     using System.Threading;
     using System.Threading.Tasks;
 
-    /// <inheritdoc />
+    /// <summary>
+    /// Represents a queue of tasks to be run with an argument.
+    /// </summary>
+    /// <typeparam name="TArg">Type of argument to pass to the tasks.</typeparam>
     public class TaskQueue<TArg> : TaskQueue, ITaskQueue<TArg>
     {
         /// <inheritdoc />
@@ -29,8 +32,10 @@
             }
         }
 
+        /// <inheritdoc />
         public void RunNextTask (TArg arg, IProfiler profiler = null, CancellationToken token = default) => RunNextTask (arg, out _, profiler, token);
 
+        /// <inheritdoc />
         public void RunNextTask (TArg arg, out Exception exception, IProfiler profiler = null, CancellationToken token = default)
         {
             TaskRunWrapper taskRunWrapper = new TaskRunWrapper (arg);
@@ -38,8 +43,10 @@
             RunNextTask (ref taskRunWrapper, out exception, profiler, token);
         }
 
+        /// <inheritdoc />
         public bool TryRunNextTask (TArg arg, IProfiler profiler = null) => TryRunNextTask (arg, out _, profiler);
 
+        /// <inheritdoc />
         public bool TryRunNextTask (TArg arg, out Exception exception, IProfiler profiler = null)
         {
             TaskRunWrapper taskRunWrapper = new TaskRunWrapper (arg);
@@ -56,7 +63,7 @@
                 this.arg = arg;
             }
 
-            public readonly void Run (TaskRunWrapperArgs args) => args.GetTaskInfoRunnable<IRunnableTaskInfo<TArg>> ().Run (args.Access, arg);
+            public readonly void Run (TaskRunWrapperArgs args) => args.GetTaskMetadataRunnable<IRunnableTaskMetadata<TArg>> ().Run (args.Access, arg);
         }
     }
 }

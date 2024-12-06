@@ -3,20 +3,26 @@
     using Moth.IO.Serialization;
 
     /// <inheritdoc />
-    internal class TaskInfo<TTask> : TaskInfoBase<TTask>, IRunnableTaskInfo
+    internal class TaskMetadata<TTask> : TaskMetadataBase<TTask>, IRunnableTaskMetadata
         where TTask : struct, ITask
     {
-        /// <inheritdoc cref="TaskInfoBase{TTask}(int, IFormat{TTask})"/>
-        public TaskInfo (int id, IFormat<TTask> taskFormat)
+        /// <summary>
+        /// Initializes a new instance of the <see cref="TaskMetadata{TTask}"/> class.
+        /// </summary>
+        /// <inheritdoc cref="TaskMetadataBase{TTask}(int, IFormat{TTask})"/>
+        public TaskMetadata (int id, IFormat<TTask> taskFormat)
             : base (id, taskFormat) { }
 
         /// <inheritdoc />
         public override bool IsDisposable => false;
 
+        /// <inheritdoc />
         public override bool HasArgs => false;
 
+        /// <inheritdoc />
         public override bool HasResult => false;
 
+        /// <inheritdoc />
         public void Run (TaskQueue.TaskDataAccess access) => access.GetNextTaskData (this).Run ();
     }
 }

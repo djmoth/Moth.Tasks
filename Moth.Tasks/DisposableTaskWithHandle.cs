@@ -8,6 +8,8 @@
     /// Encapsulates a task which implements <see cref="IDisposable"/>, enqueued with a <see cref="TaskHandle"/>.
     /// </summary>
     /// <typeparam name="TTask">Type of task.</typeparam>
+    /// <typeparam name="TArg">Type of task argument.</typeparam>
+    /// <typeparam name="TResult">Type of task result.</typeparam>
     [StructLayout (LayoutKind.Auto)]
     internal struct DisposableTaskWithHandle<TTask, TArg, TResult> : ITask<TArg, TResult>, IDisposable
         where TTask : struct, ITask<TArg, TResult>

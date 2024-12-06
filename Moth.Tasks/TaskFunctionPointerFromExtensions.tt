@@ -13,12 +13,15 @@ namespace Moth.Tasks
      * This file should not be edited manually.                       *
      * -------------------------------------------------------------- */
 
+    /// <summary>
+    /// Provides extension methods for creating <see cref="FunctionPointerTask"/> instances.
+    /// </summary>
     public static unsafe partial class Task
     {
         /// <summary>
         /// Create a <see cref="FunctionPointerTask"/> that encapsulates a function pointer.
         /// </summary>
-        /// <param name="action">delegate*<void> to encapsulate.</param>
+        /// <param name="action">Function pointer to encapsulate.</param>
         /// <returns>A new <see cref="FunctionPointerTask"/> that will invoke the function pointer when run.</returns>
         /// <exception cref="ArgumentNullException"><paramref name="action"/> is <see langword="null"/>.</exception>
         public static FunctionPointerTask From (delegate*<void> action)
@@ -41,10 +44,10 @@ for (int i = 1; i <= maxParameterCount; i++)
 #>
 
         /// <summary>
-        /// Create a <see cref="FunctionPointerTask{<#=typeParameters#>}"/> that encapsulates an action.
+        /// Create a <see cref="FunctionPointerTask{<#=typeParameters#>}"/> that encapsulates a function pointer.
         /// </summary>
-        /// <returns>A new <see cref="FunctionPointerTask{<#=typeParameters#>}"/> that will invoke the action when run with the supplied arguments.</returns>
-        /// <param name="action">Function pointer to enqueue.</param>
+        /// <returns>A new <see cref="FunctionPointerTask{<#=typeParameters#>}"/> that will invoke the function pointer when run with the supplied arguments.</returns>
+        /// <param name="action">Function pointer to encapsulate.</param>
 <# 
 string paramList = "";
 string argList = "";

@@ -17,6 +17,7 @@
         /// Initializes a new instance of the <see cref="TaskDataStore"/> class with a specified data starting capacity.
         /// </summary>
         /// <param name="dataCapacity">Starting capacity of unmanaged task data.</param>
+        /// <param name="taskReferenceStore"><see cref="ITaskReferenceStore"/> to use for storing task reference fields.</param>
         /// <exception cref="ArgumentOutOfRangeException"><paramref name="dataCapacity"/> is less than zero.</exception>
         /// <exception cref="ArgumentNullException"><paramref name="taskReferenceStore"/> is <see langword="null"/>.</exception>"
         public TaskDataStore (int dataCapacity, ITaskReferenceStore taskReferenceStore)
@@ -41,7 +42,7 @@
         public int Capacity => taskData.Length;
 
         /// <inheritdoc/>
-        public void Enqueue<T> (in T task, ITaskInfo<T> taskInfo)
+        public void Enqueue<T> (in T task, ITaskMetadata<T> taskInfo)
             where T : struct, ITaskType
         {
             // If new task data will overflow the taskData array
@@ -54,7 +55,7 @@
 
         /// <inheritdoc/>
         /// <exception cref="InvalidOperationException"><see cref="Size"/> is zero.</exception>
-        public T Dequeue<T> (ITaskInfo<T> taskInfo)
+        public T Dequeue<T> (ITaskMetadata<T> taskInfo)
             where T : struct, ITaskType
         {
             if (Size == 0)
@@ -75,7 +76,7 @@
 
         /// <inheritdoc/>
         /// <exception cref="InvalidOperationException"><see cref="Size"/> is zero.</exception>
-        public void Skip (ITaskInfo taskInfo)
+        public void Skip (ITaskMetadata taskInfo)
         {
             if (Size == 0)
                 throw new InvalidOperationException ("Cannot Skip as TaskDataStore.Size is zero.");
@@ -93,7 +94,7 @@
         }
 
         /// <inheritdoc/>
-        public void Insert<T> (ref int dataIndex, ref int refIndex, in T task, ITaskInfo<T> taskInfo)
+        public void Insert<T> (ref int dataIndex, ref int refIndex, in T task, ITaskMetadata<T> taskInfo)
             where T : struct, ITaskType
         {
             if (dataIndex < 0 || dataIndex > LastTaskEnd)

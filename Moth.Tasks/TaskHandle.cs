@@ -3,7 +3,6 @@
     using System;
     using System.Threading;
 
-
     /// <summary>
     /// Handle for checking task status.
     /// </summary>

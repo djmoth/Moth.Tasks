@@ -74,6 +74,7 @@
             protected set => Interlocked.Exchange (ref isRunningState, value ? 1 : 0);
         }
 
+        /// <inheritdoc />
         public bool IsStarted { get; private set; }
 
         /// <summary>

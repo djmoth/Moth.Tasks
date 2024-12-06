@@ -7,7 +7,7 @@
     /// Represents a task that takes no argument and returns no result.
     /// </summary>
     /// <typeparam name="TTask">Type of task.</typeparam>
-    public interface ITaskInfo<TTask> : ITaskInfo
+    public interface ITaskMetadata<TTask> : ITaskMetadata
     {
         /// <summary>
         /// Serializes the task data.

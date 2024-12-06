@@ -9,14 +9,14 @@
     using NUnit.Framework;
     using NUnit.Framework.Legacy;
 
-    public class TaskInfoTests
+    public class TaskMetadataTests
     {
         [Test]
         public void Constructor_OfUnmanagedTestTask_InitializesCorrectly ()
         {
             int taskID = 1;
             var taskFormat = new MockFixedFormat<TestTask<int>> (42);
-            AssertTaskInfoProperties (new TaskInfo<TestTask<int>> (taskID, taskFormat), taskID, taskFormat);
+            AssertTaskMetadataProperties (new TaskMetadata<TestTask<int>> (taskID, taskFormat), taskID, taskFormat);
         }
 
         [Test]
@@ -24,7 +24,7 @@
         {
             int taskID = 1;
             var taskFormat = new MockVariableFormat<TestTask<object>> (42, typeof (object));
-            AssertTaskInfoProperties (new TaskInfo<TestTask<object>> (taskID, taskFormat), taskID, taskFormat);
+            AssertTaskMetadataProperties (new TaskMetadata<TestTask<object>> (taskID, taskFormat), taskID, taskFormat);
         }
 
         [Test]
@@ -32,7 +32,7 @@
         {
             int taskID = 1;
             var taskFormat = new MockFixedFormat<TestTaskArg<int>> (42);
-            AssertTaskInfoProperties (new TaskInfo<TestTaskArg<int>, int> (taskID, taskFormat), taskID, taskFormat);
+            AssertTaskMetadataProperties (new TaskMetadata<TestTaskArg<int>, int> (taskID, taskFormat), taskID, taskFormat);
         }
 
         [Test]
@@ -40,7 +40,7 @@
         {
             int taskID = 1;
             var taskFormat = new MockVariableFormat<TestTaskArg<object>> (42, typeof (object));
-            AssertTaskInfoProperties (new TaskInfo<TestTaskArg<object>, int> (taskID, taskFormat), taskID, taskFormat);
+            AssertTaskMetadataProperties (new TaskMetadata<TestTaskArg<object>, int> (taskID, taskFormat), taskID, taskFormat);
         }
 
         [Test]
@@ -48,7 +48,7 @@
         {
             int taskID = 1;
             var taskFormat = new MockFixedFormat<TestTaskArgResult<int>> (42);
-            AssertTaskInfoProperties (new TaskInfo<TestTaskArgResult<int>, int, int> (taskID, taskFormat), taskID, taskFormat);
+            AssertTaskMetadataProperties (new TaskMetadata<TestTaskArgResult<int>, int, int> (taskID, taskFormat), taskID, taskFormat);
         }
 
         [Test]
@@ -56,7 +56,7 @@
         {
             int taskID = 1;
             var taskFormat = new MockVariableFormat<TestTaskArgResult<object>> (42, typeof (object));
-            AssertTaskInfoProperties (new TaskInfo<TestTaskArgResult<object>, int, int> (taskID, taskFormat), taskID, taskFormat);
+            AssertTaskMetadataProperties (new TaskMetadata<TestTaskArgResult<object>, int, int> (taskID, taskFormat), taskID, taskFormat);
         }
 
         [Test]
@@ -64,7 +64,7 @@
         {
             int taskID = 1;
             var taskFormat = new MockFixedFormat<DisposableTestTask<int>> (42);
-            AssertTaskInfoProperties (new DisposableTaskInfo<DisposableTestTask<int>> (taskID, taskFormat), taskID, taskFormat);
+            AssertTaskMetadataProperties (new DisposableTaskMetadata<DisposableTestTask<int>> (taskID, taskFormat), taskID, taskFormat);
         }
 
         [Test]
@@ -72,7 +72,7 @@
         {
             int taskID = 1;
             var taskFormat = new MockVariableFormat<DisposableTestTask<object>> (42, typeof (object));
-            AssertTaskInfoProperties (new DisposableTaskInfo<DisposableTestTask<object>> (taskID, taskFormat), taskID, taskFormat);
+            AssertTaskMetadataProperties (new DisposableTaskMetadata<DisposableTestTask<object>> (taskID, taskFormat), taskID, taskFormat);
         }
 
         [Test]
@@ -80,7 +80,7 @@
         {
             int taskID = 1;
             var taskFormat = new MockFixedFormat<DisposableTestTaskArg<int>> (42);
-            AssertTaskInfoProperties (new DisposableTaskInfo<DisposableTestTaskArg<int>, int> (taskID, taskFormat), taskID, taskFormat);
+            AssertTaskMetadataProperties (new DisposableTaskMetadata<DisposableTestTaskArg<int>, int> (taskID, taskFormat), taskID, taskFormat);
         }
 
         [Test]
@@ -88,7 +88,7 @@
         {
             int taskID = 1;
             var taskFormat = new MockVariableFormat<DisposableTestTaskArg<object>> (42, typeof (object));
-            AssertTaskInfoProperties (new DisposableTaskInfo<DisposableTestTaskArg<object>, int> (taskID, taskFormat), taskID, taskFormat);
+            AssertTaskMetadataProperties (new DisposableTaskMetadata<DisposableTestTaskArg<object>, int> (taskID, taskFormat), taskID, taskFormat);
         }
 
         [Test]
@@ -96,7 +96,7 @@
         {
             int taskID = 1;
             var taskFormat = new MockFixedFormat<DisposableTestTaskArgResult<int>> (42);
-            AssertTaskInfoProperties (new DisposableTaskInfo<DisposableTestTaskArgResult<int>, int, int> (taskID, taskFormat), taskID, taskFormat);
+            AssertTaskMetadataProperties (new DisposableTaskMetadata<DisposableTestTaskArgResult<int>, int, int> (taskID, taskFormat), taskID, taskFormat);
         }
 
         [Test]
@@ -104,7 +104,7 @@
         {
             int taskID = 1;
             var taskFormat = new MockVariableFormat<DisposableTestTaskArgResult<object>> (42, typeof (object));
-            AssertTaskInfoProperties (new DisposableTaskInfo<DisposableTestTaskArgResult<object>, int, int> (taskID, taskFormat), taskID, taskFormat);
+            AssertTaskMetadataProperties (new DisposableTaskMetadata<DisposableTestTaskArgResult<object>, int, int> (taskID, taskFormat), taskID, taskFormat);
         }
 
         [Test]
@@ -112,14 +112,14 @@
         {
             int taskID = 1;
             var taskFormat = new MockFixedFormat<TestTask<int>> (42);
-            var mockTaskInfo = new Mock<TaskInfoBase<TestTask<int>>> (taskID, taskFormat)
+            var mockTaskMetadata = new Mock<TaskMetadataBase<TestTask<int>>> (taskID, taskFormat)
             {
                 CallBase = true,
             };
 
 
             Span<byte> destination = new byte[taskFormat.MinSize];
-            mockTaskInfo.Object.Serialize (default, destination, Mock.Of<ObjectWriter> ());
+            mockTaskMetadata.Object.Serialize (default, destination, Mock.Of<ObjectWriter> ());
 
             Assert.That (taskFormat.SerializeCallCount, Is.EqualTo (1));
         }
@@ -129,19 +129,19 @@
         {
             int taskID = 1;
             var taskFormat = new MockFixedFormat<TestTask<int>> (42);
-            var mockTaskInfo = new Mock<TaskInfoBase<TestTask<int>>> (taskID, taskFormat)
+            var mockTaskMetadata = new Mock<TaskMetadataBase<TestTask<int>>> (taskID, taskFormat)
             {
                 CallBase = true,
             };
 
             ReadOnlySpan<byte> source = new byte[taskFormat.MinSize];
-            mockTaskInfo.Object.Deserialize (out _, source, Mock.Of<ObjectReader> ());
+            mockTaskMetadata.Object.Deserialize (out _, source, Mock.Of<ObjectReader> ());
 
             Assert.That (taskFormat.DeserializeCallCount, Is.EqualTo (1));
         }
 
 
-        void AssertTaskInfoProperties<T> (ITaskInfo taskInfo, int id, IFormat<T> taskFormat) where T : struct, ITaskType
+        void AssertTaskMetadataProperties<T> (ITaskMetadata taskInfo, int id, IFormat<T> taskFormat) where T : struct, ITaskType
         {
             Assert.That (taskInfo.ID, Is.EqualTo (id));
             Assert.That (taskInfo.Type, Is.EqualTo (typeof (T)));
@@ -155,7 +155,7 @@
                 Assert.Fail ("Unknown format type");
 
             Assert.That (taskInfo.IsManaged, Is.EqualTo (taskFormat is IVariableFormat));
-            Assert.That (taskInfo.IsDisposable, Is.EqualTo (taskInfo is IDisposableTaskInfo));
+            Assert.That (taskInfo.IsDisposable, Is.EqualTo (taskInfo is IDisposableTaskMetadata));
 
             bool shouldHaveResult = typeof (ITask<int, int>).IsAssignableFrom (typeof (T));
             bool shouldHaveArgs = typeof (ITask<int>).IsAssignableFrom (typeof (T)) || shouldHaveResult;

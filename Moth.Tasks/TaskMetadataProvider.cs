@@ -1,21 +1,28 @@
 ﻿namespace Moth.Tasks
 {
-    using Moth.IO.Serialization;
     using System;
     using System.Linq;
-
+    using Moth.IO.Serialization;
     using IFormatProvider = Moth.IO.Serialization.IFormatProvider;
 
-    public class TaskInfoProvider : ITaskInfoProvider
+    /// <summary>
+    /// Provides <see cref="ITaskMetadata{TTask}"/> instances.
+    /// </summary>
+    public class TaskMetadataProvider : ITaskMetadataProvider
     {
         private readonly IFormatProvider formatProvider;
 
-        public TaskInfoProvider (IFormatProvider formatProvider)
+        /// <summary>
+        /// Initializes a new instance of the <see cref="TaskMetadataProvider"/> class.
+        /// </summary>
+        /// <param name="formatProvider"><see cref="IFormatProvider"/> for serializing task data.</param>
+        public TaskMetadataProvider (IFormatProvider formatProvider)
         {
             this.formatProvider = formatProvider;
         }
 
-        public ITaskInfo<TTask> Create<TTask> (int id)
+        /// <inheritdoc />
+        public ITaskMetadata<TTask> Create<TTask> (int id)
             where TTask : struct, ITaskType
         {
             Type type = typeof (TTask);
@@ -49,13 +56,13 @@
             {
                 if (interfaceType == typeof (ITask))
                 {
-                    taskInfoType = typeof (DisposableTaskInfo<>).MakeGenericType (type);
+                    taskInfoType = typeof (DisposableTaskMetadata<>).MakeGenericType (type);
                 } else if (interfaceType.GetGenericTypeDefinition () == typeof (ITask<>))
                 {
-                    taskInfoType = typeof (DisposableTaskInfo<,>).MakeGenericType (interfaceType.GetGenericArguments ().Prepend (type).ToArray ());
+                    taskInfoType = typeof (DisposableTaskMetadata<,>).MakeGenericType (interfaceType.GetGenericArguments ().Prepend (type).ToArray ());
                 } else if (interfaceType.GetGenericTypeDefinition () == typeof (ITask<,>))
                 {
-                    taskInfoType = typeof (DisposableTaskInfo<,,>).MakeGenericType (interfaceType.GetGenericArguments ().Prepend (type).ToArray ());
+                    taskInfoType = typeof (DisposableTaskMetadata<,,>).MakeGenericType (interfaceType.GetGenericArguments ().Prepend (type).ToArray ());
                 } else
                 {
                     throw new NotImplementedException ();
@@ -64,20 +71,20 @@
             {
                 if (interfaceType == typeof (ITask))
                 {
-                    taskInfoType = typeof (TaskInfo<>).MakeGenericType (type);
+                    taskInfoType = typeof (TaskMetadata<>).MakeGenericType (type);
                 } else if (interfaceType.GetGenericTypeDefinition () == typeof (ITask<>))
                 {
-                    taskInfoType = typeof (TaskInfo<,>).MakeGenericType (interfaceType.GetGenericArguments ().Prepend (type).ToArray ());
+                    taskInfoType = typeof (TaskMetadata<,>).MakeGenericType (interfaceType.GetGenericArguments ().Prepend (type).ToArray ());
                 } else if (interfaceType.GetGenericTypeDefinition () == typeof (ITask<,>))
                 {
-                    taskInfoType = typeof (TaskInfo<,,>).MakeGenericType (interfaceType.GetGenericArguments ().Prepend (type).ToArray ());
+                    taskInfoType = typeof (TaskMetadata<,,>).MakeGenericType (interfaceType.GetGenericArguments ().Prepend (type).ToArray ());
                 } else
                 {
                     throw new NotImplementedException ();
                 }
             }
 
-            return (ITaskInfo<TTask>)Activator.CreateInstance (taskInfoType, id, (IFormat<TTask>)formatProvider.Get<TTask> ());
+            return (ITaskMetadata<TTask>)Activator.CreateInstance (taskInfoType, id, (IFormat<TTask>)formatProvider.Get<TTask> ());
         }
     }
 }

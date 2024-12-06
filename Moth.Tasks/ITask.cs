@@ -28,14 +28,19 @@
     /// Interface for a task taking an argument.
     /// </summary>
     /// <typeparam name="TArg">Type of argument to pass to the task.</typeparam>
+    /// <typeparam name="TResult">Type of the result.</typeparam>
     public interface ITask<TArg, TResult> : ITaskType
     {
         /// <summary>
         /// Run the task.
         /// </summary>
         /// <param name="arg">Task argument.</param>
+        /// <returns>Task result.</returns>
         TResult Run (TArg arg);
     }
 
+    /// <summary>
+    /// Interface for a task type.
+    /// </summary>
     public interface ITaskType { }
 }

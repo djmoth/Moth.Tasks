@@ -5,10 +5,10 @@
     /// <summary>
     /// Contains metadata about a task type.
     /// </summary>
-    public interface ITaskInfo
+    public interface ITaskMetadata
     {
         /// <summary>
-        /// Gets the ID of the task type in an <see cref="ITaskCache"/>.
+        /// Gets the ID of the task type in an <see cref="ITaskMetadataCache"/>.
         /// </summary>
         int ID { get; }
 
