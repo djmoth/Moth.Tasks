@@ -1,7 +1,7 @@
-﻿using System;
-
-namespace Moth.Tasks
+﻿namespace Moth.Tasks
 {
+    using System;
+
     /// <summary>
     /// Represents a context for inserting references into an <see cref="ITaskReferenceStore"/>.
     /// </summary>

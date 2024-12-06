@@ -6,16 +6,16 @@
     /// <typeparam name="TTask">Task type to wrap.</typeparam>
     /// <typeparam name="TArg">Argument of task.</typeparam>
     /// <typeparam name="TResult">Result of task.</typeparam>
-    internal struct Task<TTask, TArg, TResult> : ITask
+    internal struct TaskWrapper<TTask, TArg, TResult> : ITask
         where TTask : struct, ITask<TArg, TResult>
     {
         private TTask task;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="Task{TTask, TArg, TResult}"/> struct.
+        /// Initializes a new instance of the <see cref="TaskWrapper{TTask, TArg, TResult}"/> struct.
         /// </summary>
         /// <param name="task">Task to wrap.</param>
-        public Task (TTask task)
+        public TaskWrapper (TTask task)
         {
             this.task = task;
         }
@@ -29,18 +29,18 @@
     /// <summary>
     /// Wraps an <see cref="ITask{TArg}"/> as an <see cref="ITask{TArg, Unit}"/>, returning an instance of <see cref="Unit"/>.
     /// </summary>
-    /// <typeparam name="TTask"></typeparam>
-    /// <typeparam name="TArg"></typeparam>
-    internal struct Task<TTask, TArg> : ITask<TArg, Unit>
+    /// <typeparam name="TTask">Task type to wrap.</typeparam>
+    /// <typeparam name="TArg">Argument of task.</typeparam>
+    internal struct TaskWrapper<TTask, TArg> : ITask<TArg, Unit>
         where TTask : struct, ITask<TArg>
     {
         private TTask task;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="Task{TTask, TArg}"/> struct.
+        /// Initializes a new instance of the <see cref="TaskWrapper{TTask, TArg}"/> struct.
         /// </summary>
         /// <param name="task">Task to wrap.</param>
-        public Task (TTask task)
+        public TaskWrapper (TTask task)
         {
             this.task = task;
         }
@@ -61,16 +61,16 @@
     /// Wraps an <see cref="ITask"/> as an <see cref="ITask{Unit, Unit}"/>, taking a <see cref="Unit"/> as argument and returning an instance of <see cref="Unit"/>.
     /// </summary>
     /// <typeparam name="TTask">Task type to wrap.</typeparam>
-    internal struct Task<TTask> : ITask<Unit, Unit>
+    internal struct TaskWrapper<TTask> : ITask<Unit, Unit>
         where TTask : struct, ITask
     {
-        private readonly TTask task;
+        private TTask task;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="Task{TTask}"/> struct.
+        /// Initializes a new instance of the <see cref="TaskWrapper{TTask}"/> struct.
         /// </summary>
         /// <param name="task">Task to wrap.</param>
-        public Task (TTask task)
+        public TaskWrapper (TTask task)
         {
             this.task = task;
         }

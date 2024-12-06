@@ -10,6 +10,20 @@
         private readonly Dictionary<int, ManualResetEventSlim> taskHandles = new Dictionary<int, ManualResetEventSlim> ();
         private int nextTaskHandle = 1;
 
+        /// <summary>
+        /// Gets the number of active task handles that are not yet completed.
+        /// </summary>
+        public int ActiveHandles
+        {
+            get
+            {
+                lock (taskHandles)
+                {
+                    return taskHandles.Count;
+                }
+            }
+        }
+
         /// <inheritdoc />
         public TaskHandle CreateTaskHandle ()
         {
@@ -25,6 +39,7 @@
         }
 
         /// <inheritdoc />
+        /// <exception cref="ArgumentException"><paramref name="handle"/> is an invalid <see cref="TaskHandle"/>.</exception>
         public bool IsTaskComplete (TaskHandle handle)
         {
             ThrowIfInvalidHandle (handle);
@@ -36,21 +51,8 @@
         }
 
         /// <inheritdoc />
-        public void Clear ()
-        {
-            lock (taskHandles)
-            {
-                foreach (ManualResetEventSlim waitEvent in taskHandles.Values)
-                {
-                    waitEvent?.Dispose ();
-                }
-
-                taskHandles.Clear ();
-            }
-        }
-
-        /// <inheritdoc />
-        public bool WaitForCompletion (TaskHandle handle, int millisecondsTimeout)
+        /// <exception cref="ArgumentException"><paramref name="handle"/> is an invalid <see cref="TaskHandle"/>.</exception>
+        public bool WaitForCompletion (TaskHandle handle, int millisecondsTimeout, CancellationToken token = default)
         {
             ThrowIfInvalidHandle (handle);
 
@@ -70,20 +72,23 @@
 
             if (!complete)
             {
-                complete = waitEvent.Wait (millisecondsTimeout);
+                complete = waitEvent.Wait (millisecondsTimeout, token);
             }
 
             return complete;
         }
 
         /// <inheritdoc />
+        /// <exception cref="ArgumentException"><paramref name="handle"/> is an invalid <see cref="TaskHandle"/>.</exception>
+        /// <exception cref="InvalidOperationException">Task handle has already been completed.</exception>
         public void NotifyTaskCompletion (TaskHandle handle)
         {
             ThrowIfInvalidHandle (handle);
 
             lock (taskHandles)
             {
-                ManualResetEventSlim waitEvent = taskHandles[handle.ID];
+                if (!taskHandles.TryGetValue (handle.ID, out ManualResetEventSlim waitEvent))
+                    throw new InvalidOperationException ("Task handle has already been completed.");
 
                 if (waitEvent != null)
                 {
@@ -95,13 +100,27 @@
             }
         }
 
+        /// <inheritdoc />
+        public void Clear ()
+        {
+            lock (taskHandles)
+            {
+                foreach (ManualResetEventSlim waitEvent in taskHandles.Values)
+                {
+                    waitEvent?.Dispose ();
+                }
+
+                taskHandles.Clear ();
+            }
+        }
+
         private void ThrowIfInvalidHandle (TaskHandle handle)
         {
             if (!handle.IsValid || handle.ID >= nextTaskHandle)
-                throw new InvalidOperationException ($"{nameof (TaskHandle)} is invalid.");
+                throw new ArgumentException ($"{nameof (TaskHandle)} is invalid.");
 
             if (handle.Manager != this)
-                throw new InvalidOperationException ($"{nameof (TaskHandle)} does not belong to this {nameof (TaskHandleManager)}.");
+                throw new ArgumentException ($"{nameof (TaskHandle)} does not belong to this {nameof (TaskHandleManager)}.");
         }
     }
 }

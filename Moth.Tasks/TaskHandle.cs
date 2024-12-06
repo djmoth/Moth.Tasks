@@ -1,6 +1,7 @@
 ﻿namespace Moth.Tasks
 {
     using System;
+    using System.Threading;
 
 
     /// <summary>
@@ -57,8 +58,9 @@
         /// Waits for a maximum time in milliseconds for the task to complete.
         /// </summary>
         /// <param name="millisceondsTimeout">The number of milliseconds to wait, or <see cref="System.Threading.Timeout.Infinite"/> (-1) to wait indefinitely.</param>
+        /// <param name="token">Cancellation token to observe.</param>
         /// <returns><see langword="true"/> if the task was completed before timeout; otherwise, <see langword="false"/>.</returns>
-        public bool WaitForCompletion (int millisceondsTimeout) => manager.WaitForCompletion (this, millisceondsTimeout);
+        public bool WaitForCompletion (int millisceondsTimeout, CancellationToken token = default) => manager.WaitForCompletion (this, millisceondsTimeout, token);
 
         /// <summary>
         /// Notifies the task manager that the task has completed.

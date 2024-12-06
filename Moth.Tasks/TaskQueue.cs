@@ -83,10 +83,10 @@ namespace Moth.Tasks
 
             if (typeof (IDisposable).IsAssignableFrom (typeof (TTask))) // If T implements IDisposable
             {
-                EnqueueTask (new DisposableTaskWithHandle<Task<TTask>, Unit, Unit> (new Task<TTask> (task), handle));
+                EnqueueTask (new DisposableTaskWithHandle<TaskWrapper<TTask>, Unit, Unit> (new TaskWrapper<TTask> (task), handle));
             } else
             {
-                EnqueueTask (new TaskWithHandle<Task<TTask>, Unit, Unit> (new Task<TTask> (task), handle));
+                EnqueueTask (new TaskWithHandle<TaskWrapper<TTask>, Unit, Unit> (new TaskWrapper<TTask> (task), handle));
             }
         }
 

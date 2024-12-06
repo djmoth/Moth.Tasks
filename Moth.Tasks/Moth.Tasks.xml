@@ -1313,19 +1313,20 @@
             Clear all task handles.
             </summary>
         </member>
-        <member name="M:Moth.Tasks.ITaskHandleManager.WaitForCompletion(Moth.Tasks.TaskHandle,System.Int32)">
+        <member name="M:Moth.Tasks.ITaskHandleManager.WaitForCompletion(Moth.Tasks.TaskHandle,System.Int32,System.Threading.CancellationToken)">
             <summary>
             Wait for a task to complete.
             </summary>
             <param name="handle">Handle to wait for.</param>
             <param name="millisecondsTimeout">The number of milliseconds to wait, or <see cref="F:System.Threading.Timeout.Infinite"/> (-1) to wait indefinitely.</param>
+            <param name="token">Cancellation token to observe.</param>
             <returns><see langword="true"/> if task was completed, <see langword="false"/> if timeout was reached.</returns>
         </member>
         <member name="M:Moth.Tasks.ITaskHandleManager.NotifyTaskCompletion(Moth.Tasks.TaskHandle)">
             <summary>
             Notify that a task has completed.
             </summary>
-            <param name="handleID">ID of handle.</param>
+            <param name="handle">Handle to notify completion for.</param>
         </member>
         <member name="T:Moth.Tasks.ITaskReferenceStore">
             <summary>
@@ -1382,6 +1383,22 @@
             </summary>
             <param name="refCount">The number of references to skip.</param>
         </member>
+        <member name="T:Moth.Tasks.IWorkerThread">
+            <summary>
+            Represents a worker thread.
+            </summary>
+        </member>
+        <member name="M:Moth.Tasks.IWorkerThread.Start(System.Threading.ThreadStart)">
+            <summary>
+            Start the worker thread.
+            </summary>
+            <param name="method">Method to run.</param>
+        </member>
+        <member name="M:Moth.Tasks.IWorkerThread.Join">
+            <summary>
+            Join the worker thread.
+            </summary>
+        </member>
         <member name="T:Moth.Tasks.ProfilerProvider">
             <summary>
             Represents a method that provides an <see cref="T:Moth.Tasks.IProfiler"/> for a <see cref="T:Moth.Tasks.IWorker"/>, or <see langword="null"/> if profiling is not desired.
@@ -1391,64 +1408,6 @@
             <remarks>
             The method does not have to provide a unique <see cref="T:Moth.Tasks.IProfiler"/> for each <see cref="T:Moth.Tasks.IWorker"/>, yet in that case it must be able to differentiate between <see cref="T:Moth.Tasks.IWorker"/>s on its own, so as their calls to <see cref="M:Moth.Tasks.IProfiler.BeginTask(System.String)"/> and <see cref="M:Moth.Tasks.IProfiler.EndTask"/> don't interfere.
             </remarks>
-        </member>
-        <member name="T:Moth.Tasks.Task`3">
-            <summary>
-            Wraps an <see cref="T:Moth.Tasks.ITask`2"/> as an <see cref="T:Moth.Tasks.ITask"/>, taking no arguments and returning no result.
-            </summary>
-            <typeparam name="TTask">Task type to wrap.</typeparam>
-            <typeparam name="TArg">Argument of task.</typeparam>
-            <typeparam name="TResult">Result of task.</typeparam>
-        </member>
-        <member name="M:Moth.Tasks.Task`3.#ctor(`0)">
-            <summary>
-            Initializes a new instance of the <see cref="T:Moth.Tasks.Task`3"/> struct.
-            </summary>
-            <param name="task">Task to wrap.</param>
-        </member>
-        <member name="M:Moth.Tasks.Task`3.Run">
-            <summary>
-            Run the wrapped task with <see langword="default"/> as argument and then discarding result.
-            </summary>
-        </member>
-        <member name="T:Moth.Tasks.Task`2">
-            <summary>
-            Wraps an <see cref="T:Moth.Tasks.ITask`1"/> as an <see cref="T:Moth.Tasks.ITask`2"/>, returning an instance of <see cref="T:Moth.Tasks.Unit"/>.
-            </summary>
-            <typeparam name="TTask"></typeparam>
-            <typeparam name="TArg"></typeparam>
-        </member>
-        <member name="M:Moth.Tasks.Task`2.#ctor(`0)">
-            <summary>
-            Initializes a new instance of the <see cref="T:Moth.Tasks.Task`2"/> struct.
-            </summary>
-            <param name="task">Task to wrap.</param>
-        </member>
-        <member name="M:Moth.Tasks.Task`2.Run(`1)">
-            <summary>
-            Run the wrapped task with the specified argument.
-            </summary>
-            <param name="arg">Value to pass as argument.</param>
-            <returns>An instance of <see cref="T:Moth.Tasks.Unit"/>.</returns>
-        </member>
-        <member name="T:Moth.Tasks.Task`1">
-            <summary>
-            Wraps an <see cref="T:Moth.Tasks.ITask"/> as an <see cref="T:Moth.Tasks.ITask`2"/>, taking a <see cref="T:Moth.Tasks.Unit"/> as argument and returning an instance of <see cref="T:Moth.Tasks.Unit"/>.
-            </summary>
-            <typeparam name="TTask">Task type to wrap.</typeparam>
-        </member>
-        <member name="M:Moth.Tasks.Task`1.#ctor(`0)">
-            <summary>
-            Initializes a new instance of the <see cref="T:Moth.Tasks.Task`1"/> struct.
-            </summary>
-            <param name="task">Task to wrap.</param>
-        </member>
-        <member name="M:Moth.Tasks.Task`1.Run(Moth.Tasks.Unit)">
-            <summary>
-            Run the wrapped task.
-            </summary>
-            <param name="arg">Argument is ignored.</param>
-            <returns>An instance of <see cref="T:Moth.Tasks.Unit"/>.</returns>
         </member>
         <member name="T:Moth.Tasks.TaskCache">
             <summary>
@@ -2434,11 +2393,12 @@
             Waits indefinitely until the task has been completed.
             </summary>
         </member>
-        <member name="M:Moth.Tasks.TaskHandle.WaitForCompletion(System.Int32)">
+        <member name="M:Moth.Tasks.TaskHandle.WaitForCompletion(System.Int32,System.Threading.CancellationToken)">
             <summary>
             Waits for a maximum time in milliseconds for the task to complete.
             </summary>
             <param name="millisceondsTimeout">The number of milliseconds to wait, or <see cref="F:System.Threading.Timeout.Infinite"/> (-1) to wait indefinitely.</param>
+            <param name="token">Cancellation token to observe.</param>
             <returns><see langword="true"/> if the task was completed before timeout; otherwise, <see langword="false"/>.</returns>
         </member>
         <member name="M:Moth.Tasks.TaskHandle.NotifyTaskCompletion">
@@ -2449,19 +2409,28 @@
         <member name="T:Moth.Tasks.TaskHandleManager">
             <inheritdoc />
         </member>
+        <member name="P:Moth.Tasks.TaskHandleManager.ActiveHandles">
+            <summary>
+            Gets the number of active task handles that are not yet completed.
+            </summary>
+        </member>
         <member name="M:Moth.Tasks.TaskHandleManager.CreateTaskHandle">
             <inheritdoc />
         </member>
         <member name="M:Moth.Tasks.TaskHandleManager.IsTaskComplete(Moth.Tasks.TaskHandle)">
             <inheritdoc />
+            <exception cref="T:System.ArgumentException"><paramref name="handle"/> is an invalid <see cref="T:Moth.Tasks.TaskHandle"/>.</exception>
         </member>
-        <member name="M:Moth.Tasks.TaskHandleManager.Clear">
+        <member name="M:Moth.Tasks.TaskHandleManager.WaitForCompletion(Moth.Tasks.TaskHandle,System.Int32,System.Threading.CancellationToken)">
             <inheritdoc />
-        </member>
-        <member name="M:Moth.Tasks.TaskHandleManager.WaitForCompletion(Moth.Tasks.TaskHandle,System.Int32)">
-            <inheritdoc />
+            <exception cref="T:System.ArgumentException"><paramref name="handle"/> is an invalid <see cref="T:Moth.Tasks.TaskHandle"/>.</exception>
         </member>
         <member name="M:Moth.Tasks.TaskHandleManager.NotifyTaskCompletion(Moth.Tasks.TaskHandle)">
+            <inheritdoc />
+            <exception cref="T:System.ArgumentException"><paramref name="handle"/> is an invalid <see cref="T:Moth.Tasks.TaskHandle"/>.</exception>
+            <exception cref="T:System.InvalidOperationException">Task handle has already been completed.</exception>
+        </member>
+        <member name="M:Moth.Tasks.TaskHandleManager.Clear">
             <inheritdoc />
         </member>
         <member name="M:Moth.Tasks.TaskInfo.Create``1(System.Int32)">
@@ -3583,6 +3552,64 @@
             Notify handle that task was completed.
             </summary>
         </member>
+        <member name="T:Moth.Tasks.TaskWrapper`3">
+            <summary>
+            Wraps an <see cref="T:Moth.Tasks.ITask`2"/> as an <see cref="T:Moth.Tasks.ITask"/>, taking no arguments and returning no result.
+            </summary>
+            <typeparam name="TTask">Task type to wrap.</typeparam>
+            <typeparam name="TArg">Argument of task.</typeparam>
+            <typeparam name="TResult">Result of task.</typeparam>
+        </member>
+        <member name="M:Moth.Tasks.TaskWrapper`3.#ctor(`0)">
+            <summary>
+            Initializes a new instance of the <see cref="T:Moth.Tasks.TaskWrapper`3"/> struct.
+            </summary>
+            <param name="task">Task to wrap.</param>
+        </member>
+        <member name="M:Moth.Tasks.TaskWrapper`3.Run">
+            <summary>
+            Run the wrapped task with <see langword="default"/> as argument and then discarding result.
+            </summary>
+        </member>
+        <member name="T:Moth.Tasks.TaskWrapper`2">
+            <summary>
+            Wraps an <see cref="T:Moth.Tasks.ITask`1"/> as an <see cref="T:Moth.Tasks.ITask`2"/>, returning an instance of <see cref="T:Moth.Tasks.Unit"/>.
+            </summary>
+            <typeparam name="TTask">Task type to wrap.</typeparam>
+            <typeparam name="TArg">Argument of task.</typeparam>
+        </member>
+        <member name="M:Moth.Tasks.TaskWrapper`2.#ctor(`0)">
+            <summary>
+            Initializes a new instance of the <see cref="T:Moth.Tasks.TaskWrapper`2"/> struct.
+            </summary>
+            <param name="task">Task to wrap.</param>
+        </member>
+        <member name="M:Moth.Tasks.TaskWrapper`2.Run(`1)">
+            <summary>
+            Run the wrapped task with the specified argument.
+            </summary>
+            <param name="arg">Value to pass as argument.</param>
+            <returns>An instance of <see cref="T:Moth.Tasks.Unit"/>.</returns>
+        </member>
+        <member name="T:Moth.Tasks.TaskWrapper`1">
+            <summary>
+            Wraps an <see cref="T:Moth.Tasks.ITask"/> as an <see cref="T:Moth.Tasks.ITask`2"/>, taking a <see cref="T:Moth.Tasks.Unit"/> as argument and returning an instance of <see cref="T:Moth.Tasks.Unit"/>.
+            </summary>
+            <typeparam name="TTask">Task type to wrap.</typeparam>
+        </member>
+        <member name="M:Moth.Tasks.TaskWrapper`1.#ctor(`0)">
+            <summary>
+            Initializes a new instance of the <see cref="T:Moth.Tasks.TaskWrapper`1"/> struct.
+            </summary>
+            <param name="task">Task to wrap.</param>
+        </member>
+        <member name="M:Moth.Tasks.TaskWrapper`1.Run(Moth.Tasks.Unit)">
+            <summary>
+            Run the wrapped task.
+            </summary>
+            <param name="arg">Argument is ignored.</param>
+            <returns>An instance of <see cref="T:Moth.Tasks.Unit"/>.</returns>
+        </member>
         <member name="T:Moth.Tasks.Unit">
             <summary>
             Represents a unit type. This type is used to represent the absence of a value.
@@ -3739,6 +3766,30 @@
             <param name="workerIndex">The index of the <see cref="T:Moth.Tasks.IWorker"/> in the <see cref="T:Moth.Tasks.WorkerGroup"/>.</param>
             <returns>A new <see cref="T:Moth.Tasks.IWorker"/>.</returns>
             <remarks>This method should create a new unique <see cref="T:Moth.Tasks.IWorker"/> for each call. The method may be called multiple times with the same parameters if the <see cref="T:Moth.Tasks.WorkerGroup"/> was resized.</remarks>
+        </member>
+        <member name="T:Moth.Tasks.WorkerThread">
+            <summary>
+            Wraps a <see cref="T:System.Threading.Thread"/> as a worker thread.
+            </summary>
+        </member>
+        <member name="M:Moth.Tasks.WorkerThread.#ctor(System.Boolean)">
+            <summary>
+            Initializes a new instance of the <see cref="T:Moth.Tasks.WorkerThread"/> class.
+            </summary>
+            <param name="isBackground"><see langword="true"/> if the thread should run in the background.</param>
+        </member>
+        <member name="P:Moth.Tasks.WorkerThread.IsBackground">
+            <summary>
+            Gets or sets a value indicating whether the thread is a background thread.
+            </summary>
+        </member>
+        <member name="M:Moth.Tasks.WorkerThread.Start(System.Threading.ThreadStart)">
+            <inheritdoc/>
+            <exception cref="T:System.InvalidOperationException">Thread is already started.</exception>"
+        </member>
+        <member name="M:Moth.Tasks.WorkerThread.Join">
+            <inheritdoc/>
+            <exception cref="T:System.InvalidOperationException">Thread is not started.</exception>""
         </member>
         <member name="T:Moth.Tasks.WorkerThreadProvider">
             <summary>

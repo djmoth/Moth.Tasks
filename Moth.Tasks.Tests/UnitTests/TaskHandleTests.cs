@@ -65,7 +65,7 @@
         {
             TaskHandle handle = new TaskHandle (mockTaskHandleManager.Object, 42);
 
-            mockTaskHandleManager.Setup (m => m.WaitForCompletion (handle, System.Threading.Timeout.Infinite)).Returns (true);
+            mockTaskHandleManager.Setup (m => m.WaitForCompletion (handle, System.Threading.Timeout.Infinite, default)).Returns (true);
 
             handle.WaitForCompletion ();
 
@@ -78,7 +78,7 @@
             TaskHandle handle = new TaskHandle (mockTaskHandleManager.Object, 42);
 
             int timeout = 1000;
-            mockTaskHandleManager.Setup (m => m.WaitForCompletion (handle, timeout)).Returns (true);
+            mockTaskHandleManager.Setup (m => m.WaitForCompletion (handle, timeout, default)).Returns (true);
 
             handle.WaitForCompletion (timeout);
 
