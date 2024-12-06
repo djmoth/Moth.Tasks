@@ -6,12 +6,15 @@
     using System.Threading;
     using System.Threading.Tasks;
 
+    /// <inheritdoc />
     public class TaskQueue<TArg> : TaskQueue, ITaskQueue<TArg>
     {
+        /// <inheritdoc />
         public new void Enqueue<TTask> (in TTask task)
             where TTask : struct, ITask<TArg>
             => EnqueueTask (task);
 
+        /// <inheritdoc />
         public new void Enqueue<TTask> (in TTask task, out TaskHandle handle)
             where TTask : struct, ITask<TArg>
         {

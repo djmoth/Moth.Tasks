@@ -1,11 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Runtime.CompilerServices;
-using System.Text;
-using System.Threading;
-
-namespace Moth.Tasks
+﻿namespace Moth.Tasks
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Runtime.CompilerServices;
+    using System.Threading;
+
+
     public class TaskQueue : ITaskQueue
     {
         private readonly object taskLock = new object ();
@@ -32,6 +32,14 @@ namespace Moth.Tasks
         public TaskQueue (int taskCapacity, int unmanagedDataCapacity, int managedReferenceCapacity, ITaskCache taskCache = null)
             : this (taskCapacity, taskCache, new TaskDataStore (unmanagedDataCapacity, new TaskReferenceStore (managedReferenceCapacity)), new TaskHandleManager ()) { }
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="TaskQueue"/> class.
+        /// </summary>
+        /// <inheritdoc cref="TaskQueue(int, int, int, ITaskCache)"/>/>
+        /// <param name="taskCapacity"></param>
+        /// <param name="taskCache"></param>
+        /// <param name="taskDataStore"><see cref="ITaskDataStore"/> responsible for storing task data.</param>
+        /// <param name="taskHandleManager"><see cref="ITaskHandleManager"/> responsible for managing task handles.</param>
         internal TaskQueue (int taskCapacity, ITaskCache taskCache, ITaskDataStore taskDataStore, ITaskHandleManager taskHandleManager)
         {
             tasks = new Queue<int> (taskCapacity);
@@ -60,21 +68,12 @@ namespace Moth.Tasks
             }
         }
 
-        /// <summary>
-        /// Enqueue an <see cref="ITask"/> to be run later.
-        /// </summary>
-        /// <typeparam name="T">Type of task to run.</typeparam>
-        /// <param name="task">Task data.</param>
+        /// <inheritdoc />
         /// <exception cref="ObjectDisposedException">The <see cref="TaskQueue"/> has been disposed.</exception>
         public void Enqueue<T> (in T task) where T : struct, ITask => EnqueueTask (task);
 
 
-        /// <summary>
-        /// Enqueue an <see cref="ITask"/> to be run later, giving out a <see cref="TaskHandle"/> for checking task status.
-        /// </summary>
-        /// <typeparam name="TTask">Type of task to run.</typeparam>
-        /// <param name="task">Task data.</param>
-        /// <param name="handle"><see cref="TaskHandle"/> for checking task status.</param>
+        /// <inheritdoc />
         /// <exception cref="ObjectDisposedException">The <see cref="TaskQueue"/> has been disposed.</exception>
         public void Enqueue<TTask> (in TTask task, out TaskHandle handle)
             where TTask : struct, ITask
@@ -90,19 +89,10 @@ namespace Moth.Tasks
             }
         }
 
-        /// <summary>
-        /// Blocks until a task is ready in the queue, then runs it.
-        /// </summary>
-        /// <param name="profiler"><see cref="IProfiler"/> to profile the run-time of the task.</param>
-        /// <param name="token">A <see cref="CancellationToken"/> to observe when waiting for a task. Does not cancel actual task execution.</param>
+        /// <inheritdoc />
         public void RunNextTask (IProfiler profiler = null, CancellationToken token = default) => RunNextTask (out _, profiler, token);
 
-        /// <summary>
-        /// Blocks until a task is ready in the queue, then runs it.
-        /// </summary>
-        /// <param name="exception"><see cref="Exception"/> thrown if task failed. Is <see langword="null"/> if task was run successfully.</param>
-        /// <param name="profiler"><see cref="IProfiler"/> to profile the run-time of the task.</param>
-        /// <param name="token">A <see cref="CancellationToken"/> to observe when waiting for a task. Does not cancel actual task execution.</param>
+        /// <inheritdoc />
         public void RunNextTask (out Exception exception, IProfiler profiler = null, CancellationToken token = default)
         {
             WaitForTask (token);
@@ -116,26 +106,10 @@ namespace Moth.Tasks
             TryRunNextTask (out exception, profiler);
         }
 
-        /// <summary>
-        /// Tries to run the next task in the queue, if present. May also perform profiling on the task through an <see cref="IProfiler"/>.
-        /// </summary>
-        /// <param name="profiler"><see cref="IProfiler"/> to profile the run-time of the task.</param>
-        /// <returns><see langword="true"/> if a task was run, <see langword="false"/> if the <see cref="TaskQueue"/> is empty.</returns>
-        /// <remarks>
-        /// Please note that the return value does not indicate if a task was successful. The method will return <see langword="true"/> if a task was ready in the queue, regardless of whether an exception occured.
-        /// </remarks>
+        /// <inheritdoc />
         public bool TryRunNextTask (IProfiler profiler = null) => TryRunNextTask (out _, profiler);
 
-        /// <summary>
-        /// Tries to run the next task in the queue, if present. Provides an <see cref="Exception"/> thrown by the task, in case it fails.
-        /// May also perform profiling on the task through an <see cref="IProfiler"/>.
-        /// </summary>
-        /// <param name="exception"><see cref="Exception"/> thrown if task failed. Is <see langword="null"/> if task was run successfully.</param>
-        /// <param name="profiler"><see cref="IProfiler"/> to profile the run-time of the task.</param>
-        /// <returns><see langword="true"/> if a task was run, <see langword="false"/> if the <see cref="TaskQueue"/> is empty.</returns>
-        /// <remarks>
-        /// Please note that the return value does not indicate if a task was successful. The method will return <see langword="true"/> if a task was ready in the queue, regardless of whether an exception occured.
-        /// </remarks>
+        /// <inheritdoc />
         public bool TryRunNextTask (out Exception exception, IProfiler profiler = null)
         {
             TaskRunWrapper taskRunWrapper = default;
