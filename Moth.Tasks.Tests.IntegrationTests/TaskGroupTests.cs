@@ -1,4 +1,4 @@
-﻿namespace Moth.Tasks.Tests.UnitTests
+﻿namespace Moth.Tasks.Tests.IntegrationTests
 {
     using NUnit.Framework;
     using NUnit.Framework.Legacy;
