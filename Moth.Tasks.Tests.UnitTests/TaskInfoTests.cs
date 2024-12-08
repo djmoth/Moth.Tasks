@@ -64,7 +64,7 @@
         {
             int taskID = 1;
             var taskFormat = new MockFixedFormat<DisposableTestTask<int>> (42);
-            AssertTaskMetadataProperties (new DisposableTaskMetadata<DisposableTestTask<int>> (taskID, taskFormat), taskID, taskFormat);
+            AssertTaskMetadataProperties (new TaskMetadata<DisposableTestTask<int>> (taskID, taskFormat), taskID, taskFormat);
         }
 
         [Test]
@@ -72,7 +72,7 @@
         {
             int taskID = 1;
             var taskFormat = new MockVariableFormat<DisposableTestTask<object>> (42, typeof (object));
-            AssertTaskMetadataProperties (new DisposableTaskMetadata<DisposableTestTask<object>> (taskID, taskFormat), taskID, taskFormat);
+            AssertTaskMetadataProperties (new TaskMetadata<DisposableTestTask<object>> (taskID, taskFormat), taskID, taskFormat);
         }
 
         [Test]
@@ -80,7 +80,7 @@
         {
             int taskID = 1;
             var taskFormat = new MockFixedFormat<DisposableTestTaskArg<int>> (42);
-            AssertTaskMetadataProperties (new DisposableTaskMetadata<DisposableTestTaskArg<int>, int> (taskID, taskFormat), taskID, taskFormat);
+            AssertTaskMetadataProperties (new TaskMetadata<DisposableTestTaskArg<int>, int> (taskID, taskFormat), taskID, taskFormat);
         }
 
         [Test]
@@ -88,7 +88,7 @@
         {
             int taskID = 1;
             var taskFormat = new MockVariableFormat<DisposableTestTaskArg<object>> (42, typeof (object));
-            AssertTaskMetadataProperties (new DisposableTaskMetadata<DisposableTestTaskArg<object>, int> (taskID, taskFormat), taskID, taskFormat);
+            AssertTaskMetadataProperties (new TaskMetadata<DisposableTestTaskArg<object>, int> (taskID, taskFormat), taskID, taskFormat);
         }
 
         [Test]
@@ -96,7 +96,7 @@
         {
             int taskID = 1;
             var taskFormat = new MockFixedFormat<DisposableTestTaskArgResult<int>> (42);
-            AssertTaskMetadataProperties (new DisposableTaskMetadata<DisposableTestTaskArgResult<int>, int, int> (taskID, taskFormat), taskID, taskFormat);
+            AssertTaskMetadataProperties (new TaskMetadata<DisposableTestTaskArgResult<int>, int, int> (taskID, taskFormat), taskID, taskFormat);
         }
 
         [Test]
@@ -104,7 +104,7 @@
         {
             int taskID = 1;
             var taskFormat = new MockVariableFormat<DisposableTestTaskArgResult<object>> (42, typeof (object));
-            AssertTaskMetadataProperties (new DisposableTaskMetadata<DisposableTestTaskArgResult<object>, int, int> (taskID, taskFormat), taskID, taskFormat);
+            AssertTaskMetadataProperties (new TaskMetadata<DisposableTestTaskArgResult<object>, int, int> (taskID, taskFormat), taskID, taskFormat);
         }
 
         [Test]
@@ -155,7 +155,9 @@
                 Assert.Fail ("Unknown format type");
 
             Assert.That (taskInfo.IsManaged, Is.EqualTo (taskFormat is IVariableFormat));
-            Assert.That (taskInfo.IsDisposable, Is.EqualTo (taskInfo is IDisposableTaskMetadata));
+
+            bool shouldBeDisposable = typeof (IDisposable).IsAssignableFrom (typeof (T));
+            Assert.That (taskInfo.IsDisposable, Is.EqualTo (shouldBeDisposable));
 
             bool shouldHaveResult = typeof (ITask<int, int>).IsAssignableFrom (typeof (T));
             bool shouldHaveArgs = typeof (ITask<int>).IsAssignableFrom (typeof (T)) || shouldHaveResult;

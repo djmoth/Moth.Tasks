@@ -14,15 +14,16 @@
             : base (id, taskFormat) { }
 
         /// <inheritdoc />
-        public override bool IsDisposable => false;
-
-        /// <inheritdoc />
         public override bool HasArgs => false;
 
         /// <inheritdoc />
         public override bool HasResult => false;
 
         /// <inheritdoc />
-        public void Run (TaskQueue.TaskDataAccess access) => access.GetNextTaskData (this).Run ();
+        public void Run (TaskQueue.TaskDataAccess access)
+        {
+            TTask task = access.GetNextTaskData (this);
+            task.TryRunAndDispose ();
+        }
     }
 }

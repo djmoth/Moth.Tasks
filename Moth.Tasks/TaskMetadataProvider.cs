@@ -52,36 +52,18 @@
 
             Type taskInfoType;
 
-            if (isDisposable)
+            if (interfaceType == typeof (ITask))
             {
-                if (interfaceType == typeof (ITask))
-                {
-                    taskInfoType = typeof (DisposableTaskMetadata<>).MakeGenericType (type);
-                } else if (interfaceType.GetGenericTypeDefinition () == typeof (ITask<>))
-                {
-                    taskInfoType = typeof (DisposableTaskMetadata<,>).MakeGenericType (interfaceType.GetGenericArguments ().Prepend (type).ToArray ());
-                } else if (interfaceType.GetGenericTypeDefinition () == typeof (ITask<,>))
-                {
-                    taskInfoType = typeof (DisposableTaskMetadata<,,>).MakeGenericType (interfaceType.GetGenericArguments ().Prepend (type).ToArray ());
-                } else
-                {
-                    throw new NotImplementedException ();
-                }
+                taskInfoType = typeof (TaskMetadata<>).MakeGenericType (type);
+            } else if (interfaceType.GetGenericTypeDefinition () == typeof (ITask<>))
+            {
+                taskInfoType = typeof (TaskMetadata<,>).MakeGenericType (interfaceType.GetGenericArguments ().Prepend (type).ToArray ());
+            } else if (interfaceType.GetGenericTypeDefinition () == typeof (ITask<,>))
+            {
+                taskInfoType = typeof (TaskMetadata<,,>).MakeGenericType (interfaceType.GetGenericArguments ().Prepend (type).ToArray ());
             } else
             {
-                if (interfaceType == typeof (ITask))
-                {
-                    taskInfoType = typeof (TaskMetadata<>).MakeGenericType (type);
-                } else if (interfaceType.GetGenericTypeDefinition () == typeof (ITask<>))
-                {
-                    taskInfoType = typeof (TaskMetadata<,>).MakeGenericType (interfaceType.GetGenericArguments ().Prepend (type).ToArray ());
-                } else if (interfaceType.GetGenericTypeDefinition () == typeof (ITask<,>))
-                {
-                    taskInfoType = typeof (TaskMetadata<,,>).MakeGenericType (interfaceType.GetGenericArguments ().Prepend (type).ToArray ());
-                } else
-                {
-                    throw new NotImplementedException ();
-                }
+                throw new NotImplementedException ();
             }
 
             return (ITaskMetadata<TTask>)Activator.CreateInstance (taskInfoType, id, (IFormat<TTask>)formatProvider.Get<TTask> ());

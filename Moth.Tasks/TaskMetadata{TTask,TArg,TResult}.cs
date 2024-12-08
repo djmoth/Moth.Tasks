@@ -19,9 +19,6 @@
             : base (id, taskFormat) { }
 
         /// <inheritdoc />
-        public override bool IsDisposable => false;
-
-        /// <inheritdoc />
         public override bool HasArgs => true;
 
         /// <inheritdoc />
@@ -31,15 +28,27 @@
         /// Runs the task with <see langword="default"/> as argument and discards the result.
         /// </summary>
         /// <inheritdoc />
-        public void Run (TaskQueue.TaskDataAccess access) => access.GetNextTaskData (this).Run (default);
+        public void Run (TaskQueue.TaskDataAccess access)
+        {
+            TTask task = access.GetNextTaskData (this);
+            task.TryRunAndDispose (default (TArg), out TResult _);
+        }
 
         /// <summary>
         /// Runs the task with an argument and discards the result.
         /// </summary>
         /// <inheritdoc />
-        public void Run (TaskQueue.TaskDataAccess access, TArg arg) => access.GetNextTaskData (this).Run (arg);
+        public void Run (TaskQueue.TaskDataAccess access, TArg arg)
+        {
+            TTask task = access.GetNextTaskData (this);
+            task.TryRunAndDispose (arg, out TResult _);
+        }
 
         /// <inheritdoc />
-        TResult IRunnableTaskMetadata<TArg, TResult>.Run (TaskQueue.TaskDataAccess access, TArg arg) => access.GetNextTaskData (this).Run (arg);
+        public void Run (TaskQueue.TaskDataAccess access, TArg arg, out TResult result)
+        {
+            TTask task = access.GetNextTaskData (this);
+            task.TryRunAndDispose (arg, out result);
+        }
     }
 }

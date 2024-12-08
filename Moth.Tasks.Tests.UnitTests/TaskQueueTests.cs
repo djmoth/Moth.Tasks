@@ -17,9 +17,9 @@
         private MockTaskMetadata<TestTask> mockTestTaskMetadata;
         private MockTaskMetadata<TestTaskThrowingException> mockTestTaskThrowingExceptionMetadata;
         private MockTaskMetadata<TaskWithHandle<TaskWrapper<TestTask>, Unit, Unit>, Unit, Unit> mockTestTaskWithHandle;
-        private MockDisposableTaskMetadata<DisposableTestTask> mockDisposableTestTaskMetadata;
-        private MockDisposableTaskMetadata<DisposableTestTaskThrowingException> mockDisposableTestTaskThrowingExceptionInfo;
-        private MockTaskMetadata<DisposableTaskWithHandle<TaskWrapper<TestTask>, Unit, Unit>, Unit, Unit> mockDisposableTestTaskWithHandle;
+        private MockTaskMetadata<DisposableTestTask> mockDisposableTestTaskMetadata;
+        private MockTaskMetadata<DisposableTestTaskThrowingException> mockDisposableTestTaskThrowingExceptionInfo;
+        private MockTaskMetadata<TaskWithHandle<TaskWrapper<DisposableTestTask>, Unit, Unit>, Unit, Unit> mockDisposableTestTaskWithHandle;
         private Mock<IProfiler> mockProfiler;
         
 
@@ -39,16 +39,16 @@
             mockTestTaskThrowingExceptionMetadata = new MockTaskMetadata<TestTaskThrowingException> (nextTaskMetadataID++);
             SetupTaskMetadata (mockTestTaskThrowingExceptionMetadata);
 
-            mockDisposableTestTaskMetadata = new MockDisposableTaskMetadata<DisposableTestTask> (nextTaskMetadataID++);
+            mockDisposableTestTaskMetadata = new MockTaskMetadata<DisposableTestTask> (nextTaskMetadataID++);
             SetupTaskMetadata (mockDisposableTestTaskMetadata);
 
-            mockDisposableTestTaskThrowingExceptionInfo = new MockDisposableTaskMetadata<DisposableTestTaskThrowingException> (nextTaskMetadataID++);
+            mockDisposableTestTaskThrowingExceptionInfo = new MockTaskMetadata<DisposableTestTaskThrowingException> (nextTaskMetadataID++);
             SetupTaskMetadata (mockDisposableTestTaskThrowingExceptionInfo);
 
             mockTestTaskWithHandle = new MockTaskMetadata<TaskWithHandle<TaskWrapper<TestTask>, Unit, Unit>, Unit, Unit> (nextTaskMetadataID++);
             SetupTaskMetadata (mockTestTaskWithHandle);
 
-            mockDisposableTestTaskWithHandle = new MockDisposableTaskMetadata<DisposableTaskWithHandle<TaskWrapper<DisposableTestTask>, Unit, Unit>, Unit, Unit> (nextTaskMetadataID++);
+            mockDisposableTestTaskWithHandle = new MockTaskMetadata<TaskWithHandle<TaskWrapper<DisposableTestTask>, Unit, Unit>, Unit, Unit> (nextTaskMetadataID++);
             SetupTaskMetadata (mockDisposableTestTaskWithHandle);
 
             mockTaskHandleManager = new Mock<ITaskHandleManager> (MockBehavior.Strict);
@@ -461,7 +461,11 @@
         private unsafe abstract class MockTaskMetadataBase<TTask> : ITaskMetadata<TTask>
             where TTask : struct, ITaskType
         {
-            public MockTaskMetadataBase (int id) => ID = id;
+            public MockTaskMetadataBase (int id)
+            {
+                ID = id;
+                IsDisposable = typeof (IDisposable).IsAssignableFrom (typeof (TTask));
+            }
 
             public int ID { get; }
 
@@ -477,7 +481,9 @@
 
             public bool HasResult => false;
 
-            public virtual bool IsDisposable => false;
+            public bool IsDisposable { get; }
+
+            public int DisposeCallCount { get; private set; }
 
             public void Serialize (in TTask task, Span<byte> destination, ObjectWriter refWriter)
             {
@@ -488,6 +494,8 @@
             {
                 task = default;
             }
+
+            public void Dispose (TaskQueue.TaskDataAccess access) => DisposeCallCount++;
         }
 
         private unsafe class MockTaskMetadata<TTask> : MockTaskMetadataBase<TTask>, IRunnableTaskMetadata
@@ -525,44 +533,10 @@
                 access.GetNextTaskData (this).Run (arg);
             }
 
-            TResult IRunnableTaskMetadata<TArg, TResult>.Run (TaskQueue.TaskDataAccess access, TArg arg)
+            public void Run (TaskQueue.TaskDataAccess access, TArg arg, out TResult result)
             {
                 RunCallCount++;
-                return access.GetNextTaskData (this).Run (arg);
-            }
-        }
-
-        private unsafe class MockDisposableTaskMetadata<TTask> : MockTaskMetadata<TTask>, IDisposableTaskMetadata
-            where TTask : struct, ITask, IDisposable
-        {
-            public MockDisposableTaskMetadata (int id)
-                : base (id) { }
-
-            public override bool IsDisposable => true;
-
-            public int DisposeCallCount { get; private set; }
-
-            public void Dispose (TaskQueue.TaskDataAccess access)
-            {
-                DisposeCallCount++;
-                access.GetNextTaskData (this).Dispose ();
-            }
-        }
-
-        private unsafe class MockDisposableTaskMetadata<TTask, TArg, TResult> : MockTaskMetadata<TTask, TArg, TResult>, IDisposableTaskMetadata
-            where TTask : struct, ITask<TArg, TResult>, IDisposable
-        {
-            public MockDisposableTaskMetadata (int id)
-                : base (id) { }
-
-            public override bool IsDisposable => true;
-
-            public int DisposeCallCount { get; private set; }
-
-            public void Dispose (TaskQueue.TaskDataAccess access)
-            {
-                DisposeCallCount++;
-                access.GetNextTaskData (this).Dispose ();
+                result = access.GetNextTaskData (this).Run (arg);
             }
         }
     }

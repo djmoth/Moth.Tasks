@@ -319,6 +319,11 @@
                 DeserializeCallCount++;
                 task = DeserializeValue;
             }
+
+            public void Dispose (TaskQueue.TaskDataAccess access)
+            {
+                throw new NotImplementedException ();
+            }
         }
     }
 }

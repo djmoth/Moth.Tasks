@@ -46,5 +46,11 @@
         /// Gets whether the task returns a result.
         /// </summary>
         bool HasResult { get; }
+
+        /// <summary>
+        /// Disposes the task if it implements <see cref="IDisposable"/>.
+        /// </summary>
+        /// <param name="access"><see cref="TaskQueue.TaskDataAccess"/> instance allowing for retrieval of task data.</param>
+        void Dispose (TaskQueue.TaskDataAccess access);
     }
 }

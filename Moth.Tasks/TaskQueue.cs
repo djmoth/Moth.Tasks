@@ -81,13 +81,7 @@
         {
             handle = CreateTaskHandle ();
 
-            if (typeof (IDisposable).IsAssignableFrom (typeof (TTask))) // If T implements IDisposable
-            {
-                EnqueueTask (new DisposableTaskWithHandle<TaskWrapper<TTask>, Unit, Unit> (new TaskWrapper<TTask> (task), handle));
-            } else
-            {
-                EnqueueTask (new TaskWithHandle<TaskWrapper<TTask>, Unit, Unit> (new TaskWrapper<TTask> (task), handle));
-            }
+            EnqueueTask (new TaskWithHandle<TaskWrapper<TTask>, Unit, Unit> (new TaskWrapper<TTask> (task), handle));
         }
 
         /// <inheritdoc />
@@ -126,20 +120,20 @@
 
             foreach (int id in tasks)
             {
-                ITaskMetadata task = taskCache.GetTask (id);
+                ITaskMetadata taskMetadata = taskCache.GetTask (id);
 
-                if (task is IDisposableTaskMetadata disposableTaskMetadata)
+                if (taskMetadata.IsDisposable)
                 {
                     try
                     {
-                        disposableTaskMetadata.Dispose (access);
+                        taskMetadata.Dispose (access);
                     } catch (Exception ex)
                     {
                         exceptionHandler?.Invoke (ex);
                     }
                 } else
                 {
-                    taskDataStore.Skip (task);
+                    taskDataStore.Skip (taskMetadata);
                 }
             }
 

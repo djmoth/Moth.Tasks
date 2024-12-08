@@ -35,6 +35,7 @@
         /// </summary>
         public void Dispose ()
         {
+            task.TryDispose ();
             handle.NotifyTaskCompletion ();
         }
     }

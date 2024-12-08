@@ -613,137 +613,20 @@
             Invokes the encapsulated <see cref="T:System.Action`16"/> with the provided arguments.
             </summary>
         </member>
-        <member name="T:Moth.Tasks.DisposableTaskMetadataBase`1">
+        <member name="T:Moth.Tasks.DisposableTask`1">
             <summary>
-            Represents a task that can be disposed.
-            </summary>
-            <inheritdoc />
-        </member>
-        <member name="M:Moth.Tasks.DisposableTaskMetadataBase`1.#ctor(System.Int32,Moth.IO.Serialization.IFormat{`0})">
-            <summary>
-            Initializes a new instance of the <see cref="T:Moth.Tasks.DisposableTaskMetadataBase`1"/> class.
-            </summary>
-            <inheritdoc cref="M:Moth.Tasks.TaskMetadataBase`1.#ctor(System.Int32,Moth.IO.Serialization.IFormat{`0})"/>
-        </member>
-        <member name="P:Moth.Tasks.DisposableTaskMetadataBase`1.IsDisposable">
-            <inheritdoc />
-        </member>
-        <member name="M:Moth.Tasks.DisposableTaskMetadataBase`1.Dispose(Moth.Tasks.TaskQueue.TaskDataAccess)">
-            <inheritdoc />
-        </member>
-        <member name="T:Moth.Tasks.DisposableTaskMetadata`3">
-            <summary>
-            Represents a task that can be disposed and takes an argument and returns a result.
-            </summary>
-            <inheritdoc />
-        </member>
-        <member name="M:Moth.Tasks.DisposableTaskMetadata`3.#ctor(System.Int32,Moth.IO.Serialization.IFormat{`0})">
-            <summary>
-            Initializes a new instance of the <see cref="T:Moth.Tasks.DisposableTaskMetadata`3"/> class.
-            </summary>
-            <inheritdoc cref="M:Moth.Tasks.TaskMetadataBase`1.#ctor(System.Int32,Moth.IO.Serialization.IFormat{`0})"/>
-        </member>
-        <member name="P:Moth.Tasks.DisposableTaskMetadata`3.HasArgs">
-            <inheritdoc />
-        </member>
-        <member name="P:Moth.Tasks.DisposableTaskMetadata`3.HasResult">
-            <inheritdoc />
-        </member>
-        <member name="M:Moth.Tasks.DisposableTaskMetadata`3.Run(Moth.Tasks.TaskQueue.TaskDataAccess)">
-            <summary>
-            Runs the task with <see langword="default"/> as argument and disposes it and discards the result.
-            </summary>
-            <inheritdoc />
-        </member>
-        <member name="M:Moth.Tasks.DisposableTaskMetadata`3.Run(Moth.Tasks.TaskQueue.TaskDataAccess,`1)">
-            <summary>
-            Runs the task with an argument and disposes it and discards the result.
-            </summary>
-            <inheritdoc />
-        </member>
-        <member name="M:Moth.Tasks.DisposableTaskMetadata`3.Moth#Tasks#IRunnableTaskMetadata{TArg,TResult}#Run(Moth.Tasks.TaskQueue.TaskDataAccess,`1)">
-            <summary>
-            Runs the task with an argument and disposes it and returns the result.
-            </summary>
-            <inheritdoc />
-            <returns>The result of the task.</returns>
-        </member>
-        <member name="T:Moth.Tasks.DisposableTaskMetadata`2">
-            <summary>
-            Represents a task that can be disposed and takes an argument and returns no result.
-            </summary>
-            <inheritdoc />
-        </member>
-        <member name="M:Moth.Tasks.DisposableTaskMetadata`2.#ctor(System.Int32,Moth.IO.Serialization.IFormat{`0})">
-            <summary>
-            Initializes a new instance of the <see cref="T:Moth.Tasks.DisposableTaskMetadata`2"/> class.
-            </summary>
-            <inheritdoc cref="M:Moth.Tasks.TaskMetadataBase`1.#ctor(System.Int32,Moth.IO.Serialization.IFormat{`0})"/>
-        </member>
-        <member name="P:Moth.Tasks.DisposableTaskMetadata`2.HasArgs">
-            <inheritdoc />
-        </member>
-        <member name="P:Moth.Tasks.DisposableTaskMetadata`2.HasResult">
-            <inheritdoc />
-        </member>
-        <member name="M:Moth.Tasks.DisposableTaskMetadata`2.Run(Moth.Tasks.TaskQueue.TaskDataAccess)">
-            <summary>
-            Runs the task with <see langword="default"/> as argument and disposes it.
-            </summary>
-            <inheritdoc />
-        </member>
-        <member name="M:Moth.Tasks.DisposableTaskMetadata`2.Run(Moth.Tasks.TaskQueue.TaskDataAccess,`1)">
-            <summary>
-            Runs the task with an argument and disposes it.
-            </summary>
-            <inheritdoc />
-        </member>
-        <member name="T:Moth.Tasks.DisposableTaskMetadata`1">
-            <summary>
-            Represents a task that can be disposed and takes no argument and returns no result.
-            </summary>
-            <inheritdoc />
-        </member>
-        <member name="M:Moth.Tasks.DisposableTaskMetadata`1.#ctor(System.Int32,Moth.IO.Serialization.IFormat{`0})">
-            <summary>
-            Initializes a new instance of the <see cref="T:Moth.Tasks.DisposableTaskMetadata`1"/> class.
-            </summary>
-            <inheritdoc cref="M:Moth.Tasks.TaskMetadataBase`1.#ctor(System.Int32,Moth.IO.Serialization.IFormat{`0})"/>
-        </member>
-        <member name="P:Moth.Tasks.DisposableTaskMetadata`1.HasArgs">
-            <inheritdoc />
-        </member>
-        <member name="P:Moth.Tasks.DisposableTaskMetadata`1.HasResult">
-            <inheritdoc />
-        </member>
-        <member name="M:Moth.Tasks.DisposableTaskMetadata`1.Run(Moth.Tasks.TaskQueue.TaskDataAccess)">
-            <summary>
-            Runs the task and disposes it.
-            </summary>
-            <inheritdoc />
-        </member>
-        <member name="T:Moth.Tasks.DisposableTaskWithHandle`3">
-            <summary>
-            Encapsulates a task which implements <see cref="T:System.IDisposable"/>, enqueued with a <see cref="T:Moth.Tasks.TaskHandle"/>.
+            Static class providing helper methods for tasks that implement <see cref="T:System.IDisposable"/>.
             </summary>
             <typeparam name="TTask">Type of task.</typeparam>
-            <typeparam name="TArg">Type of task argument.</typeparam>
-            <typeparam name="TResult">Type of task result.</typeparam>
         </member>
-        <member name="M:Moth.Tasks.DisposableTaskWithHandle`3.#ctor(`0@,Moth.Tasks.TaskHandle)">
+        <member name="M:Moth.Tasks.DisposableTask`1.Dispose(`0@)">
             <summary>
-            Initializes a new instance of the <see cref="T:Moth.Tasks.DisposableTaskWithHandle`3"/> struct.
+            Disposes a task.
             </summary>
-            <param name="task">Task data.</param>
-            <param name="handle">Task handle.</param>
-        </member>
-        <member name="M:Moth.Tasks.DisposableTaskWithHandle`3.Run(`1)">
-            <inheritdoc/>
-        </member>
-        <member name="M:Moth.Tasks.DisposableTaskWithHandle`3.Dispose">
-            <summary>
-            Dispose of encapsulated task, and notify handle that task was completed.
-            </summary>
+            <param name="task">Task to dispose.</param>
+            <remarks>
+            Used by <see cref="M:Moth.Tasks.Task`1.TryDispose(`0@)"/>.
+            </remarks>
         </member>
         <member name="T:Moth.Tasks.FunctionPointerTask">
             <summary>
@@ -1289,17 +1172,6 @@
             Invokes the encapsulated delegate*{T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, T16, void} with the provided arguments.
             </summary>
         </member>
-        <member name="T:Moth.Tasks.IDisposableTaskMetadata">
-            <summary>
-            Represents a task that can be disposed.
-            </summary>
-        </member>
-        <member name="M:Moth.Tasks.IDisposableTaskMetadata.Dispose(Moth.Tasks.TaskQueue.TaskDataAccess)">
-            <summary>
-            Disposes of the task.
-            </summary>
-            <param name="access"><see cref="T:Moth.Tasks.TaskQueue.TaskDataAccess"/> instance allowing for retrieval of task data.</param>
-        </member>
         <member name="T:Moth.Tasks.IProfiler">
             <summary>
             Describes a profiler which can measure the run time of a task.
@@ -1349,14 +1221,14 @@
             <typeparam name="TArg"/>
             <typeparam name="TResult">The type of the task result.</typeparam>
         </member>
-        <member name="M:Moth.Tasks.IRunnableTaskMetadata`2.Run(Moth.Tasks.TaskQueue.TaskDataAccess,`0)">
+        <member name="M:Moth.Tasks.IRunnableTaskMetadata`2.Run(Moth.Tasks.TaskQueue.TaskDataAccess,`0,`1@)">
             <summary>
             Runs the task with an argument and returns a result.
             </summary>
             <inheritdoc cref="M:Moth.Tasks.IRunnableTaskMetadata`1.Run(Moth.Tasks.TaskQueue.TaskDataAccess,`0)"/>/>
             <param name="access"/>
             <param name="arg"/>
-            <returns>The result of the task.</returns>
+            <param name="result">The result of the task.</param>
         </member>
         <member name="T:Moth.Tasks.ITask">
             <summary>
@@ -1543,6 +1415,12 @@
             <summary>
             Gets whether the task returns a result.
             </summary>
+        </member>
+        <member name="M:Moth.Tasks.ITaskMetadata.Dispose(Moth.Tasks.TaskQueue.TaskDataAccess)">
+            <summary>
+            Disposes the task if it implements <see cref="T:System.IDisposable"/>.
+            </summary>
+            <param name="access"><see cref="T:Moth.Tasks.TaskQueue.TaskDataAccess"/> instance allowing for retrieval of task data.</param>
         </member>
         <member name="T:Moth.Tasks.ITaskMetadataCache">
             <summary>
@@ -2736,6 +2614,19 @@
             The method does not have to provide a unique <see cref="T:Moth.Tasks.IProfiler"/> for each <see cref="T:Moth.Tasks.IWorker"/>, yet in that case it must be able to differentiate between <see cref="T:Moth.Tasks.IWorker"/>s on its own, so as their calls to <see cref="M:Moth.Tasks.IProfiler.BeginTask(System.String)"/> and <see cref="M:Moth.Tasks.IProfiler.EndTask"/> don't interfere.
             </remarks>
         </member>
+        <member name="T:Moth.Tasks.Task`1">
+            <summary>
+            Static class providing helper methods for tasks.
+            </summary>
+            <typeparam name="TTask">Type of task.</typeparam>
+        </member>
+        <member name="M:Moth.Tasks.Task`1.TryDispose(`0@)">
+            <summary>
+            Tries to dispose a task if it implements <see cref="T:System.IDisposable"/>.
+            </summary>
+            <param name="task">Task to dispose.</param>
+            <returns><see langword="true"/> if the task was disposed.</returns>
+        </member>
         <member name="T:Moth.Tasks.TaskDataStore">
             <summary>
             Stores task data.
@@ -3624,6 +3515,33 @@
             Static class for task extensions.
             </summary>
         </member>
+        <member name="M:Moth.Tasks.TaskExtensions.TryRunAndDispose``1(``0@)">
+            <summary>
+            Tries to run a task and disposes it if it implements <see cref="T:System.IDisposable"/>.
+            </summary>
+            <typeparam name="TTask">Type of task.</typeparam>
+            <param name="task">Task to run and possibly dispose.</param>
+        </member>
+        <member name="M:Moth.Tasks.TaskExtensions.TryRunAndDispose``2(``0@,``1)">
+            <summary>
+            Tries to run a task with an argument and disposes it if it implements <see cref="T:System.IDisposable"/>.
+            </summary>
+            <typeparam name="TTask">Type of task.</typeparam>
+            <typeparam name="TArg">Type of task argument.</typeparam>
+            <param name="task">Task to run and possibly dispose.</param>
+            <param name="arg">Task argument.</param>
+        </member>
+        <member name="M:Moth.Tasks.TaskExtensions.TryRunAndDispose``3(``0@,``1,``2@)">
+            <summary>
+            Tries to run a task with an argument and disposes it if it implements <see cref="T:System.IDisposable"/> and returns the result.
+            </summary>
+            <typeparam name="TTask">Type of task.</typeparam>
+            <typeparam name="TArg">Type of task argument.</typeparam>
+            <typeparam name="TResult">Type of task result.</typeparam>
+            <param name="task">Task to run and possibly dispose.</param>
+            <param name="arg">Task argument.</param>
+            <param name="result">Task result.</param>
+        </member>
         <member name="M:Moth.Tasks.TaskExtensions.Enqueue``1(``0,Moth.Tasks.ITaskQueue)">
             <summary>
             Enqueues a task in a task queue.
@@ -3923,9 +3841,6 @@
             </summary>
             <inheritdoc cref="M:Moth.Tasks.TaskMetadataBase`1.#ctor(System.Int32,Moth.IO.Serialization.IFormat{`0})"/>
         </member>
-        <member name="P:Moth.Tasks.TaskMetadata`3.IsDisposable">
-            <inheritdoc />
-        </member>
         <member name="P:Moth.Tasks.TaskMetadata`3.HasArgs">
             <inheritdoc />
         </member>
@@ -3944,7 +3859,7 @@
             </summary>
             <inheritdoc />
         </member>
-        <member name="M:Moth.Tasks.TaskMetadata`3.Moth#Tasks#IRunnableTaskMetadata{TArg,TResult}#Run(Moth.Tasks.TaskQueue.TaskDataAccess,`1)">
+        <member name="M:Moth.Tasks.TaskMetadata`3.Run(Moth.Tasks.TaskQueue.TaskDataAccess,`1,`2@)">
             <inheritdoc />
         </member>
         <member name="T:Moth.Tasks.TaskMetadata`2">
@@ -3959,9 +3874,6 @@
             Initializes a new instance of the <see cref="T:Moth.Tasks.TaskMetadata`2"/> class.
             </summary>
             <inheritdoc cref="M:Moth.Tasks.TaskMetadataBase`1.#ctor(System.Int32,Moth.IO.Serialization.IFormat{`0})"/>
-        </member>
-        <member name="P:Moth.Tasks.TaskMetadata`2.IsDisposable">
-            <inheritdoc />
         </member>
         <member name="P:Moth.Tasks.TaskMetadata`2.HasArgs">
             <inheritdoc />
@@ -3986,9 +3898,6 @@
             Initializes a new instance of the <see cref="T:Moth.Tasks.TaskMetadata`1"/> class.
             </summary>
             <inheritdoc cref="M:Moth.Tasks.TaskMetadataBase`1.#ctor(System.Int32,Moth.IO.Serialization.IFormat{`0})"/>
-        </member>
-        <member name="P:Moth.Tasks.TaskMetadata`1.IsDisposable">
-            <inheritdoc />
         </member>
         <member name="P:Moth.Tasks.TaskMetadata`1.HasArgs">
             <inheritdoc />
@@ -4318,6 +4227,11 @@
             Run the wrapped task with <see langword="default"/> as argument and then discarding result.
             </summary>
         </member>
+        <member name="M:Moth.Tasks.TaskWrapper`3.Dispose">
+            <summary>
+            Dispose the wrapped task if it implements <see cref="T:System.IDisposable"/>.
+            </summary>
+        </member>
         <member name="T:Moth.Tasks.TaskWrapper`2">
             <summary>
             Wraps an <see cref="T:Moth.Tasks.ITask`1"/> as an <see cref="T:Moth.Tasks.ITask`2"/>, returning an instance of <see cref="T:Moth.Tasks.Unit"/>.
@@ -4338,6 +4252,11 @@
             <param name="arg">Value to pass as argument.</param>
             <returns>An instance of <see cref="T:Moth.Tasks.Unit"/>.</returns>
         </member>
+        <member name="M:Moth.Tasks.TaskWrapper`2.Dispose">
+            <summary>
+            Dispose the wrapped task if it implements <see cref="T:System.IDisposable"/>.
+            </summary>
+        </member>
         <member name="T:Moth.Tasks.TaskWrapper`1">
             <summary>
             Wraps an <see cref="T:Moth.Tasks.ITask"/> as an <see cref="T:Moth.Tasks.ITask`2"/>, taking a <see cref="T:Moth.Tasks.Unit"/> as argument and returning an instance of <see cref="T:Moth.Tasks.Unit"/>.
@@ -4356,6 +4275,11 @@
             </summary>
             <param name="arg">Argument is ignored.</param>
             <returns>An instance of <see cref="T:Moth.Tasks.Unit"/>.</returns>
+        </member>
+        <member name="M:Moth.Tasks.TaskWrapper`1.Dispose">
+            <summary>
+            Dispose the wrapped task if it implements <see cref="T:System.IDisposable"/>.
+            </summary>
         </member>
         <member name="T:Moth.Tasks.Unit">
             <summary>

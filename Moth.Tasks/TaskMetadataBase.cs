@@ -38,6 +38,8 @@
             {
                 IsManaged = false;
             }
+
+            IsDisposable = typeof (IDisposable).IsAssignableFrom (Type);
         }
 
         /// <inheritdoc />
@@ -59,7 +61,7 @@
         public bool IsManaged { get; set; }
 
         /// <inheritdoc />
-        public abstract bool IsDisposable { get; }
+        public bool IsDisposable { get; }
 
         /// <inheritdoc />
         public abstract bool HasArgs { get; }
@@ -81,6 +83,12 @@
             Debug.Assert (source.Length >= UnmanagedSize, "source.Length was less than TaskMetadata.UnmanagedSize");
 
             taskFormat.Deserialize (out task, source, refReader);
+        }
+
+        public void Dispose (TaskQueue.TaskDataAccess access)
+        {
+            TTask task = access.GetNextTaskData (this);
+            Task<TTask>.TryDispose (ref task);
         }
     }
 }

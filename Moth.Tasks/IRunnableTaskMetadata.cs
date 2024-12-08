@@ -41,7 +41,7 @@
         /// <inheritdoc cref="IRunnableTaskMetadata{TArg}.Run(TaskQueue.TaskDataAccess, TArg)"/>/>
         /// <param name="access"/>
         /// <param name="arg"/>
-        /// <returns>The result of the task.</returns>
-        new TResult Run (TaskQueue.TaskDataAccess access, TArg arg);
+        /// <param name="result">The result of the task.</param>
+        void Run (TaskQueue.TaskDataAccess access, TArg arg, out TResult result);
     }
 }

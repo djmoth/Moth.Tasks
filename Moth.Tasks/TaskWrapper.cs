@@ -1,12 +1,14 @@
 ﻿namespace Moth.Tasks
 {
+    using System;
+
     /// <summary>
     /// Wraps an <see cref="ITask{TArg, TResult}"/> as an <see cref="ITask"/>, taking no arguments and returning no result.
     /// </summary>
     /// <typeparam name="TTask">Task type to wrap.</typeparam>
     /// <typeparam name="TArg">Argument of task.</typeparam>
     /// <typeparam name="TResult">Result of task.</typeparam>
-    internal struct TaskWrapper<TTask, TArg, TResult> : ITask
+    internal struct TaskWrapper<TTask, TArg, TResult> : ITask, IDisposable
         where TTask : struct, ITask<TArg, TResult>
     {
         private TTask task;
@@ -24,6 +26,11 @@
         /// Run the wrapped task with <see langword="default"/> as argument and then discarding result.
         /// </summary>
         public void Run () => task.Run (default);
+
+        /// <summary>
+        /// Dispose the wrapped task if it implements <see cref="IDisposable"/>.
+        /// </summary>
+        public void Dispose () => task.TryDispose ();
     }
 
     /// <summary>
@@ -31,7 +38,7 @@
     /// </summary>
     /// <typeparam name="TTask">Task type to wrap.</typeparam>
     /// <typeparam name="TArg">Argument of task.</typeparam>
-    internal struct TaskWrapper<TTask, TArg> : ITask<TArg, Unit>
+    internal struct TaskWrapper<TTask, TArg> : ITask<TArg, Unit>, IDisposable
         where TTask : struct, ITask<TArg>
     {
         private TTask task;
@@ -55,13 +62,18 @@
             task.Run (arg);
             return default;
         }
+
+        /// <summary>
+        /// Dispose the wrapped task if it implements <see cref="IDisposable"/>.
+        /// </summary>
+        public void Dispose () => task.TryDispose ();
     }
 
     /// <summary>
     /// Wraps an <see cref="ITask"/> as an <see cref="ITask{Unit, Unit}"/>, taking a <see cref="Unit"/> as argument and returning an instance of <see cref="Unit"/>.
     /// </summary>
     /// <typeparam name="TTask">Task type to wrap.</typeparam>
-    internal struct TaskWrapper<TTask> : ITask<Unit, Unit>
+    internal struct TaskWrapper<TTask> : ITask<Unit, Unit>, IDisposable
         where TTask : struct, ITask
     {
         private TTask task;
@@ -85,5 +97,10 @@
             task.Run ();
             return default;
         }
+
+        /// <summary>
+        /// Dispose the wrapped task if it implements <see cref="IDisposable"/>.
+        /// </summary>
+        public void Dispose () => task.TryDispose ();
     }
 }

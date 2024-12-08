@@ -28,13 +28,14 @@
         public void Create_TestTaskArgResult_ReturnsCorrectType () => TestCreatesCorrectTaskMetadataType<TestTaskArgResult> (typeof (TaskMetadata<TestTaskArgResult, int, int>));
 
         [Test]
-        public void Create_DisposableTestTask_ReturnsCorrectType () => TestCreatesCorrectTaskMetadataType<DisposableTestTask> (typeof (DisposableTaskMetadata<DisposableTestTask>));
+        public void Create_DisposableTestTask_ReturnsCorrectType () => TestCreatesCorrectTaskMetadataType<DisposableTestTask> (typeof (TaskMetadata<DisposableTestTask>));
 
         [Test]
-        public void Create_DisposableTestTaskArg_ReturnsCorrectType () => TestCreatesCorrectTaskMetadataType<DisposableTestTaskArg> (typeof (DisposableTaskMetadata<DisposableTestTaskArg, int>));
+        public void Create_DisposableTestTaskArg_ReturnsCorrectType () => TestCreatesCorrectTaskMetadataType<DisposableTestTaskArg> (typeof (TaskMetadata<DisposableTestTaskArg, int>));
 
         [Test]
-        public void Create_DisposableTestTaskArgResult_ReturnsCorrectType () => TestCreatesCorrectTaskMetadataType<DisposableTestTaskArgResult> (typeof (DisposableTaskMetadata<DisposableTestTaskArgResult, int, int>));
+        public void Create_DisposableTestTaskArgResult_ReturnsCorrectType () => TestCreatesCorrectTaskMetadataType<DisposableTestTaskArgResult> (typeof (TaskMetadata<DisposableTestTaskArgResult, int, int>));
+
         public unsafe void TestCreatesCorrectTaskMetadataType<T> (Type expectedTaskMetadataType)
             where T : struct, ITaskType
         {

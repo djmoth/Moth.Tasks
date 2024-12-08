@@ -25,13 +25,7 @@
         {
             handle = CreateTaskHandle ();
 
-            if (typeof (IDisposable).IsAssignableFrom (typeof (TTask))) // If T implements IDisposable
-            {
-                EnqueueTask (new DisposableTaskWithHandle<TTask, TArg, TResult> (task, handle));
-            } else
-            {
-                EnqueueTask (new TaskWithHandle<TTask, TArg, TResult> (task, handle));
-            }
+            EnqueueTask (new TaskWithHandle<TTask, TArg, TResult> (task, handle));
         }
 
         /// <inheritdoc />
@@ -73,7 +67,7 @@
                 Result = default;
             }
 
-            public void Run (TaskRunWrapperArgs args) => Result = args.GetTaskMetadataRunnable<IRunnableTaskMetadata<TArg, TResult>> ().Run (args.Access, arg);
+            public void Run (TaskRunWrapperArgs args) => args.GetTaskMetadataRunnable<IRunnableTaskMetadata<TArg, TResult>> ().Run (args.Access, arg, out Result);
         }
     }
 }

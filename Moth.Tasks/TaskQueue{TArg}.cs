@@ -23,13 +23,7 @@
         {
             handle = CreateTaskHandle ();
 
-            if (typeof (IDisposable).IsAssignableFrom (typeof (TTask))) // If T implements IDisposable
-            {
-                EnqueueTask (new DisposableTaskWithHandle<TaskWrapper<TTask, TArg>, TArg, Unit> (new TaskWrapper<TTask, TArg> (task), handle));
-            } else
-            {
-                EnqueueTask (new TaskWithHandle<TaskWrapper<TTask, TArg>, TArg, Unit> (new TaskWrapper<TTask, TArg> (task), handle));
-            }
+            EnqueueTask (new TaskWithHandle<TaskWrapper<TTask, TArg>, TArg, Unit> (new TaskWrapper<TTask, TArg> (task), handle));
         }
 
         /// <inheritdoc />

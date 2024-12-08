@@ -171,7 +171,7 @@
             IWorker worker = workerProvider (this, index);
 
             if (worker is IDisposable disposableWorker)
-                GC.SuppressFinalize (workers);
+                GC.SuppressFinalize (worker);
 
             if (!worker.IsStarted)
                 worker.Start ();
