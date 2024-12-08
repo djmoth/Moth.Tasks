@@ -8,15 +8,18 @@
     using System.Threading;
     using System.Threading.Tasks;
 
+    [TestFixture]
     public class TaskQueueTests
     {
         private Mock<ITaskMetadataCache> mockTaskCache;
         private Mock<ITaskDataStore> mockTaskDataStore;
         private Mock<ITaskHandleManager> mockTaskHandleManager;
         private MockTaskMetadata<TestTask> mockTestTaskMetadata;
-        private MockTaskMetadata<TestTaskThrowingException> mockTestTaskThrowingExceptionInfo;
+        private MockTaskMetadata<TestTaskThrowingException> mockTestTaskThrowingExceptionMetadata;
+        private MockTaskMetadata<TaskWithHandle<TaskWrapper<TestTask>, Unit, Unit>, Unit, Unit> mockTestTaskWithHandle;
         private MockDisposableTaskMetadata<DisposableTestTask> mockDisposableTestTaskMetadata;
         private MockDisposableTaskMetadata<DisposableTestTaskThrowingException> mockDisposableTestTaskThrowingExceptionInfo;
+        private MockTaskMetadata<DisposableTaskWithHandle<TaskWrapper<TestTask>, Unit, Unit>, Unit, Unit> mockDisposableTestTaskWithHandle;
         private Mock<IProfiler> mockProfiler;
         
 
@@ -33,8 +36,8 @@
             mockTestTaskMetadata = new MockTaskMetadata<TestTask> (nextTaskMetadataID++);
             SetupTaskMetadata (mockTestTaskMetadata);
 
-            mockTestTaskThrowingExceptionInfo = new MockTaskMetadata<TestTaskThrowingException> (nextTaskMetadataID++);
-            SetupTaskMetadata (mockTestTaskThrowingExceptionInfo);
+            mockTestTaskThrowingExceptionMetadata = new MockTaskMetadata<TestTaskThrowingException> (nextTaskMetadataID++);
+            SetupTaskMetadata (mockTestTaskThrowingExceptionMetadata);
 
             mockDisposableTestTaskMetadata = new MockDisposableTaskMetadata<DisposableTestTask> (nextTaskMetadataID++);
             SetupTaskMetadata (mockDisposableTestTaskMetadata);
@@ -42,13 +45,19 @@
             mockDisposableTestTaskThrowingExceptionInfo = new MockDisposableTaskMetadata<DisposableTestTaskThrowingException> (nextTaskMetadataID++);
             SetupTaskMetadata (mockDisposableTestTaskThrowingExceptionInfo);
 
+            mockTestTaskWithHandle = new MockTaskMetadata<TaskWithHandle<TaskWrapper<TestTask>, Unit, Unit>, Unit, Unit> (nextTaskMetadataID++);
+            SetupTaskMetadata (mockTestTaskWithHandle);
+
+            mockDisposableTestTaskWithHandle = new MockDisposableTaskMetadata<DisposableTaskWithHandle<TaskWrapper<DisposableTestTask>, Unit, Unit>, Unit, Unit> (nextTaskMetadataID++);
+            SetupTaskMetadata (mockDisposableTestTaskWithHandle);
+
             mockTaskHandleManager = new Mock<ITaskHandleManager> (MockBehavior.Strict);
             mockTaskHandleManager.Setup (manager => manager.Clear ());
 
             mockProfiler = new Mock<IProfiler> (MockBehavior.Loose);
 
             void SetupTaskMetadata<TTask> (ITaskMetadata<TTask> taskInfo)
-                where TTask : struct, ITask
+                where TTask : struct, ITaskType
             {
                 mockTaskCache.Setup (t => t.GetTask<TTask> ()).Returns (taskInfo);
                 mockTaskCache.Setup (t => t.GetTask (taskInfo.ID)).Returns (taskInfo);
@@ -141,6 +150,44 @@
         }
 
         [Test]
+        public void Enqueue_TaskWithHandle_ReturnsCorrectHandle ()
+        {
+            TaskQueue queue = new TaskQueue (0, mockTaskCache.Object, mockTaskDataStore.Object, mockTaskHandleManager.Object);
+
+            int handleID = 42;
+            mockTaskHandleManager.Setup (x => x.CreateTaskHandle ()).Returns (new TaskHandle (mockTaskHandleManager.Object, handleID));
+
+            TestTask task = new TestTask { };
+
+            queue.Enqueue (task, out TaskHandle handle);
+
+            Assert.Multiple (() =>
+            {
+                Assert.That (handle.Manager, Is.SameAs (mockTaskHandleManager.Object));
+                Assert.That (handle.ID, Is.EqualTo (handleID));
+            });
+        }
+
+        [Test]
+        public void Enqueue_DisposableTaskWithHandle_ReturnsCorrectHandle ()
+        {
+            TaskQueue queue = new TaskQueue (0, mockTaskCache.Object, mockTaskDataStore.Object, mockTaskHandleManager.Object);
+
+            int handleID = 42;
+            mockTaskHandleManager.Setup (x => x.CreateTaskHandle ()).Returns (new TaskHandle (mockTaskHandleManager.Object, handleID));
+
+            DisposableTestTask task = new DisposableTestTask { };
+
+            queue.Enqueue (task, out TaskHandle handle);
+
+            Assert.Multiple (() =>
+            {
+                Assert.That (handle.Manager, Is.SameAs (mockTaskHandleManager.Object));
+                Assert.That (handle.ID, Is.EqualTo (handleID));
+            });
+        }
+
+        [Test]
         [CancelAfter (1000)]
         public unsafe void RunNextTask_OneTaskEnqueuedAndMethodCalled_RetrievesFromTaskDataStoreAndRunsTask (CancellationToken token)
         {
@@ -202,17 +249,17 @@
             // Task will throw an exception with code 42
             TestTaskThrowingException task = new TestTaskThrowingException { ExceptionCode = 42 };
 
-            mockTaskDataStore.Setup (store => store.Dequeue (mockTestTaskThrowingExceptionInfo)).Returns (task);
+            mockTaskDataStore.Setup (store => store.Dequeue (mockTestTaskThrowingExceptionMetadata)).Returns (task);
 
             queue.Enqueue (task);
             queue.RunNextTask (out Exception exception, token: token);
 
             mockTaskCache.Verify (t => t.GetTask<TestTaskThrowingException> (), Times.Once);
 
-            mockTaskDataStore.Verify (store => store.Enqueue (task, mockTestTaskThrowingExceptionInfo), Times.Once);
-            mockTaskDataStore.Verify (store => store.Dequeue (mockTestTaskThrowingExceptionInfo), Times.Once);
+            mockTaskDataStore.Verify (store => store.Enqueue (task, mockTestTaskThrowingExceptionMetadata), Times.Once);
+            mockTaskDataStore.Verify (store => store.Dequeue (mockTestTaskThrowingExceptionMetadata), Times.Once);
 
-            Assert.That (mockTestTaskThrowingExceptionInfo.RunCallCount, Is.EqualTo (1));
+            Assert.That (mockTestTaskThrowingExceptionMetadata.RunCallCount, Is.EqualTo (1));
 
             // Verify that the exception was caught and returned
             Assert.That (exception, Is.Not.Null);
@@ -248,7 +295,7 @@
 
             TestTaskThrowingException task = new TestTaskThrowingException { };
 
-            mockTaskDataStore.Setup (store => store.Dequeue (mockTestTaskThrowingExceptionInfo)).Returns (task);
+            mockTaskDataStore.Setup (store => store.Dequeue (mockTestTaskThrowingExceptionMetadata)).Returns (task);
 
             queue.Enqueue (task);
             queue.RunNextTask (profiler: mockProfiler.Object, token: token);
@@ -411,10 +458,10 @@
             public void Dispose () { }
         }
 
-        private unsafe class MockTaskMetadata<TTask> : ITaskMetadata<TTask>, IRunnableTaskMetadata
-            where TTask : struct, ITask
+        private unsafe abstract class MockTaskMetadataBase<TTask> : ITaskMetadata<TTask>
+            where TTask : struct, ITaskType
         {
-            public MockTaskMetadata (int id) => ID = id;
+            public MockTaskMetadataBase (int id) => ID = id;
 
             public int ID { get; }
 
@@ -426,24 +473,30 @@
 
             public bool IsManaged => false;
 
-            public virtual bool IsDisposable => false;
-
             public bool HasArgs => false;
 
             public bool HasResult => false;
 
-
-            public int RunCallCount { get; private set; }
+            public virtual bool IsDisposable => false;
 
             public void Serialize (in TTask task, Span<byte> destination, ObjectWriter refWriter)
             {
-                
+
             }
 
             public void Deserialize (out TTask task, ReadOnlySpan<byte> source, ObjectReader refReader)
             {
                 task = default;
             }
+        }
+
+        private unsafe class MockTaskMetadata<TTask> : MockTaskMetadataBase<TTask>, IRunnableTaskMetadata
+            where TTask : struct, ITask
+        {
+            public MockTaskMetadata (int id)
+                : base (id) { }
+
+            public int RunCallCount { get; private set; }
 
             public void Run (TaskQueue.TaskDataAccess access)
             {
@@ -452,8 +505,52 @@
             }
         }
 
+        private unsafe class MockTaskMetadata<TTask, TArg, TResult> : MockTaskMetadataBase<TTask>, IRunnableTaskMetadata<TArg, TResult>
+            where TTask : struct, ITask<TArg, TResult>
+        {
+            public MockTaskMetadata (int id)
+                : base (id) { }
+
+            public int RunCallCount { get; private set; }
+
+            public void Run (TaskQueue.TaskDataAccess access)
+            {
+                RunCallCount++;
+                access.GetNextTaskData (this).Run (default);
+            }
+
+            public void Run (TaskQueue.TaskDataAccess access, TArg arg)
+            {
+                RunCallCount++;
+                access.GetNextTaskData (this).Run (arg);
+            }
+
+            TResult IRunnableTaskMetadata<TArg, TResult>.Run (TaskQueue.TaskDataAccess access, TArg arg)
+            {
+                RunCallCount++;
+                return access.GetNextTaskData (this).Run (arg);
+            }
+        }
+
         private unsafe class MockDisposableTaskMetadata<TTask> : MockTaskMetadata<TTask>, IDisposableTaskMetadata
             where TTask : struct, ITask, IDisposable
+        {
+            public MockDisposableTaskMetadata (int id)
+                : base (id) { }
+
+            public override bool IsDisposable => true;
+
+            public int DisposeCallCount { get; private set; }
+
+            public void Dispose (TaskQueue.TaskDataAccess access)
+            {
+                DisposeCallCount++;
+                access.GetNextTaskData (this).Dispose ();
+            }
+        }
+
+        private unsafe class MockDisposableTaskMetadata<TTask, TArg, TResult> : MockTaskMetadata<TTask, TArg, TResult>, IDisposableTaskMetadata
+            where TTask : struct, ITask<TArg, TResult>, IDisposable
         {
             public MockDisposableTaskMetadata (int id)
                 : base (id) { }

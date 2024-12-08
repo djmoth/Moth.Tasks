@@ -3658,10 +3658,18 @@
             Finalizes an instance of the <see cref="T:Moth.Tasks.TaskGroup"/> class.
             </summary>
         </member>
+        <member name="P:Moth.Tasks.TaskGroup.IsDisposed">
+            <summary>
+            Gets a value indicating whether the object has been disposed.
+            </summary>
+        </member>
         <member name="P:Moth.Tasks.TaskGroup.Progress">
             <summary>
             Gets the current progress of the task group, as a value between 0 and 1.
             </summary>
+            <remarks>
+            Will be 1 if <see cref="P:Moth.Tasks.TaskGroup.TaskCount"/> is 0.
+            </remarks>
         </member>
         <member name="P:Moth.Tasks.TaskGroup.TaskCount">
             <summary>
@@ -3677,6 +3685,9 @@
             <summary>
             Gets a value indicating whether all tasks in the group have completed.
             </summary>
+            <remarks>
+            Will be <see langword="true"/> if <see cref="P:Moth.Tasks.TaskGroup.TaskCount"/> is 0.
+            </remarks>
         </member>
         <member name="M:Moth.Tasks.TaskGroup.WhenComplete(System.Action)">
             <summary>
@@ -3688,7 +3699,7 @@
             </remarks>
             <param name="action">The action to invoke.</param>
         </member>
-        <member name="M:Moth.Tasks.TaskGroup.Enqueue``1(Moth.Tasks.TaskQueue,``0)">
+        <member name="M:Moth.Tasks.TaskGroup.Enqueue``1(Moth.Tasks.ITaskQueue,``0@)">
             <summary>
             Enqueues a task in the specified queue.
             </summary>

@@ -39,22 +39,26 @@
         /// </summary>
         public unsafe void Dispose ()
         {
-            IDisposable disposableTemplate = disposableTemplateForThread;
-
-            if (disposableTemplate == null)
+            try
             {
-                disposableTemplateForThread = disposableTemplate = (IDisposable)default (TTask);
+                IDisposable disposableTemplate = disposableTemplateForThread;
+
+                if (disposableTemplate == null)
+                {
+                    disposableTemplateForThread = disposableTemplate = (IDisposable)default (TTask);
+                }
+
+                ref TTask disposableData = ref Unsafe.Unbox<TTask> (disposableTemplate);
+
+                disposableData = task; // Copy data to DisposableTemplate object
+
+                disposableTemplate.Dispose (); // Call Dispose with data from task
+
+                disposableData = default; // Clear data so as to not leave any object references hanging
+            } finally
+            {
+                handle.NotifyTaskCompletion ();
             }
-
-            ref TTask disposableData = ref Unsafe.Unbox<TTask> (disposableTemplate);
-
-            disposableData = task; // Copy data to DisposableTemplate object
-
-            disposableTemplate.Dispose (); // Call Dispose with data from task
-
-            disposableData = default; // Clear data so as to not leave any object references hanging
-
-            handle.NotifyTaskCompletion ();
         }
     }
 }
