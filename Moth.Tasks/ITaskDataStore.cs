@@ -36,7 +36,7 @@
         /// <typeparam name="T">The type of the task data.</typeparam>
         /// <param name="taskInfo"><see cref="ITaskMetadata{T}"/> instance containing task type information.</param>
         /// <returns>The task data.</returns>
-        T Dequeue<T> (ITaskMetadata<T> taskInfo) where T : struct, ITaskType;
+        T Dequeue<T> (ITaskMetadata<T> taskInfo) where T : struct, ITask;
 
         /// <summary>
         /// Enqueues a task into the store.
@@ -44,7 +44,7 @@
         /// <typeparam name="T">The type of the task data.</typeparam>
         /// <param name="task">The task data to enqueue.</param>
         /// <param name="taskInfo"><see cref="ITaskMetadata{T}"/> instance containing task type information.</param>
-        void Enqueue<T> (in T task, ITaskMetadata<T> taskInfo) where T : struct, ITaskType;
+        void Enqueue<T> (in T task, ITaskMetadata<T> taskInfo) where T : struct, ITask;
 
         /// <summary>
         /// Inserts a task into the store at a specific index.
@@ -54,7 +54,7 @@
         /// <param name="refIndex">Inseration index of managed references.</param>
         /// <param name="task">Task data to insert.</param>
         /// <param name="taskInfo"><see cref="ITaskMetadata{T}"/> instance containing task type information.</param>
-        void Insert<T> (ref int dataIndex, ref int refIndex, in T task, ITaskMetadata<T> taskInfo) where T : struct, ITaskType;
+        void Insert<T> (ref int dataIndex, ref int refIndex, in T task, ITaskMetadata<T> taskInfo) where T : struct, ITask;
 
         /// <summary>
         /// Skips a task in the store.

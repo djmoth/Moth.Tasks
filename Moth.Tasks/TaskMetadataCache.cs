@@ -36,7 +36,7 @@
         /// <typeparam name="T">Type of task.</typeparam>
         /// <returns><see cref="ITaskMetadata"/> for <typeparamref name="T"/>.</returns>
         public ITaskMetadata<T> GetTask<T> ()
-            where T : struct, ITaskType
+            where T : struct, ITask
         {
             lock (syncRoot)
             {
@@ -63,7 +63,7 @@
             }
         }
 
-        private ITaskMetadata<T> AddTask<T> () where T : struct, ITaskType
+        private ITaskMetadata<T> AddTask<T> () where T : struct, ITask
         {
             int id = nextID;
             nextID++;

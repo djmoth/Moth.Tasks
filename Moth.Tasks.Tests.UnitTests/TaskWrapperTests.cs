@@ -89,7 +89,7 @@
             public int Count;
         }
 
-        public struct TestTask : ITask, IDisposable
+        public struct TestTask : ITask<Unit, Unit>, IDisposable
         {
             public Counter RunCallCount;
             public Counter DisposeCallCount;

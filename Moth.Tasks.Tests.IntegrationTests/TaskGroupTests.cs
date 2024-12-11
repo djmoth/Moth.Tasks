@@ -77,7 +77,7 @@
             ClassicAssert.IsTrue (actionInvoked);
         }
 
-        private struct TestTask : ITask
+        private struct TestTask : ITask<Unit, Unit>
         {
             public void Run ()
             {

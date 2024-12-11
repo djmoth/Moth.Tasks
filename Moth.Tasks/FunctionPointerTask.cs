@@ -11,7 +11,7 @@
     /// <summary>
     /// Task encapsulating a delegate*{void} function pointer.
     /// </summary>
-    public unsafe readonly struct FunctionPointerTask : ITask
+    public unsafe readonly struct FunctionPointerTask : ITask<Unit, Unit>
     {
         private readonly delegate*<void> function;
 
@@ -24,7 +24,11 @@
         /// <summary>
         /// Invokes the encapsulated delegate*{void}.
         /// </summary>
-        public void Run () => function ();
+        public Unit Run (Unit _)
+        {
+            function ();
+            return default;
+        }
     }
 
     /// <summary>
@@ -32,7 +36,7 @@
     /// </summary>
     /// <typeparam name="T1">Type of parameter 1.</typeparam>
     [StructLayout (LayoutKind.Auto)]
-    public unsafe readonly struct FunctionPointerTask<T1> : ITask
+    public unsafe readonly struct FunctionPointerTask<T1> : ITask<Unit, Unit>
     {
         private readonly delegate*<T1, void> action;
         private readonly T1 arg1;
@@ -51,7 +55,11 @@
         /// <summary>
         /// Invokes the encapsulated delegate*{T1, void} with the provided arguments.
         /// </summary>
-        public void Run () => action (arg1);
+        public Unit Run (Unit _)
+        {
+            action (arg1);
+            return default;
+        }
     }
 
     /// <summary>
@@ -60,7 +68,7 @@
     /// <typeparam name="T1">Type of parameter 1.</typeparam>
     /// <typeparam name="T2">Type of parameter 2.</typeparam>
     [StructLayout (LayoutKind.Auto)]
-    public unsafe readonly struct FunctionPointerTask<T1, T2> : ITask
+    public unsafe readonly struct FunctionPointerTask<T1, T2> : ITask<Unit, Unit>
     {
         private readonly delegate*<T1, T2, void> action;
         private readonly T1 arg1;
@@ -82,7 +90,11 @@
         /// <summary>
         /// Invokes the encapsulated delegate*{T1, T2, void} with the provided arguments.
         /// </summary>
-        public void Run () => action (arg1, arg2);
+        public Unit Run (Unit _)
+        {
+            action (arg1, arg2);
+            return default;
+        }
     }
 
     /// <summary>
@@ -92,7 +104,7 @@
     /// <typeparam name="T2">Type of parameter 2.</typeparam>
     /// <typeparam name="T3">Type of parameter 3.</typeparam>
     [StructLayout (LayoutKind.Auto)]
-    public unsafe readonly struct FunctionPointerTask<T1, T2, T3> : ITask
+    public unsafe readonly struct FunctionPointerTask<T1, T2, T3> : ITask<Unit, Unit>
     {
         private readonly delegate*<T1, T2, T3, void> action;
         private readonly T1 arg1;
@@ -117,7 +129,11 @@
         /// <summary>
         /// Invokes the encapsulated delegate*{T1, T2, T3, void} with the provided arguments.
         /// </summary>
-        public void Run () => action (arg1, arg2, arg3);
+        public Unit Run (Unit _)
+        {
+            action (arg1, arg2, arg3);
+            return default;
+        }
     }
 
     /// <summary>
@@ -128,7 +144,7 @@
     /// <typeparam name="T3">Type of parameter 3.</typeparam>
     /// <typeparam name="T4">Type of parameter 4.</typeparam>
     [StructLayout (LayoutKind.Auto)]
-    public unsafe readonly struct FunctionPointerTask<T1, T2, T3, T4> : ITask
+    public unsafe readonly struct FunctionPointerTask<T1, T2, T3, T4> : ITask<Unit, Unit>
     {
         private readonly delegate*<T1, T2, T3, T4, void> action;
         private readonly T1 arg1;
@@ -156,7 +172,11 @@
         /// <summary>
         /// Invokes the encapsulated delegate*{T1, T2, T3, T4, void} with the provided arguments.
         /// </summary>
-        public void Run () => action (arg1, arg2, arg3, arg4);
+        public Unit Run (Unit _)
+        {
+            action (arg1, arg2, arg3, arg4);
+            return default;
+        }
     }
 
     /// <summary>
@@ -168,7 +188,7 @@
     /// <typeparam name="T4">Type of parameter 4.</typeparam>
     /// <typeparam name="T5">Type of parameter 5.</typeparam>
     [StructLayout (LayoutKind.Auto)]
-    public unsafe readonly struct FunctionPointerTask<T1, T2, T3, T4, T5> : ITask
+    public unsafe readonly struct FunctionPointerTask<T1, T2, T3, T4, T5> : ITask<Unit, Unit>
     {
         private readonly delegate*<T1, T2, T3, T4, T5, void> action;
         private readonly T1 arg1;
@@ -199,7 +219,11 @@
         /// <summary>
         /// Invokes the encapsulated delegate*{T1, T2, T3, T4, T5, void} with the provided arguments.
         /// </summary>
-        public void Run () => action (arg1, arg2, arg3, arg4, arg5);
+        public Unit Run (Unit _)
+        {
+            action (arg1, arg2, arg3, arg4, arg5);
+            return default;
+        }
     }
 
     /// <summary>
@@ -212,7 +236,7 @@
     /// <typeparam name="T5">Type of parameter 5.</typeparam>
     /// <typeparam name="T6">Type of parameter 6.</typeparam>
     [StructLayout (LayoutKind.Auto)]
-    public unsafe readonly struct FunctionPointerTask<T1, T2, T3, T4, T5, T6> : ITask
+    public unsafe readonly struct FunctionPointerTask<T1, T2, T3, T4, T5, T6> : ITask<Unit, Unit>
     {
         private readonly delegate*<T1, T2, T3, T4, T5, T6, void> action;
         private readonly T1 arg1;
@@ -246,7 +270,11 @@
         /// <summary>
         /// Invokes the encapsulated delegate*{T1, T2, T3, T4, T5, T6, void} with the provided arguments.
         /// </summary>
-        public void Run () => action (arg1, arg2, arg3, arg4, arg5, arg6);
+        public Unit Run (Unit _)
+        {
+            action (arg1, arg2, arg3, arg4, arg5, arg6);
+            return default;
+        }
     }
 
     /// <summary>
@@ -260,7 +288,7 @@
     /// <typeparam name="T6">Type of parameter 6.</typeparam>
     /// <typeparam name="T7">Type of parameter 7.</typeparam>
     [StructLayout (LayoutKind.Auto)]
-    public unsafe readonly struct FunctionPointerTask<T1, T2, T3, T4, T5, T6, T7> : ITask
+    public unsafe readonly struct FunctionPointerTask<T1, T2, T3, T4, T5, T6, T7> : ITask<Unit, Unit>
     {
         private readonly delegate*<T1, T2, T3, T4, T5, T6, T7, void> action;
         private readonly T1 arg1;
@@ -297,7 +325,11 @@
         /// <summary>
         /// Invokes the encapsulated delegate*{T1, T2, T3, T4, T5, T6, T7, void} with the provided arguments.
         /// </summary>
-        public void Run () => action (arg1, arg2, arg3, arg4, arg5, arg6, arg7);
+        public Unit Run (Unit _)
+        {
+            action (arg1, arg2, arg3, arg4, arg5, arg6, arg7);
+            return default;
+        }
     }
 
     /// <summary>
@@ -312,7 +344,7 @@
     /// <typeparam name="T7">Type of parameter 7.</typeparam>
     /// <typeparam name="T8">Type of parameter 8.</typeparam>
     [StructLayout (LayoutKind.Auto)]
-    public unsafe readonly struct FunctionPointerTask<T1, T2, T3, T4, T5, T6, T7, T8> : ITask
+    public unsafe readonly struct FunctionPointerTask<T1, T2, T3, T4, T5, T6, T7, T8> : ITask<Unit, Unit>
     {
         private readonly delegate*<T1, T2, T3, T4, T5, T6, T7, T8, void> action;
         private readonly T1 arg1;
@@ -352,7 +384,11 @@
         /// <summary>
         /// Invokes the encapsulated delegate*{T1, T2, T3, T4, T5, T6, T7, T8, void} with the provided arguments.
         /// </summary>
-        public void Run () => action (arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8);
+        public Unit Run (Unit _)
+        {
+            action (arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8);
+            return default;
+        }
     }
 
     /// <summary>
@@ -368,7 +404,7 @@
     /// <typeparam name="T8">Type of parameter 8.</typeparam>
     /// <typeparam name="T9">Type of parameter 9.</typeparam>
     [StructLayout (LayoutKind.Auto)]
-    public unsafe readonly struct FunctionPointerTask<T1, T2, T3, T4, T5, T6, T7, T8, T9> : ITask
+    public unsafe readonly struct FunctionPointerTask<T1, T2, T3, T4, T5, T6, T7, T8, T9> : ITask<Unit, Unit>
     {
         private readonly delegate*<T1, T2, T3, T4, T5, T6, T7, T8, T9, void> action;
         private readonly T1 arg1;
@@ -411,7 +447,11 @@
         /// <summary>
         /// Invokes the encapsulated delegate*{T1, T2, T3, T4, T5, T6, T7, T8, T9, void} with the provided arguments.
         /// </summary>
-        public void Run () => action (arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8, arg9);
+        public Unit Run (Unit _)
+        {
+            action (arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8, arg9);
+            return default;
+        }
     }
 
     /// <summary>
@@ -428,7 +468,7 @@
     /// <typeparam name="T9">Type of parameter 9.</typeparam>
     /// <typeparam name="T10">Type of parameter 10.</typeparam>
     [StructLayout (LayoutKind.Auto)]
-    public unsafe readonly struct FunctionPointerTask<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10> : ITask
+    public unsafe readonly struct FunctionPointerTask<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10> : ITask<Unit, Unit>
     {
         private readonly delegate*<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, void> action;
         private readonly T1 arg1;
@@ -474,7 +514,11 @@
         /// <summary>
         /// Invokes the encapsulated delegate*{T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, void} with the provided arguments.
         /// </summary>
-        public void Run () => action (arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8, arg9, arg10);
+        public Unit Run (Unit _)
+        {
+            action (arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8, arg9, arg10);
+            return default;
+        }
     }
 
     /// <summary>
@@ -492,7 +536,7 @@
     /// <typeparam name="T10">Type of parameter 10.</typeparam>
     /// <typeparam name="T11">Type of parameter 11.</typeparam>
     [StructLayout (LayoutKind.Auto)]
-    public unsafe readonly struct FunctionPointerTask<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11> : ITask
+    public unsafe readonly struct FunctionPointerTask<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11> : ITask<Unit, Unit>
     {
         private readonly delegate*<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, void> action;
         private readonly T1 arg1;
@@ -541,7 +585,11 @@
         /// <summary>
         /// Invokes the encapsulated delegate*{T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, void} with the provided arguments.
         /// </summary>
-        public void Run () => action (arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8, arg9, arg10, arg11);
+        public Unit Run (Unit _)
+        {
+            action (arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8, arg9, arg10, arg11);
+            return default;
+        }
     }
 
     /// <summary>
@@ -560,7 +608,7 @@
     /// <typeparam name="T11">Type of parameter 11.</typeparam>
     /// <typeparam name="T12">Type of parameter 12.</typeparam>
     [StructLayout (LayoutKind.Auto)]
-    public unsafe readonly struct FunctionPointerTask<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12> : ITask
+    public unsafe readonly struct FunctionPointerTask<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12> : ITask<Unit, Unit>
     {
         private readonly delegate*<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, void> action;
         private readonly T1 arg1;
@@ -612,7 +660,11 @@
         /// <summary>
         /// Invokes the encapsulated delegate*{T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, void} with the provided arguments.
         /// </summary>
-        public void Run () => action (arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8, arg9, arg10, arg11, arg12);
+        public Unit Run (Unit _)
+        {
+            action (arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8, arg9, arg10, arg11, arg12);
+            return default;
+        }
     }
 
     /// <summary>
@@ -632,7 +684,7 @@
     /// <typeparam name="T12">Type of parameter 12.</typeparam>
     /// <typeparam name="T13">Type of parameter 13.</typeparam>
     [StructLayout (LayoutKind.Auto)]
-    public unsafe readonly struct FunctionPointerTask<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13> : ITask
+    public unsafe readonly struct FunctionPointerTask<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13> : ITask<Unit, Unit>
     {
         private readonly delegate*<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, void> action;
         private readonly T1 arg1;
@@ -687,7 +739,11 @@
         /// <summary>
         /// Invokes the encapsulated delegate*{T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, void} with the provided arguments.
         /// </summary>
-        public void Run () => action (arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8, arg9, arg10, arg11, arg12, arg13);
+        public Unit Run (Unit _)
+        {
+            action (arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8, arg9, arg10, arg11, arg12, arg13);
+            return default;
+        }
     }
 
     /// <summary>
@@ -708,7 +764,7 @@
     /// <typeparam name="T13">Type of parameter 13.</typeparam>
     /// <typeparam name="T14">Type of parameter 14.</typeparam>
     [StructLayout (LayoutKind.Auto)]
-    public unsafe readonly struct FunctionPointerTask<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14> : ITask
+    public unsafe readonly struct FunctionPointerTask<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14> : ITask<Unit, Unit>
     {
         private readonly delegate*<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, void> action;
         private readonly T1 arg1;
@@ -766,7 +822,11 @@
         /// <summary>
         /// Invokes the encapsulated delegate*{T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, void} with the provided arguments.
         /// </summary>
-        public void Run () => action (arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8, arg9, arg10, arg11, arg12, arg13, arg14);
+        public Unit Run (Unit _)
+        {
+            action (arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8, arg9, arg10, arg11, arg12, arg13, arg14);
+            return default;
+        }
     }
 
     /// <summary>
@@ -788,7 +848,7 @@
     /// <typeparam name="T14">Type of parameter 14.</typeparam>
     /// <typeparam name="T15">Type of parameter 15.</typeparam>
     [StructLayout (LayoutKind.Auto)]
-    public unsafe readonly struct FunctionPointerTask<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15> : ITask
+    public unsafe readonly struct FunctionPointerTask<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15> : ITask<Unit, Unit>
     {
         private readonly delegate*<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, void> action;
         private readonly T1 arg1;
@@ -849,7 +909,11 @@
         /// <summary>
         /// Invokes the encapsulated delegate*{T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, void} with the provided arguments.
         /// </summary>
-        public void Run () => action (arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8, arg9, arg10, arg11, arg12, arg13, arg14, arg15);
+        public Unit Run (Unit _)
+        {
+            action (arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8, arg9, arg10, arg11, arg12, arg13, arg14, arg15);
+            return default;
+        }
     }
 
     /// <summary>
@@ -872,7 +936,7 @@
     /// <typeparam name="T15">Type of parameter 15.</typeparam>
     /// <typeparam name="T16">Type of parameter 16.</typeparam>
     [StructLayout (LayoutKind.Auto)]
-    public unsafe readonly struct FunctionPointerTask<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, T16> : ITask
+    public unsafe readonly struct FunctionPointerTask<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, T16> : ITask<Unit, Unit>
     {
         private readonly delegate*<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, T16, void> action;
         private readonly T1 arg1;
@@ -936,6 +1000,10 @@
         /// <summary>
         /// Invokes the encapsulated delegate*{T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, T16, void} with the provided arguments.
         /// </summary>
-        public void Run () => action (arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8, arg9, arg10, arg11, arg12, arg13, arg14, arg15, arg16);
+        public Unit Run (Unit _)
+        {
+            action (arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8, arg9, arg10, arg11, arg12, arg13, arg14, arg15, arg16);
+            return default;
+        }
     }
 }

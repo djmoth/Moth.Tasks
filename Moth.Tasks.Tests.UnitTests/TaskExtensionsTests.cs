@@ -164,14 +164,14 @@
             Assert.That (task.DisposeCallCount, Is.EqualTo (1));
         }
 
-        public struct TestTask : ITask
+        public struct TestTask : ITask<Unit, Unit>
         {
             public int RunCallCount;
 
             public void Run () => RunCallCount++;
         }
 
-        public struct DisposableTestTask : ITask, IDisposable
+        public struct DisposableTestTask : ITask<Unit, Unit>, IDisposable
         {
             public int RunCallCount;
             public int DisposeCallCount;
@@ -181,7 +181,7 @@
             public void Dispose () => DisposeCallCount++;
         }
 
-        public struct DisposableTestTaskThrowingException : ITask, IDisposable
+        public struct DisposableTestTaskThrowingException : ITask<Unit, Unit>, IDisposable
         {
             public int RunCallCount;
             public int DisposeCallCount;

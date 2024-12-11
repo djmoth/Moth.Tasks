@@ -50,7 +50,7 @@
         /// <summary>
         /// Disposes the task if it implements <see cref="IDisposable"/>.
         /// </summary>
-        /// <param name="access"><see cref="TaskQueue.TaskDataAccess"/> instance allowing for retrieval of task data.</param>
-        void Dispose (TaskQueue.TaskDataAccess access);
+        /// <param name="access"><see cref="TaskDataAccess"/> instance allowing for retrieval of task data.</param>
+        void Dispose (TaskDataAccess access);
     }
 }

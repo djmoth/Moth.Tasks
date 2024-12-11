@@ -141,7 +141,7 @@
         }
 
 
-        void AssertTaskMetadataProperties<T> (ITaskMetadata taskInfo, int id, IFormat<T> taskFormat) where T : struct, ITaskType
+        void AssertTaskMetadataProperties<T> (ITaskMetadata taskInfo, int id, IFormat<T> taskFormat) where T : struct, ITask
         {
             Assert.That (taskInfo.ID, Is.EqualTo (id));
             Assert.That (taskInfo.Type, Is.EqualTo (typeof (T)));
@@ -252,7 +252,7 @@
             }
         }
 
-        public struct TestTask<TData> : ITask
+        public struct TestTask<TData> : ITask<Unit, Unit>
         {
             public TData Data;
 
@@ -273,7 +273,7 @@
             public int Run (int i) => i;
         }
 
-        public struct DisposableTestTask<TData> : ITask, IDisposable
+        public struct DisposableTestTask<TData> : ITask<Unit, Unit>, IDisposable
         {
             public TData Data;
 

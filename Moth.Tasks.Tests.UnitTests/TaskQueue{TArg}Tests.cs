@@ -46,7 +46,7 @@
             SetupTaskMetadata (mockDisposableTestTaskWithHandle);
 
             void SetupTaskMetadata<TTask> (ITaskMetadata<TTask> taskInfo)
-                where TTask : struct, ITaskType
+                where TTask : struct, ITask
             {
                 mockTaskCache.Setup (t => t.GetTask<TTask> ()).Returns (taskInfo);
                 mockTaskCache.Setup (t => t.GetTask (taskInfo.ID)).Returns (taskInfo);

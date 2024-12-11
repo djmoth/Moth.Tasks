@@ -203,7 +203,7 @@
             Assert.That (group.Dispose, Throws.InstanceOf<InvalidOperationException> ());
         }
 
-        private struct TestTask : ITask
+        private struct TestTask : ITask<Unit, Unit>
         {
             public void Run ()
             {

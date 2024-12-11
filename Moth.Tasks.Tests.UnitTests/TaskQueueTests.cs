@@ -9,15 +9,15 @@
     using System.Threading.Tasks;
 
     [TestFixture]
-    public class TaskQueueTests
+    public class TaskQueueTests<TArg, TResult>
     {
         private Mock<ITaskMetadataCache> mockTaskCache;
         private Mock<ITaskDataStore> mockTaskDataStore;
         private Mock<ITaskHandleManager> mockTaskHandleManager;
-        private MockTaskMetadata<TestTask> mockTestTaskMetadata;
-        private MockTaskMetadata<TaskWithHandle<TaskWrapper<TestTask>, Unit, Unit>, Unit, Unit> mockTestTaskWithHandle;
-        private MockTaskMetadata<DisposableTestTask> mockDisposableTestTaskMetadata;
-        private MockTaskMetadata<TaskWithHandle<TaskWrapper<DisposableTestTask>, Unit, Unit>, Unit, Unit> mockDisposableTestTaskWithHandle;
+        private MockTaskMetadata<TestTask, TArg, TResult> mockTestTaskMetadata;
+        private MockTaskMetadata<TaskWithHandle<TestTask, TArg, TResult>, TArg, TResult> mockTestTaskWithHandle;
+        private MockTaskMetadata<DisposableTestTask, TArg, TResult> mockDisposableTestTaskMetadata;
+        private MockTaskMetadata<TaskWithHandle<DisposableTestTask, TArg, TResult>, TArg, TResult> mockDisposableTestTaskWithHandle;
         private Mock<IProfiler> mockProfiler;
         
 
@@ -36,32 +36,32 @@
 
             int nextTaskMetadataID = 0;
 
-            mockTestTaskMetadata = new MockTaskMetadata<TestTask> (nextTaskMetadataID++);
-            SetupTaskMetadata (mockTestTaskMetadata);
+            mockTestTaskMetadata = CreateTaskMetadata<TestTask> ();
 
-            mockDisposableTestTaskMetadata = new MockTaskMetadata<DisposableTestTask> (nextTaskMetadataID++);
-            SetupTaskMetadata (mockDisposableTestTaskMetadata);
+            mockDisposableTestTaskMetadata = CreateTaskMetadata<DisposableTestTask> ();
 
-            mockTestTaskWithHandle = new MockTaskMetadata<TaskWithHandle<TaskWrapper<TestTask>, Unit, Unit>, Unit, Unit> (nextTaskMetadataID++);
-            SetupTaskMetadata (mockTestTaskWithHandle);
+            mockTestTaskWithHandle = CreateTaskMetadata<TaskWithHandle<TestTask, TArg, TResult>> ();
 
-            mockDisposableTestTaskWithHandle = new MockTaskMetadata<TaskWithHandle<TaskWrapper<DisposableTestTask>, Unit, Unit>, Unit, Unit> (nextTaskMetadataID++);
-            SetupTaskMetadata (mockDisposableTestTaskWithHandle);
+            mockDisposableTestTaskWithHandle = CreateTaskMetadata<TaskWithHandle<DisposableTestTask, TArg, TResult>> ();
 
-            void SetupTaskMetadata<TTask> (ITaskMetadata<TTask> taskInfo)
-                where TTask : struct, ITaskType
+            MockTaskMetadata<TTask, TArg, TResult> CreateTaskMetadata<TTask> ()
+                where TTask : struct, ITask<TArg, TResult>
             {
-                mockTaskCache.Setup (t => t.GetTask<TTask> ()).Returns (taskInfo);
-                mockTaskCache.Setup (t => t.GetTask (taskInfo.ID)).Returns (taskInfo);
+                MockTaskMetadata<TTask, TArg, TResult> taskMetadata = new MockTaskMetadata<TTask, TArg, TResult> (nextTaskMetadataID++);
 
-                mockTaskDataStore.Setup (store => store.Enqueue (It.Ref<TTask>.IsAny, taskInfo));
+                mockTaskCache.Setup (t => t.GetTask<TTask> ()).Returns (taskMetadata);
+                mockTaskCache.Setup (t => t.GetTask (taskMetadata.ID)).Returns (taskMetadata);
+
+                mockTaskDataStore.Setup (store => store.Enqueue (It.Ref<TTask>.IsAny, taskMetadata));
+
+                return taskMetadata;
             }
         }
 
         [Test]
         public void Count_WhenQueueIsEmpty_IsZero ()
         {
-            TaskQueue queue = new TaskQueue (0, mockTaskCache.Object, mockTaskDataStore.Object, mockTaskHandleManager.Object);
+            TaskQueue<TArg, TResult> queue = new TaskQueue<TArg, TResult> (0, mockTaskCache.Object, mockTaskDataStore.Object, mockTaskHandleManager.Object);
 
             Assert.That (queue.Count, Is.EqualTo (0));
         }
@@ -69,7 +69,7 @@
         [Test]
         public void Count_WhenTaskEnqueued_Increments ()
         {
-            TaskQueue queue = new TaskQueue (0, mockTaskCache.Object, mockTaskDataStore.Object, mockTaskHandleManager.Object);
+            TaskQueue<TArg, TResult> queue = new TaskQueue<TArg, TResult> (0, mockTaskCache.Object, mockTaskDataStore.Object, mockTaskHandleManager.Object);
 
             queue.Enqueue (new TestTask ());
 
@@ -79,7 +79,7 @@
         [Test]
         public unsafe void Enqueue_TaskEnqueuedWhenEmpty_GetsFromTaskCacheAndStoresInTaskDataStore ()
         {
-            TaskQueue queue = new TaskQueue (0, mockTaskCache.Object, mockTaskDataStore.Object, mockTaskHandleManager.Object);
+            TaskQueue<TArg, TResult> queue = new TaskQueue<TArg, TResult> (0, mockTaskCache.Object, mockTaskDataStore.Object, mockTaskHandleManager.Object);
 
             TestTask task = new TestTask { };
 
@@ -97,7 +97,7 @@
         [Test]
         public unsafe void Enqueue_DisposableTaskEnqueuedWhenEmpty_GetsFromTaskCacheAndStoresInTaskDataStore ()
         {
-            TaskQueue queue = new TaskQueue (0, mockTaskCache.Object, mockTaskDataStore.Object, mockTaskHandleManager.Object);
+            TaskQueue<TArg, TResult> queue = new TaskQueue<TArg, TResult> (0, mockTaskCache.Object, mockTaskDataStore.Object, mockTaskHandleManager.Object);
 
             DisposableTestTask task = new DisposableTestTask { };
 
@@ -112,7 +112,7 @@
         [Test]
         public unsafe void Enqueue_TaskEnqueuedWhenNotEmpty_GetsTaskMetadataFromTaskCacheAndStoresTaskDataInTaskDataStore ()
         {
-            TaskQueue queue = new TaskQueue (0, mockTaskCache.Object, mockTaskDataStore.Object, mockTaskHandleManager.Object);
+            TaskQueue<TArg, TResult> queue = new TaskQueue<TArg, TResult> (0, mockTaskCache.Object, mockTaskDataStore.Object, mockTaskHandleManager.Object);
 
             TestTask task = new TestTask { };
 
@@ -128,7 +128,7 @@
         [Test]
         public unsafe void Enqueue_DisposableTaskEnqueuedWhenNotEmpty_GetsFromTaskCacheAndStoresInTaskDataStore ()
         {
-            TaskQueue queue = new TaskQueue (0, mockTaskCache.Object, mockTaskDataStore.Object, mockTaskHandleManager.Object);
+            TaskQueue<TArg, TResult> queue = new TaskQueue<TArg, TResult> (0, mockTaskCache.Object, mockTaskDataStore.Object, mockTaskHandleManager.Object);
 
             DisposableTestTask task = new DisposableTestTask { };
 
@@ -144,7 +144,7 @@
         [Test]
         public void Enqueue_TaskWithHandle_EnqueuesTask ()
         {
-            TaskQueue queue = new TaskQueue (0, mockTaskCache.Object, mockTaskDataStore.Object, mockTaskHandleManager.Object);
+            TaskQueue<TArg, TResult> queue = new TaskQueue<TArg, TResult> (0, mockTaskCache.Object, mockTaskDataStore.Object, mockTaskHandleManager.Object);
 
             mockTaskHandleManager.Setup (x => x.CreateTaskHandle ()).Returns (default (TaskHandle));
 
@@ -158,7 +158,7 @@
         [Test]
         public void Enqueue_TaskWithHandle_ReturnsCorrectHandle ()
         {
-            TaskQueue queue = new TaskQueue (0, mockTaskCache.Object, mockTaskDataStore.Object, mockTaskHandleManager.Object);
+            TaskQueue<TArg, TResult> queue = new TaskQueue<TArg, TResult> (0, mockTaskCache.Object, mockTaskDataStore.Object, mockTaskHandleManager.Object);
 
             int handleID = 42;
             mockTaskHandleManager.Setup (x => x.CreateTaskHandle ()).Returns (new TaskHandle (mockTaskHandleManager.Object, handleID));
@@ -177,7 +177,7 @@
         [Test]
         public void Enqueue_DisposableTaskWithHandle_ReturnsCorrectHandle ()
         {
-            TaskQueue queue = new TaskQueue (0, mockTaskCache.Object, mockTaskDataStore.Object, mockTaskHandleManager.Object);
+            TaskQueue<TArg, TResult> queue = new TaskQueue<TArg, TResult> (0, mockTaskCache.Object, mockTaskDataStore.Object, mockTaskHandleManager.Object);
 
             int handleID = 42;
             mockTaskHandleManager.Setup (x => x.CreateTaskHandle ()).Returns (new TaskHandle (mockTaskHandleManager.Object, handleID));
@@ -195,13 +195,15 @@
 
         [Test]
         [CancelAfter (1000)]
-        public unsafe void RunNextTask_OneTaskEnqueuedAndMethodCalled_RetrievesFromTaskDataStoreAndRunsTask (CancellationToken token)
+        public unsafe void RunNextTask_OneTaskEnqueuedAndMethodCalled_RetrievesFromTaskDataStoreAndRunsTaskWithArgAndReturnsResult (CancellationToken token)
         {
-            TaskQueue queue = new TaskQueue (0, mockTaskCache.Object, mockTaskDataStore.Object, mockTaskHandleManager.Object);
+            TaskQueue<TArg, TResult> queue = new TaskQueue<TArg, TResult> (0, mockTaskCache.Object, mockTaskDataStore.Object, mockTaskHandleManager.Object);
 
             TestTask task = new TestTask { };
 
             mockTaskDataStore.Setup (store => store.Dequeue (mockTestTaskMetadata)).Returns (task);
+
+            TArg arg
 
             queue.Enqueue (task);
             queue.RunNextTask (token: token);
@@ -222,7 +224,7 @@
         [CancelAfter (1000)]
         public unsafe void RunNextTask_TwoTasksEnqueuedAndMethodCalled_RetrievesFirstFromTaskDataStoreAndRunsFirstTask (CancellationToken token)
         {
-            TaskQueue queue = new TaskQueue (0, mockTaskCache.Object, mockTaskDataStore.Object, mockTaskHandleManager.Object);
+            TaskQueue<TArg, TResult> queue = new TaskQueue<TArg, TResult> (0, mockTaskCache.Object, mockTaskDataStore.Object, mockTaskHandleManager.Object);
 
             TestTask task = new TestTask { };
 
@@ -248,7 +250,7 @@
         [CancelAfter (1000)]
         public unsafe void RunNextTask_TaskThrowsException_RunsTaskAndCatchesException (CancellationToken token)
         {
-            TaskQueue queue = new TaskQueue (0, mockTaskCache.Object, mockTaskDataStore.Object, mockTaskHandleManager.Object);
+            TaskQueue<TArg, TResult> queue = new TaskQueue<TArg, TResult> (0, mockTaskCache.Object, mockTaskDataStore.Object, mockTaskHandleManager.Object);
 
             TestTask task = new TestTask ();
 
@@ -274,7 +276,7 @@
         [CancelAfter (1000)]
         public unsafe void RunNextTask_WithProfiler_CallsBeginTaskWithTaskTypeFullNameAndStops (CancellationToken token)
         {
-            TaskQueue queue = new TaskQueue (0, mockTaskCache.Object, mockTaskDataStore.Object, mockTaskHandleManager.Object);
+            TaskQueue<TArg, TResult> queue = new TaskQueue<TArg, TResult> (0, mockTaskCache.Object, mockTaskDataStore.Object, mockTaskHandleManager.Object);
 
             TestTask task = new TestTask { };
 
@@ -295,7 +297,7 @@
         [CancelAfter (1000)]
         public unsafe void RunNextTask_WithProfilerAndTaskThrowsException_CallsBeginTaskWithTaskTypeFullNameAndStops (CancellationToken token)
         {
-            TaskQueue queue = new TaskQueue (0, mockTaskCache.Object, mockTaskDataStore.Object, mockTaskHandleManager.Object);
+            TaskQueue<TArg, TResult> queue = new TaskQueue<TArg, TResult> (0, mockTaskCache.Object, mockTaskDataStore.Object, mockTaskHandleManager.Object);
 
             TestTask task = new TestTask { };
 
@@ -317,7 +319,7 @@
         [Test]
         public unsafe void TryRunNextTask_WhenQueueIsEmpty_ReturnsFalse ()
         {
-            TaskQueue queue = new TaskQueue (0, mockTaskCache.Object, mockTaskDataStore.Object, mockTaskHandleManager.Object);
+            TaskQueue<TArg, TResult> queue = new TaskQueue<TArg, TResult> (0, mockTaskCache.Object, mockTaskDataStore.Object, mockTaskHandleManager.Object);
 
             bool result = queue.TryRunNextTask ();
 
@@ -327,7 +329,7 @@
         [Test]
         public unsafe void TryRunNextTask_WhenQueueIsNotEmpty_ReturnsTrue ()
         {
-            TaskQueue queue = new TaskQueue (0, mockTaskCache.Object, mockTaskDataStore.Object, mockTaskHandleManager.Object);
+            TaskQueue<TArg, TResult> queue = new TaskQueue<TArg, TResult> (0, mockTaskCache.Object, mockTaskDataStore.Object, mockTaskHandleManager.Object);
 
             TestTask task = new TestTask { };
 
@@ -343,7 +345,7 @@
         [Test]
         public void Clear_WhenQueueIsEmpty_ClearsDependencies ()
         {
-            TaskQueue queue = new TaskQueue (0, mockTaskCache.Object, mockTaskDataStore.Object, mockTaskHandleManager.Object);
+            TaskQueue<TArg, TResult> queue = new TaskQueue<TArg, TResult> (0, mockTaskCache.Object, mockTaskDataStore.Object, mockTaskHandleManager.Object);
 
             queue.Clear ();
 
@@ -356,7 +358,7 @@
         [Test]
         public void Clear_NoDisposableTasks_ClearsQueueWhileSkippingTasks ()
         {
-            TaskQueue queue = new TaskQueue (0, mockTaskCache.Object, mockTaskDataStore.Object, mockTaskHandleManager.Object);
+            TaskQueue<TArg, TResult> queue = new TaskQueue<TArg, TResult> (0, mockTaskCache.Object, mockTaskDataStore.Object, mockTaskHandleManager.Object);
 
             TestTask task = new TestTask { };
 
@@ -373,7 +375,7 @@
         [Test]
         public void Clear_WithOnlyDisposableTasks_ClearsQueueWhileDisposingTasks ()
         {
-            TaskQueue queue = new TaskQueue (0, mockTaskCache.Object, mockTaskDataStore.Object, mockTaskHandleManager.Object);
+            TaskQueue<TArg, TResult> queue = new TaskQueue<TArg, TResult> (0, mockTaskCache.Object, mockTaskDataStore.Object, mockTaskHandleManager.Object);
 
             DisposableTestTask task = new DisposableTestTask { };
 
@@ -391,7 +393,7 @@
         [Test]
         public void Clear_WithMixedTasks_ClearsQueueSkipsNonDisposableTasksAndDisposesDisposableTasks ()
         {
-            TaskQueue queue = new TaskQueue (0, mockTaskCache.Object, mockTaskDataStore.Object, mockTaskHandleManager.Object);
+            TaskQueue<TArg, TResult> queue = new TaskQueue<TArg, TResult> (0, mockTaskCache.Object, mockTaskDataStore.Object, mockTaskHandleManager.Object);
 
             TestTask task = new TestTask { };
             DisposableTestTask disposableTask = new DisposableTestTask { };
@@ -412,7 +414,7 @@
         [Test]
         public void Dispose_WhenCalledOnce_ClearsTasks ()
         {
-            TaskQueue queue = new TaskQueue (0, mockTaskCache.Object, mockTaskDataStore.Object, mockTaskHandleManager.Object);
+            TaskQueue<TArg, TResult> queue = new TaskQueue<TArg, TResult> (0, mockTaskCache.Object, mockTaskDataStore.Object, mockTaskHandleManager.Object);
 
             queue.Dispose ();
 
@@ -425,7 +427,7 @@
         [Test]
         public void Dispose_WhenCalledTwice_ClearsTasksThenDoesNothing ()
         {
-            TaskQueue queue = new TaskQueue (0, mockTaskCache.Object, mockTaskDataStore.Object, mockTaskHandleManager.Object);
+            TaskQueue<TArg, TResult> queue = new TaskQueue<TArg, TResult> (0, mockTaskCache.Object, mockTaskDataStore.Object, mockTaskHandleManager.Object);
 
             queue.Dispose ();
             queue.Dispose ();
@@ -436,14 +438,14 @@
             Assert.That (queue.Count, Is.EqualTo (0));
         }
 
-        private unsafe struct TestTask : ITask
+        private unsafe struct TestTask : ITask<TArg, TResult>
         {
-            public void Run () { }
+            public TResult Run (TArg arg) => default;
         }
 
-        private unsafe struct DisposableTestTask : ITask, IDisposable
+        private unsafe struct DisposableTestTask : ITask<TArg, TResult>, IDisposable
         {
-            public void Run () { }
+            public TResult Run (TArg arg) => default;
 
             public void Dispose () { }
         }

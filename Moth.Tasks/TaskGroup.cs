@@ -7,7 +7,7 @@
     /// <summary>
     /// Represents a group of tasks that can be tracked and waited on.
     /// </summary>
-    public unsafe class TaskGroup : IDisposable
+    public unsafe class TaskGroup<TArg, TResult> : IDisposable
     {
         private readonly object whenCompleteLock = new object ();
         private Counter* counter;
@@ -15,7 +15,7 @@
         private GCHandle thisHandle;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="TaskGroup"/> class.
+        /// Initializes a new instance of the <see cref="TaskGroup{TArg, TResult}"/> class.
         /// </summary>
         public TaskGroup ()
         {
@@ -26,7 +26,7 @@
         }
 
         /// <summary>
-        /// Finalizes an instance of the <see cref="TaskGroup"/> class.
+        /// Finalizes an instance of the <see cref="TaskGroup{TArg, TResult}"/> class.
         /// </summary>
         ~TaskGroup ()
         {
@@ -49,12 +49,12 @@
         /// <summary>
         /// Gets the number of tasks in the group.
         /// </summary>
-        public int TaskCount => !IsDisposed ? counter->TaskCount : throw new ObjectDisposedException (nameof (TaskGroup));
+        public int TaskCount => !IsDisposed ? counter->TaskCount : throw new ObjectDisposedException (nameof (TaskGroup<TArg, TResult>));
 
         /// <summary>
         /// Gets the number of tasks that have completed.
         /// </summary>
-        public int CompletedCount => !IsDisposed ? counter->CompletedCount : throw new ObjectDisposedException (nameof (TaskGroup));
+        public int CompletedCount => !IsDisposed ? counter->CompletedCount : throw new ObjectDisposedException (nameof (TaskGroup<TArg, TResult>));
 
         /// <summary>
         /// Gets a value indicating whether all tasks in the group have completed.
@@ -62,7 +62,7 @@
         /// <remarks>
         /// Will be <see langword="true"/> if <see cref="TaskCount"/> is 0.
         /// </remarks>
-        public bool IsComplete => !IsDisposed ? counter->IsComplete : throw new ObjectDisposedException (nameof (TaskGroup));
+        public bool IsComplete => !IsDisposed ? counter->IsComplete : throw new ObjectDisposedException (nameof (TaskGroup<TArg, TResult>));
 
         /// <summary>
         /// Adds an action to be invoked when all tasks in the group have completed.
@@ -75,7 +75,7 @@
         public void WhenComplete (Action action)
         {
             if (IsDisposed)
-                throw new ObjectDisposedException (nameof (TaskGroup));
+                throw new ObjectDisposedException (nameof (TaskGroup<TArg, TResult>));
 
             lock (whenCompleteLock)
             {
@@ -96,13 +96,13 @@
         /// Enqueues a task in the specified queue.
         /// </summary>
         /// <typeparam name="T">Type of task.</typeparam>
-        /// <param name="queue">The <see cref="TaskQueue"/> to enqueue the task in.</param>
+        /// <param name="queue">The <see cref="ITaskQueue{TArg, TResult}"/> to enqueue the task in.</param>
         /// <param name="task">The task to enqueue.</param>
-        public void Enqueue<T> (ITaskQueue queue, in T task)
-            where T : struct, ITask
+        public void Enqueue<T> (ITaskQueue<TArg, TResult> queue, in T task)
+            where T : struct, ITask<TArg, TResult>
         {
             if (IsDisposed)
-                throw new ObjectDisposedException (nameof (TaskGroup));
+                throw new ObjectDisposedException (nameof (TaskGroup<TArg, TResult>));
 
             counter->AddTask ();
             queue.Enqueue (new TaskGroupItem<T> (counter, task));
@@ -133,7 +133,7 @@
                         Marshal.FreeHGlobal ((IntPtr)counter);
                     } else
                     {
-                        throw new InvalidOperationException ($"Cannot dispose {nameof(TaskGroup)} when {nameof(IsComplete)} is true.");
+                        throw new InvalidOperationException ($"Cannot dispose {nameof(TaskGroup<TArg, TResult>)} when {nameof(IsComplete)} is true.");
                     }
                 }
 
@@ -146,7 +146,7 @@
         private float GetProgress ()
         {
             if (IsDisposed)
-                throw new ObjectDisposedException (nameof (TaskGroup));
+                throw new ObjectDisposedException (nameof (TaskGroup<TArg, TResult>));
 
             if (counter->TaskCount == 0)
                 return 1;
@@ -186,7 +186,7 @@
 
                 if (newCompletedCount == Volatile.Read (ref taskCount))
                 {
-                    TaskGroup group = (TaskGroup)groupHandle.Target;
+                    TaskGroup<TArg, TResult> group = (TaskGroup<TArg, TResult>)groupHandle.Target;
 
                     lock (group.whenCompleteLock)
                     {
@@ -196,8 +196,8 @@
             }
         }
 
-        internal unsafe struct TaskGroupItem<T> : ITask, IDisposable
-            where T : struct, ITask
+        internal unsafe struct TaskGroupItem<T> : ITask<TArg, TResult>, IDisposable
+            where T : struct, ITask<TArg, TResult>
         {
             private readonly Counter* groupCounter;
             private T task;
@@ -208,7 +208,7 @@
                 this.task = task;
             }
 
-            public void Run () => task.Run ();
+            public TResult Run (TArg arg) => task.Run (arg);
 
             public readonly void Dispose ()
             {

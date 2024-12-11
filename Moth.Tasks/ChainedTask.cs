@@ -8,9 +8,9 @@
     /// <typeparam name="T1">Type of first task.</typeparam>
     /// <typeparam name="T2">Type of second task.</typeparam>
     [StructLayout (LayoutKind.Auto)]
-    public struct ChainedTask<T1, T2> : ITask
-        where T1 : struct, ITask
-        where T2 : struct, ITask
+    public struct ChainedTask<T1, T2> : ITask<Unit, Unit>
+        where T1 : struct, ITask<Unit, Unit>
+        where T2 : struct, ITask<Unit, Unit>
     {
         private T1 first;
         private T2 second;
@@ -29,10 +29,12 @@
         /// <summary>
         /// Runs the first task, then the second task.
         /// </summary>
-        public void Run ()
+        public Unit Run (Unit _)
         {
             first.Run ();
             second.Run ();
+
+            return default;
         }
     }
 
@@ -44,9 +46,9 @@
     /// <typeparam name="T1Arg">Type of the first task's argument.</typeparam>
     /// <typeparam name="T1ResultT2Arg">Type of the first task's result and second task's argument.</typeparam>
     [StructLayout (LayoutKind.Auto)]
-    public struct ChainedTask<T1, T2, T1Arg, T1ResultT2Arg> : ITask<T1Arg>
+    public struct ChainedTask<T1, T2, T1Arg, T1ResultT2Arg> : ITask<T1Arg, Unit>
         where T1 : struct, ITask<T1Arg, T1ResultT2Arg>
-        where T2 : struct, ITask<T1ResultT2Arg>
+        where T2 : struct, ITask<T1ResultT2Arg, Unit>
     {
         private T1 first;
         private T2 second;
@@ -66,7 +68,7 @@
         /// Runs the first task, then the second task. The result of the first task is passed as an argument to the second task.
         /// </summary>
         /// <param name="arg">Argument to supply to first task.</param>
-        public void Run (T1Arg arg) => second.Run (first.Run (arg));
+        public Unit Run (T1Arg arg) => second.Run (first.Run (arg));
     }
 
     /// <summary>

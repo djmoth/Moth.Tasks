@@ -7,7 +7,7 @@
     /// </summary>
     /// <typeparam name="TTask">Type of task.</typeparam>
     public static class DisposableTask<TTask>
-        where TTask : struct, ITaskType, IDisposable
+        where TTask : struct, ITask, IDisposable
     {
         /// <summary>
         /// Disposes a task.

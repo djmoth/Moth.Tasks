@@ -258,7 +258,7 @@
         /// <summary>
         /// Test task
         /// </summary>
-        struct TestTask : ITask
+        struct TestTask : ITask<Unit, Unit>
         {
             public int Data;
 
@@ -280,7 +280,7 @@
         }
 
         unsafe class MockTaskMetadata<TTask> : ITaskMetadata<TTask>
-            where TTask : struct, ITask
+            where TTask : struct, ITask<Unit, Unit>
         {
             public MockTaskMetadata (TTask deserializeValue = default)
             {
@@ -320,7 +320,7 @@
                 task = DeserializeValue;
             }
 
-            public void Dispose (TaskQueue.TaskDataAccess access)
+            public void Dispose (TaskDataAccess access)
             {
                 throw new NotImplementedException ();
             }

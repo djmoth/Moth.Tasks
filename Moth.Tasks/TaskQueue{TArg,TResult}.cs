@@ -2,72 +2,303 @@
 {
     using System;
     using System.Collections.Generic;
+    using System.Diagnostics;
     using System.Runtime.CompilerServices;
-    using System.Runtime.InteropServices;
     using System.Threading;
-    using System.Threading.Tasks;
 
     /// <summary>
-    /// Represents a queue of tasks to be run with an argument and return a result.
+    /// Represents a queue of tasks to be run.
     /// </summary>
-    /// <typeparam name="TArg">Type of argument to pass to the tasks.</typeparam>
-    /// <typeparam name="TResult">Type of the task results.</typeparam>
-    public unsafe class TaskQueue<TArg, TResult> : TaskQueue<TArg>, ITaskQueue<TArg, TResult>
+    public class TaskQueue<TArg, TResult> : ITaskQueue<TArg, TResult>
     {
-        /// <inheritdoc />
-        public new void Enqueue<TTask> (in TTask task)
-            where TTask : struct, ITask<TArg, TResult>
-            => EnqueueTask (task);
+        private readonly object taskLock = new object ();
+        private readonly Queue<int> tasks;
+        private readonly ManualResetEventSlim tasksEnqueuedEvent = new ManualResetEventSlim (); // Must be explicitly set by callers of EnqueueImpl
+        private readonly ITaskMetadataCache taskCache;
+        private readonly ITaskDataStore taskDataStore;
+        private readonly ITaskHandleManager taskHandleManager;
+        private readonly ITaskDataAccess dataAccess;
+        private bool disposed;
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="TaskQueue{TArg, TResult}"/> class.
+        /// </summary>
+        public TaskQueue ()
+            : this (16, 1024, 32) { }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="TaskQueue{TArg, TResult}"/> class.
+        /// </summary>
+        /// <param name="taskCapacity">Starting capacity for the internal task queue in no. of tasks.</param>
+        /// <param name="unmanagedDataCapacity">Starting capacity for the internal task data array in bytes.</param>
+        /// <param name="managedReferenceCapacity">Starting capacity for the internal task reference field store in no. of references.</param>
+        /// <param name="taskCache">Optional <see cref="ITaskMetadataCache"/> for caching task types.</param>
+        public TaskQueue (int taskCapacity, int unmanagedDataCapacity, int managedReferenceCapacity, ITaskMetadataCache taskCache = null)
+            : this (taskCapacity, taskCache, new TaskDataStore (unmanagedDataCapacity, new TaskReferenceStore (managedReferenceCapacity)), new TaskHandleManager ()) { }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="TaskQueue{TArg, TResult}"/> class.
+        /// </summary>
+        /// <inheritdoc cref="TaskQueue(int, int, int, ITaskMetadataCache)"/>/>
+        /// <param name="taskCapacity"></param>
+        /// <param name="taskCache"></param>
+        /// <param name="taskDataStore"><see cref="ITaskDataStore"/> responsible for storing task data.</param>
+        /// <param name="taskHandleManager"><see cref="ITaskHandleManager"/> responsible for managing task handles.</param>
+        internal TaskQueue (int taskCapacity, ITaskMetadataCache taskCache, ITaskDataStore taskDataStore, ITaskHandleManager taskHandleManager)
+        {
+            tasks = new Queue<int> (taskCapacity);
+
+            this.taskCache = taskCache ?? new TaskMetadataCache ();
+            this.taskDataStore = taskDataStore;
+            this.taskHandleManager = taskHandleManager;
+
+            dataAccess = new DataAccess (this);
+        }
+
+        /// <summary>
+        /// Finalizes an instance of the <see cref="TaskQueue{TArg, TResult}"/> class. Also disposes of any enqueued tasks implementing <see cref="IDisposable.Dispose"/>.
+        /// </summary>
+        ~TaskQueue () => Dispose (false);
+
+        /// <summary>
+        /// The number of tasks currently enqueued.
+        /// </summary>
+        public int Count
+        {
+            get
+            {
+                lock (taskLock)
+                {
+                    return tasks.Count;
+                }
+            }
+        }
 
         /// <inheritdoc />
-        public new void Enqueue<TTask> (in TTask task, out TaskHandle handle)
+        /// <exception cref="ObjectDisposedException">The <see cref="TaskQueue{TArg, TResult}"/> has been disposed.</exception>
+        public void Enqueue<T> (in T task)
+            where T : struct, ITask<TArg, TResult>
+        {
+            lock (taskLock)
+            {
+                if (disposed)
+                {
+                    throw new ObjectDisposedException (nameof (TaskQueue<TArg, TResult>), "New tasks may not be enqueued after TaskQueue has been disposed.");
+                }
+
+                ITaskMetadata<T> taskInfo = taskCache.GetTask<T> ();
+
+                tasks.Enqueue (taskInfo.ID); // Add task ID to the queue
+
+                // Only write task data if present
+                if (taskInfo.UnmanagedSize > 0 || taskInfo.IsManaged)
+                {
+                    taskDataStore.Enqueue (task, taskInfo);
+                }
+            }
+
+            tasksEnqueuedEvent.Set (); // Signal potentially waiting threads that tasks are ready to be executed
+        }
+
+        /// <inheritdoc />
+        /// <exception cref="ObjectDisposedException">The <see cref="TaskQueue{TArg, TResult}"/> has been disposed.</exception>
+        public void Enqueue<TTask> (in TTask task, out TaskHandle handle)
             where TTask : struct, ITask<TArg, TResult>
         {
             handle = CreateTaskHandle ();
 
-            EnqueueTask (new TaskWithHandle<TTask, TArg, TResult> (task, handle));
+            Enqueue (new TaskWithHandle<TTask, TArg, TResult> (task, handle));
         }
 
         /// <inheritdoc />
-        public new TResult RunNextTask (TArg arg, IProfiler profiler = null, CancellationToken token = default) => RunNextTask (arg, out _, profiler, token);
+        public TResult RunNextTask (TArg arg, IProfiler profiler = null, CancellationToken token = default) => RunNextTask (arg, out _, profiler, token);
 
         /// <inheritdoc />
-        public new TResult RunNextTask (TArg arg, out Exception exception, IProfiler profiler = null, CancellationToken token = default)
+        public TResult RunNextTask (TArg arg, out Exception exception, IProfiler profiler = null, CancellationToken token = default)
         {
-            TaskRunWrapper taskRunWrapper = new TaskRunWrapper (arg);
+            tasksEnqueuedEvent.Wait (token);
 
-            RunNextTask (ref taskRunWrapper, out exception, profiler, token);
+            if (token.IsCancellationRequested)
+            {
+                exception = null;
+                return default;
+            }
 
-            return taskRunWrapper.Result;
+            TryRunNextTask (arg, out TResult result, out exception, profiler);
+            return result;
         }
 
         /// <inheritdoc />
         public bool TryRunNextTask (TArg arg, out TResult result, IProfiler profiler = null) => TryRunNextTask (arg, out result, out _, profiler);
 
         /// <inheritdoc />
-        public bool TryRunNextTask (TArg arg, out TResult result, out Exception exception, IProfiler profiler = null)
+        public unsafe bool TryRunNextTask (TArg arg, out TResult result, out Exception exception, IProfiler profiler = null)
         {
-            TaskRunWrapper taskRunWrapper = new TaskRunWrapper (arg);
+            result = default;
+            exception = null;
 
-            bool taskWasRun = TryRunNextTask (ref taskRunWrapper, out exception, profiler);
+            bool accessDisposed = false;
+            TaskDataAccess access = new TaskDataAccess (dataAccess, &accessDisposed, true);
 
-            result = taskRunWrapper.Result;
-            return taskWasRun;
-        }
-
-        [StructLayout (LayoutKind.Auto)]
-        private struct TaskRunWrapper : ITask<TaskRunWrapperArgs>
-        {
-            public TResult Result;
-            private readonly TArg arg;
-
-            public TaskRunWrapper (TArg arg)
+            if (tasks.Count == 0)
             {
-                this.arg = arg;
-                Result = default;
+                access.Dispose ();
+
+                return false;
             }
 
-            public void Run (TaskRunWrapperArgs args) => args.GetTaskMetadataRunnable<IRunnableTaskMetadata<TArg, TResult>> ().Run (args.Access, arg, out Result);
+            int id = tasks.Dequeue ();
+
+            if (tasks.Count == 0)
+            {
+                tasksEnqueuedEvent.Reset (); // All tasks have been fetched, and as such the event can be reset.
+            }
+
+            ITaskMetadata task = taskCache.GetTask (id);
+
+            bool isProfiling = false;
+
+            try
+            {
+                if (profiler != null)
+                {
+                    profiler.BeginTask (task.Type.FullName);
+                    isProfiling = true; // If profiler was started without throwing an exception
+                }
+
+                // Run the task
+                ((ITaskMetadata<TArg, TResult>)task).Run (access, arg, out result);
+
+                if (isProfiling)
+                {
+                    isProfiling = false;
+                    profiler.EndTask ();
+                }
+            } catch (Exception ex)
+            {
+                exception = ex;
+
+                if (!access.Disposed) // Internal error, TaskMetadata should always call TaskDataAccess.Dispose after getting task data in TaskMetadata.RunAndDispose
+                {
+                    Trace.TraceError ($"TaskMetadata for {task.Type.FullName} failed to call TaskDataAccess.Dispose after getting task data. TaskDataAccess was disposed manually.");
+                    access.Dispose ();
+                }
+
+                if (isProfiling)
+                {
+                    profiler.EndTask ();
+                }
+            }
+
+            return true;
+        }
+
+        /// <summary>
+        /// Removes all pending tasks from the queue. Also calls <see cref="IDisposable.Dispose"/> on tasks which implement the method.
+        /// </summary>
+        /// <param name="exceptionHandler">Method for handling an exception thrown by a task's <see cref="IDisposable.Dispose"/>.</param>
+        /// <remarks>
+        /// As the method iterates through all tasks in the queue and calls <see cref="IDisposable.Dispose"/> on tasks, it can hang for an unknown amount of time. If an exception is thrown in an <see cref="IDisposable.Dispose"/> call, the method continues on with disposing the remaining tasks.
+        /// </remarks>
+        public unsafe void Clear (Action<Exception> exceptionHandler = null)
+        {
+            bool accessDisposed = false;
+            using TaskDataAccess access = new TaskDataAccess (dataAccess, &accessDisposed, false);
+
+            foreach (int id in tasks)
+            {
+                ITaskMetadata taskMetadata = taskCache.GetTask (id);
+
+                if (taskMetadata.IsDisposable)
+                {
+                    try
+                    {
+                        taskMetadata.Dispose (access);
+                    } catch (Exception ex)
+                    {
+                        exceptionHandler?.Invoke (ex);
+                    }
+                } else
+                {
+                    taskDataStore.Skip (taskMetadata);
+                }
+            }
+
+            tasks.Clear ();
+            taskHandleManager.Clear ();
+            taskDataStore.Clear ();
+        }
+
+        /// <summary>
+        /// Disposes all tasks which implements <see cref="IDisposable"/>.
+        /// </summary>
+        /// <remarks>
+        /// As the method iterates through all tasks in the queue and calls <see cref="IDisposable.Dispose"/> on tasks, it can hang for an unknown amount of time. If an exception is thrown in an <see cref="IDisposable.Dispose"/> call, the method continues on with disposing the remaining tasks.
+        /// </remarks>
+        public void Dispose ()
+        {
+            lock (taskLock)
+            {
+                Dispose (true);
+                GC.SuppressFinalize (this);
+            }
+        }
+
+        /// <summary>
+        /// Disposes all tasks which implements <see cref="IDisposable"/>.
+        /// </summary>
+        /// <remarks>
+        /// As the method iterates through all tasks in the queue and calls <see cref="IDisposable.Dispose"/> on tasks, it can hang for an unknown amount of time. If an exception is thrown in an <see cref="IDisposable.Dispose"/> call, the method continues on with disposing the remaining tasks.
+        /// </remarks>
+        /// <param name="disposing"><see langword="true"/> if called from <see cref="Dispose ()"/>, <see langword="false"/> if called from finalizer.</param>
+        protected virtual void Dispose (bool disposing)
+        {
+            if (disposed)
+                return;
+
+            Clear ();
+            disposed = true;
+        }
+
+        /// <summary>
+        /// Creates a new <see cref="TaskHandle"/>.
+        /// </summary>
+        /// <returns>A new unique <see cref="TaskHandle"/>.</returns>
+        protected TaskHandle CreateTaskHandle () => taskHandleManager.CreateTaskHandle ();
+
+        /// <summary>
+        /// Provides access to task data for a tasks.
+        /// </summary>
+        public class DataAccess : ITaskDataAccess
+        {
+            private TaskQueue<TArg, TResult> queue;
+
+            /// <summary>
+            /// Initializes a new instance of the <see cref="DataAccess"/> class.
+            /// </summary>
+            /// <param name="queue"><see cref="TaskQueue{TArg, TResult}"/> to get task data from.</param>
+            internal DataAccess (TaskQueue<TArg, TResult> queue)
+            {
+                this.queue = queue;
+            }
+
+            /// <inheritdoc />
+            public void EnterLock ()
+            {
+                Monitor.Enter (queue.taskLock);
+            }
+
+            /// <inheritdoc />
+            public void ExitLock ()
+            {
+                Monitor.Exit (queue.taskLock);
+            }
+
+            /// <inheritdoc />
+            public TTask GetNextTaskData<TTask> (ITaskMetadata<TTask> taskMetadata) where TTask : struct, ITask
+            {
+                return queue.taskDataStore.Dequeue (taskMetadata);
+            }
         }
     }
 }

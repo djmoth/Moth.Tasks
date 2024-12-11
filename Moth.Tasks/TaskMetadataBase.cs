@@ -7,7 +7,7 @@
     /// <inheritdoc cref="ITaskMetadata{TTask}"/>
     /// <typeparam name="TTask">Type of task.</typeparam>
     public abstract class TaskMetadataBase<TTask> : ITaskMetadata<TTask>
-        where TTask : struct, ITaskType
+        where TTask : struct, ITask
     {
         private readonly IFormat<TTask> taskFormat;
 
@@ -86,7 +86,7 @@
         }
 
         /// <inheritdoc />
-        public void Dispose (TaskQueue.TaskDataAccess access)
+        public void Dispose (TaskDataAccess access)
         {
             TTask task = access.GetNextTaskData (this);
             Task<TTask>.TryDispose (ref task);

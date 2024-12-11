@@ -8,7 +8,7 @@
     /// </summary>
     /// <typeparam name="TTask">Type of task.</typeparam>
     public static class Task<TTask>
-        where TTask : struct, ITaskType
+        where TTask : struct, ITask
     {
         private static readonly DisposeMethod DisposeMethodInstance;
 

@@ -37,7 +37,7 @@
         public void Create_DisposableTestTaskArgResult_ReturnsCorrectType () => TestCreatesCorrectTaskMetadataType<DisposableTestTaskArgResult> (typeof (TaskMetadata<DisposableTestTaskArgResult, int, int>));
 
         public unsafe void TestCreatesCorrectTaskMetadataType<T> (Type expectedTaskMetadataType)
-            where T : struct, ITaskType
+            where T : struct, ITask
         {
             int taskID = 1;
 
@@ -50,7 +50,7 @@
             Assert.That (taskInfo.GetType (), Is.EqualTo (expectedTaskMetadataType));
         }
 
-        public struct TestTask : ITask
+        public struct TestTask : ITask<Unit, Unit>
         {
             public void Run () { }
         }
@@ -65,7 +65,7 @@
             public int Run (int i) => i;
         }
 
-        public struct DisposableTestTask : ITask, IDisposable
+        public struct DisposableTestTask : ITask<Unit, Unit>, IDisposable
         {
             public void Dispose () { }
 

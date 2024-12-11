@@ -8,7 +8,7 @@
     /// <typeparam name="TTask">Type of the task.</typeparam>
     /// <typeparam name="TArg">Type of the argument.</typeparam>
     /// <typeparam name="TResult">Type of the result.</typeparam>
-    internal class TaskMetadata<TTask, TArg, TResult> : TaskMetadataBase<TTask>, IRunnableTaskMetadata<TArg, TResult>
+    internal class TaskMetadata<TTask, TArg, TResult> : TaskMetadataBase<TTask>, ITaskMetadata<TArg, TResult>
         where TTask : struct, ITask<TArg, TResult>
     {
         /// <summary>
@@ -24,28 +24,8 @@
         /// <inheritdoc />
         public override bool HasResult => true;
 
-        /// <summary>
-        /// Runs the task with <see langword="default"/> as argument and discards the result.
-        /// </summary>
         /// <inheritdoc />
-        public void Run (TaskQueue.TaskDataAccess access)
-        {
-            TTask task = access.GetNextTaskData (this);
-            task.TryRunAndDispose (default (TArg), out TResult _);
-        }
-
-        /// <summary>
-        /// Runs the task with an argument and discards the result.
-        /// </summary>
-        /// <inheritdoc />
-        public void Run (TaskQueue.TaskDataAccess access, TArg arg)
-        {
-            TTask task = access.GetNextTaskData (this);
-            task.TryRunAndDispose (arg, out TResult _);
-        }
-
-        /// <inheritdoc />
-        public void Run (TaskQueue.TaskDataAccess access, TArg arg, out TResult result)
+        public void Run (TaskDataAccess access, TArg arg, out TResult result)
         {
             TTask task = access.GetNextTaskData (this);
             task.TryRunAndDispose (arg, out result);

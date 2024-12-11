@@ -20,7 +20,7 @@
         /// <param name="id">ID of task.</param>
         /// <returns>A new <see cref="ITaskMetadata{TTask}"/> instance representing the task <typeparamref name="TTask"/>.</returns>
         internal static unsafe ITaskMetadata<TTask> Create<TTask> (int id)
-             where TTask : struct, ITaskType
+             where TTask : struct, ITask
             => Provider.Create<TTask> (id);
     }
 }

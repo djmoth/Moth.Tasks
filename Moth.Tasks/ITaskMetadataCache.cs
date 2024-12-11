@@ -17,6 +17,6 @@
         /// </summary>
         /// <typeparam name="TTask">Type of task.</typeparam>
         /// <returns><see cref="ITaskMetadata"/> instance for the type <typeparamref name="TTask"/>.</returns>
-        ITaskMetadata<TTask> GetTask<TTask> () where TTask : struct, ITaskType;
+        ITaskMetadata<TTask> GetTask<TTask> () where TTask : struct, ITask;
     }
 }

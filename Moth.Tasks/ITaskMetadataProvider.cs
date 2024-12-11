@@ -11,6 +11,6 @@
         /// <typeparam name="TTask">Type of task.</typeparam>
         /// <param name="id">ID to give the instance.</param>
         /// <returns>A new task metadata instance.</returns>
-        ITaskMetadata<TTask> Create<TTask> (int id) where TTask : struct, ITaskType;
+        ITaskMetadata<TTask> Create<TTask> (int id) where TTask : struct, ITask;
     }
 }

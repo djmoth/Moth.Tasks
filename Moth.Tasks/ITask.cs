@@ -1,35 +1,18 @@
 ﻿namespace Moth.Tasks
 {
     /// <summary>
-    /// Interface for a task taking no arguments.
+    /// Interface for a task.
     /// </summary>
-    public interface ITask : ITaskType
+    public interface ITask
     {
-        /// <summary>
-        /// Run the task.
-        /// </summary>
-        void Run ();
     }
 
     /// <summary>
-    /// Interface for a task taking an argument.
-    /// </summary>
-    /// <typeparam name="TArg">Type of argument to pass to the task.</typeparam>
-    public interface ITask<TArg> : ITaskType
-    {
-        /// <summary>
-        /// Run the task.
-        /// </summary>
-        /// <param name="arg">Task argument.</param>
-        void Run (TArg arg);
-    }
-
-    /// <summary>
-    /// Interface for a task taking an argument.
+    /// Interface for a task taking an argument and returning a result.
     /// </summary>
     /// <typeparam name="TArg">Type of argument to pass to the task.</typeparam>
     /// <typeparam name="TResult">Type of the result.</typeparam>
-    public interface ITask<TArg, TResult> : ITaskType
+    public interface ITask<TArg, TResult> : ITask
     {
         /// <summary>
         /// Run the task.
@@ -38,9 +21,4 @@
         /// <returns>Task result.</returns>
         TResult Run (TArg arg);
     }
-
-    /// <summary>
-    /// Interface for a task type.
-    /// </summary>
-    public interface ITaskType { }
 }

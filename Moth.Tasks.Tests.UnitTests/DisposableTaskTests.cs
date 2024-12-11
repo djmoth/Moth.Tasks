@@ -16,7 +16,7 @@
             Assert.That (task.DisposeCallCount, Is.EqualTo (1));
         }
 
-        public struct DisposableTestTask : ITask, IDisposable
+        public struct DisposableTestTask : ITask<Unit, Unit>, IDisposable
         {
             public int DisposeCallCount { get; private set; }
 

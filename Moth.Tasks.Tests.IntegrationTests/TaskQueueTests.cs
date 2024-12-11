@@ -11,7 +11,7 @@ namespace Moth.Tasks.Tests.IntegrationTests
     public class TaskQueueTests
     {
         /// <summary>
-        /// Enqueues an <see cref="ITask"/> in an empty <see cref="TaskQueue"/>.
+        /// Enqueues an <see cref="ITask<Unit, Unit>"/> in an empty <see cref="TaskQueue"/>.
         /// </summary>
         [Test]
         public void EnqueueITask ()
@@ -89,7 +89,7 @@ namespace Moth.Tasks.Tests.IntegrationTests
         }
 
         /// <summary>
-        /// Enqueues and runs an <see cref="ITask"/>.
+        /// Enqueues and runs an <see cref="ITask<Unit, Unit>"/>.
         /// </summary>
         [Test]
         public void EnqueueAndTryRun_ITask ()
@@ -201,7 +201,7 @@ namespace Moth.Tasks.Tests.IntegrationTests
         }
 
         /// <summary>
-        /// Enqueues and runs a task which throws an <see cref="InvalidOperationException"/> in its <see cref="ITask.Run"/> method. Asserts that the exception is returned from <see cref="TaskQueue.TryRunNextTask(out Exception)"/>.
+        /// Enqueues and runs a task which throws an <see cref="InvalidOperationException"/> in its <see cref="ITask<Unit, Unit>.Run"/> method. Asserts that the exception is returned from <see cref="TaskQueue.TryRunNextTask(out Exception)"/>.
         /// </summary>
         [Test]
         public void EnqueueAndTryRun_Exception ()
@@ -216,7 +216,7 @@ namespace Moth.Tasks.Tests.IntegrationTests
         }
 
         /// <summary>
-        /// Enqueues and runs a task which throws an <see cref="InvalidOperationException"/> in its <see cref="ITask.Run"/> method, while running an <see cref="IProfiler"/>. Asserts profiling is stopped correctly.
+        /// Enqueues and runs a task which throws an <see cref="InvalidOperationException"/> in its <see cref="ITask<Unit, Unit>.Run"/> method, while running an <see cref="IProfiler"/>. Asserts profiling is stopped correctly.
         /// </summary>
         [Test]
         public void EnqueueAndTryRun_ExceptionWhileProfiling ()
@@ -499,7 +499,7 @@ namespace Moth.Tasks.Tests.IntegrationTests
         /// <summary>
         /// Test task
         /// </summary>
-        struct Task : ITask
+        struct Task : ITask<Unit, Unit>
         {
             public nint Data;
 
@@ -512,7 +512,7 @@ namespace Moth.Tasks.Tests.IntegrationTests
         /// <summary>
         /// Stores a value in a <see cref="TaskResult"/> object.
         /// </summary>
-        readonly struct PutValueTask : ITask
+        readonly struct PutValueTask : ITask<Unit, Unit>
         {
             private readonly int value;
             private readonly TaskResult result;
@@ -530,9 +530,9 @@ namespace Moth.Tasks.Tests.IntegrationTests
         }
 
         /// <summary>
-        /// Stores a value in a <see cref="TaskResult"/> object on <see cref="ITask.Run"/>, and another value in another <see cref="TaskResult"/> object on <see cref="IDisposable.Dispose"/>.
+        /// Stores a value in a <see cref="TaskResult"/> object on <see cref="ITask<Unit, Unit>.Run"/>, and another value in another <see cref="TaskResult"/> object on <see cref="IDisposable.Dispose"/>.
         /// </summary>
-        readonly struct PutValueAndDisposeTask : ITask, IDisposable
+        readonly struct PutValueAndDisposeTask : ITask<Unit, Unit>, IDisposable
         {
             private readonly int runValue;
             private readonly TaskResult runResult;
@@ -561,7 +561,7 @@ namespace Moth.Tasks.Tests.IntegrationTests
         /// <summary>
         /// Throws an <see cref="InvalidOperationException"/> on <see cref="IDisposable.Dispose"/>.
         /// </summary>
-        readonly struct ExceptionOnDisposeTask : ITask, IDisposable
+        readonly struct ExceptionOnDisposeTask : ITask<Unit, Unit>, IDisposable
         {
             public void Run ()
             {

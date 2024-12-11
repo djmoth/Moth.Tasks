@@ -17,7 +17,7 @@ namespace Moth.Tasks
     /// <summary>
     /// Task encapsulating a delegate*{void} function pointer.
     /// </summary>
-    public unsafe readonly struct FunctionPointerTask : ITask
+    public unsafe readonly struct FunctionPointerTask : ITask<Unit, Unit>
     {
         private readonly delegate*<void> function;
 
@@ -30,7 +30,11 @@ namespace Moth.Tasks
         /// <summary>
         /// Invokes the encapsulated delegate*{void}.
         /// </summary>
-        public void Run () => function ();
+        public Unit Run (Unit _)
+        {
+            function ();
+            return default;
+        }
     }
 <# int maxParameterCount = 16;
 for (int i = 1; i <= maxParameterCount; i++)
@@ -46,7 +50,7 @@ for (int i = 1; i <= maxParameterCount; i++)
     /// </summary>
 <# for (int t = 1; t <= i; t++) WriteLine ($"    /// <typeparam name=\"T{t}\">Type of parameter {t}.</typeparam>");#>
     [StructLayout (LayoutKind.Auto)]
-    public unsafe readonly struct FunctionPointerTask<<#=typeParameters#>> : ITask
+    public unsafe readonly struct FunctionPointerTask<<#=typeParameters#>> : ITask<Unit, Unit>
     {
         private readonly delegate*<<#=typeParameters#>, void> action;
 <# for (int t = 1; t <= i; t++) WriteLine ($"        private readonly T{t} arg{t};");#>
@@ -73,7 +77,11 @@ for (int t = 1; t <= i; t++)
 <# string argList = "arg1";
 for (int t = 2; t <= i; t++)
     argList += ", arg" + t.ToString ();#>
-        public void Run () => action (<#=argList#>);
+        public Unit Run (Unit _)
+        {
+            action (<#=argList#>);
+            return default;
+        }
     }
 <#}#>
 }

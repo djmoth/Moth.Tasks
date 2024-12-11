@@ -43,7 +43,7 @@
 
         /// <inheritdoc/>
         public void Enqueue<T> (in T task, ITaskMetadata<T> taskInfo)
-            where T : struct, ITaskType
+            where T : struct, ITask
         {
             // If new task data will overflow the taskData array
             CheckCapacity (taskInfo.UnmanagedSize);
@@ -56,7 +56,7 @@
         /// <inheritdoc/>
         /// <exception cref="InvalidOperationException"><see cref="Size"/> is zero.</exception>
         public T Dequeue<T> (ITaskMetadata<T> taskInfo)
-            where T : struct, ITaskType
+            where T : struct, ITask
         {
             if (Size == 0)
                 throw new InvalidOperationException ("Cannot Dequeue as TaskDataStore.Size is zero.");
@@ -95,7 +95,7 @@
 
         /// <inheritdoc/>
         public void Insert<T> (ref int dataIndex, ref int refIndex, in T task, ITaskMetadata<T> taskInfo)
-            where T : struct, ITaskType
+            where T : struct, ITask
         {
             if (dataIndex < 0 || dataIndex > LastTaskEnd)
                 throw new ArgumentOutOfRangeException (nameof (dataIndex));

@@ -34,7 +34,7 @@
             });
         }
 
-        public struct TestTask : ITask
+        public struct TestTask : ITask<Unit, Unit>
         {
             public bool Disposed { get; private set; }
 
@@ -43,7 +43,7 @@
             public void Dispose () => Disposed = true;
         }
 
-        public struct DisposableTestTask : ITask, IDisposable
+        public struct DisposableTestTask : ITask<Unit, Unit>, IDisposable
         {
             public bool Disposed { get; private set; }
 

@@ -23,7 +23,7 @@
 
         /// <inheritdoc />
         public ITaskMetadata<TTask> Create<TTask> (int id)
-            where TTask : struct, ITaskType
+            where TTask : struct, ITask
         {
             Type type = typeof (TTask);
 
@@ -35,10 +35,10 @@
                 if (i == typeof (IDisposable))
                 {
                     isDisposable = true;
-                } else if (i == typeof (ITask))
+                } else if (i == typeof (ITask<Unit, Unit>))
                 {
                     interfaceType = i;
-                } else if (i.IsGenericType && (i.GetGenericTypeDefinition () == typeof (ITask<>) || i.GetGenericTypeDefinition () == typeof (ITask<,>)))
+                } else if (i.IsGenericType && i.GetGenericTypeDefinition () == typeof (ITask<,>))
                 {
                     if (interfaceType != null)
                         throw new InvalidOperationException ("Task type is ambiguous.");
@@ -48,25 +48,11 @@
             }
 
             if (interfaceType == null)
-                throw new InvalidOperationException ("Task type does not implement ITask or its generic variants.");
+                throw new InvalidOperationException ("Task type does not implement ITask<TArg, TResult> or its generic variants.");
 
-            Type taskInfoType;
+            Type taskInfoType = typeof (TaskMetadata<,,>).MakeGenericType (interfaceType.GetGenericArguments ().Prepend (type).ToArray ());
 
-            if (interfaceType == typeof (ITask))
-            {
-                taskInfoType = typeof (TaskMetadata<>).MakeGenericType (type);
-            } else if (interfaceType.GetGenericTypeDefinition () == typeof (ITask<>))
-            {
-                taskInfoType = typeof (TaskMetadata<,>).MakeGenericType (interfaceType.GetGenericArguments ().Prepend (type).ToArray ());
-            } else if (interfaceType.GetGenericTypeDefinition () == typeof (ITask<,>))
-            {
-                taskInfoType = typeof (TaskMetadata<,,>).MakeGenericType (interfaceType.GetGenericArguments ().Prepend (type).ToArray ());
-            } else
-            {
-                throw new NotImplementedException ();
-            }
-
-            return (ITaskMetadata<TTask>)Activator.CreateInstance (taskInfoType, id, (IFormat<TTask>)formatProvider.Get<TTask> ());
+            return (ITaskMetadata<TTask>)Activator.CreateInstance (taskInfoType, id, formatProvider.Get<TTask> ());
         }
     }
 }
