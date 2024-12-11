@@ -1454,6 +1454,21 @@
             <param name="id">ID to give the instance.</param>
             <returns>A new task metadata instance.</returns>
         </member>
+        <member name="T:Moth.Tasks.ITaskMetadata`2">
+            <summary>
+            Represents a task that can be run with an argument and returns a result.
+            </summary>
+            <typeparam name="TArg">The type of the task argument.</typeparam>
+            <typeparam name="TResult">The type of the task result.</typeparam>
+        </member>
+        <member name="M:Moth.Tasks.ITaskMetadata`2.Run(Moth.Tasks.TaskQueue.TaskDataAccess,`0,`1@)">
+            <summary>
+            Runs the task with an argument and returns a result.
+            </summary>
+            <param name="access"><see cref="T:Moth.Tasks.TaskQueue.TaskDataAccess"/> instance allowing for retrieval of task data.</param>
+            <param name="arg">Argument to supply to task.</param>
+            <param name="result">The result of the task.</param>
+        </member>
         <member name="T:Moth.Tasks.ITaskMetadata`1">
             <summary>
             Represents a task that takes no argument and returns no result.
@@ -3782,6 +3797,9 @@
         <member name="M:Moth.Tasks.TaskMetadataBase`1.Deserialize(`0@,System.ReadOnlySpan{System.Byte},Moth.IO.Serialization.ObjectReader)">
             <inheritdoc />
         </member>
+        <member name="M:Moth.Tasks.TaskMetadataBase`1.Dispose(Moth.Tasks.TaskQueue.TaskDataAccess)">
+            <inheritdoc />
+        </member>
         <member name="T:Moth.Tasks.TaskMetadataCache">
             <summary>
             Cache of <see cref="T:Moth.Tasks.ITaskMetadata"/>.
@@ -4113,6 +4131,24 @@
             Represents a queue of tasks to be run with an argument.
             </summary>
             <typeparam name="TArg">Type of argument to pass to the tasks.</typeparam>
+        </member>
+        <member name="M:Moth.Tasks.TaskQueue`1.#ctor">
+            <summary>
+            Initializes a new instance of the <see cref="T:Moth.Tasks.TaskQueue`1"/> class.
+            </summary>
+            <inheritdoc cref="M:Moth.Tasks.TaskQueue.#ctor"/>
+        </member>
+        <member name="M:Moth.Tasks.TaskQueue`1.#ctor(System.Int32,System.Int32,System.Int32,Moth.Tasks.ITaskMetadataCache)">
+            <summary>
+            Initializes a new instance of the <see cref="T:Moth.Tasks.TaskQueue`1"/> class.
+            </summary>
+            <inheritdoc cref="M:Moth.Tasks.TaskQueue.#ctor(System.Int32,System.Int32,System.Int32,Moth.Tasks.ITaskMetadataCache)"/>
+        </member>
+        <member name="M:Moth.Tasks.TaskQueue`1.#ctor(System.Int32,Moth.Tasks.ITaskMetadataCache,Moth.Tasks.ITaskDataStore,Moth.Tasks.ITaskHandleManager)">
+            <summary>
+            Initializes a new instance of the <see cref="T:Moth.Tasks.TaskQueue`1"/> class.
+            </summary>
+            <inheritdoc cref="M:Moth.Tasks.TaskQueue.#ctor(System.Int32,Moth.Tasks.ITaskMetadataCache,Moth.Tasks.ITaskDataStore,Moth.Tasks.ITaskHandleManager)"/>
         </member>
         <member name="M:Moth.Tasks.TaskQueue`1.Enqueue``1(``0@)">
             <inheritdoc />

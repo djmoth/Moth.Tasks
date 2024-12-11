@@ -85,6 +85,7 @@
             taskFormat.Deserialize (out task, source, refReader);
         }
 
+        /// <inheritdoc />
         public void Dispose (TaskQueue.TaskDataAccess access)
         {
             TTask task = access.GetNextTaskData (this);

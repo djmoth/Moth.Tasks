@@ -2,6 +2,7 @@
 {
     using System;
     using System.Collections.Generic;
+    using System.Diagnostics;
     using System.Runtime.CompilerServices;
     using System.Threading;
 
@@ -9,6 +10,7 @@
     /// Represents a queue of tasks to be run.
     /// </summary>
     public class TaskQueue : ITaskQueue
+        where TTaskType : ITaskType
     {
         private readonly object taskLock = new object ();
         private readonly Queue<int> tasks;
@@ -72,7 +74,7 @@
 
         /// <inheritdoc />
         /// <exception cref="ObjectDisposedException">The <see cref="TaskQueue"/> has been disposed.</exception>
-        public void Enqueue<T> (in T task) where T : struct, ITask => EnqueueTask (task);
+        public void Enqueue<T> (in T task) where T : struct, TTaskType => EnqueueTask (task);
 
         /// <inheritdoc />
         /// <exception cref="ObjectDisposedException">The <see cref="TaskQueue"/> has been disposed.</exception>
@@ -285,6 +287,7 @@
 
                 if (!access.Disposed) // Internal error, TaskMetadata should always call TaskDataAccess.Dispose after getting task data in TaskMetadata.RunAndDispose
                 {
+                    Trace.TraceError ($"TaskMetadata for {task.Type.FullName} failed to call TaskDataAccess.Dispose after getting task data. TaskDataAccess was disposed manually.");
                     access.Dispose ();
                 }
 

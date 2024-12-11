@@ -188,7 +188,12 @@
         {
             var mockDisposableTaskQueue = new Mock<ITaskQueue> ().As<IDisposable> ();
 
-            var worker = new Worker (mockDisposableTaskQueue.Object as ITaskQueue, true, default);
+            WorkerOptions options = new WorkerOptions
+            {
+                RequiresManualStart = true,
+            };
+
+            var worker = new Worker (mockDisposableTaskQueue.Object as ITaskQueue, true, options);
             worker.Dispose ();
 
             mockDisposableTaskQueue.Verify (t => t.Dispose (), Times.Once);

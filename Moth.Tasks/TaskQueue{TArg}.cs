@@ -12,6 +12,27 @@
     /// <typeparam name="TArg">Type of argument to pass to the tasks.</typeparam>
     public class TaskQueue<TArg> : TaskQueue, ITaskQueue<TArg>
     {
+        /// <summary>
+        /// Initializes a new instance of the <see cref="TaskQueue{TArg}"/> class.
+        /// </summary>
+        /// <inheritdoc cref="TaskQueue()"/>
+        public TaskQueue ()
+            : base () { }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="TaskQueue{TArg}"/> class.
+        /// </summary>
+        /// <inheritdoc cref="TaskQueue(int,int,int,ITaskMetadataCache)"/>
+        public TaskQueue (int taskCapacity, int unmanagedDataCapacity, int managedReferenceCapacity, ITaskMetadataCache taskCache = null)
+            : base (taskCapacity, taskCache, new TaskDataStore (unmanagedDataCapacity, new TaskReferenceStore (managedReferenceCapacity)), new TaskHandleManager ()) { }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="TaskQueue{TArg}"/> class.
+        /// </summary>
+        /// <inheritdoc cref="TaskQueue(int,ITaskMetadataCache,ITaskDataStore,ITaskHandleManager)"/>
+        internal TaskQueue (int taskCapacity, ITaskMetadataCache taskCache, ITaskDataStore taskDataStore, ITaskHandleManager taskHandleManager)
+            : base (taskCapacity, taskCache, taskDataStore, taskHandleManager) { }
+
         /// <inheritdoc />
         public new void Enqueue<TTask> (in TTask task)
             where TTask : struct, ITask<TArg>
