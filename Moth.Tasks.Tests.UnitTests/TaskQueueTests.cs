@@ -195,7 +195,7 @@
 
         [Test]
         [CancelAfter (1000)]
-        public unsafe void RunNextTask_OneTaskEnqueuedAndMethodCalled_RetrievesFromTaskDataStoreAndRunsTaskWithArgAndReturnsResult (CancellationToken token)
+        public unsafe void RunNextTask_OneTaskEnqueuedAndMethodCalled_RetrievesFromTaskDataStoreAndRunsTaskWithArgAndReturnsResult (object[] args, CancellationToken token)
         {
             TaskQueue<TArg, TResult> queue = new TaskQueue<TArg, TResult> (0, mockTaskCache.Object, mockTaskDataStore.Object, mockTaskHandleManager.Object);
 
@@ -203,7 +203,16 @@
 
             mockTaskDataStore.Setup (store => store.Dequeue (mockTestTaskMetadata)).Returns (task);
 
-            TArg arg
+            TArg arg;
+
+            foreach (object boxedArg in args)
+            {
+                if (boxedArg is TArg unboxedArg)
+                {
+                    arg = unboxedArg;
+                    break;
+                }
+            }
 
             queue.Enqueue (task);
             queue.RunNextTask (token: token);
