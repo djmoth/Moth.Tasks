@@ -3851,7 +3851,7 @@
             <summary>
             Initializes a new instance of the <see cref="T:Moth.Tasks.TaskQueue`2"/> class.
             </summary>
-            <inheritdoc cref="!:TaskQueue(int, int, int, ITaskMetadataCache)"/>/>
+            <inheritdoc cref="M:Moth.Tasks.TaskQueue`2.#ctor(System.Int32,System.Int32,System.Int32,Moth.Tasks.ITaskMetadataCache)"/>/>
             <param name="taskCapacity"></param>
             <param name="taskCache"></param>
             <param name="taskDataStore"><see cref="T:Moth.Tasks.ITaskDataStore"/> responsible for storing task data.</param>
@@ -4029,7 +4029,7 @@
         </member>
         <member name="T:Moth.Tasks.Unit">
             <summary>
-            Represents a unit type. This type is used to represent the absence of a value.
+            Represents a unit type.
             </summary>
         </member>
         <member name="M:Moth.Tasks.Unit.Equals(Moth.Tasks.Unit)">

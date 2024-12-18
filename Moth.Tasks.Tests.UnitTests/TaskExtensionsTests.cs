@@ -168,7 +168,11 @@
         {
             public int RunCallCount;
 
-            public void Run () => RunCallCount++;
+            public Unit Run (Unit _)
+            {
+                RunCallCount++;
+                return default;
+            }
         }
 
         public struct DisposableTestTask : ITask<Unit, Unit>, IDisposable
@@ -176,7 +180,11 @@
             public int RunCallCount;
             public int DisposeCallCount;
 
-            public void Run () => RunCallCount++;
+            public Unit Run (Unit _)
+            {
+                RunCallCount++;
+                return default;
+            }
 
             public void Dispose () => DisposeCallCount++;
         }
@@ -186,7 +194,7 @@
             public int RunCallCount;
             public int DisposeCallCount;
 
-            public void Run ()
+            public Unit Run (Unit _)
             {
                 RunCallCount++;
                 throw new Exception ();
@@ -195,29 +203,37 @@
             public void Dispose () => DisposeCallCount++;
         }
 
-        public struct TestTaskWithArg : ITask<int>
+        public struct TestTaskWithArg : ITask<int, Unit>
         {
             public List<int> SuppliedArgs;
 
-            public void Run (int arg) => SuppliedArgs.Add (arg);
+            public Unit Run (int arg)
+            {
+                SuppliedArgs.Add (arg);
+                return default;
+            }
         }
 
-        public struct DisposableTestTaskWithArg : ITask<int>, IDisposable
+        public struct DisposableTestTaskWithArg : ITask<int, Unit>, IDisposable
         {
             public List<int> SuppliedArgs;
             public int DisposeCallCount;
 
-            public void Run (int arg) => SuppliedArgs.Add (arg);
+            public Unit Run (int arg)
+            {
+                SuppliedArgs.Add (arg);
+                return default;
+            }
 
             public void Dispose () => DisposeCallCount++;
         }
 
-        public struct DisposableTestTaskWithArgThrowingException : ITask<int>, IDisposable
+        public struct DisposableTestTaskWithArgThrowingException : ITask<int, Unit>, IDisposable
         {
             public List<int> SuppliedArgs;
             public int DisposeCallCount;
 
-            public void Run (int arg)
+            public Unit Run (int arg)
             {
                 SuppliedArgs.Add (arg);
                 throw new Exception ();

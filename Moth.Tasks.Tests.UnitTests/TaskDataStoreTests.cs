@@ -267,10 +267,7 @@
                 Data = data;
             }
 
-            public void Run ()
-            {
-
-            }
+            public Unit Run (Unit _) => default;
         }
 
         class MockTestTaskMetadata : MockTaskMetadata<TestTask>

@@ -116,7 +116,6 @@
 
             // If Read correctly cleared its internal reference, there should now be no live references to the object, and as such it should be collected by GC.Collect
             GC.Collect (GC.MaxGeneration, GCCollectionMode.Forced, true, true);
-            GC.WaitForPendingFinalizers ();
 
             Assert.That (objectRef.IsAlive, Is.False);
 
@@ -442,7 +441,6 @@
 
             // If Clear correctly cleared its internal reference, there should now be no live references to the object, and as such it should be collected by GC.Collect
             GC.Collect (GC.MaxGeneration, GCCollectionMode.Forced, true, true);
-            GC.WaitForPendingFinalizers ();
 
             Assert.That (objectRef.IsAlive, Is.False);
 

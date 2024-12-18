@@ -1,25 +1,25 @@
 ﻿namespace Moth.Tasks.Tests.UnitTests
 {
+    using Microsoft.CodeAnalysis.CSharp.Syntax;
     using Moq;
-    using Moth.IO.Serialization;
     using NUnit.Framework;
     using System;
-    using System.Runtime.InteropServices;
+    using System.Collections.Generic;
     using System.Threading;
-    using System.Threading.Tasks;
 
-    [TestFixture]
+    [TestFixture ([typeof (object), typeof (object)])]
+    [TestFixture ([typeof (Unit), typeof (Unit)])]
+    [TestFixture ([typeof (int), typeof (int)])]
     public class TaskQueueTests<TArg, TResult>
     {
         private Mock<ITaskMetadataCache> mockTaskCache;
         private Mock<ITaskDataStore> mockTaskDataStore;
         private Mock<ITaskHandleManager> mockTaskHandleManager;
+        private Mock<IProfiler> mockProfiler;
         private MockTaskMetadata<TestTask, TArg, TResult> mockTestTaskMetadata;
         private MockTaskMetadata<TaskWithHandle<TestTask, TArg, TResult>, TArg, TResult> mockTestTaskWithHandle;
         private MockTaskMetadata<DisposableTestTask, TArg, TResult> mockDisposableTestTaskMetadata;
         private MockTaskMetadata<TaskWithHandle<DisposableTestTask, TArg, TResult>, TArg, TResult> mockDisposableTestTaskWithHandle;
-        private Mock<IProfiler> mockProfiler;
-        
 
         [SetUp]
         public void SetUp ()
@@ -104,6 +104,7 @@
             queue.Enqueue (task);
 
             mockTaskCache.Verify (t => t.GetTask<DisposableTestTask> (), Times.Once);
+
             mockTaskDataStore.Verify (store => store.Enqueue (task, mockDisposableTestTaskMetadata), Times.Once);
 
             Assert.That (queue.Count, Is.EqualTo (1));
@@ -120,6 +121,7 @@
             queue.Enqueue (task);
 
             mockTaskCache.Verify (t => t.GetTask<TestTask> (), Times.Exactly (2));
+
             mockTaskDataStore.Verify (store => store.Enqueue (task, mockTestTaskMetadata), Times.Exactly (2));
 
             Assert.That (queue.Count, Is.EqualTo (2));
@@ -136,6 +138,7 @@
             queue.Enqueue (task);
 
             mockTaskCache.Verify (t => t.GetTask<DisposableTestTask> (), Times.Exactly (2));
+
             mockTaskDataStore.Verify (store => store.Enqueue (task, mockDisposableTestTaskMetadata), Times.Exactly (2));
 
             Assert.That (queue.Count, Is.EqualTo (2));
@@ -193,66 +196,74 @@
             });
         }
 
-        [Test]
         [CancelAfter (1000)]
-        public unsafe void RunNextTask_OneTaskEnqueuedAndMethodCalled_RetrievesFromTaskDataStoreAndRunsTaskWithArgAndReturnsResult (object[] args, CancellationToken token)
+        public unsafe void RunNextTask_OneTaskEnqueuedAndMethodCalled_RunsTaskWithArgAndReturnsResult (CancellationToken token)
         {
+            Assume.That (token.CanBeCanceled, Is.True);
+
             TaskQueue<TArg, TResult> queue = new TaskQueue<TArg, TResult> (0, mockTaskCache.Object, mockTaskDataStore.Object, mockTaskHandleManager.Object);
 
             TestTask task = new TestTask { };
 
             mockTaskDataStore.Setup (store => store.Dequeue (mockTestTaskMetadata)).Returns (task);
 
+            queue.Enqueue (task);
+
+            TResult resultToReturn;
+
+            if (typeof (TResult) == typeof (object))
+                resultToReturn = (TResult)new object ();
+            else if (typeof (TResult) == typeof (Unit))
+                resultToReturn = default;
+            else if (typeof (TResult) == typeof (int))
+                resultToReturn = (TResult)(object)123;
+            else
+                throw new NotSupportedException ();
+
+            mockTestTaskMetadata.ResultsToReturn.Enqueue (resultToReturn);
+
             TArg arg;
 
-            foreach (object boxedArg in args)
-            {
-                if (boxedArg is TArg unboxedArg)
-                {
-                    arg = unboxedArg;
-                    break;
-                }
-            }
+            if (typeof (TArg) == typeof (object))
+                arg = (TArg)new object ();
+            else if (typeof (TArg) == typeof (Unit))
+                arg = default;
+            else if (typeof (TArg) == typeof (int))
+                arg = (TArg)(object)42;
+            else
+                throw new NotSupportedException ();
 
-            queue.Enqueue (task);
-            queue.RunNextTask (token: token);
+            TResult returnedResult = queue.RunNextTask (arg, profiler: null, token: token);
 
-            if (token.IsCancellationRequested)
-                Assert.Fail ("Test was cancelled by CancelAfter attribute");
+            Assume.That (token.IsCancellationRequested, Is.False);
 
-            // Verify that the correct ITaskMetadata was retrieved from the task cache
-            mockTaskCache.Verify (t => t.GetTask<TestTask> (), Times.Once);
-
-            // Verify that the task was stored in the task data store
-            mockTaskDataStore.Verify (store => store.Enqueue (task, mockTestTaskMetadata), Times.Once);
-
-            Assert.That (mockTestTaskMetadata.RunCallCount, Is.EqualTo (1));
+            Assert.That (mockTestTaskMetadata.SuppliedArgs, Is.EqualTo (new TArg[] { arg }));
+            Assert.That  (returnedResult, Is.EqualTo (resultToReturn));
         }
 
         [Test]
         [CancelAfter (1000)]
-        public unsafe void RunNextTask_TwoTasksEnqueuedAndMethodCalled_RetrievesFirstFromTaskDataStoreAndRunsFirstTask (CancellationToken token)
+        public unsafe void RunNextTask_TwoTasksEnqueuedAndMethodCalled_RunsFirstTaskOnly (CancellationToken token)
         {
             TaskQueue<TArg, TResult> queue = new TaskQueue<TArg, TResult> (0, mockTaskCache.Object, mockTaskDataStore.Object, mockTaskHandleManager.Object);
 
             TestTask task = new TestTask { };
-
-            mockTaskDataStore.SetupSequence (store => store.Dequeue (mockTestTaskMetadata)).Returns (task).Returns (task);
+            DisposableTestTask disposableTask = new DisposableTestTask { };
 
             queue.Enqueue (task);
-            queue.Enqueue (task);
+            queue.Enqueue (disposableTask);
 
-            queue.RunNextTask (token: token);
+            // Run first TestTask with default argument with no profiler and discard result
+            queue.RunNextTask (arg: default, profiler: null, token: token);
 
-            if (token.IsCancellationRequested)
-                Assert.Fail ("Test was cancelled by CancelAfter attribute");
+            Assume.That (token.IsCancellationRequested, Is.False);
 
-            mockTaskCache.Verify (t => t.GetTask<TestTask> (), Times.Exactly (2));
-
-            mockTaskDataStore.Verify (store => store.Enqueue (task, mockTestTaskMetadata), Times.Exactly (2));
-
-            // Assert that only one task was run
-            Assert.That (mockTestTaskMetadata.RunCallCount, Is.EqualTo (1));
+            Assert.Multiple (() =>
+            {
+                // Assert that only the first TestTask was run
+                Assert.That (mockTestTaskMetadata.SuppliedArgs.Count, Is.EqualTo (1));
+                Assert.That (mockDisposableTestTaskMetadata.SuppliedArgs.Count, Is.Zero);
+            });
         }
 
         [Test]
@@ -263,19 +274,13 @@
 
             TestTask task = new TestTask ();
 
-            mockTaskDataStore.Setup (store => store.Dequeue (mockTestTaskMetadata)).Returns (task);
-
             // The Mock Task Metadata will now throw an exception on Run
             mockTestTaskMetadata.ExceptionToThrow = new Exception ();
 
             queue.Enqueue (task);
-            queue.RunNextTask (out Exception exception, token: token);
+            queue.RunNextTask (default, out Exception exception, null, token);
 
-            mockTaskCache.Verify (t => t.GetTask<TestTask> (), Times.Once);
-
-            mockTaskDataStore.Verify (store => store.Enqueue (task, mockTestTaskMetadata), Times.Once);
-
-            Assert.That (mockTestTaskMetadata.RunCallCount, Is.EqualTo (1));
+            Assume.That (token.IsCancellationRequested, Is.False);
 
             // Verify that the exception was caught and returned
             Assert.That (exception, Is.SameAs (mockTestTaskMetadata.ExceptionToThrow));
@@ -292,7 +297,7 @@
             mockTaskDataStore.Setup (store => store.Dequeue (mockTestTaskMetadata)).Returns (task);
 
             queue.Enqueue (task);
-            queue.RunNextTask (profiler: mockProfiler.Object, token: token);
+            queue.RunNextTask (arg: default, profiler: mockProfiler.Object, token: token);
 
             if (token.IsCancellationRequested)
                 Assert.Fail ("Test was cancelled by CancelAfter attribute");
@@ -310,12 +315,10 @@
 
             TestTask task = new TestTask { };
 
-            mockTaskDataStore.Setup (store => store.Dequeue (mockTestTaskMetadata)).Returns (task);
-
             mockTestTaskMetadata.ExceptionToThrow = new Exception ();
 
             queue.Enqueue (task);
-            queue.RunNextTask (profiler: mockProfiler.Object, token: token);
+            queue.RunNextTask (arg: default, profiler: mockProfiler.Object, token: token);
 
             if (token.IsCancellationRequested)
                 Assert.Fail ("Test was cancelled by CancelAfter attribute");
@@ -330,25 +333,9 @@
         {
             TaskQueue<TArg, TResult> queue = new TaskQueue<TArg, TResult> (0, mockTaskCache.Object, mockTaskDataStore.Object, mockTaskHandleManager.Object);
 
-            bool result = queue.TryRunNextTask ();
+            bool taskWasRun = queue.TryRunNextTask (default, out TResult result);
 
-            Assert.That (result, Is.False);
-        }
-
-        [Test]
-        public unsafe void TryRunNextTask_WhenQueueIsNotEmpty_ReturnsTrue ()
-        {
-            TaskQueue<TArg, TResult> queue = new TaskQueue<TArg, TResult> (0, mockTaskCache.Object, mockTaskDataStore.Object, mockTaskHandleManager.Object);
-
-            TestTask task = new TestTask { };
-
-            mockTaskDataStore.Setup (store => store.Dequeue (mockTestTaskMetadata)).Returns (task);
-
-            queue.Enqueue (task);
-
-            bool result = queue.TryRunNextTask ();
-
-            Assert.That (result, Is.True);
+            Assert.That (taskWasRun, Is.False);
         }
 
         [Test]

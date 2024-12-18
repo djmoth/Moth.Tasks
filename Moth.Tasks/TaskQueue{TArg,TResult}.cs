@@ -39,7 +39,7 @@
         /// <summary>
         /// Initializes a new instance of the <see cref="TaskQueue{TArg, TResult}"/> class.
         /// </summary>
-        /// <inheritdoc cref="TaskQueue(int, int, int, ITaskMetadataCache)"/>/>
+        /// <inheritdoc cref="TaskQueue{TArg,TResult}(int, int, int, ITaskMetadataCache)"/>/>
         /// <param name="taskCapacity"></param>
         /// <param name="taskCache"></param>
         /// <param name="taskDataStore"><see cref="ITaskDataStore"/> responsible for storing task data.</param>

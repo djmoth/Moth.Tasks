@@ -19,19 +19,19 @@
         }
 
         [Test]
-        public void Create_TestTask_ReturnsCorrectType () => TestCreatesCorrectTaskMetadataType<TestTask> (typeof (TaskMetadata<TestTask>));
+        public void Create_TestTask_ReturnsCorrectType () => TestCreatesCorrectTaskMetadataType<TestTask> (typeof (TaskMetadata<TestTask, Unit, Unit>));
 
         [Test]
-        public void Create_TestTaskArg_ReturnsCorrectType () => TestCreatesCorrectTaskMetadataType<TestTaskArg> (typeof (TaskMetadata<TestTaskArg, int>));
+        public void Create_TestTaskArg_ReturnsCorrectType () => TestCreatesCorrectTaskMetadataType<TestTaskArg> (typeof (TaskMetadata<TestTaskArg, int, Unit>));
 
         [Test]
         public void Create_TestTaskArgResult_ReturnsCorrectType () => TestCreatesCorrectTaskMetadataType<TestTaskArgResult> (typeof (TaskMetadata<TestTaskArgResult, int, int>));
 
         [Test]
-        public void Create_DisposableTestTask_ReturnsCorrectType () => TestCreatesCorrectTaskMetadataType<DisposableTestTask> (typeof (TaskMetadata<DisposableTestTask>));
+        public void Create_DisposableTestTask_ReturnsCorrectType () => TestCreatesCorrectTaskMetadataType<DisposableTestTask> (typeof (TaskMetadata<DisposableTestTask, Unit, Unit>));
 
         [Test]
-        public void Create_DisposableTestTaskArg_ReturnsCorrectType () => TestCreatesCorrectTaskMetadataType<DisposableTestTaskArg> (typeof (TaskMetadata<DisposableTestTaskArg, int>));
+        public void Create_DisposableTestTaskArg_ReturnsCorrectType () => TestCreatesCorrectTaskMetadataType<DisposableTestTaskArg> (typeof (TaskMetadata<DisposableTestTaskArg, int, Unit>));
 
         [Test]
         public void Create_DisposableTestTaskArgResult_ReturnsCorrectType () => TestCreatesCorrectTaskMetadataType<DisposableTestTaskArgResult> (typeof (TaskMetadata<DisposableTestTaskArgResult, int, int>));
@@ -52,12 +52,12 @@
 
         public struct TestTask : ITask<Unit, Unit>
         {
-            public void Run () { }
+            public Unit Run (Unit _) => default;
         }
 
-        public struct TestTaskArg : ITask<int>
+        public struct TestTaskArg : ITask<int, Unit>
         {
-            public void Run (int i) { }
+            public Unit Run (int i) => default;
         }
 
         public struct TestTaskArgResult : ITask<int, int>
@@ -69,14 +69,14 @@
         {
             public void Dispose () { }
 
-            public void Run () { }
+            public Unit Run (Unit _) => default;
         }
 
-        public struct DisposableTestTaskArg : ITask<int>, IDisposable
+        public struct DisposableTestTaskArg : ITask<int, Unit>, IDisposable
         {
             public void Dispose () { }
 
-            public void Run (int i) { }
+            public Unit Run (int i) => default;
         }
 
         public struct DisposableTestTaskArgResult : ITask<int, int>, IDisposable

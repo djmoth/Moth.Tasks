@@ -16,7 +16,7 @@
         {
             int taskID = 1;
             var taskFormat = new MockFixedFormat<TestTask<int>> (42);
-            AssertTaskMetadataProperties (new TaskMetadata<TestTask<int>> (taskID, taskFormat), taskID, taskFormat);
+            AssertTaskMetadataProperties (new TaskMetadata<TestTask<int>, Unit, Unit> (taskID, taskFormat), taskID, taskFormat);
         }
 
         [Test]
@@ -24,7 +24,7 @@
         {
             int taskID = 1;
             var taskFormat = new MockVariableFormat<TestTask<object>> (42, typeof (object));
-            AssertTaskMetadataProperties (new TaskMetadata<TestTask<object>> (taskID, taskFormat), taskID, taskFormat);
+            AssertTaskMetadataProperties (new TaskMetadata<TestTask<object>, Unit, Unit> (taskID, taskFormat), taskID, taskFormat);
         }
 
         [Test]
@@ -32,7 +32,7 @@
         {
             int taskID = 1;
             var taskFormat = new MockFixedFormat<TestTaskArg<int>> (42);
-            AssertTaskMetadataProperties (new TaskMetadata<TestTaskArg<int>, int> (taskID, taskFormat), taskID, taskFormat);
+            AssertTaskMetadataProperties (new TaskMetadata<TestTaskArg<int>, int, Unit> (taskID, taskFormat), taskID, taskFormat);
         }
 
         [Test]
@@ -40,7 +40,7 @@
         {
             int taskID = 1;
             var taskFormat = new MockVariableFormat<TestTaskArg<object>> (42, typeof (object));
-            AssertTaskMetadataProperties (new TaskMetadata<TestTaskArg<object>, int> (taskID, taskFormat), taskID, taskFormat);
+            AssertTaskMetadataProperties (new TaskMetadata<TestTaskArg<object>, int, Unit> (taskID, taskFormat), taskID, taskFormat);
         }
 
         [Test]
@@ -64,7 +64,7 @@
         {
             int taskID = 1;
             var taskFormat = new MockFixedFormat<DisposableTestTask<int>> (42);
-            AssertTaskMetadataProperties (new TaskMetadata<DisposableTestTask<int>> (taskID, taskFormat), taskID, taskFormat);
+            AssertTaskMetadataProperties (new TaskMetadata<DisposableTestTask<int>, Unit, Unit> (taskID, taskFormat), taskID, taskFormat);
         }
 
         [Test]
@@ -72,7 +72,7 @@
         {
             int taskID = 1;
             var taskFormat = new MockVariableFormat<DisposableTestTask<object>> (42, typeof (object));
-            AssertTaskMetadataProperties (new TaskMetadata<DisposableTestTask<object>> (taskID, taskFormat), taskID, taskFormat);
+            AssertTaskMetadataProperties (new TaskMetadata<DisposableTestTask<object>, Unit, Unit> (taskID, taskFormat), taskID, taskFormat);
         }
 
         [Test]
@@ -80,7 +80,7 @@
         {
             int taskID = 1;
             var taskFormat = new MockFixedFormat<DisposableTestTaskArg<int>> (42);
-            AssertTaskMetadataProperties (new TaskMetadata<DisposableTestTaskArg<int>, int> (taskID, taskFormat), taskID, taskFormat);
+            AssertTaskMetadataProperties (new TaskMetadata<DisposableTestTaskArg<int>, int, Unit> (taskID, taskFormat), taskID, taskFormat);
         }
 
         [Test]
@@ -88,7 +88,7 @@
         {
             int taskID = 1;
             var taskFormat = new MockVariableFormat<DisposableTestTaskArg<object>> (42, typeof (object));
-            AssertTaskMetadataProperties (new TaskMetadata<DisposableTestTaskArg<object>, int> (taskID, taskFormat), taskID, taskFormat);
+            AssertTaskMetadataProperties (new TaskMetadata<DisposableTestTaskArg<object>, int, Unit> (taskID, taskFormat), taskID, taskFormat);
         }
 
         [Test]
@@ -159,8 +159,9 @@
             bool shouldBeDisposable = typeof (IDisposable).IsAssignableFrom (typeof (T));
             Assert.That (taskInfo.IsDisposable, Is.EqualTo (shouldBeDisposable));
 
-            bool shouldHaveResult = typeof (ITask<int, int>).IsAssignableFrom (typeof (T));
-            bool shouldHaveArgs = typeof (ITask<int>).IsAssignableFrom (typeof (T)) || shouldHaveResult;
+            // Always true for now
+            bool shouldHaveResult = true;
+            bool shouldHaveArgs = true;
 
             Assert.That (taskInfo.HasArgs, Is.EqualTo (shouldHaveArgs));
             Assert.That (taskInfo.HasResult, Is.EqualTo (shouldHaveResult));
@@ -256,14 +257,14 @@
         {
             public TData Data;
 
-            public void Run () { }
+            public Unit Run (Unit _) => default;
         }
 
-        public struct TestTaskArg<TData> : ITask<int>
+        public struct TestTaskArg<TData> : ITask<int, Unit>
         {
             public TData Data;
 
-            public void Run (int i) { }
+            public Unit Run (int i) => default;
         }
 
         public struct TestTaskArgResult<TData> : ITask<int, int>
@@ -279,16 +280,16 @@
 
             public void Dispose () { }
 
-            public void Run () { }
+            public Unit Run (Unit _) => default;
         }
 
-        public struct DisposableTestTaskArg<TData> : ITask<int>, IDisposable
+        public struct DisposableTestTaskArg<TData> : ITask<int, Unit>, IDisposable
         {
             public TData Data;
 
             public void Dispose () { }
 
-            public void Run (int i) { }
+            public Unit Run (int i) => default;
         }
 
         public struct DisposableTestTaskArgResult<TData> : ITask<int, int>, IDisposable

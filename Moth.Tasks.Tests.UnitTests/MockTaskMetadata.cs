@@ -59,6 +59,8 @@ namespace Moth.Tasks.Tests.UnitTests
 
         public Queue<TResult> ResultsToReturn { get; } = new Queue<TResult> ();
 
+        public bool ReturnDefaultWhenNoResults { get; set; } = true;
+
         public void Run (TaskDataAccess access)
         {
             SuppliedArgs.Add (default);
@@ -82,7 +84,13 @@ namespace Moth.Tasks.Tests.UnitTests
             if (ExceptionToThrow != null)
                 throw ExceptionToThrow;
 
-            result = ResultsToReturn.Dequeue ();
+            if (!ResultsToReturn.TryDequeue (out result))
+            {
+                if (ReturnDefaultWhenNoResults)
+                    result = default;
+                else
+                    throw new InvalidOperationException ("No results to return.");
+            }
         }
     }
 }

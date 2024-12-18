@@ -20,7 +20,7 @@
         {
             public int DisposeCallCount { get; private set; }
 
-            public void Run () { }
+            public Unit Run (Unit _) => default;
 
             public void Dispose () => DisposeCallCount++;
         }

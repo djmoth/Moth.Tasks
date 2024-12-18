@@ -3,7 +3,7 @@
     using System;
 
     /// <summary>
-    /// Represents a unit type. This type is used to represent the absence of a value.
+    /// Represents a unit type.
     /// </summary>
     public struct Unit : IEquatable<Unit>
     {

@@ -38,7 +38,7 @@
         {
             public bool Disposed { get; private set; }
 
-            public void Run () { }
+            public Unit Run (Unit _) => default;
 
             public void Dispose () => Disposed = true;
         }
@@ -47,7 +47,7 @@
         {
             public bool Disposed { get; private set; }
 
-            public void Run () { }
+            public Unit Run (Unit _) => default;
 
             public void Dispose () => Disposed = true;
         }

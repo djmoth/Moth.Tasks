@@ -4,21 +4,21 @@
     using NUnit.Framework;
     using System;
 
-    [TestFixture]
-    public class TaskGroupTests
+    [TestFixture ([typeof (object), typeof (object)])]
+    public class TaskGroupTests<TArg, TResult>
     {
-        private Mock<ITaskQueue> mockTaskQueue;
+        private Mock<ITaskQueue<TArg, TResult>> mockTaskQueue;
 
         [SetUp]
         public void SetUp ()
         {
-            mockTaskQueue = new Mock<ITaskQueue> (MockBehavior.Strict);
+            mockTaskQueue = new Mock<ITaskQueue<TArg, TResult>> (MockBehavior.Strict);
         }
 
         [Test]
         public void Constructor_WhenCalled_InitializesCorrectly ()
         {
-            TaskGroup group = new TaskGroup ();
+            TaskGroup<TArg, TResult> group = new TaskGroup<TArg, TResult> ();
 
             Assert.Multiple (() =>
             {
@@ -33,7 +33,7 @@
         [Test]
         public void WhenComplete_WhenCalledWithCompletedGroup_CallsActionImmediately ()
         {
-            TaskGroup group = new TaskGroup ();
+            TaskGroup<TArg, TResult> group = new TaskGroup<TArg, TResult> ();
 
             Assume.That (group.IsComplete, Is.True);
 
@@ -47,9 +47,9 @@
         [Test]
         public void WhenComplete_WhenCalledWithNonCompletedGroup_DoesNotCallActionYet ()
         {
-            TaskGroup group = new TaskGroup ();
+            TaskGroup<TArg, TResult> group = new TaskGroup<TArg, TResult> ();
 
-            mockTaskQueue.Setup (x => x.Enqueue (It.Ref<TaskGroup.TaskGroupItem<TestTask>>.IsAny));
+            mockTaskQueue.Setup (x => x.Enqueue (It.Ref<TaskGroup<TArg, TResult>.TaskGroupItem<TestTask>>.IsAny));
             group.Enqueue (mockTaskQueue.Object, new TestTask ());
 
             Assume.That (group.IsComplete, Is.False);
@@ -61,16 +61,16 @@
             Assert.That (actionCalled, Is.False);
         }
 
-        private delegate void TaskQueueEnqueueCallback (in TaskGroup.TaskGroupItem<TestTask> item);
+        private delegate void TaskQueueEnqueueCallback (in TaskGroup<TArg, TResult>.TaskGroupItem<TestTask> item);
 
         [Test]
         public void WhenComplete_WhenCalledWithInitiallyNonCompletedGroup_CallsActionWhenTaskDisposed ()
         {
-            TaskGroup group = new TaskGroup ();
+            TaskGroup<TArg, TResult> group = new TaskGroup<TArg, TResult> ();
 
-            TaskGroup.TaskGroupItem<TestTask> item = default;
-            mockTaskQueue.Setup (x => x.Enqueue (It.Ref<TaskGroup.TaskGroupItem<TestTask>>.IsAny))
-                .Callback (new TaskQueueEnqueueCallback ((in TaskGroup.TaskGroupItem<TestTask> x) => item = x));
+            TaskGroup<TArg, TResult>.TaskGroupItem<TestTask> item = default;
+            mockTaskQueue.Setup (x => x.Enqueue (It.Ref<TaskGroup<TArg, TResult>.TaskGroupItem<TestTask>>.IsAny))
+                .Callback (new TaskQueueEnqueueCallback ((in TaskGroup<TArg, TResult>.TaskGroupItem<TestTask> x) => item = x));
             group.Enqueue (mockTaskQueue.Object, new TestTask ());
 
             Assume.That (group.IsComplete, Is.False);
@@ -89,7 +89,7 @@
         [Test]
         public void WhenComplete_WhenDisposed_ThrowsObjectDisposedException ()
         {
-            TaskGroup group = new TaskGroup ();
+            TaskGroup<TArg, TResult> group = new TaskGroup<TArg, TResult> ();
 
             group.Dispose ();
 
@@ -99,11 +99,11 @@
         [Test]
         public void Enqueue_WhenCalledWithTask_IncrementsTaskCount ()
         {
-            TaskGroup group = new TaskGroup ();
+            TaskGroup<TArg, TResult> group = new TaskGroup<TArg, TResult> ();
 
             Assume.That (group.TaskCount, Is.Zero);
 
-            mockTaskQueue.Setup (x => x.Enqueue (It.Ref<TaskGroup.TaskGroupItem<TestTask>>.IsAny));
+            mockTaskQueue.Setup (x => x.Enqueue (It.Ref<TaskGroup<TArg, TResult>.TaskGroupItem<TestTask>>.IsAny));
             group.Enqueue (mockTaskQueue.Object, new TestTask ());
 
             Assert.That (group.TaskCount, Is.EqualTo (1));
@@ -115,11 +115,11 @@
         [TestCase (2, 1, 0.5f)]
         public void Progress_WhenCalled_ReturnsCorrectProgress (int taskCount, int completedCount, float expectedProgress)
         {
-            TaskGroup group = new TaskGroup ();
+            TaskGroup<TArg, TResult> group = new TaskGroup<TArg, TResult> ();
 
-            TaskGroup.TaskGroupItem<TestTask> item = default;
-            mockTaskQueue.Setup (x => x.Enqueue (It.Ref<TaskGroup.TaskGroupItem<TestTask>>.IsAny))
-                .Callback (new TaskQueueEnqueueCallback ((in TaskGroup.TaskGroupItem<TestTask> x) => item = x));
+            TaskGroup<TArg, TResult>.TaskGroupItem<TestTask> item = default;
+            mockTaskQueue.Setup (x => x.Enqueue (It.Ref<TaskGroup<TArg, TResult>.TaskGroupItem<TestTask>>.IsAny))
+                .Callback (new TaskQueueEnqueueCallback ((in TaskGroup<TArg, TResult>.TaskGroupItem<TestTask> x) => item = x));
 
             for (int i = 0; i < taskCount; i++)
             {
@@ -140,7 +140,7 @@
         [Test]
         public void Progress_WhenDisposed_ThrowsObjectDisposedException ()
         {
-            TaskGroup group = new TaskGroup ();
+            TaskGroup<TArg, TResult> group = new TaskGroup<TArg, TResult> ();
             group.Dispose ();
             Assert.That (() => group.Progress, Throws.InstanceOf<ObjectDisposedException> ());
         }
@@ -148,7 +148,7 @@
         [Test]
         public void TaskCount_WhenDisposed_ThrowsObjectDisposedException ()
         {
-            TaskGroup group = new TaskGroup ();
+            TaskGroup<TArg, TResult> group = new TaskGroup<TArg, TResult> ();
             group.Dispose ();
             Assert.That (() => group.TaskCount, Throws.InstanceOf<ObjectDisposedException> ());
         }
@@ -156,11 +156,11 @@
         [Test]
         public void CompletedCount_WhenTaskCompletes_ValueIsIncremented ()
         {
-            TaskGroup group = new TaskGroup ();
+            TaskGroup<TArg, TResult> group = new TaskGroup<TArg, TResult> ();
 
-            TaskGroup.TaskGroupItem<TestTask> item = default;
-            mockTaskQueue.Setup (x => x.Enqueue (It.Ref<TaskGroup.TaskGroupItem<TestTask>>.IsAny))
-                .Callback (new TaskQueueEnqueueCallback ((in TaskGroup.TaskGroupItem<TestTask> x) => item = x));
+            TaskGroup<TArg, TResult>.TaskGroupItem<TestTask> item = default;
+            mockTaskQueue.Setup (x => x.Enqueue (It.Ref<TaskGroup<TArg, TResult>.TaskGroupItem<TestTask>>.IsAny))
+                .Callback (new TaskQueueEnqueueCallback ((in TaskGroup<TArg, TResult>.TaskGroupItem<TestTask> x) => item = x));
 
             group.Enqueue (mockTaskQueue.Object, new TestTask ());
 
@@ -174,7 +174,7 @@
         [Test]
         public void CompletedCount_WhenDisposed_ThrowsObjectDisposedException ()
         {
-            TaskGroup group = new TaskGroup ();
+            TaskGroup<TArg, TResult> group = new TaskGroup<TArg, TResult> ();
             group.Dispose ();
             Assert.That (() => group.CompletedCount, Throws.InstanceOf<ObjectDisposedException> ());
         }
@@ -182,7 +182,7 @@
         [Test]
         public void Dispose_WhenComplete_MarksGroupAsDisposed ()
         {
-            TaskGroup group = new TaskGroup ();
+            TaskGroup<TArg, TResult> group = new TaskGroup<TArg, TResult> ();
 
             Assume.That (group.IsDisposed, Is.False);
 
@@ -194,21 +194,18 @@
         [Test]
         public void Dispose_WhenNotComplete_ThrowsInvalidOperationException ()
         {
-            TaskGroup group = new TaskGroup ();
+            TaskGroup<TArg, TResult> group = new TaskGroup<TArg, TResult> ();
 
-            mockTaskQueue.Setup (x => x.Enqueue (It.Ref<TaskGroup.TaskGroupItem<TestTask>>.IsAny));
+            mockTaskQueue.Setup (x => x.Enqueue (It.Ref<TaskGroup<TArg, TResult>.TaskGroupItem<TestTask>>.IsAny));
 
             group.Enqueue (mockTaskQueue.Object, new TestTask ());
 
             Assert.That (group.Dispose, Throws.InstanceOf<InvalidOperationException> ());
         }
 
-        private struct TestTask : ITask<Unit, Unit>
+        private struct TestTask : ITask<TArg, TResult>
         {
-            public void Run ()
-            {
-
-            }
+            public TResult Run (TArg _) => default;
         }
     }
 }
