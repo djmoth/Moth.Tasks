@@ -10,18 +10,20 @@
     /// <summary>
     /// Runs on an <see cref="IWorkerThread"/> continuously executing tasks from a <see cref="TaskQueue"/>.
     /// </summary>
-    public class Worker : IWorker
+    public class Worker<TArg, TResult> : IWorker
     {
         private readonly bool disposeTasks;
         private readonly IProfiler profiler;
         private readonly EventHandler<TaskExceptionEventArgs> exceptionEventHandler;
         private readonly IWorkerThread thread;
         private readonly CancellationTokenSource cancelSource = new CancellationTokenSource ();
+        private readonly Func<TArg> argSource;
+        private readonly Action<TResult> resultCallback;
         private bool disposed;
         private int isRunningState;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="Worker"/> class.
+        /// Initializes a new instance of the <see cref="Worker{TArg, TResult}"/> class.
         /// </summary>
         /// <remarks>
         /// The <see cref="Worker"/> will start executing tasks automatically.
@@ -30,15 +32,18 @@
         /// <param name="shouldDisposeTaskQueue">Determines whether the <see cref="TaskQueue"/> supplied with <paramref name="taskQueue"/> is disposed when <see cref="Dispose ()"/> is called.</param>
         /// <param name="options">Options for initializing the <see cref="Worker"/>.</param>
         /// <exception cref="ArgumentNullException"><paramref name="taskQueue"/> cannot be null.</exception>
-        public Worker (ITaskQueue taskQueue, bool shouldDisposeTaskQueue, WorkerOptions options)
+        public Worker (ITaskQueue<TArg, TResult> taskQueue, bool shouldDisposeTaskQueue, WorkerOptions options, Func<TArg> argSource = null, Action<TResult> resultCallback = null)
         {
             Tasks = taskQueue ?? throw new ArgumentNullException (nameof (taskQueue), $"{nameof (taskQueue)} cannot be null.");
             disposeTasks = shouldDisposeTaskQueue;
 
-            if (disposeTasks)
+            if (shouldDisposeTaskQueue)
                 GC.SuppressFinalize (Tasks);
 
             exceptionEventHandler = options.ExceptionEventHandler;
+
+            this.argSource = argSource;
+            this.resultCallback = resultCallback;
 
             if (options.ProfilerProvider != null && options.Profiler != null)
                 throw new ArgumentException ("Cannot provide both a ProfilerProvider and a Profiler.");
@@ -61,7 +66,7 @@
         }
 
         /// <summary>
-        /// Finalizes an instance of the <see cref="Worker"/> class.
+        /// Finalizes an instance of the <see cref="Worker{TArg, TResult}"/> class.
         /// </summary>
         ~Worker () => Dispose (false);
 
@@ -78,9 +83,9 @@
         public bool IsStarted { get; private set; }
 
         /// <summary>
-        /// Gets the <see cref="TaskQueue"/> of which the worker is executing tasks from.
+        /// Gets the <see cref="ITaskQueue{TArg, TResult}"/> of which the worker is executing tasks from.
         /// </summary>
-        public ITaskQueue Tasks { get; }
+        public ITaskQueue<TArg, TResult> Tasks { get; }
 
         /// <summary>
         /// Gets the <see cref="System.Threading.CancellationToken"/> associated with this worker.
@@ -93,12 +98,12 @@
         /// <summary>
         /// Manually starts the worker if <see cref="WorkerOptions.RequiresManualStart"/> was set to <see langword="true"/>.
         /// </summary>
-        /// <exception cref="ObjectDisposedException">The <see cref="Worker"/> has been disposed.</exception>
+        /// <exception cref="ObjectDisposedException">The <see cref="Worker{TArg, TResult}"/> has been disposed.</exception>
         /// <exception cref="InvalidOperationException">The worker is already started.</exception>
         public void Start ()
         {
             if (disposed)
-                throw new ObjectDisposedException (nameof (Worker));
+                throw new ObjectDisposedException (nameof (Worker<TArg, TResult>));
 
             if (IsStarted)
                 throw new InvalidOperationException ("Worker is already started.");
@@ -109,7 +114,7 @@
         }
 
         /// <summary>
-        /// Calls <see cref="Dispose()"/> and blocks the calling thread until the <see cref="Worker"/> terminates.
+        /// Calls <see cref="Dispose()"/> and blocks the calling thread until the <see cref="Worker{TArg, TResult}"/> terminates.
         /// </summary>
         public void DisposeAndJoin ()
         {
@@ -118,12 +123,12 @@
         }
 
         /// <summary>
-        /// Blocks the calling thread until the <see cref="Worker"/> terminates.
+        /// Blocks the calling thread until the <see cref="Worker{TArg, TResult}"/> terminates.
         /// </summary>
         /// <remarks>
         /// <see cref="Dispose()"/> must be called beforehand. If <see cref="Start"/> was never called, this method will return immediately.
         /// </remarks>
-        /// <exception cref="InvalidOperationException">The <see cref="Worker"/> is not disposed.</exception>
+        /// <exception cref="InvalidOperationException">The <see cref="Worker{TArg, TResult}"/> is not disposed.</exception>
         public void Join ()
         {
             if (!IsStarted)
@@ -175,11 +180,15 @@
 
                 while (!cancel.IsCancellationRequested)
                 {
-                    Tasks.RunNextTask (out Exception exception, profiler, cancel);
+                    TArg arg = argSource != null ? argSource () : default;
+                    TResult result = Tasks.RunNextTask (arg, out Exception exception, profiler, cancel);
 
                     if (exception != null)
                     {
                         exceptionEventHandler?.Invoke (this, new TaskExceptionEventArgs (exception));
+                    } else
+                    {
+                        resultCallback?.Invoke (result);
                     }
                 }
             } catch (Exception ex)

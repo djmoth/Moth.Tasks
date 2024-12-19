@@ -11,25 +11,25 @@ namespace Moth.Tasks.Tests.IntegrationTests
     public class TaskQueueTests
     {
         /// <summary>
-        /// Enqueues an <see cref="ITask<Unit, Unit>"/> in an empty <see cref="TaskQueue"/>.
+        /// Enqueues an <see cref="ITask{Unit, Unit}"/> in an empty <see cref="TaskQueue{Unit, Unit}"/>.
         /// </summary>
         [Test]
-        public void EnqueueITask ()
+        public void EnqueueTaskIncrementsCount ()
         {
-            TaskQueue queue = new TaskQueue ();
+            TaskQueue<Unit, Unit> queue = new TaskQueue<Unit, Unit> ();
 
             queue.Enqueue (new Task ());
 
-            ClassicAssert.AreEqual (1, queue.Count);
+            Assert.That (queue.Count, Is.EqualTo (1));
         }
 
         /// <summary>
-        /// Enqueues an <see cref="Action"/> in an empty <see cref="TaskQueue"/>.
+        /// Enqueues an <see cref="Action"/> in an empty <see cref="TaskQueue<Unit, Unit>"/>.
         /// </summary>
         [Test]
         public void EnqueueAction ()
         {
-            TaskQueue queue = new TaskQueue ();
+            TaskQueue<Unit, Unit> queue = new TaskQueue<Unit, Unit> ();
 
             queue.Enqueue (() => { });
 
@@ -37,12 +37,12 @@ namespace Moth.Tasks.Tests.IntegrationTests
         }
 
         /// <summary>
-        /// Enqueues and runs multiple tasks, and asserts that the internal <see cref="TaskQueue.firstTask"/> index points to the right task.
+        /// Enqueues and runs multiple tasks, and asserts that the internal <see cref="TaskQueue<Unit, Unit>.firstTask"/> index points to the right task.
         /// </summary>
         [Test]
         public void EnqueueAndTryRun_AssertValidData ()
         {
-            TaskQueue queue = new TaskQueue (2, 8, 8);
+            TaskQueue<Unit, Unit> queue = new TaskQueue<Unit, Unit> (2, 8, 8);
 
             Queue<TaskResult> results = new Queue<TaskResult> ();
             int nextTaskIndex = 1;
@@ -94,7 +94,7 @@ namespace Moth.Tasks.Tests.IntegrationTests
         [Test]
         public void EnqueueAndTryRun_ITask ()
         {
-            TaskQueue queue = new TaskQueue ();
+            TaskQueue<Unit, Unit> queue = new TaskQueue<Unit, Unit> ();
 
             TaskResult result = new TaskResult ();
             int value = 42;
@@ -116,7 +116,7 @@ namespace Moth.Tasks.Tests.IntegrationTests
         [Test]
         public void EnqueueAndTryRun_Action ()
         {
-            TaskQueue queue = new TaskQueue ();
+            TaskQueue<Unit, Unit> queue = new TaskQueue<Unit, Unit> ();
 
             TaskResult result = new TaskResult ();
             int value = 42;
@@ -138,7 +138,7 @@ namespace Moth.Tasks.Tests.IntegrationTests
         [Test]
         public void EnqueueAndTryRun_ActionWithArg ()
         {
-            TaskQueue queue = new TaskQueue ();
+            TaskQueue<Unit, Unit> queue = new TaskQueue<Unit, Unit> ();
 
             TaskResult result = new TaskResult ();
             int value = 42;
@@ -160,7 +160,7 @@ namespace Moth.Tasks.Tests.IntegrationTests
         [Test]
         public void EnqueueAndTryRun_Profiler ()
         {
-            TaskQueue queue = new TaskQueue ();
+            TaskQueue<Unit, Unit> queue = new TaskQueue<Unit, Unit> ();
 
             TaskResult result = new TaskResult ();
             int value = 42;
@@ -184,7 +184,7 @@ namespace Moth.Tasks.Tests.IntegrationTests
         [Test]
         public void EnqueueAndTryRun_IDisposable ()
         {
-            TaskQueue queue = new TaskQueue ();
+            TaskQueue<Unit, Unit> queue = new TaskQueue<Unit, Unit> ();
 
             TaskResult runResult = new TaskResult ();
             int runValue = 42;
@@ -201,12 +201,12 @@ namespace Moth.Tasks.Tests.IntegrationTests
         }
 
         /// <summary>
-        /// Enqueues and runs a task which throws an <see cref="InvalidOperationException"/> in its <see cref="ITask<Unit, Unit>.Run"/> method. Asserts that the exception is returned from <see cref="TaskQueue.TryRunNextTask(out Exception)"/>.
+        /// Enqueues and runs a task which throws an <see cref="InvalidOperationException"/> in its <see cref="ITask<Unit, Unit>.Run"/> method. Asserts that the exception is returned from <see cref="TaskQueue<Unit, Unit>.TryRunNextTask(out Exception)"/>.
         /// </summary>
         [Test]
         public void EnqueueAndTryRun_Exception ()
         {
-            TaskQueue queue = new TaskQueue ();
+            TaskQueue<Unit, Unit> queue = new TaskQueue<Unit, Unit> ();
 
             queue.Enqueue (() => throw new InvalidOperationException ());
 
@@ -221,7 +221,7 @@ namespace Moth.Tasks.Tests.IntegrationTests
         [Test]
         public void EnqueueAndTryRun_ExceptionWhileProfiling ()
         {
-            TaskQueue queue = new TaskQueue ();
+            TaskQueue<Unit, Unit> queue = new TaskQueue<Unit, Unit> ();
 
             queue.Enqueue (() => throw new InvalidOperationException ());
 
@@ -237,12 +237,12 @@ namespace Moth.Tasks.Tests.IntegrationTests
         }
 
         /// <summary>
-        /// Enqueues a task with <see cref="TaskQueue.Enqueue{T}(in T, out TaskHandle)"/> and asserts that the <see cref="TaskHandle"/> returned is valid.
+        /// Enqueues a task with <see cref="TaskQueue<Unit, Unit>.Enqueue{T}(in T, out TaskHandle)"/> and asserts that the <see cref="TaskHandle"/> returned is valid.
         /// </summary>
         [Test]
         public void EnqueueWithTaskHandle ()
         {
-            TaskQueue queue = new TaskQueue ();
+            TaskQueue<Unit, Unit> queue = new TaskQueue<Unit, Unit> ();
 
             queue.Enqueue (new Task (), out TaskHandle handle);
 
@@ -255,7 +255,7 @@ namespace Moth.Tasks.Tests.IntegrationTests
         [Test]
         public void EnqueueAndWait ()
         {
-            TaskQueue queue = new TaskQueue ();
+            TaskQueue<Unit, Unit> queue = new TaskQueue<Unit, Unit> ();
 
             TaskResult result = new TaskResult ();
             int value = 42;
@@ -289,7 +289,7 @@ namespace Moth.Tasks.Tests.IntegrationTests
         [Test]
         public void EnqueueAndWait_IDisposable ()
         {
-            TaskQueue queue = new TaskQueue ();
+            TaskQueue<Unit, Unit> queue = new TaskQueue<Unit, Unit> ();
 
             TaskResult runResult = new TaskResult ();
             int runValue = 42;
@@ -327,7 +327,7 @@ namespace Moth.Tasks.Tests.IntegrationTests
         [Test]
         public void EnqueueAndWait_Completed ()
         {
-            TaskQueue queue = new TaskQueue ();
+            TaskQueue<Unit, Unit> queue = new TaskQueue<Unit, Unit> ();
 
             queue.Enqueue (new Task (), out TaskHandle handle);
 
@@ -337,23 +337,23 @@ namespace Moth.Tasks.Tests.IntegrationTests
         }
 
         /// <summary>
-        /// Asserts that <see cref="TaskQueue.TryRunNextTask"/> will return <see langword="false"/> when the <see cref="TaskQueue"/> is empty.
+        /// Asserts that <see cref="TaskQueue<Unit, Unit>.TryRunNextTask"/> will return <see langword="false"/> when the <see cref="TaskQueue<Unit, Unit>"/> is empty.
         /// </summary>
         [Test]
         public void TryRun_ReturnFalse ()
         {
-            TaskQueue queue = new TaskQueue ();
+            TaskQueue<Unit, Unit> queue = new TaskQueue<Unit, Unit> ();
 
             ClassicAssert.IsFalse (queue.TryRunNextTask ());
         }
 
         /// <summary>
-        /// Asserts that <see cref="TaskQueue.TryRunNextTask"/> will return <see langword="true"/> when the <see cref="TaskQueue"/> has a task enqueued and ready to be ran.
+        /// Asserts that <see cref="TaskQueue<Unit, Unit>.TryRunNextTask"/> will return <see langword="true"/> when the <see cref="TaskQueue<Unit, Unit>"/> has a task enqueued and ready to be ran.
         /// </summary>
         [Test]
         public void TryRun_ReturnTrue ()
         {
-            TaskQueue queue = new TaskQueue ();
+            TaskQueue<Unit, Unit> queue = new TaskQueue<Unit, Unit> ();
 
             queue.Enqueue (new Task ());
 
@@ -366,7 +366,7 @@ namespace Moth.Tasks.Tests.IntegrationTests
         [Test]
         public void Clear_Disposable ()
         {
-            TaskQueue queue = new TaskQueue ();
+            TaskQueue<Unit, Unit> queue = new TaskQueue<Unit, Unit> ();
 
             TaskResult[] disposeResults = new TaskResult[10];
 
@@ -402,7 +402,7 @@ namespace Moth.Tasks.Tests.IntegrationTests
         [Test]
         public void Clear_Exception ()
         {
-            TaskQueue queue = new TaskQueue ();
+            TaskQueue<Unit, Unit> queue = new TaskQueue<Unit, Unit> ();
 
             TaskResult[] disposeResults = new TaskResult[10];
 
@@ -435,12 +435,12 @@ namespace Moth.Tasks.Tests.IntegrationTests
         }
 
         /// <summary>
-        /// Disposes a <see cref="TaskQueue"/>, asserting that the internal <see cref="TaskQueue.disposed"/> flag is set. Also asserts that following calls to <see cref="TaskQueue.Enqueue{T}(in T)"/> & <see cref="TaskQueue.Enqueue{T}(in T, out TaskHandle)"/> throw an <see cref="ObjectDisposedException"/>.
+        /// Disposes a <see cref="TaskQueue<Unit, Unit>"/>, asserting that the internal <see cref="TaskQueue<Unit, Unit>.disposed"/> flag is set. Also asserts that following calls to <see cref="TaskQueue<Unit, Unit>.Enqueue{T}(in T)"/> & <see cref="TaskQueue<Unit, Unit>.Enqueue{T}(in T, out TaskHandle)"/> throw an <see cref="ObjectDisposedException"/>.
         /// </summary>
         [Test]
         public void Dispose ()
         {
-            TaskQueue queue = new TaskQueue ();
+            TaskQueue<Unit, Unit> queue = new TaskQueue<Unit, Unit> ();
 
             ClassicAssert.IsFalse (GetPrivateValue<bool> ("disposed"));
 
@@ -451,13 +451,13 @@ namespace Moth.Tasks.Tests.IntegrationTests
             Assert.Throws<ObjectDisposedException> (() => queue.Enqueue (new Task ()));
             Assert.Throws<ObjectDisposedException> (() => queue.Enqueue (new Task (), out _));
 
-            T GetPrivateValue<T> (string fieldName) => (T)typeof (TaskQueue).GetField (fieldName, BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.FlattenHierarchy).GetValue (queue);
+            T GetPrivateValue<T> (string fieldName) => (T)typeof (TaskQueue<Unit, Unit>).GetField (fieldName, BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.FlattenHierarchy).GetValue (queue);
         }
 
         [Test]
         public void Dispose_GC ()
         {
-            TaskQueue queue = new TaskQueue ();
+            TaskQueue<Unit, Unit> queue = new TaskQueue<Unit, Unit> ();
 
             WeakReference objRef = new WeakReference (null);
 

@@ -238,7 +238,7 @@
             Assume.That (token.IsCancellationRequested, Is.False);
 
             Assert.That (mockTestTaskMetadata.SuppliedArgs, Is.EqualTo (new TArg[] { arg }));
-            Assert.That  (returnedResult, Is.EqualTo (resultToReturn));
+            Assert.That (returnedResult, Is.EqualTo (resultToReturn));
         }
 
         [Test]
@@ -299,8 +299,7 @@
             queue.Enqueue (task);
             queue.RunNextTask (arg: default, profiler: mockProfiler.Object, token: token);
 
-            if (token.IsCancellationRequested)
-                Assert.Fail ("Test was cancelled by CancelAfter attribute");
+            Assume.That (token.IsCancellationRequested, Is.False);
 
             mockProfiler.Verify (profiler => profiler.BeginTask (typeof (TestTask).FullName), Times.Once);
             mockProfiler.Verify (profiler => profiler.EndTask (), Times.Once);
@@ -320,8 +319,7 @@
             queue.Enqueue (task);
             queue.RunNextTask (arg: default, profiler: mockProfiler.Object, token: token);
 
-            if (token.IsCancellationRequested)
-                Assert.Fail ("Test was cancelled by CancelAfter attribute");
+            Assume.That (token.IsCancellationRequested, Is.False);
 
             mockProfiler.Verify (profiler => profiler.BeginTask (typeof (TestTask).FullName), Times.Once);
             mockProfiler.Verify (profiler => profiler.EndTask (), Times.Once);

@@ -10,79 +10,82 @@
 
     public class TaskGroupTests
     {
-        [Test]
-        public void WhenComplete_InvokesAction_WhenAllTasksComplete ()
+        [TestCase (0)]
+        [TestCase (1)]
+        [TestCase (2)]
+        public void ActionSuppliedToWhenCompleteIsInvokedOnceWhenAllTasksComplete (int taskCount)
         {
-            TaskGroup group = new TaskGroup ();
-            TaskQueue queue = new TaskQueue ();
-
-            const int taskCount = 3;
+            TaskGroup<Unit, Unit> group = new TaskGroup<Unit, Unit> ();
+            TaskQueue<Unit, Unit> queue = new TaskQueue<Unit, Unit> ();
 
             for (int i = 0; i < taskCount; i++)
                 group.Enqueue (queue, new TestTask ());
 
-            bool actionInvoked = false;
-            group.WhenComplete (() => actionInvoked = true);
+            int actionInvokeCount = 0;
+            group.WhenComplete (() => actionInvokeCount++);
 
             for (int i = 0; i < taskCount; i++)
             {
-                ClassicAssert.IsFalse (actionInvoked);
-                queue.RunNextTask ();
+                Assume.That (actionInvokeCount, Is.Zero);
+                queue.RunNextTask (default);
             }
 
-            ClassicAssert.IsTrue (actionInvoked);
+            Assert.That (actionInvokeCount, Is.EqualTo (1));
         }
 
-        [Test]
-        public void WhenComplete_InvokesAction_WhenAllTasksComplete_WithMultipleActions ()
+        [TestCase (0)]
+        [TestCase (1)]
+        [TestCase (2)]
+        public void MultipleActionsSuppliedToWhenCompleteAreEachInvokedOnceWhenAllTasksComplete (int taskCount)
         {
-            TaskGroup group = new TaskGroup ();
-            TaskQueue queue = new TaskQueue ();
-
-            const int taskCount = 3;
+            TaskGroup<Unit, Unit> group = new TaskGroup<Unit, Unit> ();
+            TaskQueue<Unit, Unit> queue = new TaskQueue<Unit, Unit> ();
 
             for (int i = 0; i < taskCount; i++)
                 group.Enqueue (queue, new TestTask ());
 
-            int actionInvokedCount = 0;
-            group.WhenComplete (() => actionInvokedCount++);
-            group.WhenComplete (() => actionInvokedCount++);
+            int firstActionInvokeCount = 0;
+            int secondActionInvokeCount = 0;
+            group.WhenComplete (() => firstActionInvokeCount++);
+            group.WhenComplete (() => secondActionInvokeCount++);
 
             for (int i = 0; i < taskCount; i++)
             {
-                ClassicAssert.AreEqual (0, actionInvokedCount);
-                queue.RunNextTask ();
+                Assume.That (firstActionInvokeCount, Is.Zero);
+                Assume.That (secondActionInvokeCount, Is.Zero);
+                queue.RunNextTask (default);
             }
 
-            ClassicAssert.AreEqual (2, actionInvokedCount);
+            Assert.Multiple (() =>
+            {
+                Assert.That (firstActionInvokeCount, Is.EqualTo (1));
+                Assert.That (secondActionInvokeCount, Is.EqualTo (1));
+            });
         }
 
-        [Test]
-        public void WhenComplete_InvokesAction_WhenAllTasksComplete_CalledAfterTasksComplete ()
+        [TestCase (0)]
+        [TestCase (1)]
+        [TestCase (2)]
+        public void WhenCompleteCalledWhenAllTasksCompleteInvokesActionOnceImmediately (int taskCount)
         {
-            TaskGroup group = new TaskGroup ();
-            TaskQueue queue = new TaskQueue ();
-
-            const int taskCount = 3;
+            TaskGroup<Unit, Unit> group = new TaskGroup<Unit, Unit> ();
+            TaskQueue<Unit, Unit> queue = new TaskQueue<Unit, Unit> ();
 
             for (int i = 0; i < taskCount; i++)
                 group.Enqueue (queue, new TestTask ());
 
             for (int i = 0; i < taskCount; i++)
-                queue.RunNextTask ();
+                queue.RunNextTask (default);
 
-            bool actionInvoked = false;
-            group.WhenComplete (() => actionInvoked = true);
+            int actionInvokeCount = 0;
+            group.WhenComplete (() => actionInvokeCount++);
 
-            ClassicAssert.IsTrue (actionInvoked);
+            Assert.That (actionInvokeCount, Is.EqualTo (1));
         }
 
         private struct TestTask : ITask<Unit, Unit>
         {
-            public void Run ()
-            {
-
-            }
+            public Unit Run (Unit _) => default;
         }
     }
 }
