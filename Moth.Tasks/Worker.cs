@@ -8,8 +8,10 @@
     using Validation;
 
     /// <summary>
-    /// Runs on an <see cref="IWorkerThread"/> continuously executing tasks from a <see cref="TaskQueue"/>.
+    /// Runs on an <see cref="IWorkerThread"/> continuously executing tasks from an <see cref="ITaskQueue{TArg, TResult}"/>.
     /// </summary>
+    /// <typeparam name="TArg">Type of task argument.</typeparam>
+    /// <typeparam name="TResult">Type of task result.</typeparam>
     public class Worker<TArg, TResult> : IWorker
     {
         private readonly bool disposeTasks;
@@ -17,8 +19,8 @@
         private readonly EventHandler<TaskExceptionEventArgs> exceptionEventHandler;
         private readonly IWorkerThread thread;
         private readonly CancellationTokenSource cancelSource = new CancellationTokenSource ();
-        private readonly Func<TArg> argSource;
-        private readonly Action<TResult> resultCallback;
+        private readonly TaskArgumentSource<TArg> argSource;
+        private readonly TaskResultCallback<TResult> resultCallback;
         private bool disposed;
         private int isRunningState;
 
@@ -26,13 +28,15 @@
         /// Initializes a new instance of the <see cref="Worker{TArg, TResult}"/> class.
         /// </summary>
         /// <remarks>
-        /// The <see cref="Worker"/> will start executing tasks automatically.
+        /// The <see cref="Worker{TArg, TResult}"/> will start executing tasks automatically.
         /// </remarks>
-        /// <param name="taskQueue">The <see cref="TaskQueue"/> of which the worker will be executing tasks from.</param>
-        /// <param name="shouldDisposeTaskQueue">Determines whether the <see cref="TaskQueue"/> supplied with <paramref name="taskQueue"/> is disposed when <see cref="Dispose ()"/> is called.</param>
-        /// <param name="options">Options for initializing the <see cref="Worker"/>.</param>
+        /// <param name="taskQueue">The <see cref="ITaskQueue{TArg, TResult}"/> of which the worker will be executing tasks from.</param>
+        /// <param name="shouldDisposeTaskQueue">If <see langword="true"/>, the <see cref="ITaskQueue{TArg, TResult}"/> supplied with <paramref name="taskQueue"/> will be disposed when <see cref="Dispose ()"/> is called.</param>
+        /// <param name="options">Options for initializing the <see cref="Worker{TArg, TResult}"/>.</param>
+        /// <param name="argSource">Source for arguments to supply to tasks. Will use <see langword="default"/> of <typeparamref name="TArg"/> if <see langword="null"/>.</param>
+        /// <param name="resultCallback">Callback for handling results returned by tasks. Results will be discarded if <see langword="null"/>.</param>
         /// <exception cref="ArgumentNullException"><paramref name="taskQueue"/> cannot be null.</exception>
-        public Worker (ITaskQueue<TArg, TResult> taskQueue, bool shouldDisposeTaskQueue, WorkerOptions options, Func<TArg> argSource = null, Action<TResult> resultCallback = null)
+        public Worker (ITaskQueue<TArg, TResult> taskQueue, bool shouldDisposeTaskQueue, WorkerOptions options, TaskArgumentSource<TArg> argSource = null, TaskResultCallback<TResult> resultCallback = null)
         {
             Tasks = taskQueue ?? throw new ArgumentNullException (nameof (taskQueue), $"{nameof (taskQueue)} cannot be null.");
             disposeTasks = shouldDisposeTaskQueue;
@@ -41,25 +45,11 @@
                 GC.SuppressFinalize (Tasks);
 
             exceptionEventHandler = options.ExceptionEventHandler;
+            profiler = options.Profiler;
+            thread = options.WorkerThread ?? new WorkerThread (true);
 
             this.argSource = argSource;
             this.resultCallback = resultCallback;
-
-            if (options.ProfilerProvider != null && options.Profiler != null)
-                throw new ArgumentException ("Cannot provide both a ProfilerProvider and a Profiler.");
-
-            if (options.ProfilerProvider != null)
-                profiler = options.ProfilerProvider (this);
-            else
-                profiler = options.Profiler;
-
-            if (options.WorkerThreadProvider != null && options.WorkerThread != null)
-                throw new ArgumentException ("Cannot provide both a WorkerThreadProvider and a WorkerThread.");
-
-            if (options.WorkerThreadProvider != null)
-                thread = options.WorkerThreadProvider (this);
-            else
-                thread = options.WorkerThread ?? new WorkerThread (true);
 
             if (!options.RequiresManualStart)
                 Start ();
@@ -76,7 +66,7 @@
         public bool IsRunning
         {
             get => Interlocked.CompareExchange (ref isRunningState, 1, 1) == 1;
-            protected set => Interlocked.Exchange (ref isRunningState, value ? 1 : 0);
+            private set => Interlocked.Exchange (ref isRunningState, value ? 1 : 0);
         }
 
         /// <inheritdoc />
@@ -141,7 +131,7 @@
         }
 
         /// <summary>
-        /// Sends a signal to shutdown the thread. Also disposes of <see cref="Tasks"/> if specified in <see cref="Worker"/> constructor.
+        /// Sends a signal to shutdown the thread. Also disposes of <see cref="Tasks"/> if specified in <see cref="Worker{TArg, TResult}"/> constructor.
         /// </summary>
         public void Dispose ()
         {
@@ -150,7 +140,7 @@
         }
 
         /// <summary>
-        /// Sends a signal to shutdown the thread. Also disposes of <see cref="Tasks"/> if specified in <see cref="Worker"/> constructor.
+        /// Sends a signal to shutdown the thread. Also disposes of <see cref="Tasks"/> if specified in <see cref="Worker{TArg, TResult}"/> constructor.
         /// </summary>
         /// <param name="disposing"><see langword="true"/> if called from <see cref="Dispose ()"/>, <see langword="false"/> if called from finalizer.</param>
         protected virtual void Dispose (bool disposing)
@@ -195,6 +185,8 @@
             {
                 Trace.TraceError ("Internal exception in Worker: " + ex.ToString ());
                 Dispose ();
+
+                throw;
             } finally
             {
                 if (disposeTasks && Tasks is IDisposable disposableTasks)

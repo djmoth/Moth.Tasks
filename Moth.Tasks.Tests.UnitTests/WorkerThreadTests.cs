@@ -16,7 +16,7 @@
         }
 
         [Test, CancelAfter (1000)]
-        public void Start_WhenNotStart_CallsStartOnThread (CancellationToken token)
+        public void Start_WhenNotStarted_CallsStartOnThread (CancellationToken token)
         {
             WorkerThread workerThread = new WorkerThread (false);
 

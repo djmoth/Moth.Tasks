@@ -8,24 +8,14 @@
     public struct WorkerOptions
     {
         /// <summary>
-        /// Gets or sets the <see cref="IProfiler"/> to use.
+        /// Gets or sets the <see cref="IProfiler"/> to use. Must be <see langword="null"/> if <see cref="ProfilerProvider"/> is not <see langword="null"/>.
         /// </summary>
         public IProfiler Profiler { get; set; }
-
-        /// <summary>
-        /// Gets or sets the <see cref="ProfilerProvider"/> to use.
-        /// </summary>
-        public ProfilerProvider ProfilerProvider { get; set; }
 
         /// <summary>
         /// Gets or sets the <see cref="IWorkerThread"/> to use.
         /// </summary>
         public IWorkerThread WorkerThread { get; set; }
-
-        /// <summary>
-        /// Gets or sets the <see cref="WorkerThreadProvider"/> to use.
-        /// </summary>
-        public WorkerThreadProvider WorkerThreadProvider { get; set; }
 
         /// <summary>
         /// Gets or sets the <see cref="EventHandler{TaskExceptionEventArgs}"/> to use.

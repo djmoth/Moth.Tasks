@@ -34,7 +34,9 @@ namespace Moth.Tasks.Tests.UnitTests
 
         public int DisposeCallCount { get; private set; }
 
-        public Exception ExceptionToThrow { get; set; }
+        public Exception ExceptionToThrowOnRun { get; set; }
+
+        public Exception ExceptionToThrowOnDispose { get; set; }
 
         public void Serialize (in TTask task, Span<byte> destination, ObjectWriter refWriter)
         {
@@ -46,7 +48,13 @@ namespace Moth.Tasks.Tests.UnitTests
             task = default;
         }
 
-        public void Dispose (TaskDataAccess access) => DisposeCallCount++;
+        public void Dispose (TaskDataAccess access)
+        {
+            DisposeCallCount++;
+
+            if (ExceptionToThrowOnDispose != null)
+                throw ExceptionToThrowOnDispose;
+        }
     }
 
     public unsafe class MockTaskMetadata<TTask, TArg, TResult> : MockTaskMetadataBase<TTask>, ITaskMetadata<TArg, TResult>
@@ -65,24 +73,24 @@ namespace Moth.Tasks.Tests.UnitTests
         {
             SuppliedArgs.Add (default);
 
-            if (ExceptionToThrow != null)
-                throw ExceptionToThrow;
+            if (ExceptionToThrowOnRun != null)
+                throw ExceptionToThrowOnRun;
         }
 
         public void Run (TaskDataAccess access, TArg arg)
         {
             SuppliedArgs.Add (arg);
 
-            if (ExceptionToThrow != null)
-                throw ExceptionToThrow;
+            if (ExceptionToThrowOnRun != null)
+                throw ExceptionToThrowOnRun;
         }
 
         public void Run (TaskDataAccess access, TArg arg, out TResult result)
         {
             SuppliedArgs.Add (arg);
 
-            if (ExceptionToThrow != null)
-                throw ExceptionToThrow;
+            if (ExceptionToThrowOnRun != null)
+                throw ExceptionToThrowOnRun;
 
             if (!ResultsToReturn.TryDequeue (out result))
             {

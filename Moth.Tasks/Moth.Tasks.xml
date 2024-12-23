@@ -1177,11 +1177,11 @@
             Describes a profiler which can measure the run time of a task.
             </summary>
         </member>
-        <member name="M:Moth.Tasks.IProfiler.BeginTask(System.String)">
+        <member name="M:Moth.Tasks.IProfiler.BeginTask(System.Type)">
             <summary>
             Signals the beginning of a new task.
             </summary>
-            <param name="task">Name of task type.</param>
+            <param name="task">Type of task.</param>
         </member>
         <member name="M:Moth.Tasks.IProfiler.EndTask">
             <summary>
@@ -1450,910 +1450,11 @@
             <param name="source">Source to deserialize from.</param>
             <param name="refReader"><see cref="T:Moth.IO.Serialization.ObjectReader"/> for handling any reference fields.</param>
         </member>
-        <member name="T:Moth.Tasks.ITaskQueue">
-            <summary>
-            Interface for a queue of tasks taking no arguments.
-            </summary>
-        </member>
-        <member name="M:Moth.Tasks.ITaskQueue.RunNextTask(Moth.Tasks.IProfiler,System.Threading.CancellationToken)">
-            <summary>
-            Blocks until a task is ready in the queue, then runs it.
-            </summary>
-            <param name="profiler"><see cref="T:Moth.Tasks.IProfiler"/> to profile the run-time of the task.</param>
-            <param name="token">A <see cref="T:System.Threading.CancellationToken"/> to observe when waiting for a task. Does not cancel actual task execution.</param>
-        </member>
-        <member name="M:Moth.Tasks.ITaskQueue.RunNextTask(System.Exception@,Moth.Tasks.IProfiler,System.Threading.CancellationToken)">
-            <inheritdoc cref="M:Moth.Tasks.ITaskQueue.RunNextTask(Moth.Tasks.IProfiler,System.Threading.CancellationToken)"/>
-            <param name="exception"><see cref="T:System.Exception"/> thrown if task failed. Is <see langword="null"/> if task was run successfully.</param>
-            <param name="profiler"/>
-            <param name="token"/>
-        </member>
-        <member name="M:Moth.Tasks.ITaskQueue.TryRunNextTask(Moth.Tasks.IProfiler)">
-            <summary>
-            Tries to run the next task in the queue, if present. May also perform profiling on the task through an <see cref="T:Moth.Tasks.IProfiler"/>.
-            </summary>
-            <param name="profiler"><see cref="T:Moth.Tasks.IProfiler"/> to profile the run-time of the task.</param>
-            <returns><see langword="true"/> if a task was run, <see langword="false"/> if the <see cref="T:Moth.Tasks.ITaskQueue"/> is empty.</returns>
-            <remarks>
-            Please note that the return value does not indicate if a task was successful. The method will return <see langword="true"/> if a task was ready in the queue, regardless of whether an exception occured.
-            </remarks>
-        </member>
-        <member name="M:Moth.Tasks.ITaskQueue.TryRunNextTask(System.Exception@,Moth.Tasks.IProfiler)">
-            <summary>
-            Tries to run the next task in the queue, if present. Provides an <see cref="T:System.Exception"/> thrown by the task, in case it fails.
-            May also perform profiling on the task through an <see cref="T:Moth.Tasks.IProfiler"/>.
-            </summary>
-            <inheritdoc cref="M:Moth.Tasks.ITaskQueue.TryRunNextTask(Moth.Tasks.IProfiler)"/>
-            <param name="exception"><see cref="T:System.Exception"/> thrown if task failed. Is <see langword="null"/> if task was run successfully.</param>
-            <param name="profiler"/>
-        </member>
-        <member name="T:Moth.Tasks.ITaskQueueEnqueueExtensions">
-            <summary>
-            Extends <see cref="T:Moth.Tasks.ITaskQueue"/> to allow generic <see cref="T:System.Action"/>s to be enqueued as tasks.
-            </summary>
-        </member>
-        <member name="M:Moth.Tasks.ITaskQueueEnqueueExtensions.Enqueue(Moth.Tasks.ITaskQueue,System.Action)">
-            <summary>
-            Enqueue an action to be run later.
-            </summary>
-            <param name="tasks"><see cref="T:Moth.Tasks.ITaskQueue"/> in which the action is enqueued.</param>
-            <param name="action">Action to enqueue.</param>
-            <exception cref="T:System.ArgumentNullException"><paramref name="action"/> is <see langword="null"/>.</exception>
-            <exception cref="T:System.ObjectDisposedException">The <see cref="T:Moth.Tasks.ITaskQueue"/> has been disposed.</exception>
-        </member>
-        <member name="M:Moth.Tasks.ITaskQueueEnqueueExtensions.Enqueue``1(Moth.Tasks.ITaskQueue,System.Action{``0},``0)">
-            <summary>
-            Enqueue an action to be run later with supplied arguments.
-            </summary>
-            <param name="tasks"><see cref="T:Moth.Tasks.ITaskQueue"/> in which the action is enqueued.</param>
-            <param name="action">Action to enqueue.</param>
-            <param name="arg1">The 1st argument to run <paramref name="action"/> with.</param>
-            <typeparam name="T1">The type of the 1st parameter of <paramref name="action"/>.</typeparam>
-            <exception cref="T:System.ArgumentNullException"><paramref name="action"/> is <see langword="null"/>.</exception>
-            <exception cref="T:System.ObjectDisposedException">The <see cref="T:Moth.Tasks.ITaskQueue"/> has been disposed.</exception>
-        </member>
-        <member name="M:Moth.Tasks.ITaskQueueEnqueueExtensions.Enqueue``1(Moth.Tasks.ITaskQueue,System.Action{``0},``0,Moth.Tasks.TaskHandle@)">
-            <summary>
-            Enqueue an action to be run later with supplied arguments, giving out a <see cref="T:Moth.Tasks.TaskHandle"/> for checking task status.
-            </summary>
-            <param name="tasks"><see cref="T:Moth.Tasks.ITaskQueue"/> in which the action is enqueued.</param>
-            <param name="action">Action to enqueue.</param>
-            <param name="arg1">The 1st argument to run <paramref name="action"/> with.</param>
-            <typeparam name="T1">The type of the 1st parameter of <paramref name="action"/>.</typeparam>
-            <param name="handle"><see cref="T:Moth.Tasks.TaskHandle"/> for checking task status.</param>
-            <exception cref="T:System.ArgumentNullException"><paramref name="action"/> is <see langword="null"/>.</exception>
-            <exception cref="T:System.ObjectDisposedException">The <see cref="T:Moth.Tasks.ITaskQueue"/> has been disposed.</exception>
-        </member>
-        <member name="M:Moth.Tasks.ITaskQueueEnqueueExtensions.Enqueue``2(Moth.Tasks.ITaskQueue,System.Action{``0,``1},``0,``1)">
-            <summary>
-            Enqueue an action to be run later with supplied arguments.
-            </summary>
-            <param name="tasks"><see cref="T:Moth.Tasks.ITaskQueue"/> in which the action is enqueued.</param>
-            <param name="action">Action to enqueue.</param>
-            <param name="arg1">The 1st argument to run <paramref name="action"/> with.</param>
-            <param name="arg2">The 2nd argument to run <paramref name="action"/> with.</param>
-            <typeparam name="T1">The type of the 1st parameter of <paramref name="action"/>.</typeparam>
-            <typeparam name="T2">The type of the 2nd parameter of <paramref name="action"/>.</typeparam>
-            <exception cref="T:System.ArgumentNullException"><paramref name="action"/> is <see langword="null"/>.</exception>
-            <exception cref="T:System.ObjectDisposedException">The <see cref="T:Moth.Tasks.ITaskQueue"/> has been disposed.</exception>
-        </member>
-        <member name="M:Moth.Tasks.ITaskQueueEnqueueExtensions.Enqueue``2(Moth.Tasks.ITaskQueue,System.Action{``0,``1},``0,``1,Moth.Tasks.TaskHandle@)">
-            <summary>
-            Enqueue an action to be run later with supplied arguments, giving out a <see cref="T:Moth.Tasks.TaskHandle"/> for checking task status.
-            </summary>
-            <param name="tasks"><see cref="T:Moth.Tasks.ITaskQueue"/> in which the action is enqueued.</param>
-            <param name="action">Action to enqueue.</param>
-            <param name="arg1">The 1st argument to run <paramref name="action"/> with.</param>
-            <param name="arg2">The 2nd argument to run <paramref name="action"/> with.</param>
-            <typeparam name="T1">The type of the 1st parameter of <paramref name="action"/>.</typeparam>
-            <typeparam name="T2">The type of the 2nd parameter of <paramref name="action"/>.</typeparam>
-            <param name="handle"><see cref="T:Moth.Tasks.TaskHandle"/> for checking task status.</param>
-            <exception cref="T:System.ArgumentNullException"><paramref name="action"/> is <see langword="null"/>.</exception>
-            <exception cref="T:System.ObjectDisposedException">The <see cref="T:Moth.Tasks.ITaskQueue"/> has been disposed.</exception>
-        </member>
-        <member name="M:Moth.Tasks.ITaskQueueEnqueueExtensions.Enqueue``3(Moth.Tasks.ITaskQueue,System.Action{``0,``1,``2},``0,``1,``2)">
-            <summary>
-            Enqueue an action to be run later with supplied arguments.
-            </summary>
-            <param name="tasks"><see cref="T:Moth.Tasks.ITaskQueue"/> in which the action is enqueued.</param>
-            <param name="action">Action to enqueue.</param>
-            <param name="arg1">The 1st argument to run <paramref name="action"/> with.</param>
-            <param name="arg2">The 2nd argument to run <paramref name="action"/> with.</param>
-            <param name="arg3">The 3rd argument to run <paramref name="action"/> with.</param>
-            <typeparam name="T1">The type of the 1st parameter of <paramref name="action"/>.</typeparam>
-            <typeparam name="T2">The type of the 2nd parameter of <paramref name="action"/>.</typeparam>
-            <typeparam name="T3">The type of the 3rd parameter of <paramref name="action"/>.</typeparam>
-            <exception cref="T:System.ArgumentNullException"><paramref name="action"/> is <see langword="null"/>.</exception>
-            <exception cref="T:System.ObjectDisposedException">The <see cref="T:Moth.Tasks.ITaskQueue"/> has been disposed.</exception>
-        </member>
-        <member name="M:Moth.Tasks.ITaskQueueEnqueueExtensions.Enqueue``3(Moth.Tasks.ITaskQueue,System.Action{``0,``1,``2},``0,``1,``2,Moth.Tasks.TaskHandle@)">
-            <summary>
-            Enqueue an action to be run later with supplied arguments, giving out a <see cref="T:Moth.Tasks.TaskHandle"/> for checking task status.
-            </summary>
-            <param name="tasks"><see cref="T:Moth.Tasks.ITaskQueue"/> in which the action is enqueued.</param>
-            <param name="action">Action to enqueue.</param>
-            <param name="arg1">The 1st argument to run <paramref name="action"/> with.</param>
-            <param name="arg2">The 2nd argument to run <paramref name="action"/> with.</param>
-            <param name="arg3">The 3rd argument to run <paramref name="action"/> with.</param>
-            <typeparam name="T1">The type of the 1st parameter of <paramref name="action"/>.</typeparam>
-            <typeparam name="T2">The type of the 2nd parameter of <paramref name="action"/>.</typeparam>
-            <typeparam name="T3">The type of the 3rd parameter of <paramref name="action"/>.</typeparam>
-            <param name="handle"><see cref="T:Moth.Tasks.TaskHandle"/> for checking task status.</param>
-            <exception cref="T:System.ArgumentNullException"><paramref name="action"/> is <see langword="null"/>.</exception>
-            <exception cref="T:System.ObjectDisposedException">The <see cref="T:Moth.Tasks.ITaskQueue"/> has been disposed.</exception>
-        </member>
-        <member name="M:Moth.Tasks.ITaskQueueEnqueueExtensions.Enqueue``4(Moth.Tasks.ITaskQueue,System.Action{``0,``1,``2,``3},``0,``1,``2,``3)">
-            <summary>
-            Enqueue an action to be run later with supplied arguments.
-            </summary>
-            <param name="tasks"><see cref="T:Moth.Tasks.ITaskQueue"/> in which the action is enqueued.</param>
-            <param name="action">Action to enqueue.</param>
-            <param name="arg1">The 1st argument to run <paramref name="action"/> with.</param>
-            <param name="arg2">The 2nd argument to run <paramref name="action"/> with.</param>
-            <param name="arg3">The 3rd argument to run <paramref name="action"/> with.</param>
-            <param name="arg4">The 4th argument to run <paramref name="action"/> with.</param>
-            <typeparam name="T1">The type of the 1st parameter of <paramref name="action"/>.</typeparam>
-            <typeparam name="T2">The type of the 2nd parameter of <paramref name="action"/>.</typeparam>
-            <typeparam name="T3">The type of the 3rd parameter of <paramref name="action"/>.</typeparam>
-            <typeparam name="T4">The type of the 4th parameter of <paramref name="action"/>.</typeparam>
-            <exception cref="T:System.ArgumentNullException"><paramref name="action"/> is <see langword="null"/>.</exception>
-            <exception cref="T:System.ObjectDisposedException">The <see cref="T:Moth.Tasks.ITaskQueue"/> has been disposed.</exception>
-        </member>
-        <member name="M:Moth.Tasks.ITaskQueueEnqueueExtensions.Enqueue``4(Moth.Tasks.ITaskQueue,System.Action{``0,``1,``2,``3},``0,``1,``2,``3,Moth.Tasks.TaskHandle@)">
-            <summary>
-            Enqueue an action to be run later with supplied arguments, giving out a <see cref="T:Moth.Tasks.TaskHandle"/> for checking task status.
-            </summary>
-            <param name="tasks"><see cref="T:Moth.Tasks.ITaskQueue"/> in which the action is enqueued.</param>
-            <param name="action">Action to enqueue.</param>
-            <param name="arg1">The 1st argument to run <paramref name="action"/> with.</param>
-            <param name="arg2">The 2nd argument to run <paramref name="action"/> with.</param>
-            <param name="arg3">The 3rd argument to run <paramref name="action"/> with.</param>
-            <param name="arg4">The 4th argument to run <paramref name="action"/> with.</param>
-            <typeparam name="T1">The type of the 1st parameter of <paramref name="action"/>.</typeparam>
-            <typeparam name="T2">The type of the 2nd parameter of <paramref name="action"/>.</typeparam>
-            <typeparam name="T3">The type of the 3rd parameter of <paramref name="action"/>.</typeparam>
-            <typeparam name="T4">The type of the 4th parameter of <paramref name="action"/>.</typeparam>
-            <param name="handle"><see cref="T:Moth.Tasks.TaskHandle"/> for checking task status.</param>
-            <exception cref="T:System.ArgumentNullException"><paramref name="action"/> is <see langword="null"/>.</exception>
-            <exception cref="T:System.ObjectDisposedException">The <see cref="T:Moth.Tasks.ITaskQueue"/> has been disposed.</exception>
-        </member>
-        <member name="M:Moth.Tasks.ITaskQueueEnqueueExtensions.Enqueue``5(Moth.Tasks.ITaskQueue,System.Action{``0,``1,``2,``3,``4},``0,``1,``2,``3,``4)">
-            <summary>
-            Enqueue an action to be run later with supplied arguments.
-            </summary>
-            <param name="tasks"><see cref="T:Moth.Tasks.ITaskQueue"/> in which the action is enqueued.</param>
-            <param name="action">Action to enqueue.</param>
-            <param name="arg1">The 1st argument to run <paramref name="action"/> with.</param>
-            <param name="arg2">The 2nd argument to run <paramref name="action"/> with.</param>
-            <param name="arg3">The 3rd argument to run <paramref name="action"/> with.</param>
-            <param name="arg4">The 4th argument to run <paramref name="action"/> with.</param>
-            <param name="arg5">The 5th argument to run <paramref name="action"/> with.</param>
-            <typeparam name="T1">The type of the 1st parameter of <paramref name="action"/>.</typeparam>
-            <typeparam name="T2">The type of the 2nd parameter of <paramref name="action"/>.</typeparam>
-            <typeparam name="T3">The type of the 3rd parameter of <paramref name="action"/>.</typeparam>
-            <typeparam name="T4">The type of the 4th parameter of <paramref name="action"/>.</typeparam>
-            <typeparam name="T5">The type of the 5th parameter of <paramref name="action"/>.</typeparam>
-            <exception cref="T:System.ArgumentNullException"><paramref name="action"/> is <see langword="null"/>.</exception>
-            <exception cref="T:System.ObjectDisposedException">The <see cref="T:Moth.Tasks.ITaskQueue"/> has been disposed.</exception>
-        </member>
-        <member name="M:Moth.Tasks.ITaskQueueEnqueueExtensions.Enqueue``5(Moth.Tasks.ITaskQueue,System.Action{``0,``1,``2,``3,``4},``0,``1,``2,``3,``4,Moth.Tasks.TaskHandle@)">
-            <summary>
-            Enqueue an action to be run later with supplied arguments, giving out a <see cref="T:Moth.Tasks.TaskHandle"/> for checking task status.
-            </summary>
-            <param name="tasks"><see cref="T:Moth.Tasks.ITaskQueue"/> in which the action is enqueued.</param>
-            <param name="action">Action to enqueue.</param>
-            <param name="arg1">The 1st argument to run <paramref name="action"/> with.</param>
-            <param name="arg2">The 2nd argument to run <paramref name="action"/> with.</param>
-            <param name="arg3">The 3rd argument to run <paramref name="action"/> with.</param>
-            <param name="arg4">The 4th argument to run <paramref name="action"/> with.</param>
-            <param name="arg5">The 5th argument to run <paramref name="action"/> with.</param>
-            <typeparam name="T1">The type of the 1st parameter of <paramref name="action"/>.</typeparam>
-            <typeparam name="T2">The type of the 2nd parameter of <paramref name="action"/>.</typeparam>
-            <typeparam name="T3">The type of the 3rd parameter of <paramref name="action"/>.</typeparam>
-            <typeparam name="T4">The type of the 4th parameter of <paramref name="action"/>.</typeparam>
-            <typeparam name="T5">The type of the 5th parameter of <paramref name="action"/>.</typeparam>
-            <param name="handle"><see cref="T:Moth.Tasks.TaskHandle"/> for checking task status.</param>
-            <exception cref="T:System.ArgumentNullException"><paramref name="action"/> is <see langword="null"/>.</exception>
-            <exception cref="T:System.ObjectDisposedException">The <see cref="T:Moth.Tasks.ITaskQueue"/> has been disposed.</exception>
-        </member>
-        <member name="M:Moth.Tasks.ITaskQueueEnqueueExtensions.Enqueue``6(Moth.Tasks.ITaskQueue,System.Action{``0,``1,``2,``3,``4,``5},``0,``1,``2,``3,``4,``5)">
-            <summary>
-            Enqueue an action to be run later with supplied arguments.
-            </summary>
-            <param name="tasks"><see cref="T:Moth.Tasks.ITaskQueue"/> in which the action is enqueued.</param>
-            <param name="action">Action to enqueue.</param>
-            <param name="arg1">The 1st argument to run <paramref name="action"/> with.</param>
-            <param name="arg2">The 2nd argument to run <paramref name="action"/> with.</param>
-            <param name="arg3">The 3rd argument to run <paramref name="action"/> with.</param>
-            <param name="arg4">The 4th argument to run <paramref name="action"/> with.</param>
-            <param name="arg5">The 5th argument to run <paramref name="action"/> with.</param>
-            <param name="arg6">The 6th argument to run <paramref name="action"/> with.</param>
-            <typeparam name="T1">The type of the 1st parameter of <paramref name="action"/>.</typeparam>
-            <typeparam name="T2">The type of the 2nd parameter of <paramref name="action"/>.</typeparam>
-            <typeparam name="T3">The type of the 3rd parameter of <paramref name="action"/>.</typeparam>
-            <typeparam name="T4">The type of the 4th parameter of <paramref name="action"/>.</typeparam>
-            <typeparam name="T5">The type of the 5th parameter of <paramref name="action"/>.</typeparam>
-            <typeparam name="T6">The type of the 6th parameter of <paramref name="action"/>.</typeparam>
-            <exception cref="T:System.ArgumentNullException"><paramref name="action"/> is <see langword="null"/>.</exception>
-            <exception cref="T:System.ObjectDisposedException">The <see cref="T:Moth.Tasks.ITaskQueue"/> has been disposed.</exception>
-        </member>
-        <member name="M:Moth.Tasks.ITaskQueueEnqueueExtensions.Enqueue``6(Moth.Tasks.ITaskQueue,System.Action{``0,``1,``2,``3,``4,``5},``0,``1,``2,``3,``4,``5,Moth.Tasks.TaskHandle@)">
-            <summary>
-            Enqueue an action to be run later with supplied arguments, giving out a <see cref="T:Moth.Tasks.TaskHandle"/> for checking task status.
-            </summary>
-            <param name="tasks"><see cref="T:Moth.Tasks.ITaskQueue"/> in which the action is enqueued.</param>
-            <param name="action">Action to enqueue.</param>
-            <param name="arg1">The 1st argument to run <paramref name="action"/> with.</param>
-            <param name="arg2">The 2nd argument to run <paramref name="action"/> with.</param>
-            <param name="arg3">The 3rd argument to run <paramref name="action"/> with.</param>
-            <param name="arg4">The 4th argument to run <paramref name="action"/> with.</param>
-            <param name="arg5">The 5th argument to run <paramref name="action"/> with.</param>
-            <param name="arg6">The 6th argument to run <paramref name="action"/> with.</param>
-            <typeparam name="T1">The type of the 1st parameter of <paramref name="action"/>.</typeparam>
-            <typeparam name="T2">The type of the 2nd parameter of <paramref name="action"/>.</typeparam>
-            <typeparam name="T3">The type of the 3rd parameter of <paramref name="action"/>.</typeparam>
-            <typeparam name="T4">The type of the 4th parameter of <paramref name="action"/>.</typeparam>
-            <typeparam name="T5">The type of the 5th parameter of <paramref name="action"/>.</typeparam>
-            <typeparam name="T6">The type of the 6th parameter of <paramref name="action"/>.</typeparam>
-            <param name="handle"><see cref="T:Moth.Tasks.TaskHandle"/> for checking task status.</param>
-            <exception cref="T:System.ArgumentNullException"><paramref name="action"/> is <see langword="null"/>.</exception>
-            <exception cref="T:System.ObjectDisposedException">The <see cref="T:Moth.Tasks.ITaskQueue"/> has been disposed.</exception>
-        </member>
-        <member name="M:Moth.Tasks.ITaskQueueEnqueueExtensions.Enqueue``7(Moth.Tasks.ITaskQueue,System.Action{``0,``1,``2,``3,``4,``5,``6},``0,``1,``2,``3,``4,``5,``6)">
-            <summary>
-            Enqueue an action to be run later with supplied arguments.
-            </summary>
-            <param name="tasks"><see cref="T:Moth.Tasks.ITaskQueue"/> in which the action is enqueued.</param>
-            <param name="action">Action to enqueue.</param>
-            <param name="arg1">The 1st argument to run <paramref name="action"/> with.</param>
-            <param name="arg2">The 2nd argument to run <paramref name="action"/> with.</param>
-            <param name="arg3">The 3rd argument to run <paramref name="action"/> with.</param>
-            <param name="arg4">The 4th argument to run <paramref name="action"/> with.</param>
-            <param name="arg5">The 5th argument to run <paramref name="action"/> with.</param>
-            <param name="arg6">The 6th argument to run <paramref name="action"/> with.</param>
-            <param name="arg7">The 7th argument to run <paramref name="action"/> with.</param>
-            <typeparam name="T1">The type of the 1st parameter of <paramref name="action"/>.</typeparam>
-            <typeparam name="T2">The type of the 2nd parameter of <paramref name="action"/>.</typeparam>
-            <typeparam name="T3">The type of the 3rd parameter of <paramref name="action"/>.</typeparam>
-            <typeparam name="T4">The type of the 4th parameter of <paramref name="action"/>.</typeparam>
-            <typeparam name="T5">The type of the 5th parameter of <paramref name="action"/>.</typeparam>
-            <typeparam name="T6">The type of the 6th parameter of <paramref name="action"/>.</typeparam>
-            <typeparam name="T7">The type of the 7th parameter of <paramref name="action"/>.</typeparam>
-            <exception cref="T:System.ArgumentNullException"><paramref name="action"/> is <see langword="null"/>.</exception>
-            <exception cref="T:System.ObjectDisposedException">The <see cref="T:Moth.Tasks.ITaskQueue"/> has been disposed.</exception>
-        </member>
-        <member name="M:Moth.Tasks.ITaskQueueEnqueueExtensions.Enqueue``7(Moth.Tasks.ITaskQueue,System.Action{``0,``1,``2,``3,``4,``5,``6},``0,``1,``2,``3,``4,``5,``6,Moth.Tasks.TaskHandle@)">
-            <summary>
-            Enqueue an action to be run later with supplied arguments, giving out a <see cref="T:Moth.Tasks.TaskHandle"/> for checking task status.
-            </summary>
-            <param name="tasks"><see cref="T:Moth.Tasks.ITaskQueue"/> in which the action is enqueued.</param>
-            <param name="action">Action to enqueue.</param>
-            <param name="arg1">The 1st argument to run <paramref name="action"/> with.</param>
-            <param name="arg2">The 2nd argument to run <paramref name="action"/> with.</param>
-            <param name="arg3">The 3rd argument to run <paramref name="action"/> with.</param>
-            <param name="arg4">The 4th argument to run <paramref name="action"/> with.</param>
-            <param name="arg5">The 5th argument to run <paramref name="action"/> with.</param>
-            <param name="arg6">The 6th argument to run <paramref name="action"/> with.</param>
-            <param name="arg7">The 7th argument to run <paramref name="action"/> with.</param>
-            <typeparam name="T1">The type of the 1st parameter of <paramref name="action"/>.</typeparam>
-            <typeparam name="T2">The type of the 2nd parameter of <paramref name="action"/>.</typeparam>
-            <typeparam name="T3">The type of the 3rd parameter of <paramref name="action"/>.</typeparam>
-            <typeparam name="T4">The type of the 4th parameter of <paramref name="action"/>.</typeparam>
-            <typeparam name="T5">The type of the 5th parameter of <paramref name="action"/>.</typeparam>
-            <typeparam name="T6">The type of the 6th parameter of <paramref name="action"/>.</typeparam>
-            <typeparam name="T7">The type of the 7th parameter of <paramref name="action"/>.</typeparam>
-            <param name="handle"><see cref="T:Moth.Tasks.TaskHandle"/> for checking task status.</param>
-            <exception cref="T:System.ArgumentNullException"><paramref name="action"/> is <see langword="null"/>.</exception>
-            <exception cref="T:System.ObjectDisposedException">The <see cref="T:Moth.Tasks.ITaskQueue"/> has been disposed.</exception>
-        </member>
-        <member name="M:Moth.Tasks.ITaskQueueEnqueueExtensions.Enqueue``8(Moth.Tasks.ITaskQueue,System.Action{``0,``1,``2,``3,``4,``5,``6,``7},``0,``1,``2,``3,``4,``5,``6,``7)">
-            <summary>
-            Enqueue an action to be run later with supplied arguments.
-            </summary>
-            <param name="tasks"><see cref="T:Moth.Tasks.ITaskQueue"/> in which the action is enqueued.</param>
-            <param name="action">Action to enqueue.</param>
-            <param name="arg1">The 1st argument to run <paramref name="action"/> with.</param>
-            <param name="arg2">The 2nd argument to run <paramref name="action"/> with.</param>
-            <param name="arg3">The 3rd argument to run <paramref name="action"/> with.</param>
-            <param name="arg4">The 4th argument to run <paramref name="action"/> with.</param>
-            <param name="arg5">The 5th argument to run <paramref name="action"/> with.</param>
-            <param name="arg6">The 6th argument to run <paramref name="action"/> with.</param>
-            <param name="arg7">The 7th argument to run <paramref name="action"/> with.</param>
-            <param name="arg8">The 8th argument to run <paramref name="action"/> with.</param>
-            <typeparam name="T1">The type of the 1st parameter of <paramref name="action"/>.</typeparam>
-            <typeparam name="T2">The type of the 2nd parameter of <paramref name="action"/>.</typeparam>
-            <typeparam name="T3">The type of the 3rd parameter of <paramref name="action"/>.</typeparam>
-            <typeparam name="T4">The type of the 4th parameter of <paramref name="action"/>.</typeparam>
-            <typeparam name="T5">The type of the 5th parameter of <paramref name="action"/>.</typeparam>
-            <typeparam name="T6">The type of the 6th parameter of <paramref name="action"/>.</typeparam>
-            <typeparam name="T7">The type of the 7th parameter of <paramref name="action"/>.</typeparam>
-            <typeparam name="T8">The type of the 8th parameter of <paramref name="action"/>.</typeparam>
-            <exception cref="T:System.ArgumentNullException"><paramref name="action"/> is <see langword="null"/>.</exception>
-            <exception cref="T:System.ObjectDisposedException">The <see cref="T:Moth.Tasks.ITaskQueue"/> has been disposed.</exception>
-        </member>
-        <member name="M:Moth.Tasks.ITaskQueueEnqueueExtensions.Enqueue``8(Moth.Tasks.ITaskQueue,System.Action{``0,``1,``2,``3,``4,``5,``6,``7},``0,``1,``2,``3,``4,``5,``6,``7,Moth.Tasks.TaskHandle@)">
-            <summary>
-            Enqueue an action to be run later with supplied arguments, giving out a <see cref="T:Moth.Tasks.TaskHandle"/> for checking task status.
-            </summary>
-            <param name="tasks"><see cref="T:Moth.Tasks.ITaskQueue"/> in which the action is enqueued.</param>
-            <param name="action">Action to enqueue.</param>
-            <param name="arg1">The 1st argument to run <paramref name="action"/> with.</param>
-            <param name="arg2">The 2nd argument to run <paramref name="action"/> with.</param>
-            <param name="arg3">The 3rd argument to run <paramref name="action"/> with.</param>
-            <param name="arg4">The 4th argument to run <paramref name="action"/> with.</param>
-            <param name="arg5">The 5th argument to run <paramref name="action"/> with.</param>
-            <param name="arg6">The 6th argument to run <paramref name="action"/> with.</param>
-            <param name="arg7">The 7th argument to run <paramref name="action"/> with.</param>
-            <param name="arg8">The 8th argument to run <paramref name="action"/> with.</param>
-            <typeparam name="T1">The type of the 1st parameter of <paramref name="action"/>.</typeparam>
-            <typeparam name="T2">The type of the 2nd parameter of <paramref name="action"/>.</typeparam>
-            <typeparam name="T3">The type of the 3rd parameter of <paramref name="action"/>.</typeparam>
-            <typeparam name="T4">The type of the 4th parameter of <paramref name="action"/>.</typeparam>
-            <typeparam name="T5">The type of the 5th parameter of <paramref name="action"/>.</typeparam>
-            <typeparam name="T6">The type of the 6th parameter of <paramref name="action"/>.</typeparam>
-            <typeparam name="T7">The type of the 7th parameter of <paramref name="action"/>.</typeparam>
-            <typeparam name="T8">The type of the 8th parameter of <paramref name="action"/>.</typeparam>
-            <param name="handle"><see cref="T:Moth.Tasks.TaskHandle"/> for checking task status.</param>
-            <exception cref="T:System.ArgumentNullException"><paramref name="action"/> is <see langword="null"/>.</exception>
-            <exception cref="T:System.ObjectDisposedException">The <see cref="T:Moth.Tasks.ITaskQueue"/> has been disposed.</exception>
-        </member>
-        <member name="M:Moth.Tasks.ITaskQueueEnqueueExtensions.Enqueue``9(Moth.Tasks.ITaskQueue,System.Action{``0,``1,``2,``3,``4,``5,``6,``7,``8},``0,``1,``2,``3,``4,``5,``6,``7,``8)">
-            <summary>
-            Enqueue an action to be run later with supplied arguments.
-            </summary>
-            <param name="tasks"><see cref="T:Moth.Tasks.ITaskQueue"/> in which the action is enqueued.</param>
-            <param name="action">Action to enqueue.</param>
-            <param name="arg1">The 1st argument to run <paramref name="action"/> with.</param>
-            <param name="arg2">The 2nd argument to run <paramref name="action"/> with.</param>
-            <param name="arg3">The 3rd argument to run <paramref name="action"/> with.</param>
-            <param name="arg4">The 4th argument to run <paramref name="action"/> with.</param>
-            <param name="arg5">The 5th argument to run <paramref name="action"/> with.</param>
-            <param name="arg6">The 6th argument to run <paramref name="action"/> with.</param>
-            <param name="arg7">The 7th argument to run <paramref name="action"/> with.</param>
-            <param name="arg8">The 8th argument to run <paramref name="action"/> with.</param>
-            <param name="arg9">The 9th argument to run <paramref name="action"/> with.</param>
-            <typeparam name="T1">The type of the 1st parameter of <paramref name="action"/>.</typeparam>
-            <typeparam name="T2">The type of the 2nd parameter of <paramref name="action"/>.</typeparam>
-            <typeparam name="T3">The type of the 3rd parameter of <paramref name="action"/>.</typeparam>
-            <typeparam name="T4">The type of the 4th parameter of <paramref name="action"/>.</typeparam>
-            <typeparam name="T5">The type of the 5th parameter of <paramref name="action"/>.</typeparam>
-            <typeparam name="T6">The type of the 6th parameter of <paramref name="action"/>.</typeparam>
-            <typeparam name="T7">The type of the 7th parameter of <paramref name="action"/>.</typeparam>
-            <typeparam name="T8">The type of the 8th parameter of <paramref name="action"/>.</typeparam>
-            <typeparam name="T9">The type of the 9th parameter of <paramref name="action"/>.</typeparam>
-            <exception cref="T:System.ArgumentNullException"><paramref name="action"/> is <see langword="null"/>.</exception>
-            <exception cref="T:System.ObjectDisposedException">The <see cref="T:Moth.Tasks.ITaskQueue"/> has been disposed.</exception>
-        </member>
-        <member name="M:Moth.Tasks.ITaskQueueEnqueueExtensions.Enqueue``9(Moth.Tasks.ITaskQueue,System.Action{``0,``1,``2,``3,``4,``5,``6,``7,``8},``0,``1,``2,``3,``4,``5,``6,``7,``8,Moth.Tasks.TaskHandle@)">
-            <summary>
-            Enqueue an action to be run later with supplied arguments, giving out a <see cref="T:Moth.Tasks.TaskHandle"/> for checking task status.
-            </summary>
-            <param name="tasks"><see cref="T:Moth.Tasks.ITaskQueue"/> in which the action is enqueued.</param>
-            <param name="action">Action to enqueue.</param>
-            <param name="arg1">The 1st argument to run <paramref name="action"/> with.</param>
-            <param name="arg2">The 2nd argument to run <paramref name="action"/> with.</param>
-            <param name="arg3">The 3rd argument to run <paramref name="action"/> with.</param>
-            <param name="arg4">The 4th argument to run <paramref name="action"/> with.</param>
-            <param name="arg5">The 5th argument to run <paramref name="action"/> with.</param>
-            <param name="arg6">The 6th argument to run <paramref name="action"/> with.</param>
-            <param name="arg7">The 7th argument to run <paramref name="action"/> with.</param>
-            <param name="arg8">The 8th argument to run <paramref name="action"/> with.</param>
-            <param name="arg9">The 9th argument to run <paramref name="action"/> with.</param>
-            <typeparam name="T1">The type of the 1st parameter of <paramref name="action"/>.</typeparam>
-            <typeparam name="T2">The type of the 2nd parameter of <paramref name="action"/>.</typeparam>
-            <typeparam name="T3">The type of the 3rd parameter of <paramref name="action"/>.</typeparam>
-            <typeparam name="T4">The type of the 4th parameter of <paramref name="action"/>.</typeparam>
-            <typeparam name="T5">The type of the 5th parameter of <paramref name="action"/>.</typeparam>
-            <typeparam name="T6">The type of the 6th parameter of <paramref name="action"/>.</typeparam>
-            <typeparam name="T7">The type of the 7th parameter of <paramref name="action"/>.</typeparam>
-            <typeparam name="T8">The type of the 8th parameter of <paramref name="action"/>.</typeparam>
-            <typeparam name="T9">The type of the 9th parameter of <paramref name="action"/>.</typeparam>
-            <param name="handle"><see cref="T:Moth.Tasks.TaskHandle"/> for checking task status.</param>
-            <exception cref="T:System.ArgumentNullException"><paramref name="action"/> is <see langword="null"/>.</exception>
-            <exception cref="T:System.ObjectDisposedException">The <see cref="T:Moth.Tasks.ITaskQueue"/> has been disposed.</exception>
-        </member>
-        <member name="M:Moth.Tasks.ITaskQueueEnqueueExtensions.Enqueue``10(Moth.Tasks.ITaskQueue,System.Action{``0,``1,``2,``3,``4,``5,``6,``7,``8,``9},``0,``1,``2,``3,``4,``5,``6,``7,``8,``9)">
-            <summary>
-            Enqueue an action to be run later with supplied arguments.
-            </summary>
-            <param name="tasks"><see cref="T:Moth.Tasks.ITaskQueue"/> in which the action is enqueued.</param>
-            <param name="action">Action to enqueue.</param>
-            <param name="arg1">The 1st argument to run <paramref name="action"/> with.</param>
-            <param name="arg2">The 2nd argument to run <paramref name="action"/> with.</param>
-            <param name="arg3">The 3rd argument to run <paramref name="action"/> with.</param>
-            <param name="arg4">The 4th argument to run <paramref name="action"/> with.</param>
-            <param name="arg5">The 5th argument to run <paramref name="action"/> with.</param>
-            <param name="arg6">The 6th argument to run <paramref name="action"/> with.</param>
-            <param name="arg7">The 7th argument to run <paramref name="action"/> with.</param>
-            <param name="arg8">The 8th argument to run <paramref name="action"/> with.</param>
-            <param name="arg9">The 9th argument to run <paramref name="action"/> with.</param>
-            <param name="arg10">The 10th argument to run <paramref name="action"/> with.</param>
-            <typeparam name="T1">The type of the 1st parameter of <paramref name="action"/>.</typeparam>
-            <typeparam name="T2">The type of the 2nd parameter of <paramref name="action"/>.</typeparam>
-            <typeparam name="T3">The type of the 3rd parameter of <paramref name="action"/>.</typeparam>
-            <typeparam name="T4">The type of the 4th parameter of <paramref name="action"/>.</typeparam>
-            <typeparam name="T5">The type of the 5th parameter of <paramref name="action"/>.</typeparam>
-            <typeparam name="T6">The type of the 6th parameter of <paramref name="action"/>.</typeparam>
-            <typeparam name="T7">The type of the 7th parameter of <paramref name="action"/>.</typeparam>
-            <typeparam name="T8">The type of the 8th parameter of <paramref name="action"/>.</typeparam>
-            <typeparam name="T9">The type of the 9th parameter of <paramref name="action"/>.</typeparam>
-            <typeparam name="T10">The type of the 10th parameter of <paramref name="action"/>.</typeparam>
-            <exception cref="T:System.ArgumentNullException"><paramref name="action"/> is <see langword="null"/>.</exception>
-            <exception cref="T:System.ObjectDisposedException">The <see cref="T:Moth.Tasks.ITaskQueue"/> has been disposed.</exception>
-        </member>
-        <member name="M:Moth.Tasks.ITaskQueueEnqueueExtensions.Enqueue``10(Moth.Tasks.ITaskQueue,System.Action{``0,``1,``2,``3,``4,``5,``6,``7,``8,``9},``0,``1,``2,``3,``4,``5,``6,``7,``8,``9,Moth.Tasks.TaskHandle@)">
-            <summary>
-            Enqueue an action to be run later with supplied arguments, giving out a <see cref="T:Moth.Tasks.TaskHandle"/> for checking task status.
-            </summary>
-            <param name="tasks"><see cref="T:Moth.Tasks.ITaskQueue"/> in which the action is enqueued.</param>
-            <param name="action">Action to enqueue.</param>
-            <param name="arg1">The 1st argument to run <paramref name="action"/> with.</param>
-            <param name="arg2">The 2nd argument to run <paramref name="action"/> with.</param>
-            <param name="arg3">The 3rd argument to run <paramref name="action"/> with.</param>
-            <param name="arg4">The 4th argument to run <paramref name="action"/> with.</param>
-            <param name="arg5">The 5th argument to run <paramref name="action"/> with.</param>
-            <param name="arg6">The 6th argument to run <paramref name="action"/> with.</param>
-            <param name="arg7">The 7th argument to run <paramref name="action"/> with.</param>
-            <param name="arg8">The 8th argument to run <paramref name="action"/> with.</param>
-            <param name="arg9">The 9th argument to run <paramref name="action"/> with.</param>
-            <param name="arg10">The 10th argument to run <paramref name="action"/> with.</param>
-            <typeparam name="T1">The type of the 1st parameter of <paramref name="action"/>.</typeparam>
-            <typeparam name="T2">The type of the 2nd parameter of <paramref name="action"/>.</typeparam>
-            <typeparam name="T3">The type of the 3rd parameter of <paramref name="action"/>.</typeparam>
-            <typeparam name="T4">The type of the 4th parameter of <paramref name="action"/>.</typeparam>
-            <typeparam name="T5">The type of the 5th parameter of <paramref name="action"/>.</typeparam>
-            <typeparam name="T6">The type of the 6th parameter of <paramref name="action"/>.</typeparam>
-            <typeparam name="T7">The type of the 7th parameter of <paramref name="action"/>.</typeparam>
-            <typeparam name="T8">The type of the 8th parameter of <paramref name="action"/>.</typeparam>
-            <typeparam name="T9">The type of the 9th parameter of <paramref name="action"/>.</typeparam>
-            <typeparam name="T10">The type of the 10th parameter of <paramref name="action"/>.</typeparam>
-            <param name="handle"><see cref="T:Moth.Tasks.TaskHandle"/> for checking task status.</param>
-            <exception cref="T:System.ArgumentNullException"><paramref name="action"/> is <see langword="null"/>.</exception>
-            <exception cref="T:System.ObjectDisposedException">The <see cref="T:Moth.Tasks.ITaskQueue"/> has been disposed.</exception>
-        </member>
-        <member name="M:Moth.Tasks.ITaskQueueEnqueueExtensions.Enqueue``11(Moth.Tasks.ITaskQueue,System.Action{``0,``1,``2,``3,``4,``5,``6,``7,``8,``9,``10},``0,``1,``2,``3,``4,``5,``6,``7,``8,``9,``10)">
-            <summary>
-            Enqueue an action to be run later with supplied arguments.
-            </summary>
-            <param name="tasks"><see cref="T:Moth.Tasks.ITaskQueue"/> in which the action is enqueued.</param>
-            <param name="action">Action to enqueue.</param>
-            <param name="arg1">The 1st argument to run <paramref name="action"/> with.</param>
-            <param name="arg2">The 2nd argument to run <paramref name="action"/> with.</param>
-            <param name="arg3">The 3rd argument to run <paramref name="action"/> with.</param>
-            <param name="arg4">The 4th argument to run <paramref name="action"/> with.</param>
-            <param name="arg5">The 5th argument to run <paramref name="action"/> with.</param>
-            <param name="arg6">The 6th argument to run <paramref name="action"/> with.</param>
-            <param name="arg7">The 7th argument to run <paramref name="action"/> with.</param>
-            <param name="arg8">The 8th argument to run <paramref name="action"/> with.</param>
-            <param name="arg9">The 9th argument to run <paramref name="action"/> with.</param>
-            <param name="arg10">The 10th argument to run <paramref name="action"/> with.</param>
-            <param name="arg11">The 11th argument to run <paramref name="action"/> with.</param>
-            <typeparam name="T1">The type of the 1st parameter of <paramref name="action"/>.</typeparam>
-            <typeparam name="T2">The type of the 2nd parameter of <paramref name="action"/>.</typeparam>
-            <typeparam name="T3">The type of the 3rd parameter of <paramref name="action"/>.</typeparam>
-            <typeparam name="T4">The type of the 4th parameter of <paramref name="action"/>.</typeparam>
-            <typeparam name="T5">The type of the 5th parameter of <paramref name="action"/>.</typeparam>
-            <typeparam name="T6">The type of the 6th parameter of <paramref name="action"/>.</typeparam>
-            <typeparam name="T7">The type of the 7th parameter of <paramref name="action"/>.</typeparam>
-            <typeparam name="T8">The type of the 8th parameter of <paramref name="action"/>.</typeparam>
-            <typeparam name="T9">The type of the 9th parameter of <paramref name="action"/>.</typeparam>
-            <typeparam name="T10">The type of the 10th parameter of <paramref name="action"/>.</typeparam>
-            <typeparam name="T11">The type of the 11th parameter of <paramref name="action"/>.</typeparam>
-            <exception cref="T:System.ArgumentNullException"><paramref name="action"/> is <see langword="null"/>.</exception>
-            <exception cref="T:System.ObjectDisposedException">The <see cref="T:Moth.Tasks.ITaskQueue"/> has been disposed.</exception>
-        </member>
-        <member name="M:Moth.Tasks.ITaskQueueEnqueueExtensions.Enqueue``11(Moth.Tasks.ITaskQueue,System.Action{``0,``1,``2,``3,``4,``5,``6,``7,``8,``9,``10},``0,``1,``2,``3,``4,``5,``6,``7,``8,``9,``10,Moth.Tasks.TaskHandle@)">
-            <summary>
-            Enqueue an action to be run later with supplied arguments, giving out a <see cref="T:Moth.Tasks.TaskHandle"/> for checking task status.
-            </summary>
-            <param name="tasks"><see cref="T:Moth.Tasks.ITaskQueue"/> in which the action is enqueued.</param>
-            <param name="action">Action to enqueue.</param>
-            <param name="arg1">The 1st argument to run <paramref name="action"/> with.</param>
-            <param name="arg2">The 2nd argument to run <paramref name="action"/> with.</param>
-            <param name="arg3">The 3rd argument to run <paramref name="action"/> with.</param>
-            <param name="arg4">The 4th argument to run <paramref name="action"/> with.</param>
-            <param name="arg5">The 5th argument to run <paramref name="action"/> with.</param>
-            <param name="arg6">The 6th argument to run <paramref name="action"/> with.</param>
-            <param name="arg7">The 7th argument to run <paramref name="action"/> with.</param>
-            <param name="arg8">The 8th argument to run <paramref name="action"/> with.</param>
-            <param name="arg9">The 9th argument to run <paramref name="action"/> with.</param>
-            <param name="arg10">The 10th argument to run <paramref name="action"/> with.</param>
-            <param name="arg11">The 11th argument to run <paramref name="action"/> with.</param>
-            <typeparam name="T1">The type of the 1st parameter of <paramref name="action"/>.</typeparam>
-            <typeparam name="T2">The type of the 2nd parameter of <paramref name="action"/>.</typeparam>
-            <typeparam name="T3">The type of the 3rd parameter of <paramref name="action"/>.</typeparam>
-            <typeparam name="T4">The type of the 4th parameter of <paramref name="action"/>.</typeparam>
-            <typeparam name="T5">The type of the 5th parameter of <paramref name="action"/>.</typeparam>
-            <typeparam name="T6">The type of the 6th parameter of <paramref name="action"/>.</typeparam>
-            <typeparam name="T7">The type of the 7th parameter of <paramref name="action"/>.</typeparam>
-            <typeparam name="T8">The type of the 8th parameter of <paramref name="action"/>.</typeparam>
-            <typeparam name="T9">The type of the 9th parameter of <paramref name="action"/>.</typeparam>
-            <typeparam name="T10">The type of the 10th parameter of <paramref name="action"/>.</typeparam>
-            <typeparam name="T11">The type of the 11th parameter of <paramref name="action"/>.</typeparam>
-            <param name="handle"><see cref="T:Moth.Tasks.TaskHandle"/> for checking task status.</param>
-            <exception cref="T:System.ArgumentNullException"><paramref name="action"/> is <see langword="null"/>.</exception>
-            <exception cref="T:System.ObjectDisposedException">The <see cref="T:Moth.Tasks.ITaskQueue"/> has been disposed.</exception>
-        </member>
-        <member name="M:Moth.Tasks.ITaskQueueEnqueueExtensions.Enqueue``12(Moth.Tasks.ITaskQueue,System.Action{``0,``1,``2,``3,``4,``5,``6,``7,``8,``9,``10,``11},``0,``1,``2,``3,``4,``5,``6,``7,``8,``9,``10,``11)">
-            <summary>
-            Enqueue an action to be run later with supplied arguments.
-            </summary>
-            <param name="tasks"><see cref="T:Moth.Tasks.ITaskQueue"/> in which the action is enqueued.</param>
-            <param name="action">Action to enqueue.</param>
-            <param name="arg1">The 1st argument to run <paramref name="action"/> with.</param>
-            <param name="arg2">The 2nd argument to run <paramref name="action"/> with.</param>
-            <param name="arg3">The 3rd argument to run <paramref name="action"/> with.</param>
-            <param name="arg4">The 4th argument to run <paramref name="action"/> with.</param>
-            <param name="arg5">The 5th argument to run <paramref name="action"/> with.</param>
-            <param name="arg6">The 6th argument to run <paramref name="action"/> with.</param>
-            <param name="arg7">The 7th argument to run <paramref name="action"/> with.</param>
-            <param name="arg8">The 8th argument to run <paramref name="action"/> with.</param>
-            <param name="arg9">The 9th argument to run <paramref name="action"/> with.</param>
-            <param name="arg10">The 10th argument to run <paramref name="action"/> with.</param>
-            <param name="arg11">The 11th argument to run <paramref name="action"/> with.</param>
-            <param name="arg12">The 12th argument to run <paramref name="action"/> with.</param>
-            <typeparam name="T1">The type of the 1st parameter of <paramref name="action"/>.</typeparam>
-            <typeparam name="T2">The type of the 2nd parameter of <paramref name="action"/>.</typeparam>
-            <typeparam name="T3">The type of the 3rd parameter of <paramref name="action"/>.</typeparam>
-            <typeparam name="T4">The type of the 4th parameter of <paramref name="action"/>.</typeparam>
-            <typeparam name="T5">The type of the 5th parameter of <paramref name="action"/>.</typeparam>
-            <typeparam name="T6">The type of the 6th parameter of <paramref name="action"/>.</typeparam>
-            <typeparam name="T7">The type of the 7th parameter of <paramref name="action"/>.</typeparam>
-            <typeparam name="T8">The type of the 8th parameter of <paramref name="action"/>.</typeparam>
-            <typeparam name="T9">The type of the 9th parameter of <paramref name="action"/>.</typeparam>
-            <typeparam name="T10">The type of the 10th parameter of <paramref name="action"/>.</typeparam>
-            <typeparam name="T11">The type of the 11th parameter of <paramref name="action"/>.</typeparam>
-            <typeparam name="T12">The type of the 12th parameter of <paramref name="action"/>.</typeparam>
-            <exception cref="T:System.ArgumentNullException"><paramref name="action"/> is <see langword="null"/>.</exception>
-            <exception cref="T:System.ObjectDisposedException">The <see cref="T:Moth.Tasks.ITaskQueue"/> has been disposed.</exception>
-        </member>
-        <member name="M:Moth.Tasks.ITaskQueueEnqueueExtensions.Enqueue``12(Moth.Tasks.ITaskQueue,System.Action{``0,``1,``2,``3,``4,``5,``6,``7,``8,``9,``10,``11},``0,``1,``2,``3,``4,``5,``6,``7,``8,``9,``10,``11,Moth.Tasks.TaskHandle@)">
-            <summary>
-            Enqueue an action to be run later with supplied arguments, giving out a <see cref="T:Moth.Tasks.TaskHandle"/> for checking task status.
-            </summary>
-            <param name="tasks"><see cref="T:Moth.Tasks.ITaskQueue"/> in which the action is enqueued.</param>
-            <param name="action">Action to enqueue.</param>
-            <param name="arg1">The 1st argument to run <paramref name="action"/> with.</param>
-            <param name="arg2">The 2nd argument to run <paramref name="action"/> with.</param>
-            <param name="arg3">The 3rd argument to run <paramref name="action"/> with.</param>
-            <param name="arg4">The 4th argument to run <paramref name="action"/> with.</param>
-            <param name="arg5">The 5th argument to run <paramref name="action"/> with.</param>
-            <param name="arg6">The 6th argument to run <paramref name="action"/> with.</param>
-            <param name="arg7">The 7th argument to run <paramref name="action"/> with.</param>
-            <param name="arg8">The 8th argument to run <paramref name="action"/> with.</param>
-            <param name="arg9">The 9th argument to run <paramref name="action"/> with.</param>
-            <param name="arg10">The 10th argument to run <paramref name="action"/> with.</param>
-            <param name="arg11">The 11th argument to run <paramref name="action"/> with.</param>
-            <param name="arg12">The 12th argument to run <paramref name="action"/> with.</param>
-            <typeparam name="T1">The type of the 1st parameter of <paramref name="action"/>.</typeparam>
-            <typeparam name="T2">The type of the 2nd parameter of <paramref name="action"/>.</typeparam>
-            <typeparam name="T3">The type of the 3rd parameter of <paramref name="action"/>.</typeparam>
-            <typeparam name="T4">The type of the 4th parameter of <paramref name="action"/>.</typeparam>
-            <typeparam name="T5">The type of the 5th parameter of <paramref name="action"/>.</typeparam>
-            <typeparam name="T6">The type of the 6th parameter of <paramref name="action"/>.</typeparam>
-            <typeparam name="T7">The type of the 7th parameter of <paramref name="action"/>.</typeparam>
-            <typeparam name="T8">The type of the 8th parameter of <paramref name="action"/>.</typeparam>
-            <typeparam name="T9">The type of the 9th parameter of <paramref name="action"/>.</typeparam>
-            <typeparam name="T10">The type of the 10th parameter of <paramref name="action"/>.</typeparam>
-            <typeparam name="T11">The type of the 11th parameter of <paramref name="action"/>.</typeparam>
-            <typeparam name="T12">The type of the 12th parameter of <paramref name="action"/>.</typeparam>
-            <param name="handle"><see cref="T:Moth.Tasks.TaskHandle"/> for checking task status.</param>
-            <exception cref="T:System.ArgumentNullException"><paramref name="action"/> is <see langword="null"/>.</exception>
-            <exception cref="T:System.ObjectDisposedException">The <see cref="T:Moth.Tasks.ITaskQueue"/> has been disposed.</exception>
-        </member>
-        <member name="M:Moth.Tasks.ITaskQueueEnqueueExtensions.Enqueue``13(Moth.Tasks.ITaskQueue,System.Action{``0,``1,``2,``3,``4,``5,``6,``7,``8,``9,``10,``11,``12},``0,``1,``2,``3,``4,``5,``6,``7,``8,``9,``10,``11,``12)">
-            <summary>
-            Enqueue an action to be run later with supplied arguments.
-            </summary>
-            <param name="tasks"><see cref="T:Moth.Tasks.ITaskQueue"/> in which the action is enqueued.</param>
-            <param name="action">Action to enqueue.</param>
-            <param name="arg1">The 1st argument to run <paramref name="action"/> with.</param>
-            <param name="arg2">The 2nd argument to run <paramref name="action"/> with.</param>
-            <param name="arg3">The 3rd argument to run <paramref name="action"/> with.</param>
-            <param name="arg4">The 4th argument to run <paramref name="action"/> with.</param>
-            <param name="arg5">The 5th argument to run <paramref name="action"/> with.</param>
-            <param name="arg6">The 6th argument to run <paramref name="action"/> with.</param>
-            <param name="arg7">The 7th argument to run <paramref name="action"/> with.</param>
-            <param name="arg8">The 8th argument to run <paramref name="action"/> with.</param>
-            <param name="arg9">The 9th argument to run <paramref name="action"/> with.</param>
-            <param name="arg10">The 10th argument to run <paramref name="action"/> with.</param>
-            <param name="arg11">The 11th argument to run <paramref name="action"/> with.</param>
-            <param name="arg12">The 12th argument to run <paramref name="action"/> with.</param>
-            <param name="arg13">The 13th argument to run <paramref name="action"/> with.</param>
-            <typeparam name="T1">The type of the 1st parameter of <paramref name="action"/>.</typeparam>
-            <typeparam name="T2">The type of the 2nd parameter of <paramref name="action"/>.</typeparam>
-            <typeparam name="T3">The type of the 3rd parameter of <paramref name="action"/>.</typeparam>
-            <typeparam name="T4">The type of the 4th parameter of <paramref name="action"/>.</typeparam>
-            <typeparam name="T5">The type of the 5th parameter of <paramref name="action"/>.</typeparam>
-            <typeparam name="T6">The type of the 6th parameter of <paramref name="action"/>.</typeparam>
-            <typeparam name="T7">The type of the 7th parameter of <paramref name="action"/>.</typeparam>
-            <typeparam name="T8">The type of the 8th parameter of <paramref name="action"/>.</typeparam>
-            <typeparam name="T9">The type of the 9th parameter of <paramref name="action"/>.</typeparam>
-            <typeparam name="T10">The type of the 10th parameter of <paramref name="action"/>.</typeparam>
-            <typeparam name="T11">The type of the 11th parameter of <paramref name="action"/>.</typeparam>
-            <typeparam name="T12">The type of the 12th parameter of <paramref name="action"/>.</typeparam>
-            <typeparam name="T13">The type of the 13th parameter of <paramref name="action"/>.</typeparam>
-            <exception cref="T:System.ArgumentNullException"><paramref name="action"/> is <see langword="null"/>.</exception>
-            <exception cref="T:System.ObjectDisposedException">The <see cref="T:Moth.Tasks.ITaskQueue"/> has been disposed.</exception>
-        </member>
-        <member name="M:Moth.Tasks.ITaskQueueEnqueueExtensions.Enqueue``13(Moth.Tasks.ITaskQueue,System.Action{``0,``1,``2,``3,``4,``5,``6,``7,``8,``9,``10,``11,``12},``0,``1,``2,``3,``4,``5,``6,``7,``8,``9,``10,``11,``12,Moth.Tasks.TaskHandle@)">
-            <summary>
-            Enqueue an action to be run later with supplied arguments, giving out a <see cref="T:Moth.Tasks.TaskHandle"/> for checking task status.
-            </summary>
-            <param name="tasks"><see cref="T:Moth.Tasks.ITaskQueue"/> in which the action is enqueued.</param>
-            <param name="action">Action to enqueue.</param>
-            <param name="arg1">The 1st argument to run <paramref name="action"/> with.</param>
-            <param name="arg2">The 2nd argument to run <paramref name="action"/> with.</param>
-            <param name="arg3">The 3rd argument to run <paramref name="action"/> with.</param>
-            <param name="arg4">The 4th argument to run <paramref name="action"/> with.</param>
-            <param name="arg5">The 5th argument to run <paramref name="action"/> with.</param>
-            <param name="arg6">The 6th argument to run <paramref name="action"/> with.</param>
-            <param name="arg7">The 7th argument to run <paramref name="action"/> with.</param>
-            <param name="arg8">The 8th argument to run <paramref name="action"/> with.</param>
-            <param name="arg9">The 9th argument to run <paramref name="action"/> with.</param>
-            <param name="arg10">The 10th argument to run <paramref name="action"/> with.</param>
-            <param name="arg11">The 11th argument to run <paramref name="action"/> with.</param>
-            <param name="arg12">The 12th argument to run <paramref name="action"/> with.</param>
-            <param name="arg13">The 13th argument to run <paramref name="action"/> with.</param>
-            <typeparam name="T1">The type of the 1st parameter of <paramref name="action"/>.</typeparam>
-            <typeparam name="T2">The type of the 2nd parameter of <paramref name="action"/>.</typeparam>
-            <typeparam name="T3">The type of the 3rd parameter of <paramref name="action"/>.</typeparam>
-            <typeparam name="T4">The type of the 4th parameter of <paramref name="action"/>.</typeparam>
-            <typeparam name="T5">The type of the 5th parameter of <paramref name="action"/>.</typeparam>
-            <typeparam name="T6">The type of the 6th parameter of <paramref name="action"/>.</typeparam>
-            <typeparam name="T7">The type of the 7th parameter of <paramref name="action"/>.</typeparam>
-            <typeparam name="T8">The type of the 8th parameter of <paramref name="action"/>.</typeparam>
-            <typeparam name="T9">The type of the 9th parameter of <paramref name="action"/>.</typeparam>
-            <typeparam name="T10">The type of the 10th parameter of <paramref name="action"/>.</typeparam>
-            <typeparam name="T11">The type of the 11th parameter of <paramref name="action"/>.</typeparam>
-            <typeparam name="T12">The type of the 12th parameter of <paramref name="action"/>.</typeparam>
-            <typeparam name="T13">The type of the 13th parameter of <paramref name="action"/>.</typeparam>
-            <param name="handle"><see cref="T:Moth.Tasks.TaskHandle"/> for checking task status.</param>
-            <exception cref="T:System.ArgumentNullException"><paramref name="action"/> is <see langword="null"/>.</exception>
-            <exception cref="T:System.ObjectDisposedException">The <see cref="T:Moth.Tasks.ITaskQueue"/> has been disposed.</exception>
-        </member>
-        <member name="M:Moth.Tasks.ITaskQueueEnqueueExtensions.Enqueue``14(Moth.Tasks.ITaskQueue,System.Action{``0,``1,``2,``3,``4,``5,``6,``7,``8,``9,``10,``11,``12,``13},``0,``1,``2,``3,``4,``5,``6,``7,``8,``9,``10,``11,``12,``13)">
-            <summary>
-            Enqueue an action to be run later with supplied arguments.
-            </summary>
-            <param name="tasks"><see cref="T:Moth.Tasks.ITaskQueue"/> in which the action is enqueued.</param>
-            <param name="action">Action to enqueue.</param>
-            <param name="arg1">The 1st argument to run <paramref name="action"/> with.</param>
-            <param name="arg2">The 2nd argument to run <paramref name="action"/> with.</param>
-            <param name="arg3">The 3rd argument to run <paramref name="action"/> with.</param>
-            <param name="arg4">The 4th argument to run <paramref name="action"/> with.</param>
-            <param name="arg5">The 5th argument to run <paramref name="action"/> with.</param>
-            <param name="arg6">The 6th argument to run <paramref name="action"/> with.</param>
-            <param name="arg7">The 7th argument to run <paramref name="action"/> with.</param>
-            <param name="arg8">The 8th argument to run <paramref name="action"/> with.</param>
-            <param name="arg9">The 9th argument to run <paramref name="action"/> with.</param>
-            <param name="arg10">The 10th argument to run <paramref name="action"/> with.</param>
-            <param name="arg11">The 11th argument to run <paramref name="action"/> with.</param>
-            <param name="arg12">The 12th argument to run <paramref name="action"/> with.</param>
-            <param name="arg13">The 13th argument to run <paramref name="action"/> with.</param>
-            <param name="arg14">The 14th argument to run <paramref name="action"/> with.</param>
-            <typeparam name="T1">The type of the 1st parameter of <paramref name="action"/>.</typeparam>
-            <typeparam name="T2">The type of the 2nd parameter of <paramref name="action"/>.</typeparam>
-            <typeparam name="T3">The type of the 3rd parameter of <paramref name="action"/>.</typeparam>
-            <typeparam name="T4">The type of the 4th parameter of <paramref name="action"/>.</typeparam>
-            <typeparam name="T5">The type of the 5th parameter of <paramref name="action"/>.</typeparam>
-            <typeparam name="T6">The type of the 6th parameter of <paramref name="action"/>.</typeparam>
-            <typeparam name="T7">The type of the 7th parameter of <paramref name="action"/>.</typeparam>
-            <typeparam name="T8">The type of the 8th parameter of <paramref name="action"/>.</typeparam>
-            <typeparam name="T9">The type of the 9th parameter of <paramref name="action"/>.</typeparam>
-            <typeparam name="T10">The type of the 10th parameter of <paramref name="action"/>.</typeparam>
-            <typeparam name="T11">The type of the 11th parameter of <paramref name="action"/>.</typeparam>
-            <typeparam name="T12">The type of the 12th parameter of <paramref name="action"/>.</typeparam>
-            <typeparam name="T13">The type of the 13th parameter of <paramref name="action"/>.</typeparam>
-            <typeparam name="T14">The type of the 14th parameter of <paramref name="action"/>.</typeparam>
-            <exception cref="T:System.ArgumentNullException"><paramref name="action"/> is <see langword="null"/>.</exception>
-            <exception cref="T:System.ObjectDisposedException">The <see cref="T:Moth.Tasks.ITaskQueue"/> has been disposed.</exception>
-        </member>
-        <member name="M:Moth.Tasks.ITaskQueueEnqueueExtensions.Enqueue``14(Moth.Tasks.ITaskQueue,System.Action{``0,``1,``2,``3,``4,``5,``6,``7,``8,``9,``10,``11,``12,``13},``0,``1,``2,``3,``4,``5,``6,``7,``8,``9,``10,``11,``12,``13,Moth.Tasks.TaskHandle@)">
-            <summary>
-            Enqueue an action to be run later with supplied arguments, giving out a <see cref="T:Moth.Tasks.TaskHandle"/> for checking task status.
-            </summary>
-            <param name="tasks"><see cref="T:Moth.Tasks.ITaskQueue"/> in which the action is enqueued.</param>
-            <param name="action">Action to enqueue.</param>
-            <param name="arg1">The 1st argument to run <paramref name="action"/> with.</param>
-            <param name="arg2">The 2nd argument to run <paramref name="action"/> with.</param>
-            <param name="arg3">The 3rd argument to run <paramref name="action"/> with.</param>
-            <param name="arg4">The 4th argument to run <paramref name="action"/> with.</param>
-            <param name="arg5">The 5th argument to run <paramref name="action"/> with.</param>
-            <param name="arg6">The 6th argument to run <paramref name="action"/> with.</param>
-            <param name="arg7">The 7th argument to run <paramref name="action"/> with.</param>
-            <param name="arg8">The 8th argument to run <paramref name="action"/> with.</param>
-            <param name="arg9">The 9th argument to run <paramref name="action"/> with.</param>
-            <param name="arg10">The 10th argument to run <paramref name="action"/> with.</param>
-            <param name="arg11">The 11th argument to run <paramref name="action"/> with.</param>
-            <param name="arg12">The 12th argument to run <paramref name="action"/> with.</param>
-            <param name="arg13">The 13th argument to run <paramref name="action"/> with.</param>
-            <param name="arg14">The 14th argument to run <paramref name="action"/> with.</param>
-            <typeparam name="T1">The type of the 1st parameter of <paramref name="action"/>.</typeparam>
-            <typeparam name="T2">The type of the 2nd parameter of <paramref name="action"/>.</typeparam>
-            <typeparam name="T3">The type of the 3rd parameter of <paramref name="action"/>.</typeparam>
-            <typeparam name="T4">The type of the 4th parameter of <paramref name="action"/>.</typeparam>
-            <typeparam name="T5">The type of the 5th parameter of <paramref name="action"/>.</typeparam>
-            <typeparam name="T6">The type of the 6th parameter of <paramref name="action"/>.</typeparam>
-            <typeparam name="T7">The type of the 7th parameter of <paramref name="action"/>.</typeparam>
-            <typeparam name="T8">The type of the 8th parameter of <paramref name="action"/>.</typeparam>
-            <typeparam name="T9">The type of the 9th parameter of <paramref name="action"/>.</typeparam>
-            <typeparam name="T10">The type of the 10th parameter of <paramref name="action"/>.</typeparam>
-            <typeparam name="T11">The type of the 11th parameter of <paramref name="action"/>.</typeparam>
-            <typeparam name="T12">The type of the 12th parameter of <paramref name="action"/>.</typeparam>
-            <typeparam name="T13">The type of the 13th parameter of <paramref name="action"/>.</typeparam>
-            <typeparam name="T14">The type of the 14th parameter of <paramref name="action"/>.</typeparam>
-            <param name="handle"><see cref="T:Moth.Tasks.TaskHandle"/> for checking task status.</param>
-            <exception cref="T:System.ArgumentNullException"><paramref name="action"/> is <see langword="null"/>.</exception>
-            <exception cref="T:System.ObjectDisposedException">The <see cref="T:Moth.Tasks.ITaskQueue"/> has been disposed.</exception>
-        </member>
-        <member name="M:Moth.Tasks.ITaskQueueEnqueueExtensions.Enqueue``15(Moth.Tasks.ITaskQueue,System.Action{``0,``1,``2,``3,``4,``5,``6,``7,``8,``9,``10,``11,``12,``13,``14},``0,``1,``2,``3,``4,``5,``6,``7,``8,``9,``10,``11,``12,``13,``14)">
-            <summary>
-            Enqueue an action to be run later with supplied arguments.
-            </summary>
-            <param name="tasks"><see cref="T:Moth.Tasks.ITaskQueue"/> in which the action is enqueued.</param>
-            <param name="action">Action to enqueue.</param>
-            <param name="arg1">The 1st argument to run <paramref name="action"/> with.</param>
-            <param name="arg2">The 2nd argument to run <paramref name="action"/> with.</param>
-            <param name="arg3">The 3rd argument to run <paramref name="action"/> with.</param>
-            <param name="arg4">The 4th argument to run <paramref name="action"/> with.</param>
-            <param name="arg5">The 5th argument to run <paramref name="action"/> with.</param>
-            <param name="arg6">The 6th argument to run <paramref name="action"/> with.</param>
-            <param name="arg7">The 7th argument to run <paramref name="action"/> with.</param>
-            <param name="arg8">The 8th argument to run <paramref name="action"/> with.</param>
-            <param name="arg9">The 9th argument to run <paramref name="action"/> with.</param>
-            <param name="arg10">The 10th argument to run <paramref name="action"/> with.</param>
-            <param name="arg11">The 11th argument to run <paramref name="action"/> with.</param>
-            <param name="arg12">The 12th argument to run <paramref name="action"/> with.</param>
-            <param name="arg13">The 13th argument to run <paramref name="action"/> with.</param>
-            <param name="arg14">The 14th argument to run <paramref name="action"/> with.</param>
-            <param name="arg15">The 15th argument to run <paramref name="action"/> with.</param>
-            <typeparam name="T1">The type of the 1st parameter of <paramref name="action"/>.</typeparam>
-            <typeparam name="T2">The type of the 2nd parameter of <paramref name="action"/>.</typeparam>
-            <typeparam name="T3">The type of the 3rd parameter of <paramref name="action"/>.</typeparam>
-            <typeparam name="T4">The type of the 4th parameter of <paramref name="action"/>.</typeparam>
-            <typeparam name="T5">The type of the 5th parameter of <paramref name="action"/>.</typeparam>
-            <typeparam name="T6">The type of the 6th parameter of <paramref name="action"/>.</typeparam>
-            <typeparam name="T7">The type of the 7th parameter of <paramref name="action"/>.</typeparam>
-            <typeparam name="T8">The type of the 8th parameter of <paramref name="action"/>.</typeparam>
-            <typeparam name="T9">The type of the 9th parameter of <paramref name="action"/>.</typeparam>
-            <typeparam name="T10">The type of the 10th parameter of <paramref name="action"/>.</typeparam>
-            <typeparam name="T11">The type of the 11th parameter of <paramref name="action"/>.</typeparam>
-            <typeparam name="T12">The type of the 12th parameter of <paramref name="action"/>.</typeparam>
-            <typeparam name="T13">The type of the 13th parameter of <paramref name="action"/>.</typeparam>
-            <typeparam name="T14">The type of the 14th parameter of <paramref name="action"/>.</typeparam>
-            <typeparam name="T15">The type of the 15th parameter of <paramref name="action"/>.</typeparam>
-            <exception cref="T:System.ArgumentNullException"><paramref name="action"/> is <see langword="null"/>.</exception>
-            <exception cref="T:System.ObjectDisposedException">The <see cref="T:Moth.Tasks.ITaskQueue"/> has been disposed.</exception>
-        </member>
-        <member name="M:Moth.Tasks.ITaskQueueEnqueueExtensions.Enqueue``15(Moth.Tasks.ITaskQueue,System.Action{``0,``1,``2,``3,``4,``5,``6,``7,``8,``9,``10,``11,``12,``13,``14},``0,``1,``2,``3,``4,``5,``6,``7,``8,``9,``10,``11,``12,``13,``14,Moth.Tasks.TaskHandle@)">
-            <summary>
-            Enqueue an action to be run later with supplied arguments, giving out a <see cref="T:Moth.Tasks.TaskHandle"/> for checking task status.
-            </summary>
-            <param name="tasks"><see cref="T:Moth.Tasks.ITaskQueue"/> in which the action is enqueued.</param>
-            <param name="action">Action to enqueue.</param>
-            <param name="arg1">The 1st argument to run <paramref name="action"/> with.</param>
-            <param name="arg2">The 2nd argument to run <paramref name="action"/> with.</param>
-            <param name="arg3">The 3rd argument to run <paramref name="action"/> with.</param>
-            <param name="arg4">The 4th argument to run <paramref name="action"/> with.</param>
-            <param name="arg5">The 5th argument to run <paramref name="action"/> with.</param>
-            <param name="arg6">The 6th argument to run <paramref name="action"/> with.</param>
-            <param name="arg7">The 7th argument to run <paramref name="action"/> with.</param>
-            <param name="arg8">The 8th argument to run <paramref name="action"/> with.</param>
-            <param name="arg9">The 9th argument to run <paramref name="action"/> with.</param>
-            <param name="arg10">The 10th argument to run <paramref name="action"/> with.</param>
-            <param name="arg11">The 11th argument to run <paramref name="action"/> with.</param>
-            <param name="arg12">The 12th argument to run <paramref name="action"/> with.</param>
-            <param name="arg13">The 13th argument to run <paramref name="action"/> with.</param>
-            <param name="arg14">The 14th argument to run <paramref name="action"/> with.</param>
-            <param name="arg15">The 15th argument to run <paramref name="action"/> with.</param>
-            <typeparam name="T1">The type of the 1st parameter of <paramref name="action"/>.</typeparam>
-            <typeparam name="T2">The type of the 2nd parameter of <paramref name="action"/>.</typeparam>
-            <typeparam name="T3">The type of the 3rd parameter of <paramref name="action"/>.</typeparam>
-            <typeparam name="T4">The type of the 4th parameter of <paramref name="action"/>.</typeparam>
-            <typeparam name="T5">The type of the 5th parameter of <paramref name="action"/>.</typeparam>
-            <typeparam name="T6">The type of the 6th parameter of <paramref name="action"/>.</typeparam>
-            <typeparam name="T7">The type of the 7th parameter of <paramref name="action"/>.</typeparam>
-            <typeparam name="T8">The type of the 8th parameter of <paramref name="action"/>.</typeparam>
-            <typeparam name="T9">The type of the 9th parameter of <paramref name="action"/>.</typeparam>
-            <typeparam name="T10">The type of the 10th parameter of <paramref name="action"/>.</typeparam>
-            <typeparam name="T11">The type of the 11th parameter of <paramref name="action"/>.</typeparam>
-            <typeparam name="T12">The type of the 12th parameter of <paramref name="action"/>.</typeparam>
-            <typeparam name="T13">The type of the 13th parameter of <paramref name="action"/>.</typeparam>
-            <typeparam name="T14">The type of the 14th parameter of <paramref name="action"/>.</typeparam>
-            <typeparam name="T15">The type of the 15th parameter of <paramref name="action"/>.</typeparam>
-            <param name="handle"><see cref="T:Moth.Tasks.TaskHandle"/> for checking task status.</param>
-            <exception cref="T:System.ArgumentNullException"><paramref name="action"/> is <see langword="null"/>.</exception>
-            <exception cref="T:System.ObjectDisposedException">The <see cref="T:Moth.Tasks.ITaskQueue"/> has been disposed.</exception>
-        </member>
-        <member name="M:Moth.Tasks.ITaskQueueEnqueueExtensions.Enqueue``16(Moth.Tasks.ITaskQueue,System.Action{``0,``1,``2,``3,``4,``5,``6,``7,``8,``9,``10,``11,``12,``13,``14,``15},``0,``1,``2,``3,``4,``5,``6,``7,``8,``9,``10,``11,``12,``13,``14,``15)">
-            <summary>
-            Enqueue an action to be run later with supplied arguments.
-            </summary>
-            <param name="tasks"><see cref="T:Moth.Tasks.ITaskQueue"/> in which the action is enqueued.</param>
-            <param name="action">Action to enqueue.</param>
-            <param name="arg1">The 1st argument to run <paramref name="action"/> with.</param>
-            <param name="arg2">The 2nd argument to run <paramref name="action"/> with.</param>
-            <param name="arg3">The 3rd argument to run <paramref name="action"/> with.</param>
-            <param name="arg4">The 4th argument to run <paramref name="action"/> with.</param>
-            <param name="arg5">The 5th argument to run <paramref name="action"/> with.</param>
-            <param name="arg6">The 6th argument to run <paramref name="action"/> with.</param>
-            <param name="arg7">The 7th argument to run <paramref name="action"/> with.</param>
-            <param name="arg8">The 8th argument to run <paramref name="action"/> with.</param>
-            <param name="arg9">The 9th argument to run <paramref name="action"/> with.</param>
-            <param name="arg10">The 10th argument to run <paramref name="action"/> with.</param>
-            <param name="arg11">The 11th argument to run <paramref name="action"/> with.</param>
-            <param name="arg12">The 12th argument to run <paramref name="action"/> with.</param>
-            <param name="arg13">The 13th argument to run <paramref name="action"/> with.</param>
-            <param name="arg14">The 14th argument to run <paramref name="action"/> with.</param>
-            <param name="arg15">The 15th argument to run <paramref name="action"/> with.</param>
-            <param name="arg16">The 16th argument to run <paramref name="action"/> with.</param>
-            <typeparam name="T1">The type of the 1st parameter of <paramref name="action"/>.</typeparam>
-            <typeparam name="T2">The type of the 2nd parameter of <paramref name="action"/>.</typeparam>
-            <typeparam name="T3">The type of the 3rd parameter of <paramref name="action"/>.</typeparam>
-            <typeparam name="T4">The type of the 4th parameter of <paramref name="action"/>.</typeparam>
-            <typeparam name="T5">The type of the 5th parameter of <paramref name="action"/>.</typeparam>
-            <typeparam name="T6">The type of the 6th parameter of <paramref name="action"/>.</typeparam>
-            <typeparam name="T7">The type of the 7th parameter of <paramref name="action"/>.</typeparam>
-            <typeparam name="T8">The type of the 8th parameter of <paramref name="action"/>.</typeparam>
-            <typeparam name="T9">The type of the 9th parameter of <paramref name="action"/>.</typeparam>
-            <typeparam name="T10">The type of the 10th parameter of <paramref name="action"/>.</typeparam>
-            <typeparam name="T11">The type of the 11th parameter of <paramref name="action"/>.</typeparam>
-            <typeparam name="T12">The type of the 12th parameter of <paramref name="action"/>.</typeparam>
-            <typeparam name="T13">The type of the 13th parameter of <paramref name="action"/>.</typeparam>
-            <typeparam name="T14">The type of the 14th parameter of <paramref name="action"/>.</typeparam>
-            <typeparam name="T15">The type of the 15th parameter of <paramref name="action"/>.</typeparam>
-            <typeparam name="T16">The type of the 16th parameter of <paramref name="action"/>.</typeparam>
-            <exception cref="T:System.ArgumentNullException"><paramref name="action"/> is <see langword="null"/>.</exception>
-            <exception cref="T:System.ObjectDisposedException">The <see cref="T:Moth.Tasks.ITaskQueue"/> has been disposed.</exception>
-        </member>
-        <member name="M:Moth.Tasks.ITaskQueueEnqueueExtensions.Enqueue``16(Moth.Tasks.ITaskQueue,System.Action{``0,``1,``2,``3,``4,``5,``6,``7,``8,``9,``10,``11,``12,``13,``14,``15},``0,``1,``2,``3,``4,``5,``6,``7,``8,``9,``10,``11,``12,``13,``14,``15,Moth.Tasks.TaskHandle@)">
-            <summary>
-            Enqueue an action to be run later with supplied arguments, giving out a <see cref="T:Moth.Tasks.TaskHandle"/> for checking task status.
-            </summary>
-            <param name="tasks"><see cref="T:Moth.Tasks.ITaskQueue"/> in which the action is enqueued.</param>
-            <param name="action">Action to enqueue.</param>
-            <param name="arg1">The 1st argument to run <paramref name="action"/> with.</param>
-            <param name="arg2">The 2nd argument to run <paramref name="action"/> with.</param>
-            <param name="arg3">The 3rd argument to run <paramref name="action"/> with.</param>
-            <param name="arg4">The 4th argument to run <paramref name="action"/> with.</param>
-            <param name="arg5">The 5th argument to run <paramref name="action"/> with.</param>
-            <param name="arg6">The 6th argument to run <paramref name="action"/> with.</param>
-            <param name="arg7">The 7th argument to run <paramref name="action"/> with.</param>
-            <param name="arg8">The 8th argument to run <paramref name="action"/> with.</param>
-            <param name="arg9">The 9th argument to run <paramref name="action"/> with.</param>
-            <param name="arg10">The 10th argument to run <paramref name="action"/> with.</param>
-            <param name="arg11">The 11th argument to run <paramref name="action"/> with.</param>
-            <param name="arg12">The 12th argument to run <paramref name="action"/> with.</param>
-            <param name="arg13">The 13th argument to run <paramref name="action"/> with.</param>
-            <param name="arg14">The 14th argument to run <paramref name="action"/> with.</param>
-            <param name="arg15">The 15th argument to run <paramref name="action"/> with.</param>
-            <param name="arg16">The 16th argument to run <paramref name="action"/> with.</param>
-            <typeparam name="T1">The type of the 1st parameter of <paramref name="action"/>.</typeparam>
-            <typeparam name="T2">The type of the 2nd parameter of <paramref name="action"/>.</typeparam>
-            <typeparam name="T3">The type of the 3rd parameter of <paramref name="action"/>.</typeparam>
-            <typeparam name="T4">The type of the 4th parameter of <paramref name="action"/>.</typeparam>
-            <typeparam name="T5">The type of the 5th parameter of <paramref name="action"/>.</typeparam>
-            <typeparam name="T6">The type of the 6th parameter of <paramref name="action"/>.</typeparam>
-            <typeparam name="T7">The type of the 7th parameter of <paramref name="action"/>.</typeparam>
-            <typeparam name="T8">The type of the 8th parameter of <paramref name="action"/>.</typeparam>
-            <typeparam name="T9">The type of the 9th parameter of <paramref name="action"/>.</typeparam>
-            <typeparam name="T10">The type of the 10th parameter of <paramref name="action"/>.</typeparam>
-            <typeparam name="T11">The type of the 11th parameter of <paramref name="action"/>.</typeparam>
-            <typeparam name="T12">The type of the 12th parameter of <paramref name="action"/>.</typeparam>
-            <typeparam name="T13">The type of the 13th parameter of <paramref name="action"/>.</typeparam>
-            <typeparam name="T14">The type of the 14th parameter of <paramref name="action"/>.</typeparam>
-            <typeparam name="T15">The type of the 15th parameter of <paramref name="action"/>.</typeparam>
-            <typeparam name="T16">The type of the 16th parameter of <paramref name="action"/>.</typeparam>
-            <param name="handle"><see cref="T:Moth.Tasks.TaskHandle"/> for checking task status.</param>
-            <exception cref="T:System.ArgumentNullException"><paramref name="action"/> is <see langword="null"/>.</exception>
-            <exception cref="T:System.ObjectDisposedException">The <see cref="T:Moth.Tasks.ITaskQueue"/> has been disposed.</exception>
-        </member>
         <member name="T:Moth.Tasks.ITaskQueue`2">
             <summary>
             Interface for a queue of tasks taking an argument of type <typeparamref name="TArg"/> and returning a result of <typeparamref name="TResult"/>.
             </summary>
-            <inheritdoc cref="T:Moth.Tasks.ITaskQueue`1"/>
+            <inheritdoc cref="!:ITaskQueue&lt;TArg&gt;"/>
             <typeparam name="TArg"/>
             <typeparam name="TResult">Type of result that tasks will return.</typeparam>
         </member>
@@ -2361,32 +1462,33 @@
             <summary>
             Enqueues an <see cref="T:Moth.Tasks.ITask`2"/> to be run later.
             </summary>
-            <inheritdoc cref="!:ITaskQueue&lt;TArg&gt;.Enqueue&lt;TTask&gt;(in TTask)"/>
+            <param name="task">Task to enqueue.</param>
+            <typeparam name="TTask">Type of task to enqueue.</typeparam>
         </member>
         <member name="M:Moth.Tasks.ITaskQueue`2.Enqueue``1(``0@,Moth.Tasks.TaskHandle@)">
             <summary>
             Enqueues an <see cref="T:Moth.Tasks.ITask`2"/> to be run later, giving out a <see cref="T:Moth.Tasks.TaskHandle"/> for checking task status.
             </summary>
-            <inheritdoc cref="!:ITaskQueue&lt;TArg&gt;.Enqueue&lt;TTask&gt;(in TTask, out TaskHandle)"/>
+            <inheritdoc cref="M:Moth.Tasks.ITaskQueue`2.Enqueue``1(``0@)"/>
+            <param name="task"/>
+            <param name="handle">Handle for checking task status.</param>
         </member>
         <member name="M:Moth.Tasks.ITaskQueue`2.RunNextTask(`0,Moth.Tasks.IProfiler,System.Threading.CancellationToken)">
             <summary>
-            Blocks until a task is ready in the queue, then runs it and returns the result. May also perform profiling on the task through an <see cref="T:Moth.Tasks.IProfiler"/>.
+            Blocks until a task is ready in the queue, then runs it with <paramref name="arg"/> as argument and returns the result. May also perform profiling on the task through an <see cref="T:Moth.Tasks.IProfiler"/>.
             </summary>
-            <inheritdoc cref="!:ITaskQueue&lt;TArg&gt;.RunNextTask(TArg, IProfiler, CancellationToken)"/>
-            <param name="arg"/>
-            <param name="profiler"/>
-            <param name="token"/>
+            <param name="arg">Argument to provide to the task.</param>
+            <param name="profiler">Profiler to use for measuring task run time.</param>
+            <param name="token"><see cref="T:System.Threading.CancellationToken"/> to observe while waiting for a task. Does not cancel actual task execution.</param>
             <returns>Result of the task.</returns>
         </member>
         <member name="M:Moth.Tasks.ITaskQueue`2.RunNextTask(`0,System.Exception@,Moth.Tasks.IProfiler,System.Threading.CancellationToken)">
             <summary>
             Blocks until a task is ready in the queue, then runs it with <paramref name="arg"/> as argument and returns the result. Provides an <see cref="T:System.Exception"/> thrown by the task, in case it fails. May also perform profiling on the task through an <see cref="T:Moth.Tasks.IProfiler"/>.
             </summary>
-            <inheritdoc cref="!:ITaskQueue&lt;TArg&gt;.RunNextTask(TArg, out Exception, IProfiler, CancellationToken)"/>
-            <inheritdoc cref="M:Moth.Tasks.ITaskQueue`2.RunNextTask(`0,Moth.Tasks.IProfiler,System.Threading.CancellationToken)"/>/>
+            <inheritdoc cref="M:Moth.Tasks.ITaskQueue`2.RunNextTask(`0,Moth.Tasks.IProfiler,System.Threading.CancellationToken)"/>
             <param name="arg"/>
-            <param name="exception"/>
+            <param name="exception">Exception that was thrown by the task. Will be <see langword="null"/> if no exception was thrown.</param>
             <param name="profiler"/>
             <param name="token"/>
         </member>
@@ -2394,7 +1496,7 @@
             <summary>
             Tries to run the next task in the queue, if present, with <paramref name="arg"/> as argument and returns the result through <paramref name="result"/>. May also perform profiling on the task through an <see cref="T:Moth.Tasks.IProfiler"/>.
             </summary>
-            <inheritdoc cref="M:Moth.Tasks.ITaskQueue`1.TryRunNextTask(`0,Moth.Tasks.IProfiler)"/>
+            <inheritdoc cref="M:Moth.Tasks.ITaskQueue`2.RunNextTask(`0,System.Exception@,Moth.Tasks.IProfiler,System.Threading.CancellationToken)"/>
             <param name="arg"/>
             <param name="result">Result of the task.</param>
             <param name="profiler"/>
@@ -2403,40 +1505,9 @@
             <summary>
             Tries to run the next task in the queue, if present, with <paramref name="arg"/> as argument and returns the result through <paramref name="result"/>. Provides an <see cref="T:System.Exception"/> thrown by the task, in case it fails. May also perform profiling on the task through an <see cref="T:Moth.Tasks.IProfiler"/>.
             </summary>
-            <inheritdoc cref="M:Moth.Tasks.ITaskQueue`1.TryRunNextTask(`0,System.Exception@,Moth.Tasks.IProfiler)"/>
             <inheritdoc cref="M:Moth.Tasks.ITaskQueue`2.TryRunNextTask(`0,`1@,Moth.Tasks.IProfiler)"/>
             <param name="arg"/>
             <param name="result"/>
-            <param name="exception"/>
-            <param name="profiler"/>
-        </member>
-        <member name="T:Moth.Tasks.ITaskQueue`1">
-            <summary>
-            Interface for a queue of tasks taking an argument of type <typeparamref name="TArg"/>.
-            </summary>
-            <typeparam name="TArg">Type of argument that tasks will take.</typeparam>
-        </member>
-        <member name="M:Moth.Tasks.ITaskQueue`1.TryRunNextTask(`0,Moth.Tasks.IProfiler)">
-            <summary>
-            Tries to run the next task in the queue, if present, with <paramref name="arg"/> as argument. May also perform profiling on the task through an <see cref="T:Moth.Tasks.IProfiler"/>.
-            </summary>
-            <inheritdoc cref="M:Moth.Tasks.ITaskQueue.TryRunNextTask(Moth.Tasks.IProfiler)"/>
-            <param name="arg">Argument to run task with.</param>
-            <param name="profiler"/>
-            <returns>
-            <see langword="true"/> if a task was run, <see langword="false"/> if the <see cref="T:Moth.Tasks.ITaskQueue`1"/> is empty.
-            </returns>
-            <remarks>
-            Note that the return value does not indicate if a task was successful. The method will return <see langword="true"/> if a task was ready in the queue, regardless of whether an exception occured.
-            </remarks>
-        </member>
-        <member name="M:Moth.Tasks.ITaskQueue`1.TryRunNextTask(`0,System.Exception@,Moth.Tasks.IProfiler)">
-            <summary>
-            Tries to run the next task in the queue, if present. Provides an <see cref="T:System.Exception"/> thrown by the task, in case it fails. May also perform profiling on the task through an <see cref="T:Moth.Tasks.IProfiler"/>.
-            </summary>
-            <inheritdoc cref="M:Moth.Tasks.ITaskQueue.TryRunNextTask(System.Exception@,Moth.Tasks.IProfiler)"/>
-            <inheritdoc cref="M:Moth.Tasks.ITaskQueue`1.TryRunNextTask(`0,Moth.Tasks.IProfiler)"/>
-            <param name="arg"/>
             <param name="exception"/>
             <param name="profiler"/>
         </member>
@@ -2536,9 +1607,9 @@
             Represents a method that provides an <see cref="T:Moth.Tasks.IProfiler"/> for a <see cref="T:Moth.Tasks.IWorker"/>, or <see langword="null"/> if profiling is not desired.
             </summary>
             <param name="worker">The <see cref="T:Moth.Tasks.IWorker"/>.</param>
-            <returns>An <see cref="T:Moth.Tasks.IProfiler"/> for the <paramref name="worker"/>, or <see langword="null"/> if profiling is not desired.</returns>
+            <returns>An <see cref="T:Moth.Tasks.IProfiler"/> for the <paramref name="worker"/>, or <see langword="null"/> if profiling is undesired.</returns>
             <remarks>
-            The method does not have to provide a unique <see cref="T:Moth.Tasks.IProfiler"/> for each <see cref="T:Moth.Tasks.IWorker"/>, yet in that case it must be able to differentiate between <see cref="T:Moth.Tasks.IWorker"/>s on its own, so as their calls to <see cref="M:Moth.Tasks.IProfiler.BeginTask(System.String)"/> and <see cref="M:Moth.Tasks.IProfiler.EndTask"/> don't interfere.
+            The method does not have to provide a unique <see cref="T:Moth.Tasks.IProfiler"/> for each <see cref="T:Moth.Tasks.IWorker"/>, yet in that case it must be able to differentiate between <see cref="T:Moth.Tasks.IWorker"/>s on its own, so their calls to <see cref="M:Moth.Tasks.IProfiler.BeginTask(System.Type)"/> and <see cref="M:Moth.Tasks.IProfiler.EndTask"/> don't interfere.
             </remarks>
         </member>
         <member name="T:Moth.Tasks.Task`1">
@@ -2554,9 +1625,16 @@
             <param name="task">Task to dispose.</param>
             <returns><see langword="true"/> if the task was disposed.</returns>
         </member>
+        <member name="T:Moth.Tasks.TaskArgumentSource`1">
+            <summary>
+            Represents a method that can supply an argument for a task.
+            </summary>
+            <typeparam name="TArg">Type of task argument.</typeparam>
+            <returns>An instance of <typeparamref name="TArg"/>.</returns>
+        </member>
         <member name="T:Moth.Tasks.TaskDataAccess">
             <summary>
-            Provides a way for a task to access its data while locking the <see cref="T:Moth.Tasks.TaskQueue"/>.
+            Provides a way for a task to access its data while locking the <see cref="!:TaskQueue"/>.
             </summary>
         </member>
         <member name="M:Moth.Tasks.TaskDataAccess.#ctor(Moth.Tasks.ITaskDataAccess,System.Boolean*,System.Boolean)">
@@ -3500,13 +2578,8 @@
             <param name="arg">Task argument.</param>
             <param name="result">Task result.</param>
         </member>
-        <member name="M:Moth.Tasks.TaskExtensions.Enqueue``1(``0,Moth.Tasks.ITaskQueue)">
-            <summary>
-            Enqueues a task in a task queue.
-            </summary>
-            <typeparam name="TTask">Type of task.</typeparam>
-            <param name="task">Task to enqueue.</param>
-            <param name="queue">Queue to enqueue in.</param>
+        <member name="M:Moth.Tasks.TaskExtensions.TryDispose``1(``0@)">
+            <inheritdoc cref="M:Moth.Tasks.Task`1.TryDispose(`0@)"/>
         </member>
         <member name="M:Moth.Tasks.TaskExtensions.Then``2(``0,``1)">
             <summary>
@@ -3811,23 +2884,6 @@
         <member name="M:Moth.Tasks.TaskMetadata`3.Run(Moth.Tasks.TaskDataAccess,`1,`2@)">
             <inheritdoc />
         </member>
-        <member name="T:Moth.Tasks.TaskQueue">
-            <summary>
-            Represents a queue of tasks to be run.
-            </summary>
-        </member>
-        <member name="M:Moth.Tasks.TaskQueue.RunNextTask(Moth.Tasks.IProfiler,System.Threading.CancellationToken)">
-            <inheritdoc />
-        </member>
-        <member name="M:Moth.Tasks.TaskQueue.RunNextTask(System.Exception@,Moth.Tasks.IProfiler,System.Threading.CancellationToken)">
-            <inheritdoc />
-        </member>
-        <member name="M:Moth.Tasks.TaskQueue.TryRunNextTask(Moth.Tasks.IProfiler)">
-            <inheritdoc />
-        </member>
-        <member name="M:Moth.Tasks.TaskQueue.TryRunNextTask(System.Exception@,Moth.Tasks.IProfiler)">
-            <inheritdoc />
-        </member>
         <member name="T:Moth.Tasks.TaskQueue`2">
             <summary>
             Represents a queue of tasks to be run.
@@ -3893,7 +2949,7 @@
             </summary>
             <param name="exceptionHandler">Method for handling an exception thrown by a task's <see cref="M:System.IDisposable.Dispose"/>.</param>
             <remarks>
-            As the method iterates through all tasks in the queue and calls <see cref="M:System.IDisposable.Dispose"/> on tasks, it can hang for an unknown amount of time. If an exception is thrown in an <see cref="M:System.IDisposable.Dispose"/> call, the method continues on with disposing the remaining tasks.
+            As the method iterates through all tasks in the queue and calls <see cref="M:System.IDisposable.Dispose"/> on tasks, it can hang for an unknown amount of time. If an exception is thrown in an <see cref="M:System.IDisposable.Dispose"/> call and <paramref name="exceptionHandler"/> is not provided, the method will throw the exception. If <paramref name="exceptionHandler"/> is provided, the method will call the handler with the exception as argument and continue on with disposing the remaining tasks.
             </remarks>
         </member>
         <member name="M:Moth.Tasks.TaskQueue`2.Dispose">
@@ -3901,16 +2957,11 @@
             Disposes all tasks which implements <see cref="T:System.IDisposable"/>.
             </summary>
             <remarks>
-            As the method iterates through all tasks in the queue and calls <see cref="M:System.IDisposable.Dispose"/> on tasks, it can hang for an unknown amount of time. If an exception is thrown in an <see cref="M:System.IDisposable.Dispose"/> call, the method continues on with disposing the remaining tasks.
+            As the method iterates through all tasks in the queue and calls <see cref="M:System.IDisposable.Dispose"/> on tasks, it can hang for an unknown amount of time. If an exception is thrown in an <see cref="M:System.IDisposable.Dispose"/> call, the method logs the exception with <see cref="M:System.Diagnostics.Trace.TraceError(System.String)"/> and continues on with disposing the remaining tasks. If custom exception handling is required, use <see cref="M:Moth.Tasks.TaskQueue`2.Clear(System.Action{System.Exception})"/> first before disposing.
             </remarks>
         </member>
         <member name="M:Moth.Tasks.TaskQueue`2.Dispose(System.Boolean)">
-            <summary>
-            Disposes all tasks which implements <see cref="T:System.IDisposable"/>.
-            </summary>
-            <remarks>
-            As the method iterates through all tasks in the queue and calls <see cref="M:System.IDisposable.Dispose"/> on tasks, it can hang for an unknown amount of time. If an exception is thrown in an <see cref="M:System.IDisposable.Dispose"/> call, the method continues on with disposing the remaining tasks.
-            </remarks>
+            <inheritdoc cref="M:Moth.Tasks.TaskQueue`2.Dispose"/>
             <param name="disposing"><see langword="true"/> if called from <see cref="M:Moth.Tasks.TaskQueue`2.Dispose"/>, <see langword="false"/> if called from finalizer.</param>
         </member>
         <member name="M:Moth.Tasks.TaskQueue`2.CreateTaskHandle">
@@ -3937,18 +2988,6 @@
             <inheritdoc />
         </member>
         <member name="M:Moth.Tasks.TaskQueue`2.DataAccess.GetNextTaskData``1(Moth.Tasks.ITaskMetadata{``0})">
-            <inheritdoc />
-        </member>
-        <member name="T:Moth.Tasks.TaskQueue`1">
-            <summary>
-            Represents a queue of tasks to be run with an argument.
-            </summary>
-            <typeparam name="TArg">Type of argument to pass to the tasks.</typeparam>
-        </member>
-        <member name="M:Moth.Tasks.TaskQueue`1.TryRunNextTask(`0,Moth.Tasks.IProfiler)">
-            <inheritdoc />
-        </member>
-        <member name="M:Moth.Tasks.TaskQueue`1.TryRunNextTask(`0,System.Exception@,Moth.Tasks.IProfiler)">
             <inheritdoc />
         </member>
         <member name="T:Moth.Tasks.TaskReferenceInsertContext">
@@ -4004,6 +3043,13 @@
         <member name="M:Moth.Tasks.TaskReferenceStore.Skip(System.Int32)">
             <inheritdoc/>
         </member>
+        <member name="T:Moth.Tasks.TaskResultCallback`1">
+            <summary>
+            Represents a callback method to be called when a task completes with a result.
+            </summary>
+            <typeparam name="TResult">The type of the result produced by the task.</typeparam>
+            <param name="result">The result produced by the task.</param>
+        </member>
         <member name="T:Moth.Tasks.TaskWithHandle`3">
             <summary>
             Encapsulates a task enqueued with a <see cref="T:Moth.Tasks.TaskHandle"/>.
@@ -4039,151 +3085,148 @@
             <param name="other">Other instance of <see cref="T:Moth.Tasks.Unit"/>.</param>
             <returns>Always returns <see langword="true"/>.</returns>
         </member>
-        <member name="T:Moth.Tasks.Worker">
+        <member name="T:Moth.Tasks.Worker`2">
             <summary>
-            Runs on an <see cref="T:Moth.Tasks.IWorkerThread"/> continuously executing tasks from a <see cref="T:Moth.Tasks.TaskQueue"/>.
+            Runs on an <see cref="T:Moth.Tasks.IWorkerThread"/> continuously executing tasks from an <see cref="T:Moth.Tasks.ITaskQueue`2"/>.
             </summary>
+            <typeparam name="TArg">Type of task argument.</typeparam>
+            <typeparam name="TResult">Type of task result.</typeparam>
         </member>
-        <member name="M:Moth.Tasks.Worker.#ctor(Moth.Tasks.ITaskQueue,System.Boolean,Moth.Tasks.WorkerOptions)">
+        <member name="M:Moth.Tasks.Worker`2.#ctor(Moth.Tasks.ITaskQueue{`0,`1},System.Boolean,Moth.Tasks.WorkerOptions,Moth.Tasks.TaskArgumentSource{`0},Moth.Tasks.TaskResultCallback{`1})">
             <summary>
-            Initializes a new instance of the <see cref="T:Moth.Tasks.Worker"/> class.
+            Initializes a new instance of the <see cref="T:Moth.Tasks.Worker`2"/> class.
             </summary>
             <remarks>
-            The <see cref="T:Moth.Tasks.Worker"/> will start executing tasks automatically.
+            The <see cref="T:Moth.Tasks.Worker`2"/> will start executing tasks automatically.
             </remarks>
-            <param name="taskQueue">The <see cref="T:Moth.Tasks.TaskQueue"/> of which the worker will be executing tasks from.</param>
-            <param name="shouldDisposeTaskQueue">Determines whether the <see cref="T:Moth.Tasks.TaskQueue"/> supplied with <paramref name="taskQueue"/> is disposed when <see cref="M:Moth.Tasks.Worker.Dispose"/> is called.</param>
-            <param name="options">Options for initializing the <see cref="T:Moth.Tasks.Worker"/>.</param>
+            <param name="taskQueue">The <see cref="T:Moth.Tasks.ITaskQueue`2"/> of which the worker will be executing tasks from.</param>
+            <param name="shouldDisposeTaskQueue">If <see langword="true"/>, the <see cref="T:Moth.Tasks.ITaskQueue`2"/> supplied with <paramref name="taskQueue"/> will be disposed when <see cref="M:Moth.Tasks.Worker`2.Dispose"/> is called.</param>
+            <param name="options">Options for initializing the <see cref="T:Moth.Tasks.Worker`2"/>.</param>
+            <param name="argSource">Source for arguments to supply to tasks. Will use <see langword="default"/> of <typeparamref name="TArg"/> if <see langword="null"/>.</param>
+            <param name="resultCallback">Callback for handling results returned by tasks. Results will be discarded if <see langword="null"/>.</param>
             <exception cref="T:System.ArgumentNullException"><paramref name="taskQueue"/> cannot be null.</exception>
         </member>
-        <member name="M:Moth.Tasks.Worker.Finalize">
+        <member name="M:Moth.Tasks.Worker`2.Finalize">
             <summary>
-            Finalizes an instance of the <see cref="T:Moth.Tasks.Worker"/> class.
+            Finalizes an instance of the <see cref="T:Moth.Tasks.Worker`2"/> class.
             </summary>
         </member>
-        <member name="P:Moth.Tasks.Worker.IsRunning">
+        <member name="P:Moth.Tasks.Worker`2.IsRunning">
             <summary>
             Gets a value indicating whether the thread is running.
             </summary>
         </member>
-        <member name="P:Moth.Tasks.Worker.IsStarted">
+        <member name="P:Moth.Tasks.Worker`2.IsStarted">
             <inheritdoc />
         </member>
-        <member name="P:Moth.Tasks.Worker.Tasks">
+        <member name="P:Moth.Tasks.Worker`2.Tasks">
             <summary>
-            Gets the <see cref="T:Moth.Tasks.TaskQueue"/> of which the worker is executing tasks from.
+            Gets the <see cref="T:Moth.Tasks.ITaskQueue`2"/> of which the worker is executing tasks from.
             </summary>
         </member>
-        <member name="P:Moth.Tasks.Worker.CancellationToken">
+        <member name="P:Moth.Tasks.Worker`2.CancellationToken">
             <summary>
             Gets the <see cref="T:System.Threading.CancellationToken"/> associated with this worker.
             </summary>
             <remarks>
-            Can be passed to a task enqueued on <see cref="P:Moth.Tasks.Worker.Tasks"/>, allowing it to exit early if <see cref="M:Moth.Tasks.Worker.Dispose"/> is called.
+            Can be passed to a task enqueued on <see cref="P:Moth.Tasks.Worker`2.Tasks"/>, allowing it to exit early if <see cref="M:Moth.Tasks.Worker`2.Dispose"/> is called.
             </remarks>
         </member>
-        <member name="M:Moth.Tasks.Worker.Start">
+        <member name="M:Moth.Tasks.Worker`2.Start">
             <summary>
             Manually starts the worker if <see cref="P:Moth.Tasks.WorkerOptions.RequiresManualStart"/> was set to <see langword="true"/>.
             </summary>
-            <exception cref="T:System.ObjectDisposedException">The <see cref="T:Moth.Tasks.Worker"/> has been disposed.</exception>
+            <exception cref="T:System.ObjectDisposedException">The <see cref="T:Moth.Tasks.Worker`2"/> has been disposed.</exception>
             <exception cref="T:System.InvalidOperationException">The worker is already started.</exception>
         </member>
-        <member name="M:Moth.Tasks.Worker.DisposeAndJoin">
+        <member name="M:Moth.Tasks.Worker`2.DisposeAndJoin">
             <summary>
-            Calls <see cref="M:Moth.Tasks.Worker.Dispose"/> and blocks the calling thread until the <see cref="T:Moth.Tasks.Worker"/> terminates.
+            Calls <see cref="M:Moth.Tasks.Worker`2.Dispose"/> and blocks the calling thread until the <see cref="T:Moth.Tasks.Worker`2"/> terminates.
             </summary>
         </member>
-        <member name="M:Moth.Tasks.Worker.Join">
+        <member name="M:Moth.Tasks.Worker`2.Join">
             <summary>
-            Blocks the calling thread until the <see cref="T:Moth.Tasks.Worker"/> terminates.
+            Blocks the calling thread until the <see cref="T:Moth.Tasks.Worker`2"/> terminates.
             </summary>
             <remarks>
-            <see cref="M:Moth.Tasks.Worker.Dispose"/> must be called beforehand. If <see cref="M:Moth.Tasks.Worker.Start"/> was never called, this method will return immediately.
+            <see cref="M:Moth.Tasks.Worker`2.Dispose"/> must be called beforehand. If <see cref="M:Moth.Tasks.Worker`2.Start"/> was never called, this method will return immediately.
             </remarks>
-            <exception cref="T:System.InvalidOperationException">The <see cref="T:Moth.Tasks.Worker"/> is not disposed.</exception>
+            <exception cref="T:System.InvalidOperationException">The <see cref="T:Moth.Tasks.Worker`2"/> is not disposed.</exception>
         </member>
-        <member name="M:Moth.Tasks.Worker.Dispose">
+        <member name="M:Moth.Tasks.Worker`2.Dispose">
             <summary>
-            Sends a signal to shutdown the thread. Also disposes of <see cref="P:Moth.Tasks.Worker.Tasks"/> if specified in <see cref="T:Moth.Tasks.Worker"/> constructor.
+            Sends a signal to shutdown the thread. Also disposes of <see cref="P:Moth.Tasks.Worker`2.Tasks"/> if specified in <see cref="T:Moth.Tasks.Worker`2"/> constructor.
             </summary>
         </member>
-        <member name="M:Moth.Tasks.Worker.Dispose(System.Boolean)">
+        <member name="M:Moth.Tasks.Worker`2.Dispose(System.Boolean)">
             <summary>
-            Sends a signal to shutdown the thread. Also disposes of <see cref="P:Moth.Tasks.Worker.Tasks"/> if specified in <see cref="T:Moth.Tasks.Worker"/> constructor.
+            Sends a signal to shutdown the thread. Also disposes of <see cref="P:Moth.Tasks.Worker`2.Tasks"/> if specified in <see cref="T:Moth.Tasks.Worker`2"/> constructor.
             </summary>
-            <param name="disposing"><see langword="true"/> if called from <see cref="M:Moth.Tasks.Worker.Dispose"/>, <see langword="false"/> if called from finalizer.</param>
+            <param name="disposing"><see langword="true"/> if called from <see cref="M:Moth.Tasks.Worker`2.Dispose"/>, <see langword="false"/> if called from finalizer.</param>
         </member>
-        <member name="T:Moth.Tasks.WorkerGroup">
+        <member name="T:Moth.Tasks.WorkerGroup`2">
             <summary>
-            A group of <see cref="T:Moth.Tasks.IWorker"/>s, executing tasks from a shared <see cref="T:Moth.Tasks.TaskQueue"/>.
+            A group of <see cref="T:Moth.Tasks.IWorker"/>s, executing tasks from a shared <see cref="T:Moth.Tasks.ITaskQueue`2"/>.
             </summary>
+            <typeparam name="TArg">Type of task argument.</typeparam>
+            <typeparam name="TResult">Type of task result.</typeparam>
             <remarks>
             This class is thread-safe.
             </remarks>
         </member>
-        <member name="M:Moth.Tasks.WorkerGroup.#ctor(System.Int32,Moth.Tasks.ITaskQueue,System.Boolean,Moth.Tasks.WorkerProvider)">
+        <member name="M:Moth.Tasks.WorkerGroup`2.#ctor(System.Int32,Moth.Tasks.ITaskQueue{`0,`1},System.Boolean,Moth.Tasks.WorkerProvider)">
             <summary>
-            Initializes a new instance of the <see cref="T:Moth.Tasks.WorkerGroup"/> class.
+            Initializes a new instance of the <see cref="T:Moth.Tasks.WorkerGroup`2"/> class.
             </summary>
             <param name="workerCount">Number of workers. Must be greater than zero.</param>
-            <param name="taskQueue">The <see cref="T:Moth.Tasks.TaskQueue"/> of which the workers will be executing tasks from.</param>
-            <param name="disposeTaskQueue">Determines whether the <see cref="T:Moth.Tasks.TaskQueue"/> supplied with <paramref name="taskQueue"/> is disposed when <see cref="M:Moth.Tasks.WorkerGroup.Dispose"/> is called.</param>
-            <param name="workerProvider">A method that provides an <see cref="T:Moth.Tasks.IWorker"/> for a <see cref="T:Moth.Tasks.WorkerGroup"/>. If <see langword="null"/>, <see cref="M:Moth.Tasks.WorkerGroup.DefaultWorkerProvider(Moth.Tasks.WorkerGroup,System.Int32)"/> is used.</param>
+            <param name="taskQueue">The <see cref="T:Moth.Tasks.TaskQueue`2"/> of which the workers will be executing tasks from.</param>
+            <param name="disposeTaskQueue">Determines whether the <see cref="T:Moth.Tasks.TaskQueue`2"/> supplied with <paramref name="taskQueue"/> is disposed when <see cref="M:Moth.Tasks.WorkerGroup`2.Dispose"/> is called.</param>
+            <param name="workerProvider">A method that provides an <see cref="T:Moth.Tasks.IWorker"/> for a <see cref="T:Moth.Tasks.WorkerGroup`2"/>. May be <see langword="null"/>.</param>
             <exception cref="T:System.ArgumentOutOfRangeException"><paramref name="workerCount"/> must be greater than zero.</exception>
             <exception cref="T:System.ArgumentNullException"><paramref name="taskQueue"/> cannot be null.</exception>
         </member>
-        <member name="M:Moth.Tasks.WorkerGroup.Finalize">
+        <member name="M:Moth.Tasks.WorkerGroup`2.Finalize">
             <summary>
-            Finalizes an instance of the <see cref="T:Moth.Tasks.WorkerGroup"/> class.
+            Finalizes an instance of the <see cref="T:Moth.Tasks.WorkerGroup`2"/> class.
             </summary>
         </member>
-        <member name="P:Moth.Tasks.WorkerGroup.Tasks">
+        <member name="P:Moth.Tasks.WorkerGroup`2.Tasks">
             <summary>
-            The <see cref="T:Moth.Tasks.TaskQueue"/> of which the workers are executing tasks from.
+            The <see cref="T:Moth.Tasks.ITaskQueue`2"/> of which the workers are executing tasks from.
             </summary>
         </member>
-        <member name="P:Moth.Tasks.WorkerGroup.WorkerCount">
+        <member name="P:Moth.Tasks.WorkerGroup`2.WorkerCount">
             <summary>
-            Get or set the number of <see cref="T:Moth.Tasks.IWorker"/>s in this <see cref="T:Moth.Tasks.WorkerGroup"/>. Must be greater than zero.
+            Get or set the number of <see cref="T:Moth.Tasks.IWorker"/>s in this <see cref="T:Moth.Tasks.WorkerGroup`2"/>. Must be greater than zero.
             </summary>
             <remarks>
-            The <see cref="T:Moth.Tasks.ProfilerProvider"/> and <see cref="T:System.EventHandler`1"/> provided in the <see cref="T:Moth.Tasks.WorkerGroup"/> constructor will be used to initialize any new <see cref="T:Moth.Tasks.IWorker"/>s.
+            The <see cref="T:Moth.Tasks.ProfilerProvider"/> and <see cref="T:System.EventHandler`1"/> provided in the <see cref="T:Moth.Tasks.WorkerGroup`2"/> constructor will be used to initialize any new <see cref="T:Moth.Tasks.IWorker"/>s.
             </remarks>
         </member>
-        <member name="M:Moth.Tasks.WorkerGroup.DefaultWorkerProvider(Moth.Tasks.WorkerGroup,System.Int32)">
+        <member name="M:Moth.Tasks.WorkerGroup`2.DisposeAndJoin">
             <summary>
-            Provides a <see cref="T:Moth.Tasks.IWorker"/> with default <see cref="T:Moth.Tasks.WorkerOptions"/> for a <see cref="T:Moth.Tasks.WorkerGroup"/>.
-            </summary>
-            <param name="workerGroup">The <see cref="T:Moth.Tasks.WorkerGroup"/> the <see cref="T:Moth.Tasks.IWorker"/> will belong to.</param>
-            <param name="workerIndex">The index of the <see cref="T:Moth.Tasks.IWorker"/> in the <see cref="T:Moth.Tasks.WorkerGroup"/>.</param>
-            <returns>A new <see cref="T:Moth.Tasks.IWorker"/> with default <see cref="T:Moth.Tasks.WorkerOptions"/>.</returns>
-            <remarks>Should not be called directly, but may be passed to <see cref="M:Moth.Tasks.WorkerGroup.#ctor(System.Int32,Moth.Tasks.ITaskQueue,System.Boolean,Moth.Tasks.WorkerProvider)"/> constructor as a <see cref="T:Moth.Tasks.WorkerProvider"/>.</remarks>
-        </member>
-        <member name="M:Moth.Tasks.WorkerGroup.DisposeAndJoin">
-            <summary>
-            Calls <see cref="M:Moth.Tasks.WorkerGroup.Dispose"/> and blocks the calling thread until all <see cref="T:Moth.Tasks.IWorker"/>s terminate.
+            Calls <see cref="M:Moth.Tasks.WorkerGroup`2.Dispose"/> and blocks the calling thread until all <see cref="T:Moth.Tasks.IWorker"/>s terminate.
             </summary>
         </member>
-        <member name="M:Moth.Tasks.WorkerGroup.Join">
+        <member name="M:Moth.Tasks.WorkerGroup`2.Join">
             <summary>
             Blocks the calling thread until all <see cref="T:Moth.Tasks.IWorker"/>s terminate.
             </summary>
             <remarks>
-            <see cref="M:Moth.Tasks.WorkerGroup.Dispose"/> must be called beforehand.
+            <see cref="M:Moth.Tasks.WorkerGroup`2.Dispose"/> must be called beforehand.
             </remarks>
-            <exception cref="T:System.InvalidOperationException">The <see cref="T:Moth.Tasks.WorkerGroup"/> is not disposed.</exception>
+            <exception cref="T:System.InvalidOperationException">The <see cref="T:Moth.Tasks.WorkerGroup`2"/> is not disposed.</exception>
         </member>
-        <member name="M:Moth.Tasks.WorkerGroup.Dispose">
+        <member name="M:Moth.Tasks.WorkerGroup`2.Dispose">
             <summary>
-            Signals all workers to shutdown. Also disposes of <see cref="P:Moth.Tasks.WorkerGroup.Tasks"/> if specified in <see cref="T:Moth.Tasks.WorkerGroup"/> constructor.
+            Signals all workers to shutdown. Also disposes of <see cref="P:Moth.Tasks.WorkerGroup`2.Tasks"/> if specified in <see cref="T:Moth.Tasks.WorkerGroup`2"/> constructor.
             </summary>
         </member>
-        <member name="M:Moth.Tasks.WorkerGroup.Dispose(System.Boolean)">
+        <member name="M:Moth.Tasks.WorkerGroup`2.Dispose(System.Boolean)">
             <summary>
-            Signals all workers to shutdown. Also disposes of <see cref="P:Moth.Tasks.WorkerGroup.Tasks"/> if specified in <see cref="T:Moth.Tasks.WorkerGroup"/> constructor.
+            Signals all workers to shutdown. Also disposes of <see cref="P:Moth.Tasks.WorkerGroup`2.Tasks"/> if specified in <see cref="T:Moth.Tasks.WorkerGroup`2"/> constructor.
             </summary>
-            <param name="disposing"><see langword="true"/> if called from <see cref="M:Moth.Tasks.WorkerGroup.Dispose"/>, <see langword="false"/> if called from finalizer.</param>
+            <param name="disposing"><see langword="true"/> if called from <see cref="M:Moth.Tasks.WorkerGroup`2.Dispose"/>, <see langword="false"/> if called from finalizer.</param>
         </member>
         <member name="T:Moth.Tasks.WorkerOptions">
             <summary>
@@ -4192,22 +3235,12 @@
         </member>
         <member name="P:Moth.Tasks.WorkerOptions.Profiler">
             <summary>
-            Gets or sets the <see cref="T:Moth.Tasks.IProfiler"/> to use.
-            </summary>
-        </member>
-        <member name="P:Moth.Tasks.WorkerOptions.ProfilerProvider">
-            <summary>
-            Gets or sets the <see cref="P:Moth.Tasks.WorkerOptions.ProfilerProvider"/> to use.
+            Gets or sets the <see cref="T:Moth.Tasks.IProfiler"/> to use. Must be <see langword="null"/> if <see cref="T:Moth.Tasks.ProfilerProvider"/> is not <see langword="null"/>.
             </summary>
         </member>
         <member name="P:Moth.Tasks.WorkerOptions.WorkerThread">
             <summary>
             Gets or sets the <see cref="T:Moth.Tasks.IWorkerThread"/> to use.
-            </summary>
-        </member>
-        <member name="P:Moth.Tasks.WorkerOptions.WorkerThreadProvider">
-            <summary>
-            Gets or sets the <see cref="P:Moth.Tasks.WorkerOptions.WorkerThreadProvider"/> to use.
             </summary>
         </member>
         <member name="P:Moth.Tasks.WorkerOptions.ExceptionEventHandler">
@@ -4222,12 +3255,11 @@
         </member>
         <member name="T:Moth.Tasks.WorkerProvider">
             <summary>
-            Represents a method that provides a new <see cref="T:Moth.Tasks.IWorker"/> for a <see cref="T:Moth.Tasks.WorkerGroup"/>, given an index of the worker in the group.
+            Represents a method that provides a new <see cref="T:Moth.Tasks.IWorker"/> for a worker group, given an index of the worker in the group.
             </summary>
-            <param name="workerGroup">The <see cref="T:Moth.Tasks.WorkerGroup"/> the <see cref="T:Moth.Tasks.IWorker"/> will belong to.</param>
-            <param name="workerIndex">The index of the <see cref="T:Moth.Tasks.IWorker"/> in the <see cref="T:Moth.Tasks.WorkerGroup"/>.</param>
+            <param name="workerIndex">The index of the <see cref="T:Moth.Tasks.IWorker"/> in the group.</param>
             <returns>A new <see cref="T:Moth.Tasks.IWorker"/>.</returns>
-            <remarks>This method should create a new unique <see cref="T:Moth.Tasks.IWorker"/> for each call. The method may be called multiple times with the same parameters if the <see cref="T:Moth.Tasks.WorkerGroup"/> was resized.</remarks>
+            <remarks>This method should create a new unique <see cref="T:Moth.Tasks.IWorker"/> for each call. The method may be called multiple times with the same index if the worker group was resized.</remarks>
         </member>
         <member name="T:Moth.Tasks.WorkerThread">
             <summary>
@@ -4252,14 +3284,6 @@
         <member name="M:Moth.Tasks.WorkerThread.Join">
             <inheritdoc/>
             <exception cref="T:System.InvalidOperationException">Thread is not started.</exception>""
-        </member>
-        <member name="T:Moth.Tasks.WorkerThreadProvider">
-            <summary>
-            Represents a method that provides an <see cref="T:Moth.Tasks.IWorkerThread"/> for an <see cref="T:Moth.Tasks.IWorker"/>.
-            </summary>
-            <param name="worker">The <see cref="T:Moth.Tasks.IWorker"/> to provide for.</param>
-            <returns>A new <see cref="T:Moth.Tasks.IWorkerThread"/>.</returns>
-            <remarks>This method should create a new unique <see cref="T:Moth.Tasks.IWorkerThread"/> for each call, which must not have been started beforehand.</remarks>
         </member>
     </members>
 </doc>

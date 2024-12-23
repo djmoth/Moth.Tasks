@@ -1,6 +1,5 @@
 ﻿namespace Moth.Tasks.Tests.UnitTests
 {
-    using Microsoft.CodeAnalysis.CSharp.Syntax;
     using Moq;
     using NUnit.Framework;
     using System;
@@ -275,7 +274,7 @@
             TestTask task = new TestTask ();
 
             // The Mock Task Metadata will now throw an exception on Run
-            mockTestTaskMetadata.ExceptionToThrow = new Exception ();
+            mockTestTaskMetadata.ExceptionToThrowOnRun = new Exception ();
 
             queue.Enqueue (task);
             queue.RunNextTask (default, out Exception exception, null, token);
@@ -283,7 +282,7 @@
             Assume.That (token.IsCancellationRequested, Is.False);
 
             // Verify that the exception was caught and returned
-            Assert.That (exception, Is.SameAs (mockTestTaskMetadata.ExceptionToThrow));
+            Assert.That (exception, Is.SameAs (mockTestTaskMetadata.ExceptionToThrowOnRun));
         }
 
         [Test]
@@ -301,7 +300,7 @@
 
             Assume.That (token.IsCancellationRequested, Is.False);
 
-            mockProfiler.Verify (profiler => profiler.BeginTask (typeof (TestTask).FullName), Times.Once);
+            mockProfiler.Verify (profiler => profiler.BeginTask (typeof (TestTask)), Times.Once);
             mockProfiler.Verify (profiler => profiler.EndTask (), Times.Once);
             mockProfiler.VerifyNoOtherCalls ();
         }
@@ -314,14 +313,14 @@
 
             TestTask task = new TestTask { };
 
-            mockTestTaskMetadata.ExceptionToThrow = new Exception ();
+            mockTestTaskMetadata.ExceptionToThrowOnRun = new Exception ();
 
             queue.Enqueue (task);
             queue.RunNextTask (arg: default, profiler: mockProfiler.Object, token: token);
 
             Assume.That (token.IsCancellationRequested, Is.False);
 
-            mockProfiler.Verify (profiler => profiler.BeginTask (typeof (TestTask).FullName), Times.Once);
+            mockProfiler.Verify (profiler => profiler.BeginTask (typeof (TestTask)), Times.Once);
             mockProfiler.Verify (profiler => profiler.EndTask (), Times.Once);
             mockProfiler.VerifyNoOtherCalls ();
         }
@@ -403,6 +402,53 @@
 
             Assert.That (queue.Count, Is.EqualTo (0));
             Assert.That (mockDisposableTestTaskMetadata.DisposeCallCount, Is.EqualTo (2));
+        }
+
+        [Test]
+        public void Clear_WithExceptionHandlerDisposableTaskThrowingException_ReportsExceptionToExceptionHandlerAndContinuesDisposingTasks ()
+        {
+            TaskQueue<TArg, TResult> queue = new TaskQueue<TArg, TResult> (0, mockTaskCache.Object, mockTaskDataStore.Object, mockTaskHandleManager.Object);
+
+            DisposableTestTask disposableTask = new DisposableTestTask { };
+            TestTask task = new TestTask { };
+
+            queue.Enqueue (disposableTask);
+            queue.Enqueue (task);
+
+            Exception exceptionToThrow = new Exception ();
+            mockDisposableTestTaskMetadata.ExceptionToThrowOnDispose = exceptionToThrow;
+            List<Exception> exceptionsThrown = new List<Exception> ();
+
+            queue.Clear (exceptionsThrown.Add);
+
+            Assume.That (mockDisposableTestTaskMetadata.DisposeCallCount, Is.EqualTo (1));
+
+            // Verify that Clear continued and skipped the non-disposable TestTask
+            mockTaskDataStore.Verify (store => store.Skip (mockTestTaskMetadata), Times.Once);
+
+            Assert.That (exceptionsThrown, Is.EquivalentTo (new Exception[] { mockDisposableTestTaskMetadata.ExceptionToThrowOnDispose }));
+        }
+
+        [Test]
+        public void Clear_WithoutExceptionHandlerDisposableTaskThrowingException_ThrowsExceptionAndStopsDisposingTasks ()
+        {
+            TaskQueue<TArg, TResult> queue = new TaskQueue<TArg, TResult> (0, mockTaskCache.Object, mockTaskDataStore.Object, mockTaskHandleManager.Object);
+
+            DisposableTestTask disposableTask = new DisposableTestTask { };
+            TestTask task = new TestTask { };
+
+            queue.Enqueue (disposableTask);
+            queue.Enqueue (task);
+
+            Exception exceptionToThrow = new Exception ();
+            mockDisposableTestTaskMetadata.ExceptionToThrowOnDispose = exceptionToThrow;
+
+            Assert.That (() => queue.Clear (), Throws.InstanceOf<Exception> ());
+
+            Assume.That (mockDisposableTestTaskMetadata.DisposeCallCount, Is.EqualTo (1));
+
+            // Verify that Clear stopped before skipping the non-disposable TestTask
+            mockTaskDataStore.Verify (store => store.Skip (mockTestTaskMetadata), Times.Never);
         }
 
         [Test]

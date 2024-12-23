@@ -140,47 +140,45 @@
             bool accessDisposed = false;
             TaskDataAccess access = new TaskDataAccess (dataAccess, &accessDisposed, true);
 
-            if (tasks.Count == 0)
-            {
-                access.Dispose ();
-
-                return false;
-            }
-
-            int id = tasks.Dequeue ();
-
-            if (tasks.Count == 0)
-            {
-                tasksEnqueuedEvent.Reset (); // All tasks have been fetched, and as such the event can be reset.
-            }
-
-            ITaskMetadata task = taskCache.GetTask (id);
-
             bool isProfiling = false;
 
             try
             {
+                if (tasks.Count == 0)
+                {
+                    access.Dispose ();
+
+                    return false;
+                }
+
+                int id = tasks.Dequeue ();
+
+                if (tasks.Count == 0)
+                {
+                    tasksEnqueuedEvent.Reset (); // All tasks have been fetched, and as such the event can be reset.
+                }
+
+                ITaskMetadata task = taskCache.GetTask (id);
+
                 if (profiler != null)
                 {
-                    profiler.BeginTask (task.Type.FullName);
+                    profiler.BeginTask (task.Type);
                     isProfiling = true; // If profiler was started without throwing an exception
                 }
 
-                // Run the task
-                ((ITaskMetadata<TArg, TResult>)task).Run (access, arg, out result);
-
-                if (isProfiling)
+                try
                 {
-                    isProfiling = false;
-                    profiler.EndTask ();
+                    // Run the task
+                    ((ITaskMetadata<TArg, TResult>)task).Run (access, arg, out result);
+                } catch (Exception ex)
+                {
+                    exception = ex;
                 }
-            } catch (Exception ex)
+            } finally
             {
-                exception = ex;
-
-                if (!access.Disposed) // Internal error, TaskMetadata should always call TaskDataAccess.Dispose after getting task data in TaskMetadata.RunAndDispose
+                // Internal error, TaskMetadata should always call TaskDataAccess.Dispose after getting task data in TaskMetadata.RunAndDispose
+                if (!access.Disposed)
                 {
-                    Trace.TraceError ($"TaskMetadata for {task.Type.FullName} failed to call TaskDataAccess.Dispose after getting task data. TaskDataAccess was disposed manually.");
                     access.Dispose ();
                 }
 
@@ -198,7 +196,7 @@
         /// </summary>
         /// <param name="exceptionHandler">Method for handling an exception thrown by a task's <see cref="IDisposable.Dispose"/>.</param>
         /// <remarks>
-        /// As the method iterates through all tasks in the queue and calls <see cref="IDisposable.Dispose"/> on tasks, it can hang for an unknown amount of time. If an exception is thrown in an <see cref="IDisposable.Dispose"/> call, the method continues on with disposing the remaining tasks.
+        /// As the method iterates through all tasks in the queue and calls <see cref="IDisposable.Dispose"/> on tasks, it can hang for an unknown amount of time. If an exception is thrown in an <see cref="IDisposable.Dispose"/> call and <paramref name="exceptionHandler"/> is not provided, the method will throw the exception. If <paramref name="exceptionHandler"/> is provided, the method will call the handler with the exception as argument and continue on with disposing the remaining tasks.
         /// </remarks>
         public unsafe void Clear (Action<Exception> exceptionHandler = null)
         {
@@ -216,7 +214,10 @@
                         taskMetadata.Dispose (access);
                     } catch (Exception ex)
                     {
-                        exceptionHandler?.Invoke (ex);
+                        if (exceptionHandler != null)
+                            exceptionHandler (ex);
+                        else
+                            throw;
                     }
                 } else
                 {
@@ -230,10 +231,10 @@
         }
 
         /// <summary>
-        /// Disposes all tasks which implements <see cref="IDisposable"/>.
+        /// Disposes all tasks which implement <see cref="IDisposable"/>.
         /// </summary>
         /// <remarks>
-        /// As the method iterates through all tasks in the queue and calls <see cref="IDisposable.Dispose"/> on tasks, it can hang for an unknown amount of time. If an exception is thrown in an <see cref="IDisposable.Dispose"/> call, the method continues on with disposing the remaining tasks.
+        /// As the method iterates through all tasks in the queue and calls <see cref="IDisposable.Dispose"/> on tasks, it can hang for an unknown amount of time. If an exception is thrown in an <see cref="IDisposable.Dispose"/> call, the method logs the exception with <see cref="Trace.TraceError(string)"/> and continues on with disposing the remaining tasks. If custom exception handling is required, use <see cref="Clear(Action{Exception})"/> first before disposing.
         /// </remarks>
         public void Dispose ()
         {
@@ -244,20 +245,17 @@
             }
         }
 
-        /// <summary>
-        /// Disposes all tasks which implements <see cref="IDisposable"/>.
-        /// </summary>
-        /// <remarks>
-        /// As the method iterates through all tasks in the queue and calls <see cref="IDisposable.Dispose"/> on tasks, it can hang for an unknown amount of time. If an exception is thrown in an <see cref="IDisposable.Dispose"/> call, the method continues on with disposing the remaining tasks.
-        /// </remarks>
+        /// <inheritdoc cref="Dispose()"/>
         /// <param name="disposing"><see langword="true"/> if called from <see cref="Dispose ()"/>, <see langword="false"/> if called from finalizer.</param>
         protected virtual void Dispose (bool disposing)
         {
             if (disposed)
                 return;
 
-            Clear ();
+            Clear (TraceException);
             disposed = true;
+
+            static void TraceException (Exception ex) => Trace.TraceError (ex.ToString ());
         }
 
         /// <summary>

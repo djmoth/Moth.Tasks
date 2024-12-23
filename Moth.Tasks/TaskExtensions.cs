@@ -86,20 +86,10 @@
             }
         }
 
+        /// <inheritdoc cref="Task{TTask}.TryDispose(ref TTask)"/>
         public static void TryDispose<TTask> (this ref TTask task)
             where TTask : struct, ITask
             => Task<TTask>.TryDispose (ref task);
-
-        /// <summary>
-        /// Enqueues a task in a task queue.
-        /// </summary>
-        /// <typeparam name="TTask">Type of task.</typeparam>
-        /// <param name="task">Task to enqueue.</param>
-        /// <param name="queue">Queue to enqueue in.</param>
-        public static void Enqueue<TTask> (this TTask task, ITaskQueue queue) where TTask : struct, ITask<Unit, Unit>
-        {
-            queue.Enqueue (task);
-        }
 
         /// <summary>
         /// Chains two tasks together.
