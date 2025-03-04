@@ -12,7 +12,7 @@
     /// </summary>
     /// <typeparam name="TArg">Type of task argument.</typeparam>
     /// <typeparam name="TResult">Type of task result.</typeparam>
-    public class Worker<TArg, TResult> : IWorker
+    public class Worker<TArg, TResult> : IWorker<TArg, TResult>, IDisposable
     {
         private readonly bool disposeTasks;
         private readonly IProfiler profiler;

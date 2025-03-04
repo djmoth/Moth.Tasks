@@ -5,7 +5,7 @@
     /// <summary>
     /// Interface for a worker.
     /// </summary>
-    public interface IWorker : IDisposable
+    public interface IWorker
     {
         /// <summary>
         /// Gets a value indicating whether the worker is started.

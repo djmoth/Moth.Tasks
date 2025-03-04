@@ -2954,7 +2954,7 @@
         </member>
         <member name="M:Moth.Tasks.TaskQueue`2.Dispose">
             <summary>
-            Disposes all tasks which implements <see cref="T:System.IDisposable"/>.
+            Disposes all tasks which implement <see cref="T:System.IDisposable"/>.
             </summary>
             <remarks>
             As the method iterates through all tasks in the queue and calls <see cref="M:System.IDisposable.Dispose"/> on tasks, it can hang for an unknown amount of time. If an exception is thrown in an <see cref="M:System.IDisposable.Dispose"/> call, the method logs the exception with <see cref="M:System.Diagnostics.Trace.TraceError(System.String)"/> and continues on with disposing the remaining tasks. If custom exception handling is required, use <see cref="M:Moth.Tasks.TaskQueue`2.Clear(System.Action{System.Exception})"/> first before disposing.
@@ -3174,7 +3174,7 @@
             This class is thread-safe.
             </remarks>
         </member>
-        <member name="M:Moth.Tasks.WorkerGroup`2.#ctor(System.Int32,Moth.Tasks.ITaskQueue{`0,`1},System.Boolean,Moth.Tasks.WorkerProvider)">
+        <member name="M:Moth.Tasks.WorkerGroup`2.#ctor(System.Int32,Moth.Tasks.ITaskQueue{`0,`1},System.Boolean,Moth.Tasks.WorkerProvider{`0,`1})">
             <summary>
             Initializes a new instance of the <see cref="T:Moth.Tasks.WorkerGroup`2"/> class.
             </summary>
@@ -3253,7 +3253,7 @@
             Gets or sets a value indicating whether the worker will require <see cref="M:Moth.Tasks.IWorker.Start"/> to be called manually.
             </summary>
         </member>
-        <member name="T:Moth.Tasks.WorkerProvider">
+        <member name="T:Moth.Tasks.WorkerProvider`2">
             <summary>
             Represents a method that provides a new <see cref="T:Moth.Tasks.IWorker"/> for a worker group, given an index of the worker in the group.
             </summary>

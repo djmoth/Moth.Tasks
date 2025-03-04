@@ -17,8 +17,8 @@
     public class WorkerGroup<TArg, TResult> : IDisposable
     {
         private readonly bool disposeTasks;
-        private readonly WorkerProvider workerProvider;
-        private IWorker[] workers;
+        private readonly WorkerProvider<TArg, TResult> workerProvider;
+        private IWorker<TArg, TResult>[] workers;
         private bool disposed;
 
         /// <summary>
@@ -30,7 +30,7 @@
         /// <param name="workerProvider">A method that provides an <see cref="IWorker"/> for a <see cref="WorkerGroup{TArg, TResult}"/>. May be <see langword="null"/>.</param>
         /// <exception cref="ArgumentOutOfRangeException"><paramref name="workerCount"/> must be greater than zero.</exception>
         /// <exception cref="ArgumentNullException"><paramref name="taskQueue"/> cannot be null.</exception>
-        public WorkerGroup (int workerCount, ITaskQueue<TArg, TResult> taskQueue, bool disposeTaskQueue, WorkerProvider workerProvider = null)
+        public WorkerGroup (int workerCount, ITaskQueue<TArg, TResult> taskQueue, bool disposeTaskQueue, WorkerProvider<TArg, TResult> workerProvider = null)
         {
             Requires.Range (workerCount > 0, nameof (workerCount), $"{nameof (workerCount)} must be greater than zero.");
 
@@ -42,7 +42,7 @@
 
             this.workerProvider = workerProvider;
 
-            workers = new IWorker[workerCount];
+            workers = new IWorker<TArg, TResult>[workerCount];
 
             for (int i = 0; i < workerCount; i++)
             {
@@ -85,7 +85,8 @@
                 // Dispose of the excess workers, if new value is less than the old worker count.
                 for (int i = value; i < oldWorkerCount; i++)
                 {
-                    workers[i].Dispose ();
+                    if (workers[i] is IDisposable disposableWorker)
+                        disposableWorker.Dispose ();
                 }
 
                 Array.Resize (ref workers, value);
@@ -144,9 +145,10 @@
             if (disposed)
                 return;
 
-            foreach (IWorker worker in workers)
+            foreach (IWorker<TArg, TResult> worker in workers)
             {
-                worker.Dispose ();
+                if (worker is IDisposable disposableWorker)
+                    disposableWorker.Dispose ();
             }
 
             if (disposeTasks && Tasks is IDisposable disposableTasks)
@@ -157,11 +159,11 @@
             disposed = true;
         }
 
-        private IWorker GetAndStartNewWorker (int index)
+        private IWorker<TArg, TResult> GetAndStartNewWorker (int index)
         {
-            IWorker worker = workerProvider != null ? workerProvider (index) : new Worker<TArg, TResult> (Tasks, false, default);
+            IWorker<TArg, TResult> worker = workerProvider != null ? workerProvider (this, index) : new Worker<TArg, TResult> (Tasks, false, default);
 
-            if (worker is IDisposable disposableWorker)
+            if (worker is IDisposable)
                 GC.SuppressFinalize (worker);
 
             if (!worker.IsStarted)

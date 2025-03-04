@@ -42,21 +42,23 @@
             ITaskQueue<Unit, Unit> taskQueue = Mock.Of<ITaskQueue<Unit, Unit>> ();
             int workerCount = 4;
 
-            Mock<IWorker>[] mockWorkers = new Mock<IWorker>[workerCount];
+            Mock<IWorker<Unit, Unit>>[] mockWorkers = new Mock<IWorker<Unit, Unit>>[workerCount];
 
-            Mock<WorkerProvider> mockWorkerProvider = new Mock<WorkerProvider> ();
-            mockWorkerProvider.Setup (x => x.Invoke (It.IsAny<int> ()))
-                .Callback ((int i) => mockWorkers[i] = new Mock<IWorker> ())
-                .Returns ((int i) => mockWorkers[i].Object);
+            Mock<WorkerProvider<Unit, Unit>> mockWorkerProvider = new Mock<WorkerProvider<Unit, Unit>> ();
+            mockWorkerProvider.Setup (x => x.Invoke (It.IsAny<WorkerGroup<Unit, Unit>> (), It.IsAny<int> ()))
+                .Callback ((WorkerGroup<Unit, Unit> group, int i) => mockWorkers[i] = new Mock<IWorker<Unit, Unit>> ())
+                .Returns ((WorkerGroup<Unit, Unit> group, int i) => mockWorkers[i].Object);
+
 
             WorkerGroup<Unit, Unit> workerGroup = new WorkerGroup<Unit, Unit> (workerCount, taskQueue, false, mockWorkerProvider.Object);
 
-            mockWorkerProvider.Verify (x => x.Invoke (It.IsAny<int> ()), Times.Exactly (workerCount));
-
             for (int i = 0; i < workerCount; i++)
             {
+                mockWorkerProvider.Verify (x => x.Invoke (workerGroup, i), Times.Once);
                 mockWorkers[i].Verify (w => w.Start (), Times.Once);
             }
+
+            mockWorkerProvider.VerifyNoOtherCalls ();
         }
 
         [Test]
@@ -65,11 +67,13 @@
             ITaskQueue<Unit, Unit> taskQueue = Mock.Of<ITaskQueue<Unit, Unit>> ();
             int workerCount = 4;
 
-            Mock<IWorker>[] mockWorkers = new Mock<IWorker>[workerCount];
+            Mock<IWorker<Unit, Unit>>[] mockWorkers = new Mock<IWorker<Unit, Unit>>[workerCount];
+            
 
-            WorkerProvider workerProvider = (i) =>
+            WorkerProvider<Unit, Unit> workerProvider = (group, i) =>
             {
-                mockWorkers[i] = new Mock<IWorker> ();
+                mockWorkers[i] = new Mock<IWorker<Unit, Unit>> ();
+                mockWorkers[i].As<IDisposable> ().Setup (w => w.Dispose ());
                 return mockWorkers[i].Object;
             };
 
@@ -78,7 +82,7 @@
 
             for (int i = 0; i < workerCount; i++)
             {
-                mockWorkers[i].Verify (w => w.Dispose (), Times.Once);
+                mockWorkers[i].As<IDisposable> ().Verify (w => w.Dispose (), Times.Once);
             }
         }
 
@@ -88,10 +92,10 @@
             ITaskQueue<Unit, Unit> taskQueue = Mock.Of<ITaskQueue<Unit, Unit>> ();
             int workerCount = 4;
 
-            Mock<IWorker>[] mockWorkers = new Mock<IWorker>[workerCount];
-            WorkerProvider workerProvider = (i) =>
+            Mock<IWorker<Unit, Unit>>[] mockWorkers = new Mock<IWorker<Unit, Unit>>[workerCount];
+            WorkerProvider<Unit, Unit> workerProvider = (group, i) =>
             {
-                mockWorkers[i] = new Mock<IWorker> ();
+                mockWorkers[i] = new Mock<IWorker<Unit, Unit>> ();
                 return mockWorkers[i].Object;
             };
 
@@ -112,7 +116,7 @@
             ITaskQueue<Unit, Unit> taskQueue = Mock.Of<ITaskQueue<Unit, Unit>> ();
             int workerCount = 1;
 
-            WorkerProvider workerProvider = (i) => Mock.Of<IWorker> ();
+            WorkerProvider<Unit, Unit> workerProvider = (group, i) => Mock.Of<IWorker<Unit, Unit>> ();
 
             WorkerGroup<Unit, Unit> workerGroup = new WorkerGroup<Unit, Unit> (workerCount, taskQueue, false, workerProvider);
 
