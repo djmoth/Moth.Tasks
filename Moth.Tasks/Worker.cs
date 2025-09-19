@@ -5,7 +5,6 @@
     using System.Diagnostics;
     using System.Text;
     using System.Threading;
-    using Validation;
 
     /// <summary>
     /// Runs on an <see cref="IWorkerThread"/> continuously executing tasks from an <see cref="ITaskQueue{TArg, TResult}"/>.

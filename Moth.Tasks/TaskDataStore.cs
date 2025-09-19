@@ -3,7 +3,6 @@
     using System;
     using System.Runtime.CompilerServices;
     using Moth.IO.Serialization;
-    using Validation;
 
     /// <summary>
     /// Stores task data.
@@ -22,11 +21,12 @@
         /// <exception cref="ArgumentNullException"><paramref name="taskReferenceStore"/> is <see langword="null"/>.</exception>"
         public TaskDataStore (int dataCapacity, ITaskReferenceStore taskReferenceStore)
         {
-            Requires.Range (dataCapacity >= 0, nameof (dataCapacity));
-            Requires.NotNull (taskReferenceStore, nameof (taskReferenceStore));
+            if (dataCapacity < 0)
+                throw new ArgumentOutOfRangeException (nameof (dataCapacity), dataCapacity, $"{nameof(dataCapacity)} must be greater than or equal to zero.");
 
             taskData = new byte[dataCapacity];
-            this.taskReferenceStore = taskReferenceStore;
+
+            this.taskReferenceStore = taskReferenceStore ?? throw new ArgumentNullException (nameof (taskReferenceStore));
         }
 
         /// <inheritdoc/>

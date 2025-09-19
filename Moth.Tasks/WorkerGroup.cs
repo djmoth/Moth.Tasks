@@ -4,7 +4,6 @@
     using System.Collections.Generic;
     using System.Text;
     using System.Threading;
-    using Validation;
 
     /// <summary>
     /// A group of <see cref="IWorker"/>s, executing tasks from a shared <see cref="ITaskQueue{TArg, TResult}"/>.
@@ -32,7 +31,8 @@
         /// <exception cref="ArgumentNullException"><paramref name="taskQueue"/> cannot be null.</exception>
         public WorkerGroup (int workerCount, ITaskQueue<TArg, TResult> taskQueue, bool disposeTaskQueue, WorkerProvider<TArg, TResult> workerProvider = null)
         {
-            Requires.Range (workerCount > 0, nameof (workerCount), $"{nameof (workerCount)} must be greater than zero.");
+            if (workerCount <= 0)
+                throw new ArgumentOutOfRangeException (nameof (workerCount), workerCount, $"{nameof (workerCount)} must be greater than zero.");
 
             Tasks = taskQueue ?? throw new ArgumentNullException (nameof (taskQueue), $"{nameof (taskQueue)} cannot be null.");
             disposeTasks = disposeTaskQueue;
@@ -78,7 +78,8 @@
                 if (value == workers.Length)
                     return;
 
-                Requires.Range (value > 0, nameof (value), $"{nameof (value)} must be greater than zero.");
+                if (value <= 0)
+                    throw new ArgumentOutOfRangeException (nameof (value), $"{nameof (WorkerCount)} must be greater than zero.");
 
                 int oldWorkerCount = workers.Length;
 

@@ -4,7 +4,6 @@
     using System.Runtime.CompilerServices;
     using System.Threading;
 
-
     /// <summary>
     /// Provides a way for a task to access its data while locking the <see cref="TaskQueue"/>.
     /// </summary>
