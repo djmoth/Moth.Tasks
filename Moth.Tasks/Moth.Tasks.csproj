@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <TargetFramework>netstandard2.1</TargetFramework>
@@ -33,15 +33,10 @@
 
   <ItemGroup>
     <None Include="..\.editorconfig" Link=".editorconfig" />
-    <None Include="FunctionPointerTask.cs">
+    <None Include="FunctionPointerTask.cs"/>
     <None Include="..\README.md">
       <Pack>True</Pack>
       <PackagePath>\</PackagePath>
-    </None>
-    <None Include="TaskQueueActions.cs">
-      <DesignTime>True</DesignTime>
-      <AutoGen>True</AutoGen>
-      <DependentUpon>FunctionPointerTask.tt</DependentUpon>
     </None>
     <None Include="TaskFunctionPointerFromExtensions.cs">
       <DesignTime>True</DesignTime>
