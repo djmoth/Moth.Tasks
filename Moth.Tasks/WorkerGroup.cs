@@ -4,37 +4,35 @@
     using System.Collections.Generic;
     using System.Text;
     using System.Threading;
-    using Validation;
 
     /// <summary>
-    /// A group of <see cref="Worker"/>s, executing tasks from a shared <see cref="TaskQueue"/>.
+    /// A group of <see cref="IWorker"/>s, executing tasks from a shared <see cref="ITaskQueue{TArg, TResult}"/>.
     /// </summary>
+    /// <typeparam name="TArg">Type of task argument.</typeparam>
+    /// <typeparam name="TResult">Type of task result.</typeparam>
     /// <remarks>
     /// This class is thread-safe.
     /// </remarks>
-    public class WorkerGroup : IDisposable
+    public class WorkerGroup<TArg, TResult> : IDisposable
     {
         private readonly bool disposeTasks;
-        private readonly bool isBackground;
-        private readonly EventHandler<TaskExceptionEventArgs> exceptionEventHandler;
-        private readonly ProfilerProvider profilerProvider;
-        private Worker[] workers;
+        private readonly WorkerProvider<TArg, TResult> workerProvider;
+        private IWorker<TArg, TResult>[] workers;
         private bool disposed;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="WorkerGroup"/> class.
+        /// Initializes a new instance of the <see cref="WorkerGroup{TArg, TResult}"/> class.
         /// </summary>
         /// <param name="workerCount">Number of workers. Must be greater than zero.</param>
-        /// <param name="taskQueue">The <see cref="TaskQueue"/> of which the workers will be executing tasks from.</param>
-        /// <param name="disposeTaskQueue">Determines whether the <see cref="TaskQueue"/> supplied with <paramref name="taskQueue"/> is disposed when <see cref="Dispose ()"/> is called.</param>
-        /// <param name="isBackground">Defines the <see cref="Thread.IsBackground"/> property of the internal thread of each <see cref="Worker"/>.</param>
-        /// <param name="exceptionEventHandler">Method invoked if a task throws an exception. May be <see langword="null"/>.</param>
-        /// <param name="profilerProvider">A <see cref="ProfilerProvider"/> which may provide an <see cref="IProfiler"/> each <see cref="Worker"/>. May be <see langword="null"/>.</param>
+        /// <param name="taskQueue">The <see cref="TaskQueue{TArg, TResult}"/> of which the workers will be executing tasks from.</param>
+        /// <param name="disposeTaskQueue">Determines whether the <see cref="TaskQueue{TArg, TResult}"/> supplied with <paramref name="taskQueue"/> is disposed when <see cref="Dispose ()"/> is called.</param>
+        /// <param name="workerProvider">A method that provides an <see cref="IWorker"/> for a <see cref="WorkerGroup{TArg, TResult}"/>. May be <see langword="null"/>.</param>
         /// <exception cref="ArgumentOutOfRangeException"><paramref name="workerCount"/> must be greater than zero.</exception>
         /// <exception cref="ArgumentNullException"><paramref name="taskQueue"/> cannot be null.</exception>
-        public WorkerGroup (int workerCount, TaskQueue taskQueue, bool disposeTaskQueue = true, bool isBackground = true, EventHandler<TaskExceptionEventArgs> exceptionEventHandler = null, ProfilerProvider profilerProvider = null)
+        public WorkerGroup (int workerCount, ITaskQueue<TArg, TResult> taskQueue, bool disposeTaskQueue, WorkerProvider<TArg, TResult> workerProvider = null)
         {
-            Requires.Range (workerCount > 0, nameof (workerCount), $"{nameof (workerCount)} must be greater than zero.");
+            if (workerCount <= 0)
+                throw new ArgumentOutOfRangeException (nameof (workerCount), workerCount, $"{nameof (workerCount)} must be greater than zero.");
 
             Tasks = taskQueue ?? throw new ArgumentNullException (nameof (taskQueue), $"{nameof (taskQueue)} cannot be null.");
             disposeTasks = disposeTaskQueue;
@@ -42,87 +40,105 @@
             if (disposeTasks)
                 GC.SuppressFinalize (taskQueue);
 
-            workers = new Worker[workerCount];
+            this.workerProvider = workerProvider;
+
+            workers = new IWorker<TArg, TResult>[workerCount];
 
             for (int i = 0; i < workerCount; i++)
             {
-                workers[i] = new Worker (taskQueue, false, isBackground, profilerProvider, exceptionEventHandler);
-                GC.SuppressFinalize (workers[i]);
+                workers[i] = GetAndStartNewWorker (i);
             }
-
-            this.isBackground = isBackground;
-            this.profilerProvider = profilerProvider;
         }
 
         /// <summary>
-        /// Finalizes an instance of the <see cref="WorkerGroup"/> class.
+        /// Finalizes an instance of the <see cref="WorkerGroup{TArg, TResult}"/> class.
         /// </summary>
         ~WorkerGroup () => Dispose (false);
 
         /// <summary>
-        /// The <see cref="TaskQueue"/> of which the workers are executing tasks from.
+        /// The <see cref="ITaskQueue{TArg, TResult}"/> of which the workers are executing tasks from.
         /// </summary>
-        public TaskQueue Tasks { get; }
+        public ITaskQueue<TArg, TResult> Tasks { get; }
 
         /// <summary>
-        /// Get or set the number of <see cref="Worker"/>s in this <see cref="WorkerGroup"/>. Must be greater than zero.
+        /// Get or set the number of <see cref="IWorker"/>s in this <see cref="WorkerGroup{TArg, TResult}"/>. Must be greater than zero.
         /// </summary>
         /// <remarks>
-        /// The <see cref="ProfilerProvider"/> and <see cref="EventHandler{TaskExceptionEventArgs}"/> provided in the <see cref="WorkerGroup"/> constructor will be used to initialize any new <see cref="Worker"/>s.
+        /// The <see cref="ProfilerProvider"/> and <see cref="EventHandler{TaskExceptionEventArgs}"/> provided in the <see cref="WorkerGroup{TArg, TResult}"/> constructor will be used to initialize any new <see cref="IWorker"/>s.
         /// </remarks>
         public int WorkerCount
         {
-            get
-            {
-                lock (workers)
-                    return workers.Length;
-            }
+            get => workers.Length;
 
             set
             {
-                lock (workers)
+                if (disposed)
+                    throw new ObjectDisposedException (nameof (WorkerGroup<TArg, TResult>));
+
+                if (value == workers.Length)
+                    return;
+
+                if (value <= 0)
+                    throw new ArgumentOutOfRangeException (nameof (value), $"{nameof (WorkerCount)} must be greater than zero.");
+
+                int oldWorkerCount = workers.Length;
+
+                // Dispose of the excess workers, if new value is less than the old worker count.
+                for (int i = value; i < oldWorkerCount; i++)
                 {
-                    if (disposed)
-                        throw new ObjectDisposedException (nameof (WorkerGroup));
+                    if (workers[i] is IDisposable disposableWorker)
+                        disposableWorker.Dispose ();
+                }
 
-                    if (value == workers.Length)
-                        return;
+                Array.Resize (ref workers, value);
 
-                    Requires.Range (value > 0, nameof (value), $"{nameof (value)} must be greater than zero.");
-
-                    int oldWorkerCount = workers.Length;
-
-                    // Dispose of the excess workers, if new value is less than the old worker count.
-                    for (int i = value; i < oldWorkerCount; i++)
-                    {
-                        workers[i].Dispose ();
-                    }
-
-                    Array.Resize (ref workers, value);
-
-                    // Initialize new workers, if new value is greater than the old worker count
-                    for (int i = oldWorkerCount; i < value; i++)
-                    {
-                        workers[i] = new Worker (Tasks, false, isBackground, profilerProvider, exceptionEventHandler);
-                    }
+                // Initialize new workers, if new value is greater than the old worker count
+                for (int i = oldWorkerCount; i < value; i++)
+                {
+                    workers[i] = GetAndStartNewWorker (i);
                 }
             }
         }
 
         /// <summary>
-        /// Signals all workers to shutdown. Also disposes of <see cref="Tasks"/> if specified in <see cref="WorkerGroup"/> constructor.
+        /// Calls <see cref="Dispose()"/> and blocks the calling thread until all <see cref="IWorker"/>s terminate.
         /// </summary>
-        public void Dispose ()
+        public void DisposeAndJoin ()
         {
-            lock (workers)
+            Dispose ();
+
+            Join ();
+        }
+
+        /// <summary>
+        /// Blocks the calling thread until all <see cref="IWorker"/>s terminate.
+        /// </summary>
+        /// <remarks>
+        /// <see cref="Dispose()"/> must be called beforehand.
+        /// </remarks>
+        /// <exception cref="InvalidOperationException">The <see cref="WorkerGroup{TArg, TResult}"/> is not disposed.</exception>
+        public void Join ()
+        {
+            if (!disposed)
+                throw new InvalidOperationException ("Join may only be called after the WorkerGroup is disposed.");
+
+            foreach (IWorker worker in workers)
             {
-                Dispose (true);
-                GC.SuppressFinalize (this);
+                worker.Join ();
             }
         }
 
         /// <summary>
-        /// Signals all workers to shutdown. Also disposes of <see cref="Tasks"/> if specified in <see cref="WorkerGroup"/> constructor.
+        /// Signals all workers to shutdown. Also disposes of <see cref="Tasks"/> if specified in <see cref="WorkerGroup{TArg, TResult}"/> constructor.
+        /// </summary>
+        public void Dispose ()
+        {
+            Dispose (true);
+            GC.SuppressFinalize (this);
+        }
+
+        /// <summary>
+        /// Signals all workers to shutdown. Also disposes of <see cref="Tasks"/> if specified in <see cref="WorkerGroup{TArg, TResult}"/> constructor.
         /// </summary>
         /// <param name="disposing"><see langword="true"/> if called from <see cref="Dispose ()"/>, <see langword="false"/> if called from finalizer.</param>
         protected virtual void Dispose (bool disposing)
@@ -130,17 +146,31 @@
             if (disposed)
                 return;
 
-            foreach (Worker worker in workers)
+            foreach (IWorker<TArg, TResult> worker in workers)
             {
-                worker.Dispose ();
+                if (worker is IDisposable disposableWorker)
+                    disposableWorker.Dispose ();
             }
 
-            if (disposeTasks)
+            if (disposeTasks && Tasks is IDisposable disposableTasks)
             {
-                Tasks.Dispose ();
+                disposableTasks.Dispose ();
             }
 
             disposed = true;
+        }
+
+        private IWorker<TArg, TResult> GetAndStartNewWorker (int index)
+        {
+            IWorker<TArg, TResult> worker = workerProvider != null ? workerProvider (this, index) : new Worker<TArg, TResult> (Tasks, false, default);
+
+            if (worker is IDisposable)
+                GC.SuppressFinalize (worker);
+
+            if (!worker.IsStarted)
+                worker.Start ();
+
+            return worker;
         }
     }
 }

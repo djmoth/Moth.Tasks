@@ -1,0 +1,304 @@
+﻿namespace Moth.Tasks.Tests.UnitTests
+{
+    using System;
+    using System.Collections.Generic;
+    using System.Text;
+    using Moq;
+    using Moth.IO.Serialization;
+    using Moth.Tasks;
+    using NUnit.Framework;
+    using NUnit.Framework.Legacy;
+
+    public class TaskMetadataTests
+    {
+        [Test]
+        public void Constructor_OfUnmanagedTestTask_InitializesCorrectly ()
+        {
+            int taskID = 1;
+            var taskFormat = new MockFixedFormat<TestTask<int>> (42);
+            AssertTaskMetadataProperties (new TaskMetadata<TestTask<int>, Unit, Unit> (taskID, taskFormat), taskID, taskFormat);
+        }
+
+        [Test]
+        public void Constructor_OfManagedTestTask_InitializesCorrectly ()
+        {
+            int taskID = 1;
+            var taskFormat = new MockVariableFormat<TestTask<object>> (42, typeof (object));
+            AssertTaskMetadataProperties (new TaskMetadata<TestTask<object>, Unit, Unit> (taskID, taskFormat), taskID, taskFormat);
+        }
+
+        [Test]
+        public void Constructor_OfUnmanagedTestTaskArg_InitializesCorrectly ()
+        {
+            int taskID = 1;
+            var taskFormat = new MockFixedFormat<TestTaskArg<int>> (42);
+            AssertTaskMetadataProperties (new TaskMetadata<TestTaskArg<int>, int, Unit> (taskID, taskFormat), taskID, taskFormat);
+        }
+
+        [Test]
+        public void Constructor_OfManagedTestTaskArg_InitializesCorrectly ()
+        {
+            int taskID = 1;
+            var taskFormat = new MockVariableFormat<TestTaskArg<object>> (42, typeof (object));
+            AssertTaskMetadataProperties (new TaskMetadata<TestTaskArg<object>, int, Unit> (taskID, taskFormat), taskID, taskFormat);
+        }
+
+        [Test]
+        public void Constructor_OfUnmanagedTestTaskArgResult_InitializesCorrectly ()
+        {
+            int taskID = 1;
+            var taskFormat = new MockFixedFormat<TestTaskArgResult<int>> (42);
+            AssertTaskMetadataProperties (new TaskMetadata<TestTaskArgResult<int>, int, int> (taskID, taskFormat), taskID, taskFormat);
+        }
+
+        [Test]
+        public void Constructor_OfManagedTestTaskArgResult_InitializesCorrectly ()
+        {
+            int taskID = 1;
+            var taskFormat = new MockVariableFormat<TestTaskArgResult<object>> (42, typeof (object));
+            AssertTaskMetadataProperties (new TaskMetadata<TestTaskArgResult<object>, int, int> (taskID, taskFormat), taskID, taskFormat);
+        }
+
+        [Test]
+        public void Constructor_OfDisposableUnmanagedTestTask_InitializesCorrectly ()
+        {
+            int taskID = 1;
+            var taskFormat = new MockFixedFormat<DisposableTestTask<int>> (42);
+            AssertTaskMetadataProperties (new TaskMetadata<DisposableTestTask<int>, Unit, Unit> (taskID, taskFormat), taskID, taskFormat);
+        }
+
+        [Test]
+        public void Constructor_OfDisposableManagedTestTask_InitializesCorrectly ()
+        {
+            int taskID = 1;
+            var taskFormat = new MockVariableFormat<DisposableTestTask<object>> (42, typeof (object));
+            AssertTaskMetadataProperties (new TaskMetadata<DisposableTestTask<object>, Unit, Unit> (taskID, taskFormat), taskID, taskFormat);
+        }
+
+        [Test]
+        public void Constructor_OfDisposableUnmanagedTestTaskArg_InitializesCorrectly ()
+        {
+            int taskID = 1;
+            var taskFormat = new MockFixedFormat<DisposableTestTaskArg<int>> (42);
+            AssertTaskMetadataProperties (new TaskMetadata<DisposableTestTaskArg<int>, int, Unit> (taskID, taskFormat), taskID, taskFormat);
+        }
+
+        [Test]
+        public void Constructor_OfDisposableManagedTestTaskArg_InitializesCorrectly ()
+        {
+            int taskID = 1;
+            var taskFormat = new MockVariableFormat<DisposableTestTaskArg<object>> (42, typeof (object));
+            AssertTaskMetadataProperties (new TaskMetadata<DisposableTestTaskArg<object>, int, Unit> (taskID, taskFormat), taskID, taskFormat);
+        }
+
+        [Test]
+        public void Constructor_OfDisposableUnmanagedTestTaskArgResult_InitializesCorrectly ()
+        {
+            int taskID = 1;
+            var taskFormat = new MockFixedFormat<DisposableTestTaskArgResult<int>> (42);
+            AssertTaskMetadataProperties (new TaskMetadata<DisposableTestTaskArgResult<int>, int, int> (taskID, taskFormat), taskID, taskFormat);
+        }
+
+        [Test]
+        public void Constructor_OfDisposableManagedTestTaskArgResult_InitializesCorrectly ()
+        {
+            int taskID = 1;
+            var taskFormat = new MockVariableFormat<DisposableTestTaskArgResult<object>> (42, typeof (object));
+            AssertTaskMetadataProperties (new TaskMetadata<DisposableTestTaskArgResult<object>, int, int> (taskID, taskFormat), taskID, taskFormat);
+        }
+
+        [Test]
+        public void Serialize_WhenCalled_CallsFormatSerialize ()
+        {
+            int taskID = 1;
+            var taskFormat = new MockFixedFormat<TestTask<int>> (42);
+            var mockTaskMetadata = new Mock<TaskMetadataBase<TestTask<int>>> (taskID, taskFormat)
+            {
+                CallBase = true,
+            };
+
+
+            Span<byte> destination = new byte[taskFormat.MinSize];
+            mockTaskMetadata.Object.Serialize (default, destination, Mock.Of<ObjectWriter> ());
+
+            Assert.That (taskFormat.SerializeCallCount, Is.EqualTo (1));
+        }
+
+        [Test]
+        public void Deserialize_WhenCalled_CallsFormatDeserialize ()
+        {
+            int taskID = 1;
+            var taskFormat = new MockFixedFormat<TestTask<int>> (42);
+            var mockTaskMetadata = new Mock<TaskMetadataBase<TestTask<int>>> (taskID, taskFormat)
+            {
+                CallBase = true,
+            };
+
+            ReadOnlySpan<byte> source = new byte[taskFormat.MinSize];
+            mockTaskMetadata.Object.Deserialize (out _, source, Mock.Of<ObjectReader> ());
+
+            Assert.That (taskFormat.DeserializeCallCount, Is.EqualTo (1));
+        }
+
+
+        void AssertTaskMetadataProperties<T> (ITaskMetadata taskInfo, int id, IFormat<T> taskFormat) where T : struct, ITask
+        {
+            Assert.That (taskInfo.ID, Is.EqualTo (id));
+            Assert.That (taskInfo.Type, Is.EqualTo (typeof (T)));
+            Assert.That (taskInfo.UnmanagedSize, Is.EqualTo (taskFormat.MinSize));
+
+            if (taskFormat is MockFixedFormat<T>)
+                Assert.That (taskInfo.ReferenceCount, Is.EqualTo (0));
+            else if (taskFormat is MockVariableFormat<T> taskVarFormat)
+                Assert.That (taskInfo.ReferenceCount, Is.EqualTo (taskVarFormat.ReferenceTypes.Length));
+            else
+                Assert.Fail ("Unknown format type");
+
+            Assert.That (taskInfo.IsManaged, Is.EqualTo (taskFormat is IVariableFormat));
+
+            bool shouldBeDisposable = typeof (IDisposable).IsAssignableFrom (typeof (T));
+            Assert.That (taskInfo.IsDisposable, Is.EqualTo (shouldBeDisposable));
+
+            // Always true for now
+            bool shouldHaveResult = true;
+            bool shouldHaveArgs = true;
+
+            Assert.That (taskInfo.HasArgs, Is.EqualTo (shouldHaveArgs));
+            Assert.That (taskInfo.HasResult, Is.EqualTo (shouldHaveResult));
+        }
+
+        private class MockFixedFormat<TTask> : IFixedFormat<TTask>
+        {
+            public MockFixedFormat (int minSize)
+            {
+                MinSize = minSize;
+            }
+
+            public int MinSize { get; }
+
+            public int SerializeCallCount { get; private set; }
+
+            public int DeserializeCallCount { get; private set; }
+
+            public int Size => MinSize;
+
+            public bool Blittable => true;
+
+            public int Serialize (in TTask value, Span<byte> destination, ObjectWriter writer)
+            {
+                SerializeCallCount++;
+
+                return MinSize;
+            }
+
+            public int Deserialize (out TTask value, ReadOnlySpan<byte> source, ObjectReader reader)
+            {
+                DeserializeCallCount++;
+
+                value = default;
+
+                return MinSize;
+            }
+
+            public void Serialize (in TTask value, Span<byte> destination)
+            {
+                throw new NotImplementedException ();
+            }
+
+            public TTask Deserialize (ReadOnlySpan<byte> source)
+            {
+                throw new NotImplementedException ();
+            }
+        }
+
+        public class MockVariableFormat<TTask> : IVariableFormat<TTask>
+        {
+            public MockVariableFormat (int minSize, params Type[] referenceTypes)
+            {
+                MinSize = minSize;
+                ReferenceTypes = referenceTypes;
+            }
+
+            public int MinSize { get; }
+
+            public Type[] ReferenceTypes { get; }
+
+            public int SerializeCallCount { get; private set; }
+
+            public int DeserializeCallCount { get; private set; }
+
+            public int Serialize (in TTask value, Span<byte> destination, ObjectWriter writer)
+            {
+                SerializeCallCount++;
+
+                for (int i = 0; i < ReferenceTypes.Length; i++)
+                {
+                    writer (null, destination);
+                }
+
+                return MinSize;
+            }
+            public int Deserialize (out TTask value, ReadOnlySpan<byte> source, ObjectReader reader)
+            {
+                DeserializeCallCount++;
+
+                value = default;
+
+                for (int i = 0; i < ReferenceTypes.Length; i++)
+                {
+                    reader (out _, ReferenceTypes[i], source);
+                }
+
+                return MinSize;
+            }
+        }
+
+        public struct TestTask<TData> : ITask<Unit, Unit>
+        {
+            public TData Data;
+
+            public Unit Run (Unit _) => default;
+        }
+
+        public struct TestTaskArg<TData> : ITask<int, Unit>
+        {
+            public TData Data;
+
+            public Unit Run (int i) => default;
+        }
+
+        public struct TestTaskArgResult<TData> : ITask<int, int>
+        {
+            public TData Data;
+
+            public int Run (int i) => i;
+        }
+
+        public struct DisposableTestTask<TData> : ITask<Unit, Unit>, IDisposable
+        {
+            public TData Data;
+
+            public void Dispose () { }
+
+            public Unit Run (Unit _) => default;
+        }
+
+        public struct DisposableTestTaskArg<TData> : ITask<int, Unit>, IDisposable
+        {
+            public TData Data;
+
+            public void Dispose () { }
+
+            public Unit Run (int i) => default;
+        }
+
+        public struct DisposableTestTaskArgResult<TData> : ITask<int, int>, IDisposable
+        {
+            public TData Data;
+
+            public void Dispose () { }
+
+            public int Run (int i) => i;
+        }
+    }
+}

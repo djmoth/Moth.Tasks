@@ -1,0 +1,58 @@
+﻿namespace Moth.Tasks
+{
+    using System;
+    using System.Linq;
+    using Moth.IO.Serialization;
+    using IFormatProvider = Moth.IO.Serialization.IFormatProvider;
+
+    /// <summary>
+    /// Provides <see cref="ITaskMetadata{TTask}"/> instances.
+    /// </summary>
+    public class TaskMetadataProvider : ITaskMetadataProvider
+    {
+        private readonly IFormatProvider formatProvider;
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="TaskMetadataProvider"/> class.
+        /// </summary>
+        /// <param name="formatProvider"><see cref="IFormatProvider"/> for serializing task data.</param>
+        public TaskMetadataProvider (IFormatProvider formatProvider)
+        {
+            this.formatProvider = formatProvider;
+        }
+
+        /// <inheritdoc />
+        public ITaskMetadata<TTask> Create<TTask> (int id)
+            where TTask : struct, ITask
+        {
+            Type type = typeof (TTask);
+
+            bool isDisposable = false;
+            Type interfaceType = null;
+
+            foreach (Type i in type.GetInterfaces ())
+            {
+                if (i == typeof (IDisposable))
+                {
+                    isDisposable = true;
+                } else if (i == typeof (ITask<Unit, Unit>))
+                {
+                    interfaceType = i;
+                } else if (i.IsGenericType && i.GetGenericTypeDefinition () == typeof (ITask<,>))
+                {
+                    if (interfaceType != null)
+                        throw new InvalidOperationException ("Task type is ambiguous.");
+
+                    interfaceType = i;
+                }
+            }
+
+            if (interfaceType == null)
+                throw new InvalidOperationException ("Task type does not implement ITask<TArg, TResult> or its generic variants.");
+
+            Type taskInfoType = typeof (TaskMetadata<,,>).MakeGenericType (interfaceType.GetGenericArguments ().Prepend (type).ToArray ());
+
+            return (ITaskMetadata<TTask>)Activator.CreateInstance (taskInfoType, id, formatProvider.Get<TTask> ());
+        }
+    }
+}
