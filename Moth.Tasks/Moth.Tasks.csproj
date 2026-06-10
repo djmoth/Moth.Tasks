@@ -5,8 +5,8 @@
   </PropertyGroup>
 
   <PropertyGroup>
-    <TargetFramework>netstandard2.1</TargetFramework>
-    <LangVersion>10</LangVersion>
+    <TargetFramework>net10.0</TargetFramework>
+    <LangVersion>latest</LangVersion>
     <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
     <Authors>djmoth</Authors>
     <Company>EMJADA</Company>
@@ -20,7 +20,7 @@
     <PackageLicenseExpression>Apache-2.0</PackageLicenseExpression>
     <Title>Moth.Tasks</Title>
     <NuGetAuditMode>direct</NuGetAuditMode>
-    <VersionPrefix>1.0.0</VersionPrefix>
+    <VersionPrefix>2.0.0</VersionPrefix>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
     <DocumentationFile>Moth.Tasks.xml</DocumentationFile>
     <Version>$(VersionPrefix)$(VersionSuffix)</Version>
@@ -61,12 +61,7 @@
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
     <PackageReference Include="System.Runtime.CompilerServices.Unsafe" Version="6.1.2" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Reference Include="Moth.IO">
-      <HintPath>..\..\Moth.IO\Moth.IO\bin\Release\netstandard2.1\Moth.IO.dll</HintPath>
-    </Reference>
+    <PackageReference Include="Moth.IO" Version="1.1.*" />
   </ItemGroup>
 
   <ItemGroup>
