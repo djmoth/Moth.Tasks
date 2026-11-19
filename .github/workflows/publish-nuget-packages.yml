@@ -1,0 +1,51 @@
+name: Publish NuGet Packages
+
+on:
+  push:
+    branches:
+      - main
+
+permissions:
+  contents: read
+  packages: write
+
+jobs:
+  publish:
+    runs-on: windows-latest
+
+    steps:
+      - uses: actions/checkout@v6
+
+      - uses: actions/setup-dotnet@v6
+        with:
+          dotnet-version: '10.0.x'
+
+      - name: Restore
+        run: dotnet restore Moth.Tasks.sln
+
+      - name: Pack
+        run: |
+          dotnet pack Moth.Tasks.sln `
+            -c Release `
+            --no-restore `
+            -o ./packages
+
+      - name: Publish packages
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          $package = Get-ChildItem "./packages/*.nupkg" |
+            Select-Object -First 1
+        
+          if ($null -eq $package) {
+            throw "No NuGet package found."
+          }
+        
+          dotnet nuget push "$($package.FullName)" `
+            --api-key $env:GITHUB_TOKEN `
+            --source "https://nuget.pkg.github.com/djmoth/index.json" `
+            --skip-duplicate
+        
+          if ($LASTEXITCODE -ne 0) {
+            exit $LASTEXITCODE
+          }
