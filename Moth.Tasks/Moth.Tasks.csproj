@@ -1,13 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
-
-  <PropertyGroup Condition="'$(Configuration)' == 'Debug'">
-    <VersionSuffix>-debug</VersionSuffix>
-  </PropertyGroup>
-
   <PropertyGroup>
     <TargetFramework>net10.0</TargetFramework>
     <LangVersion>latest</LangVersion>
-    <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
     <Authors>djmoth</Authors>
     <Company>EMJADA</Company>
     <Description>A low-allocation task system for high-performance applications.</Description>
@@ -30,10 +24,6 @@
     <EmbedUntrackedSources>true</EmbedUntrackedSources>
     <DebugType>portable</DebugType>
   </PropertyGroup>
-
-  <Target Name="PushToLocalFeed" AfterTargets="Pack">
-    <Exec Command="dotnet nuget push &quot;$(PackageOutputPath)$(PackageId).$(PackageVersion).nupkg&quot; --source LocalFeed" />
-  </Target>
 
   <ItemGroup>
     <Compile Remove="Moth.Tasks\**" />
